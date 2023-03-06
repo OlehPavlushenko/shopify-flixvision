@@ -10,11 +10,11 @@
     <div class='mega-menu-product-post__content'>
         <span class='visually-hidden'>{{ 'accessibility.vendor' | t }}</span>
         <span class='mega-menu-product-post__vendor'>{{ card_product.vendor }}</span>
-        <h4 class='mega-menu-product-post__title'>
+        <h5 class='mega-menu-product-post__title'>
             <a href='{{ card_product.url | within: collection }}'>
                 {{ card_product.title | truncate: 30 | escape }}
             </a>
-        </h4>
-        {% render 'mega-menu-price', product: card_product, price_class: '' %}
+        </h5>
+        {% render 'price', product: card_product, price_class: 'card-product__price', use_variant: true %}
     </div>
 {% endif %}

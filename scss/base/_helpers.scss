@@ -4,7 +4,7 @@
     display: table;
 }
 
-.page-width {
+.container, .page-width {
     width: 100%;
     max-width: 144rem;
     margin: 0 auto;
@@ -12,7 +12,7 @@
 }
 
 @media screen and (min-width: 991px) {
-    .page-width {
+    .container, .page-width {
       padding: 0 2.5rem;
     }
 }

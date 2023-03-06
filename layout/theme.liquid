@@ -94,10 +94,17 @@
 
         <link
             rel='stylesheet'
+            href='{{ 'plugins.css' | asset_url }}'
+            media='print'
+            onload="this.media='all'"
+        >
+        <link
+            rel='stylesheet'
             href='{{ 'base.css' | asset_url }}'
             media='print'
             onload="this.media='all'"
         >
+        <noscript>{{ 'plugins.css' | asset_url | stylesheet_tag }}</noscript>
         <noscript>{{ 'base.css' | asset_url | stylesheet_tag }}</noscript>
 
         {% unless settings.type_body_font.system? %}

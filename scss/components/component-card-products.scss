@@ -28,42 +28,6 @@
     margin-top: 1rem;
 }
 
-.card-product__price {
-    margin-bottom: 1rem;
-    .price__item--sale {
-        color: var(--color-black);
-    }
-    .price__box {
-        display: flex;
-        align-items: center;
-    }
-    .price__item {
-        display: inline-block;
-        padding-right: .4rem;
-    }
-    &.price--on-sale {
-        .price__item--regular {
-            color: var(--color-black);
-            opacity: .7;
-        }
-        .price__item--sale {
-            color: var(--color-danger);
-        }
-        .badge.sale {
-            display: inline-block;
-        }
-    }
-
-    .badge.sale {
-        font-size: 1.1rem;
-        padding: .3rem .6rem;
-        display: none;
-        border-color: var(--color-danger);
-        background-color: var(--color-danger);
-        color: var(--color-white);
-    }
-}
-
 .card-product__variants {
     margin-bottom: 1rem;
     width: 100%;

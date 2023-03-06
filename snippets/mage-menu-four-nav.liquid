@@ -2,6 +2,9 @@
     assign menu_item_title = block.settings.title | handleize
     assign current_link_title = link.title | handleize
     assign img_size = block.settings.img_size
+    assign dropdown_width = block.settings.dropdown_width
+    assign dropdown_position = block.settings.position
+    assign img_size = block.settings.img_size
     assign product_title = block.settings.prod_title
     assign collection = collections[block.settings.products]
     assign limit = block.settings.prod_limit
@@ -114,11 +117,15 @@
                     {% if column_link.size > 0 %}
                         <a href='{{ column_url }}'>
                         {% render 'image', image_box: column_image, image_box_class: 'mega-menu__column-media--image' %}
-                        <span class='mega-menu__column-media--text'>{{ column_title }}</span>
+                        {% if column_title != blank %}
+                            <span class='mega-menu__column-media--text'>{{ column_title }}</span>
+                        {% endif %}
                         </a>
                     {% else %}
                         {% render 'image', image_box: column_image, image_box_class: 'mega-menu__column-media--image' %}
-                        <span class='mega-menu__column-media--text'>{{ column_title }}</span>
+                        {% if column_title != blank %}
+                            <span class='mega-menu__column-media--text'>{{ column_title }}</span>
+                        {% endif %}
                     {% endif %}
                 </picture>
             {% endif %}
@@ -126,8 +133,9 @@
     {% endcapture %}
 
     {% capture mega_menu_products %}
+        {% if collection.products.size > 0 %}
         <div class='mega-menu__block'>
-            {% if column_title != blank %}
+            {% if product_title != blank %}
                 <h4 class='utility mega-menu__list-column-title'>
                 {{ product_title }}
                 </h4>
@@ -140,6 +148,7 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
     {% endcapture %}
 
     {% if mega_menu_dropdown != blank %}
@@ -151,7 +160,10 @@
 
         {% assign mega_menu_styles = mega_menu_styles | strip_newlines %}
         <li class='header__menu-item header__menu-item--mobile header__menu-item--{{ block.type }} js-mega-menu-wrapper has-sub-menu'>
-            <div class='header__menu-item-details' open>
+            <div
+                class='header__menu-item-details mega-menu__width--{{ dropdown_width }} mega-menu__position--{{ dropdown_position }}'
+                open
+            >
                 <div class='header__menu-item-summary focus-inset'>
                     <a class='header__menu-item-link header__menu-item-link--mobile' href='{{ link.url }}'>
                         {{ link.title }}
@@ -161,7 +173,11 @@
                         {% render 'icon-arrow' %}
                     </button>
                 </div>
-                <div style='{{ mega_menu_styles }}' class='mega-menu js-mega-menu' tabindex='-1'>
+                <div
+                    style='{{ mega_menu_styles }}'
+                    class='mega-menu js-mega-menu'
+                    tabindex='-1'
+                >
                     <div class='mega-menu__wrapper page-width'>
                         <div class='mega-menu__back'>
                             <button class='mega-menu__back-button js-menu-back' aria-expanded='true'>
@@ -177,7 +193,7 @@
                             </a>
                         </div>
                         <div class='mega-menu__row'>
-                            <div class='mega-menu__column-menu'>
+                            <div class='mega-menu__column-menu{% if mega_menu_products == blank %} product-empty{% endif %}'>
                                 <div class='mega-menu__list-row js-mega-submenu-row'>
                                     {{ mega_menu_dropdown }}
                                 </div>

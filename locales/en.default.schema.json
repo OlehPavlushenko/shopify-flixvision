@@ -219,6 +219,10 @@
           "label": "TikTok",
           "info": "https:\/\/tiktok.com\/@shopify"
         },
+        "social_whatsapp_link": {
+          "label": "Whatsapp",
+          "info": "https:\/\/whatsapp.com\/@shopify"
+        },
         "social_tumblr_link": {
           "label": "Tumblr",
           "info": "https:\/\/shopify.tumblr.com"
