@@ -1,7 +1,8 @@
 {
   "sections": {
     "main": {
-      "type": "index-section"
+      "type": "index-section",
+      "settings": {}
     }
   },
   "order": [
