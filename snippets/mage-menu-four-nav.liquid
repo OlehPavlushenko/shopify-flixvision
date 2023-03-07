@@ -159,48 +159,52 @@
         {% endcapture %}
 
         {% assign mega_menu_styles = mega_menu_styles | strip_newlines %}
-        <li class='header__menu-item header__menu-item--mobile header__menu-item--{{ block.type }} js-mega-menu-wrapper has-sub-menu'>
+        <li class="header__menu-item header__menu-item--mobile header__menu-item--{{ block.type }} js-mega-menu-wrapper has-sub-menu">
             <div
-                class='header__menu-item-details mega-menu__width--{{ dropdown_width }} mega-menu__position--{{ dropdown_position }}'
+                class="header__menu-item-details mega-menu__width--{{ dropdown_width }} mega-menu__position--{{ dropdown_position }}"
                 open
             >
-                <div class='header__menu-item-summary focus-inset'>
-                    <a class='header__menu-item-link header__menu-item-link--mobile' href='{{ link.url }}'>
+                <div class="header__menu-item-summary focus-inset">
+                    <a
+                        id="headerMenuItemLink-{{ block.id }}"
+                        class="header__menu-item-link header__menu-item-link--mobile"
+                        href="{{ link.url }}"
+                    >
                         {{ link.title }}
                         {% render 'icon-caret' %}
                     </a>
-                    <button class='mega-menu__next-button js-mega-parent-next-button' aria-expanded='true'>
+                    <button class="mega-menu__next-button js-mega-parent-next-button" aria-expanded="true">
                         {% render 'icon-arrow' %}
                     </button>
                 </div>
                 <div
-                    style='{{ mega_menu_styles }}'
-                    class='mega-menu js-mega-menu'
-                    tabindex='-1'
+                    style="{{ mega_menu_styles }}"
+                    class="mega-menu js-mega-menu"
+                    tabindex="-1"
                 >
-                    <div class='mega-menu__wrapper page-width'>
-                        <div class='mega-menu__back'>
-                            <button class='mega-menu__back-button js-menu-back' aria-expanded='true'>
+                    <div class="mega-menu__wrapper page-width">
+                        <div class="mega-menu__back">
+                            <button class="mega-menu__back-button js-menu-back" aria-expanded="true">
                                 {% render 'icon-caret' %}
                                 {{ link.title | escape }}
                             </button>
                             <a
-                                class='mega-menu__back-close js-menu-toggle'
-                                href='#MobileMenuClose'
-                                aria-label='{{ 'accessibility.menu_close' | t }}'
+                                class="mega-menu__back-close js-menu-toggle"
+                                href="#MobileMenuClose"
+                                aria-label="{{ 'accessibility.menu_close' | t }}"
                             >
                                 {% render 'icon-close' %}
                             </a>
                         </div>
-                        <div class='mega-menu__row'>
-                            <div class='mega-menu__column-menu{% if mega_menu_products == blank %} product-empty{% endif %}'>
-                                <div class='mega-menu__list-row js-mega-submenu-row'>
+                        <div class="mega-menu__row">
+                            <div class="mega-menu__column-menu{% if mega_menu_products == blank %} product-empty{% endif %}">
+                                <div class="mega-menu__list-row js-mega-submenu-row">
                                     {{ mega_menu_dropdown }}
                                 </div>
                             </div>
                             {{ mega_menu_products }}
                         </div>
-                        <div class='mega-menu__row'>
+                        <div class="mega-menu__row">
                             {{ mega_menu_media }}
                         </div>
                     </div>

@@ -37,7 +37,9 @@ class SectionHeader extends HTMLElement {
           submenuBack.addEventListener(event, this.closeMegaSubMenu.bind(this))
         })
       }
-    );
+    )
+
+    //document.body.addEventListener('click', this.onBodyClick.bind(this))
 
     this.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
@@ -57,12 +59,17 @@ class SectionHeader extends HTMLElement {
             details.addEventListener(event, this.showMegaMenu.bind(this))
           })
         } else {
-          wrapper.addEventListener(event, this.showDesktopMegaMenu.bind(this))
+          wrapper.addEventListener(event, (evt) => {
+            if (evt.target.closest('.header__menu-item-summary')) {
+              this.showDesktopMegaMenu(evt)
+            }
+          })
+
           this.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
-              this.closeMegaMenu(event);
+              this.closeMegaMenu(event)
             }
-          });
+          })
         }
       })
     );
@@ -83,17 +90,25 @@ class SectionHeader extends HTMLElement {
     document.body.classList.remove('overflow-hidden')
   }
 
+  onBodyClick(event) {
+    const targetElement = event.target.closest('.js-mega-menu-wrapper')
+    
+    if (!targetElement) {
+      this.closeMegaMenu(event);
+    }
+  }
+
   showDesktopMegaMenu(event) {
     event.preventDefault();
-    let megaMenuCurrent = event.currentTarget.closest('.js-mega-menu-wrapper').querySelector('.js-mega-menu');
+    let megaMenuCurrent = event.currentTarget.closest('.js-mega-menu-wrapper').querySelector('.js-mega-menu')
 
     this.megaMenus.forEach((megaMenu) => {
       if(!megaMenuCurrent.classList.contains('mega-menu--open')) {
         megaMenu.classList.remove('mega-menu--open')
       }
     })
-
-    megaMenuCurrent.classList.toggle('mega-menu--open');
+    megaMenuCurrent.classList.toggle('mega-menu--open')
+    document.body.addEventListener('click', this.onBodyClick.bind(this))
   }
 
   showMegaMenu(event) {

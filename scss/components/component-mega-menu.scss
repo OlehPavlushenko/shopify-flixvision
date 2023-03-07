@@ -29,7 +29,7 @@
         transition-property: visibility, opacity, margin;
         transition-duration: 0.3s;
         z-index: 1;
-        box-shadow:0 .4rem .5rem rgba(0,0,0,.1); 
+        box-shadow:0 .4rem .5rem rgba(0,0,0,.1)!important; 
     }
 
     .mega-menu {
@@ -160,6 +160,7 @@
         top: 50%;
         right: 0;
         transform: translate(0, -50%);
+        pointer-events: none;
     }
 
     .mega-menu__list-badge,
@@ -226,6 +227,46 @@
         padding-left: 2.5rem;
         padding-top: 3rem;
         padding-bottom: 3rem;
+    }
+
+    .mega-menu__position--left {
+        position: relative;
+    }
+
+    .mega-menu__width--two-third .mega-menu {
+        width: 900px;
+        margin-top: 3rem;
+        margin-inline: auto;
+        &.mega-menu--open {
+            margin-top: 2rem;
+        }
+    }
+
+    .mega-menu__width--one-half .mega-menu {
+        width: 600px;
+        margin-top: 3rem;
+        margin-inline: auto;
+        &.mega-menu--open {
+            margin-top: 2rem;
+        }
+    }
+
+    .mega-menu__width--one-third .mega-menu {
+        width: 375px;
+        margin-top: 3rem;
+        margin-inline: auto;
+        &.mega-menu--open {
+            margin-top: 2rem;
+        }
+    }
+
+    .mega-menu__width--one-quarter .mega-menu {
+        width: 250px;
+        margin-top: 2rem;
+        margin-inline: auto;
+        &.mega-menu--open {
+            margin-top: 2rem;
+        }
     }
 }
 

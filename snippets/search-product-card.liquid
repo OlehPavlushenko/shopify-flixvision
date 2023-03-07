@@ -12,11 +12,11 @@
     <div class='search-product-post__content'>
         <span class='visually-hidden'>{{ 'accessibility.vendor' | t }}</span>
         <span class='search-product-post__vendor'>{{ card_product.vendor }}</span>
-        <h4 class='search-product-post__title'>
+        <h5 class='search-product-post__title'>
             <a href='{{ card_product.url }}'>
                 {{ card_product.title | truncate: 60 | escape }}
             </a>
-        </h4>
-        {% render 'search-price', product: card_product, price_class: '' %}
+        </h5>
+        {% render 'price', product: card_product, price_class: 'card-product__price', use_variant: true %}
     </div>
 {% endif %}

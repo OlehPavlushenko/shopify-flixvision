@@ -31,7 +31,7 @@ body.js-ajax-cart-open {
 
 .cart-overlay {
 	position: fixed;
-	background-color: #0003;
+	//background-color: #0003;
 	top: 0;
 	right: 0;
 	height: 100vh;
@@ -460,24 +460,28 @@ form[action="/cart/add"].cart-drawer.js-ajax-cart-form-in-progress [type="submit
     transition: all .3s;
 }
 
-
 .js-ajax-cart-set .cart-page-link .cart-count {
 	display: inline;
+	position: relative;
 }
+
 .js-ajax-cart-empty .cart-page-link .cart-count {
 	display: none;
 }
 
-.cart-page-link .cart-count:before {
-    display: inline;
-    content: "(";
+.cart-count-count {
+	position: absolute;
+	left: -16px;
+	top: -6px;
+	background-color: var(--color-primary);
+	font-size: 11px;
+	min-width: 16px;
+	height: 16px;
+	line-height: 16px;
+	border-radius: 16px;
+	text-align: center;
+	color: #fff;
 }
-.cart-page-link .cart-count:after {
-    display: inline;
-    content: ")";
-}
-
-
 /* Chrome, Safari, Edge, Opera */
 .ajax-cart-drawer__input::-webkit-outer-spin-button,
 .ajax-cart-drawer__input::-webkit-inner-spin-button {

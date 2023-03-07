@@ -29,26 +29,26 @@
 {{ 'component-mega-menu.css' | asset_url | stylesheet_tag }}
 {{ 'component-mobile-menu.css' | asset_url | stylesheet_tag }}
 
-<sticky-header id='shopify-section-header' class='header-wrapper{{ sticky_header }}' style='{{- styles -}}'>
-    <header class='header js-header d-flex align-items-center'>
-        <div class='header__wrapper container'>
-            <div class='row'>
-                <div class='col-6 col-sm-6 col-md-2 col-lg-2 align-self-center justify-content-start d-flex'>
-                    <div class='header__icon-open'>
+<sticky-header id="shopify-section-header" class="header-wrapper{{ sticky_header }}" style="{{- styles -}}">
+    <header class="header js-header d-flex align-items-center">
+        <div class="header__wrapper container">
+            <div class="row">
+                <div class="col-6 col-sm-6 col-md-2 col-lg-2 align-self-center justify-content-start d-flex">
+                    <div class="header__icon-open">
                         <a
-                            class='js-menu-toggle focus-inset'
-                            data-id='MegaMenu'
-                            href='#MobileMenuOpen'
-                            aria-label='{{ 'accessibility.menu_open' | t }}'
+                            class="js-menu-toggle focus-inset"
+                            data-id="MegaMenu"
+                            href="#MobileMenuOpen"
+                            aria-label="{{ 'accessibility.menu_open' | t }}"
                         >
                             {% render 'icon-hamburger' %}
                         </a>
                     </div>
-                    <span class='header__menu--overlay js-mobile-menu-overlay'></span>
-                    <div class='header__logo-wrapper'>
+                    <span class="header__menu--overlay js-mobile-menu-overlay"></span>
+                    <div class="header__logo-wrapper">
                         {% if request.page_type == 'index' %}
-                            <h1 class='header__heading'>
-                                <a href='{{ routes.root_url }}' class='header__logo-link'>
+                            <h1 class="header__heading">
+                                <a href="{{ routes.root_url }}" class="header__logo-link">
                                     {% if logo != blank %}
                                         {{
                                             logo
@@ -61,12 +61,12 @@
                                                 alt: logo_alt
                                         }}
                                     {% else %}
-                                        <span class='h2'>{{ shop.name }}</span>
+                                        <span class="h2">{{ shop.name }}</span>
                                     {% endif %}
                                 </a>
                             </h1>
                         {% else %}
-                            <a href='{{ routes.root_url }}' class='header__logo-link'>
+                            <a href="{{ routes.root_url }}" class="header__logo-link">
                                 {% if logo != blank %}
                                     {{
                                         logo
@@ -79,31 +79,31 @@
                                             alt: logo_alt
                                     }}
                                 {% else %}
-                                    <span class='h2'>{{ shop.name }}</span>
+                                    <span class="h2">{{ shop.name }}</span>
                                 {% endif %}
                             </a>
                         {% endif %}
                     </div>
                 </div>
-                <div class='col-1 col-sm-1 col-md-6 col-lg-7 align-self-center d-menu-col'>
+                <div class="col-1 col-sm-1 col-md-6 col-lg-7 align-self-center d-menu-col">
                     <nav
-                        id='MegaMenu'
-                        class='header__menu header__menu--main js-mobile-menu'
-                        tabindex='-1'
+                        id="MegaMenu"
+                        class="header__menu header__menu--main js-mobile-menu"
+                        tabindex="-1"
                     >
-                        <div class='header__icon-box'>
+                        <div class="header__icon-box">
                             <a
-                                class='header__icon-close js-menu-toggle'
-                                href='#MobileMenuClose'
-                                aria-label='{{ 'accessibility.menu_close' | t }}'
+                                class="header__icon-close js-menu-toggle"
+                                href="#MobileMenuClose"
+                                aria-label="{{ 'accessibility.menu_close' | t }}"
                             >
                                 {% render 'icon-close' %}
                             </a>
                         </div>
-                        <div class='header__menu__inner-container'>
-                            <div class='header__menu__navigation-container'>
+                        <div class="header__menu__inner-container">
+                            <div class="header__menu__navigation-container">
                                 {% if menu.links.size > 0 %}
-                                    <ul class='header__menu-list header__menu-list--mobile'>
+                                    <ul class="header__menu-list header__menu-list--mobile">
                                         {% for link in menu.links %}
                                             {% liquid
                                                 capture mega_menu_snippet
@@ -124,10 +124,11 @@
                                             {% if mega_menu_snippet != blank %}
                                                 {{ mega_menu_snippet }}
                                             {% else %}
-                                                <li class='header__menu-item header__menu-item--mobile'>
+                                                <li class="header__menu-item header__menu-item--mobile">
                                                     <a
-                                                        class='header__menu-item-link header__menu-item-link--mobile'
-                                                        href='{{ link.url }}'
+                                                        id="headerMenuItemLink-{{forloop.index}}"
+                                                        class="header__menu-item-link header__menu-item-link--mobile"
+                                                        href="{{ link.url }}"
                                                     >
                                                         {{ link.title }}
                                                     </a>
@@ -140,80 +141,89 @@
                         </div>
                     </nav>
                 </div>
-                <div class='col-6 col-sm-6 col-md-4 col-lg-3 align-self-center icons-col text-right d-flex justify-content-end'>
-                    <nav class='header__menu--right'>
-                        <ul class='header__menu-list'>
-                            <li class='header__menu-item header__menu-item--search'>
-                                {% render 'header-search', blocks: blocks %}
+                <div class="col-6 col-sm-6 col-md-4 col-lg-3 align-self-center icons-col text-right d-flex justify-content-end">
+                    <nav class="header__menu--right">
+                        <ul class="header__menu-list">
+                            <li class="header__menu-item header__menu-item--search">
+                                <details-open>
+                                    {% render 'header-search', blocks: blocks %}
+                                </details-open>
                             </li>
                             {% if shop.customer_accounts_enabled %}
-                                <li class='header__menu-item'>
-                                    <a
-                                        class='header__menu-item-link'
-                                        href='{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}'
-                                    >
-                                        <i class='icon an an-user-expand' aria-hidden='true'></i>
-                                        <span class='header__menu-item-text'>
-                                            {% liquid
-                                                if customer
-                                                    echo 'customer.account_fallback' | t
-                                                else
-                                                    echo 'customer.log_in' | t
-                                                endif
-                                            %}
-                                        </span>
-                                    </a>
-                                    <div id='userLinks'>
-                                        <ul class='user-links'>
-                                            <li><a href='#'>Login</a></li>
-                                            <li><a href='#'>Sign Up</a></li>
-                                            <li><a href='#'>View Cart</a></li>
-                                            <li><a href='#'>Wishlist</a></li>
-                                            <li><a href='#'>Compare</a></li>
-                                        </ul>
-                                    </div>
+                                <li class="header__menu-item">
+                                    <details-open>
+                                        <a
+                                            class="header__menu-item-link js-summary"
+                                            href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+                                        >
+                                            <i class="icon an an-user-expand" aria-hidden="true"></i>
+                                            <span class="header__menu-item-text">
+                                                {% liquid
+                                                    if customer
+                                                        echo 'customer.account_fallback' | t
+                                                    else
+                                                        echo 'customer.log_in' | t
+                                                    endif
+                                                %}
+                                            </span>
+                                        </a>
+                                        <div id="userLinks" class="user-links js-details">
+                                            <ul class="user-links">
+                                                <li><a href="{{ routes.account_login_url }}">Login</a></li>
+                                                <li><a href="{{ routes.account_register_url }}">Sign Up</a></li>
+                                                <li><a href="{{ routes.cart_url }}">View Cart</a></li>
+                                                <li><a href="/pages/wishlist">Wishlist</a></li>
+                                                <li><a href="/pages/compare">Compare</a></li>
+                                            </ul>
+                                        </div>
+                                    </details-open>
                                 </li>
                             {% endif %}
-                            <li class='header__menu-item'>
-                                <a
-                                    class='header__menu-item-link'
-                                    href='#'
-                                >
-                                    <i class='icon an an-slider-2'></i><span class='hidden'>Settings</span>
-                                </a>
-                                <div id='settingsBox'>
-                                    <div class='currency-picker'>
-                                        <span class='h6'>Select Currency:</span>
-                                        <ul id='currencies' class='header__menu-select'>
-                                            <li class='selected'><a href='#;' class='active'>INR</a></li>
-                                            <li><a href='#;'>GBP</a></li>
-                                            <li><a href='#;'>CAD</a></li>
-                                            <li><a href='#;'>USD</a></li>
-                                            <li><a href='#;'>AUD</a></li>
-                                            <li><a href='#;'>EUR</a></li>
-                                            <li><a href='#;'>JPY</a></li>
-                                        </ul>
+                            <li class="header__menu-item">
+                                <details-open>
+                                    <a
+                                        class="header__menu-item-link js-summary"
+                                        href="#"
+                                    >
+                                        <i class="icon an an-slider-2"></i><span class="hidden">Settings</span>
+                                    </a>
+                                    <div id="settingsBox" class="settings-box js-details">
+                                        <div class="currency-picker">
+                                            <span class="h6">Select Currency:</span>
+                                            <ul id="currencies" class="header__menu-select">
+                                                <li class="selected"><a href="#;" class="active">INR</a></li>
+                                                <li><a href="#;">GBP</a></li>
+                                                <li><a href="#;">CAD</a></li>
+                                                <li><a href="#;">USD</a></li>
+                                                <li><a href="#;">AUD</a></li>
+                                                <li><a href="#;">EUR</a></li>
+                                                <li><a href="#;">JPY</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="language-picker">
+                                            <span class="h6">Select Language:</span>
+                                            <ul id="language" class="header__menu-select">
+                                                <li><a href="#" class="active">English</a></li>
+                                                <li><a href="#">French</a></li>
+                                                <li><a href="#">German</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class='language-picker'>
-                                        <span class='h6'>Select Language:</span>
-                                        <ul id='language' class='header__menu-select'>
-                                            <li><a href='#' class='active'>English</a></li>
-                                            <li><a href='#'>French</a></li>
-                                            <li><a href='#'>German</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                </details-open>
                             </li>
-                            <li class='header__menu-item'>
+                            <li class="header__menu-item">
                                 <a
-                                    href='{{ routes.cart_url }}'
-                                    class='header__menu-item-link cart-page-link mobile-cart-page-link'
-                                    data-ajax-cart-toggle-class-button='js-ajax-cart-open'
+                                    href="{{ routes.cart_url }}"
+                                    class="header__menu-item-link cart-page-link mobile-cart-page-link"
+                                    data-ajax-cart-toggle-class-button="js-ajax-cart-open"
                                 >
-                                    <i class='icon an an-basket-l' aria-hidden='true'></i>
-                                    <span class='cart-count{% if cart.item_count == 0 %} hidden-count{% endif %}'>
-                                        <span data-ajax-cart-bind-state='cart.item_count'>{{ cart.item_count }}</span> |
-                                        <span data-ajax-cart-bind-state='cart.total_price | money_with_currency'>
+                                    <i class="icon an an-basket-l" aria-hidden="true"></i>
+                                    <span class="cart-count{% if cart.item_count == 0 %} hidden-count{% endif %}">
+                                        <span class="cart-count-count" data-ajax-cart-bind-state="cart.item_count">
+                                            {{- cart.item_count -}}
+                                        </span>
+                                        <span class="cart-count-line"> - </span>
+                                        <span data-ajax-cart-bind-state="cart.total_price | money_with_currency">
                                             {{- cart.total_price | money_with_currency -}}
                                         </span>
                                     </span>
@@ -227,9 +237,10 @@
     </header>
 </sticky-header>
 
-<script src='{{ 'section-header.js' | asset_url }}' defer='defer'></script>
+<script src="{{ 'section-header.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'details-open.js' | asset_url }}" defer="defer"></script>
 
-<script type='application/ld+json'>
+<script type="application/ld+json">
     {
     "@context": "http://schema.org",
     "@type": "Organization",
@@ -243,6 +254,9 @@
     {{ settings.social_facebook_link | json }}
     {{ settings.social_pinterest_link | json }}
     {{ settings.social_instagram_link | json }}
+    {{ settings.social_tiktok_link | json }}
+    {{ settings.social_whatsapp_link | json }}
+    {{ settings.social_youtube_link | json }}
     ],
     "url": {{ shop.url | append: page.url | json }}
     }
@@ -250,7 +264,7 @@
 
 {% if request.page_type == 'index' %}
     {% assign potential_action_target = shop.url | append: routes.search_url | append: '?q={search_term_string}' %}
-    <script type='application/ld+json'>
+    <script type="application/ld+json">
         {
         "@context": "http://schema.org",
         "@type": "WebSite",

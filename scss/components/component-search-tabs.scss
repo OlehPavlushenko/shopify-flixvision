@@ -6,7 +6,13 @@
     flex-wrap: nowrap;
     margin: 0 0 3rem 0;
     padding: 0;
-    column-gap: 3rem;
+    column-gap: 1rem;
+}
+
+.search-tabs__btn {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-primary-button-background-hover);
 }
 
 .search-tabs__btn.active {
@@ -65,10 +71,11 @@
 
 .search-blog-post__date,
 .search-product-post__vendor {
-    display: block;
     color: var(--footer-text-color);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin-bottom: 0.5rem;
+    text-transform: none;
+    opacity: 0.7;
 }
 
 .search-product-post__title,
@@ -90,45 +97,6 @@
 .search-blog-post__title a:hover,
 .search-collection-post__title a:hover {
     color: var(--color-link-hover-text);
-}
-
-.search-product-post_price .price__sale {
-    display: none;
-}
-
-.search-product-post_price dl {
-    margin-top: 0.5rem;
-    margin-bottom: 0;
-}
-
-.search-product-post_price dd {
-    margin: 0;
-}
-
-.search-product-post_price .money {
-    color: var(--color-link-text);
-}
-
-.search-product-post_price.price--on-sale .price__regular {
-    display: none;
-}
-
-.search-product-post_price.price--on-sale .price__sale {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-}
-
-.search-product-post_price.price--on-sale .price__sale dd.price__compare {
-    margin-right: 0.6rem;
-}
-
-.search-product-post_price.price--on-sale .price__sale .price-item--regular {
-    opacity: 0.7;
-}
-
-.search-product-post_price.price--on-sale .price__sale .price-item--sale .money {
-    color: var(--color-danger);
 }
 
 .search-tabs__cta {

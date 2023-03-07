@@ -1,15 +1,20 @@
 .search-modal {
-    background-color: var(--header-background-color);
+    background-color: var(--header-search-background-color);
     bottom: initial;
-    z-index: 5;
+    z-index: 99;
     position: fixed;
-    top: 0;
+    top: -100%;
     left: 0;
     right: 0;
     max-height: 100vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    display: none;
+    box-shadow:0 .4rem .5rem rgba(0,0,0,.1); 
+    transition:all 0.3s ease;
+}
+
+details-open.open .header__search .search-modal {
+    top: 0;
 }
 
 .search-modal__full {
@@ -20,10 +25,10 @@
     top: 0;
 }
 
-.header__search details[open] .search-modal__overlay:after {
+details-open.open .header__search .search-modal__overlay:after {
     position: absolute;
     content: "";
-    background-color: rgb(0,0,0,.2);
+    //background-color: rgb(0,0,0,.2);
     top: 100%;
     left: 0;
     right: 0;
@@ -150,11 +155,16 @@
     align-items: center;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 3rem;
+    gap: 1rem;
     padding: 0;
     margin: 0;
     list-style-type: none;
     margin-bottom: 3rem;
+    button {
+        font-size: 1.2rem;
+        line-height: 2rem;
+        padding: .2rem 1rem;
+    }
 }
 
 .suggestions__title {

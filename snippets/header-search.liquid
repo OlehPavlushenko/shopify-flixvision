@@ -5,19 +5,24 @@
 <script src='{{ 'component-tabs.js' | asset_url }}' defer='defer'></script>
 
 <div class='header__search search_wrapper'>
-    <a href='#' class='search-modal__toggle-open focus-inset header__menu-item-link'>
+    <a href='#' class='search-modal__toggle-open focus-inset header__menu-item-link js-summary'>
         <i class='icon an an-search-l' aria-hidden='true'></i>
         <span class='header__menu-item-text'>{{ 'sections.search.search' | t }}</span>
     </a>
 
-    <div class='search-modal' role='dialog' aria-modal='false' aria-label='{{ 'sections.search.search' | t }}'>
+    <div
+        class='search-modal js-details'
+        role='dialog'
+        aria-modal='false'
+        aria-label='{{ 'sections.search.search' | t }}'
+    >
         <div class='search-modal__content page-width' tabindex='-1'>
             <header-search>
                 <form action='{{ routes.search_url }}' method='get' role='search' class='search search-modal__form'>
                     <div class='search-modal__focusable'>
                         <div class='field search-modal__field'>
                             <input
-                                class='search-modal__input'
+                                class='search-modal__input js-modal-input'
                                 id='SearchInModal'
                                 type='search'
                                 name='q'
@@ -28,7 +33,7 @@
                             >
                             <button
                                 type='button'
-                                class='search-modal__close-button link focus-inset'
+                                class='search-modal__close-button link focus-inset js-modal-close-btn'
                                 aria-label='{{ 'accessibility.close' | t }}'
                             >
                                 {% render 'icon-close' %}
