@@ -13,6 +13,7 @@
 .header-wrapper.show {
     position: fixed;
     top: 0;
+    box-shadow:0 .4rem .5rem rgba(0,0,0,.1);
 }
 
 .header-wrapper.show {
@@ -39,6 +40,7 @@
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
     height: 100%;
+    min-height: 6rem;
 }
 
 .header__logo-wrapper {
@@ -127,7 +129,7 @@
     }
 }
 
-@media screen and (min-width: 991px) {
+@media screen and (min-width: 992px) {
     .header__menu {
         display: block;
         width: 100%;
@@ -179,7 +181,7 @@ details-open.open #userLinks {
     visibility:visible; 
     opacity:1; 
     top:100%;
-    margin-top: 2rem;
+    margin-top: 1.9rem;
     z-index:99;
 }
 

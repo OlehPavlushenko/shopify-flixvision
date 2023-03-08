@@ -1,22 +1,9 @@
-@media screen and (min-width: 1200px) {
-	body.js-ajax-cart-open {
-		transform: translate(-100px);
-	}
-  
-	body {
-		transition: all .3s;
-	}
-}
-
-body.js-ajax-cart-open {
-	overflow: hidden;
-}
 
 .cart-drawer {
 	display: flex;
 	flex-direction: column;
 	position: fixed;
-	top: 47px;
+	top: 0;
 	right: 0;
 	bottom: 0;
 	width: 50rem;
@@ -31,28 +18,42 @@ body.js-ajax-cart-open {
 
 .cart-overlay {
 	position: fixed;
-	//background-color: #0003;
 	top: 0;
 	right: 0;
 	height: 100vh;
 	width: calc(100% - 50rem);
-	backdrop-filter: blur(.4rem);
+	background: rgba(0,0,0, .1);
+	backdrop-filter: blur(0.4rem);
 	-webkit-backdrop-filter: blur(.4rem);
 	z-index: -1;
 	opacity: 0;
-	transform: translateX(100);
+	transform: translateX(100%);
 	transition:  all  .3s ease;
 }
 
 .js-ajax-cart-open .cart-drawer {
-	transform: translateX(100px); 
+	transform: translateX(0); 
 }
 
 .js-ajax-cart-open .cart-overlay {
 	z-index: 10;
 	opacity: 1;
-	transform: translateX(100px);
+	transform: translateX(0);
 	right: 50rem;
+}
+
+@media screen and (max-width: 550px) {
+	.cart-drawer {
+		width: 32rem;
+	}
+
+	.cart-overlay { 
+		width: calc(100% - 32rem);
+	}
+
+	.js-ajax-cart-open .cart-overlay {
+		right: 32rem;
+	}
 }
 
 .cart-drawer__icon-close {

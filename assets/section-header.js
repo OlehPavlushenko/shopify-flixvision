@@ -49,7 +49,7 @@ class SectionHeader extends HTMLElement {
   }
 
   resizeFunction() {
-    let mobile = window.matchMedia('(max-width: 990px)').matches;
+    let mobile = window.matchMedia('(max-width: 991px)').matches;
 
     ['click','enter'].forEach((event) =>
       this.megaMenuWrappers.forEach((wrapper) => {
@@ -80,14 +80,14 @@ class SectionHeader extends HTMLElement {
 
     this.mobileMenu.classList.toggle('menu-opening')
     this.mobileMenuOverlay.classList.toggle('menu-opening')
-    document.body.classList.toggle('overflow-hidden')
+    //document.body.classList.toggle('overflow-hidden')
   }
 
   closeMobileMenu() {
     this.mobileMenu.classList.remove('menu-opening')
     this.mobileMenuOverlay.classList.remove('menu-opening')
     trapFocus(this)
-    document.body.classList.remove('overflow-hidden')
+    //document.body.classList.remove('overflow-hidden')
   }
 
   onBodyClick(event) {
@@ -139,6 +139,7 @@ class SectionHeader extends HTMLElement {
   }
 
   closeMegaSubMenu(event) {
+    console.log(event)
     if (event.target.closest('.js-mega-submenu-wrapper')) {
       let openElement = event.target.closest('.js-mega-submenu-wrapper')
       let openElementActive = event.target.closest('.js-mega-submenu-wrapper').querySelector('.js-mega-menu-title')

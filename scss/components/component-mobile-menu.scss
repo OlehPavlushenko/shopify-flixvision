@@ -1,5 +1,5 @@
 
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 991px) {
     .overflow-hidden {
         overflow: hidden;
     }
@@ -12,7 +12,8 @@
     .header__menu--right,
     .header__icon-open {
         display: block;
-        height: 2rem;
+        min-height: 2rem;
+        margin: auto 0 auto;
     }
     
     .header__menu--right .header__menu-item-link {
@@ -23,6 +24,7 @@
         width: 2rem;
         height: 2rem;
         margin: auto;
+        vertical-align: middle;
     }
   
     .header__icon-open a {
@@ -37,7 +39,8 @@
     .header__menu--overlay {
         margin: 0;
         display: flex;
-        background: rgba(0,0,0, .3);
+        background: rgba(0,0,0,0.1);
+        backdrop-filter: blur(0.4rem);
         width: calc(100% - 32rem);
         overflow-y: scroll;
         position: fixed;
@@ -47,19 +50,19 @@
         z-index: 1000;
         transition: all .3s ease;
         backface-visibility: hidden;
-        visibility: hidden;
         transform: translate(-100%,0);
     }
   
     .header__menu--overlay.menu-opening {
         visibility: visible;
         transform: translate(32rem,0);
+        opacity: 1;
     }
   
     .header__menu--main {
         padding: 0;
         margin: 0;
-        background: var(--header-background-color);
+        background: var(--header-mobile-background-color);
         display: block;
         width: 32rem;
         overflow: hidden;
@@ -95,7 +98,7 @@
         padding: 7.7rem 2rem;
         margin: 0;
         list-style: none;
-        background: var(--header-background-color);
+        background: var(--header-mobile-background-color);
         display: block;
     }
   
@@ -125,7 +128,7 @@
     .header__icon-box {
         display: block;
         position: fixed;
-        background: var(--header-background-color);
+        background: var(--header-mobile-background-color);
         padding: 2rem;
         left: 0;
         top: 0;
@@ -142,7 +145,7 @@
   
     .mega-menu__back {
         position: fixed;
-        background: var(--header-background-color);
+        background: var(--header-mobile-background-color);
         padding: 2rem;
         left: 0;
         top: 0;
@@ -154,7 +157,7 @@
     }
   
     .mega-menu__back-button {
-        padding-left: 2rem;
+        padding-left: 1rem;
         padding-right: 2rem;
     }
   
@@ -165,8 +168,8 @@
   
     .mega-menu__back-button .icon-caret {
         display: block;
-        width: 2rem;
-        height: 2rem;
+        width: 1.4rem;
+        height: 1.4rem;
         margin-right: 2rem;
         transform: rotate(90deg);
     }
@@ -176,9 +179,8 @@
     }
   
     .header__menu-item--mobile {
-        padding-bottom: 1rem;
-        padding-top: 1rem;
-        border-bottom: 1px solid var(--header-text-color);
+       padding: 1rem 0;
+        border-bottom: 1px solid var(--color-input-border);
     }
   
     .header__menu-item-summary {
@@ -208,7 +210,7 @@
         width: 100%;
         bottom: 0;
         left: 0;
-        background: var(--header-background-color);
+        background: var(--header-mobile-background-color);
         z-index: 10;
         transform: translate(100%);
         visibility: hidden;
@@ -229,7 +231,7 @@
   
     .mega-menu__list-column-title {
         margin-top: 0;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
     }
@@ -241,7 +243,7 @@
         width: 100%;
         bottom: 0;
         left: 0;
-        background: var(--header-background-color);
+        background: var(--header-mobile-background-color);
         z-index: 10;
         transform: translate(100%);
         visibility: hidden;
@@ -281,7 +283,7 @@
         font-weight: var(--font-heading-weight);
         color: var(--color-link-text);
         display: inline-block;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
   
     .mega-menu__column-image {
@@ -306,7 +308,7 @@
         width: 100%;
         bottom: 0;
         left: 0;
-        background: var(--header-background-color);
+        background: var(--header-mobile-background-color);
         z-index: 10;
         transform: translate(100%);
         visibility: hidden;
@@ -345,5 +347,22 @@
     .mega-menu__block {
         margin-bottom: 2rem;
         margin-top: 3rem;
+    }
+
+    .mega-menu__next-button {
+        background: var(--color-white);
+        border: none;
+        color: var(--color-link-text);
+        box-shadow: inset 0 0 .4rem rgba(0, 0, 0, 0.1);
+    }
+
+    .mega-menu__next-button:hover {
+        color: var(--color-link-hover-text);
+    }
+
+    .mega-menu__back-button {
+        background: none;
+        border: 1px solid var(--color-secondary-button-background);
+        color: var(--color-secondary-button-background);
     }
 }
