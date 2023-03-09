@@ -1,58 +1,58 @@
 {{ 'component-search-modal.css' | asset_url | stylesheet_tag }}
 {{ 'component-search-tabs.css' | asset_url | stylesheet_tag }}
 
-<script src='{{ 'header-search.js' | asset_url }}' defer='defer'></script>
-<script src='{{ 'component-tabs.js' | asset_url }}' defer='defer'></script>
+<script src="{{ 'header-search.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'component-tabs.js' | asset_url }}" defer="defer"></script>
 
-<div class='header__search search_wrapper'>
-    <a href='#' class='search-modal__toggle-open focus-inset header__menu-item-link js-summary'>
-        <i class='icon an an-search-l' aria-hidden='true'></i>
-        <span class='header__menu-item-text'>{{ 'sections.search.search' | t }}</span>
+<div class="header__search search_wrapper">
+    <a href="#" class="search-modal__toggle-open focus-inset header__menu-item-link js-summary">
+        {% render 'icon-search' %}
+        <span class="header__menu-item-text">{{ 'sections.search.search' | t }}</span>
     </a>
 
     <div
-        class='search-modal js-details'
-        role='dialog'
-        aria-modal='false'
-        aria-label='{{ 'sections.search.search' | t }}'
+        class="search-modal js-details"
+        role="dialog"
+        aria-modal="false"
+        aria-label="{{ 'sections.search.search' | t }}"
     >
-        <div class='search-modal__content page-width' tabindex='-1'>
+        <div class="search-modal__content page-width" tabindex="-1">
             <header-search>
-                <form action='{{ routes.search_url }}' method='get' role='search' class='search search-modal__form'>
-                    <div class='search-modal__focusable'>
-                        <div class='field search-modal__field'>
+                <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
+                    <div class="search-modal__focusable">
+                        <div class="field search-modal__field">
                             <input
-                                class='search-modal__input js-modal-input'
-                                id='SearchInModal'
-                                type='search'
-                                name='q'
-                                autocorrect='off'
-                                value=''
-                                autocomplete='off'
-                                placeholder='{{ 'sections.search.placeholder' | t }}'
+                                class="search-modal__input js-modal-input"
+                                id="SearchInModal"
+                                type="search"
+                                name="q"
+                                autocorrect="off"
+                                value=""
+                                autocomplete="off"
+                                placeholder="{{ 'sections.search.placeholder' | t }}"
                             >
                             <button
-                                type='button'
-                                class='search-modal__close-button link focus-inset js-modal-close-btn'
-                                aria-label='{{ 'accessibility.close' | t }}'
+                                type="button"
+                                class="search-modal__close-button link focus-inset js-modal-close-btn"
+                                aria-label="{{ 'accessibility.close' | t }}"
                             >
                                 {% render 'icon-close' %}
                             </button>
                         </div>
 
-                        <div class='suggestions'>
+                        <div class="suggestions">
                             {% comment %} Suggested Terms {% endcomment %}
                             {% assign suggested_terms = blocks | where: 'type', 'suggested_term' %}
                             {% if suggested_terms.size > 0 %}
-                                <div class='suggestions__title'>{{ 'sections.search.suggestions' | t }}</div>
-                                <ul class='search-modal__suggested'>
+                                <div class="suggestions__title">{{ 'sections.search.suggestions' | t }}</div>
+                                <ul class="search-modal__suggested">
                                     <li>{{ 'sections.search.suggestions' | t }}</li>
                                     {% for term in suggested_terms %}
                                         {% if term.settings.suggested_term != blank %}
                                             <li>
                                                 <button
-                                                    type='button'
-                                                    data-term='{{ term.settings.suggested_term }}'
+                                                    type="button"
+                                                    data-term="{{ term.settings.suggested_term }}"
                                                 >
                                                     {{ term.settings.suggested_term }}
                                                 </button>
@@ -65,15 +65,15 @@
                             {% comment %} Suggested Links {% endcomment %}
                             {% assign suggested_links = blocks | where: 'type', 'suggested_link' %}
                             {% if suggested_links.size > 0 %}
-                                <div class='search-modal__links'>
+                                <div class="search-modal__links">
                                     {% for link in suggested_links %}
                                         {% liquid
                                             assign image = link.settings.suggested_link_image
                                             assign url = link.settings.suggested_link
                                             assign text = link.settings.suggested_text
                                         %}
-                                        <a href='{{ url }}' class='search-modal__item'>
-                                            <div class='search-modal__media'>
+                                        <a href="{{ url }}" class="search-modal__item">
+                                            <div class="search-modal__media">
                                                 {% if link.settings.suggested_link_image != blank %}
                                                     {% render 'image',
                                                         image_box: image,
@@ -82,7 +82,7 @@
                                                 {% endif %}
                                             </div>
                                             {% if text != blank %}
-                                                <span class='h4'>
+                                                <span class="h4">
                                                     {{ text }}
                                                 </span>
                                             {% endif %}
@@ -92,15 +92,15 @@
                             {% endif %}
                         </div>
                     </div>
-                    <div class='results'>
-                        <div class='header-search__loading-state'>
+                    <div class="results">
+                        <div class="header-search__loading-state">
                             <svg
-                                aria-hidden='true'
-                                focusable='false'
-                                role='presentation'
-                                class='spinner'
-                                viewBox='0 0 66 66'
-                                xmlns='http://www.w3.org/2000/svg'
+                                aria-hidden="true"
+                                focusable="false"
+                                role="presentation"
+                                class="spinner"
+                                viewBox="0 0 66 66"
+                                xmlns="http://www.w3.org/2000/svg"
                             >
                                 <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
                             </svg>
@@ -110,7 +110,7 @@
             </header-search>
         </div>
     </div>
-    <div class='search-modal__overlay'>
-        <span class='visually-hidden'>{{ 'accessibility.close' | t }}</span>
+    <div class="search-modal__overlay">
+        <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
     </div>
 </div>

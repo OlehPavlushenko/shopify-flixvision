@@ -1,35 +1,35 @@
 class DetailsOpen extends HTMLElement {
     constructor() {
         super()
-        this.detailsContainer = this.querySelector('.js-details')
-        this.summaryToggle = this.querySelector('.js-summary')
+        this.detailsContainer = this.querySelector(".js-details")
+        this.summaryToggle = this.querySelector(".js-summary")
 
-        this.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
+        this.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
                 this.close()
             }
         })
 
         this.summaryToggle.addEventListener(
-            'click',
+            "click",
             ((event) => {
                 this.onSummaryClick(event)
             }).bind(this)
         )
 
-        if (this.querySelector('.js-modal-close-btn')) {
-            this.querySelector('.js-modal-close-btn').addEventListener(
-                'click',
+        if (this.querySelector(".js-modal-close-btn")) {
+            this.querySelector(".js-modal-close-btn").addEventListener(
+                "click",
                 this.close.bind(this)
             )
         }
 
-        this.summaryToggle.setAttribute('role', 'button')
+        this.summaryToggle.setAttribute("role", "button")
     }
 
     onSummaryClick(event) {
         event.preventDefault()
-        event.target.closest('details-open').classList.contains('open')
+        event.target.closest("details-open").classList.contains("open")
             ? this.close()
             : this.open(event)
     }
@@ -47,15 +47,16 @@ class DetailsOpen extends HTMLElement {
         this.onBodyClickEvent =
             this.onBodyClickEvent || this.onBodyClick.bind(this)
 
-        event.target.closest('details-open').classList.add('open')
-        document.body.addEventListener('click', this.onBodyClickEvent)
-        if (event.target.classList.contains('search-modal__toggle-open')) {
+        event.target.closest("details-open").classList.add("open")
+        document.body.addEventListener("click", this.onBodyClickEvent)
+        if (event.target.classList.contains("search-modal__toggle-open")) {
             trapFocus(
                 this.detailsContainer,
                 this.detailsContainer.querySelector(
                     'input:not([type="hidden"])'
                 )
             )
+            document.body.classList.toggle("overflow-hidden")
         } else {
             trapFocus(this.detailsContainer)
         }
@@ -63,18 +64,19 @@ class DetailsOpen extends HTMLElement {
 
     close(focusToggle = true) {
         removeTrapFocus(focusToggle ? this.summaryToggle : null)
-        if (this.detailsContainer.classList.contains('search-modal')) {
-            this.detailsContainer.querySelector('.js-modal-input').value = ''
+        if (this.detailsContainer.classList.contains("search-modal")) {
+            this.detailsContainer.querySelector(".js-modal-input").value = ""
             this.detailsContainer
-                .querySelector('header-search')
-                .removeAttribute('results')
+                .querySelector("header-search")
+                .removeAttribute("results")
             this.detailsContainer
-                .querySelector('header-search')
-                .removeAttribute('open')
+                .querySelector("header-search")
+                .removeAttribute("open")
+            document.body.classList.remove("overflow-hidden")
         }
-        this.classList.remove('open')
-        document.body.removeEventListener('click', this.onBodyClickEvent)
+        this.classList.remove("open")
+        document.body.removeEventListener("click", this.onBodyClickEvent)
     }
 }
 
-customElements.define('details-open', DetailsOpen)
+customElements.define("details-open", DetailsOpen)

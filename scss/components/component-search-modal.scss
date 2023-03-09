@@ -3,17 +3,18 @@
     bottom: initial;
     z-index: 99;
     position: fixed;
-    top: -100%;
+    top: 0;
     left: 0;
     right: 0;
     max-height: 100vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     transition:all 0.3s ease;
+    transform: translateY(-100%);
 }
 
 details-open.open .header__search .search-modal {
-    top: 0;
+    transform: translateY(0);
     box-shadow:0 .4rem .5rem rgba(0,0,0,.1); 
 }
 

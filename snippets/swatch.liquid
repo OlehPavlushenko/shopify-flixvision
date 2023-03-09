@@ -5,7 +5,7 @@
 {% assign file_extension = 'png' %}
 
 {% if swatch == blank %}
-    <div class='swatch swatch--product error'>
+    <div class="swatch swatch--product error">
         <p>You must include the snippet swatch.liquid with the name of a product option.</p>
         <p>
             Use: <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code>
@@ -29,7 +29,7 @@
             {% assign option_index = forloop.index0 %}
             {% assign downcased_option = swatch | downcase %}
 
-            {% if downcased_option contains 'color' %}
+            {% if downcased_option contains 'color' or downcased_option contains 'farbe' %}
                 {% assign is_color = true %}
                 {% assign is_first = true %}
                 {% if variant_type == 'pills_color_images' %}
@@ -37,13 +37,14 @@
                 {% endif %}
             {% endif %}
 
-            {% if downcased_option contains 'size' %}
+            {% if downcased_option contains 'size' or downcased_option contains 'größe' %}
                 {% assign is_second = true %}
             {% endif %}
 
             {% if downcased_option contains 'fill'
                 or downcased_option contains 'pattern'
                 or downcased_option contains 'material'
+                or downcased_option contains 'muster'
             %}
                 {% assign is_third = true %}
             {% endif %}
@@ -51,7 +52,7 @@
     {% endfor %}
 
     {% unless found_option %}
-        <div class='swatch swatch--product error'>
+        <div class="swatch swatch--product error">
             <p>
                 You included the snippet swatch.liquid with the name of a product option — <code>'{{ swatch }}'</code> —
                 that does not belong to your product.
@@ -77,11 +78,11 @@
             {% assign class = 'swatch-third' %}
         {% endif %}
         <div
-            class='swatch swatch--product swatch-item-{{ swatch }} js-{{ class }}'
-            data-option-index='{{ option_index }}'
-            data-swatch='{{ swatch }}'
+            class="swatch swatch--product {% if is_color %}swatch-item-color {% endif %} swatch-item-{{ swatch }} js-{{ class }}"
+            data-option-index="{{ option_index }}"
+            data-swatch="{{ swatch }}"
         >
-            <div class='swatch-header js-swatch-header'>
+            <div class="swatch-header js-swatch-header">
                 <span>
                     {{ swatch }}:
                     <em>{{ current_variant.options[option_index] }}</em>
@@ -98,38 +99,38 @@
 
                     <div
                         {% if is_first %}
-                            data-lvl-first='{{ value }}'
+                            data-lvl-first="{{ value }}"
                         {% endif %}
                         {% if is_second %}
-                            data-lvl-second='{{ value }}'
+                            data-lvl-second="{{ value }}"
                         {% endif %}
                         {% if is_third %}
-                            data-lvl-third='{{ value }}'
+                            data-lvl-third="{{ value }}"
                         {% endif %}
-                        data-value='{{ value }}'
-                        class='swatch-element {% if is_color %}swatch-element-color {% endif %}{% if is_image %}swatch-element-image {% endif %}{{ value | handle }} js-swatch-element'
+                        data-value="{{ value }}"
+                        class="swatch-element {% if is_color %}swatch-element-color {% endif %}{% if is_image %}swatch-element-image {% endif %}{{ value | handle }} js-swatch-element"
                     >
                         <input
-                            id='swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}'
-                            type='radio'
-                            name='option-{{ option_index }}-{{ section.id }}-{{ product.id }}'
-                            value='{{ value | escape }}'
-                            data-swatch-option='{{ option_index }}'
+                            id="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}"
+                            type="radio"
+                            name="option-{{ option_index }}-{{ section.id }}-{{ product.id }}"
+                            value="{{ value | escape }}"
+                            data-swatch-option="{{ option_index }}"
                         >
                         {% if is_color %}
                             {% assign sku_array = variant.sku | split: ' ' %}
                             {% assign url_handle = value | handle %}
                             <label
-                                for='swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}'
+                                for="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}"
                                 {% if is_image %}
-                                    style='background-image: url({{ variant.featured_image | img_url: img_size, crop: 'center' }})'
+                                    style="background-image: url({{ variant.featured_image | img_url: img_size, crop: 'center' }})"
                                 {% else %}
-                                    style='background-color: {{ value | split: ' ' | last | handle }}; background-image: url({{ url_handle | replace: "-", "_" | append: '.' | append: file_extension | file_url }})'
+                                    style="background-color: {{ value | split: ' ' | last | handle }}; background-image: url({{ url_handle | replace: "-", "_" | append: '.' | append: file_extension | file_url }})"
                                 {% endif %}
                             >
                             </label>
                         {% else %}
-                            <label for='swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}'>
+                            <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}">
                                 {{ value }}
                             </label>
                         {% endif %}

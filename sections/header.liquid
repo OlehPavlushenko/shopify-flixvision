@@ -31,7 +31,7 @@
 {{ 'component-mega-menu.css' | asset_url | stylesheet_tag }}
 {{ 'component-mobile-menu.css' | asset_url | stylesheet_tag }}
 
-<sticky-header id="shopify-section-header" class="header-wrapper{{ sticky_header }}" style="{{- styles -}}">
+<sticky-header id="shopify-section-header" class="header-wrapper{{ sticky_header }} animated" style="{{- styles -}}">
     <header class="header js-header d-flex align-items-center">
         <div class="header__wrapper container">
             <div class="row">
@@ -158,7 +158,7 @@
                                             class="header__menu-item-link js-summary"
                                             href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
                                         >
-                                            <i class="icon an an-user-expand" aria-hidden="true"></i>
+                                            {% render 'icon-user' %}
                                             <span class="header__menu-item-text">
                                                 {% liquid
                                                     if customer
@@ -187,7 +187,8 @@
                                         class="header__menu-item-link js-summary"
                                         href="#"
                                     >
-                                        <i class="icon an an-slider-2"></i><span class="hidden">Settings</span>
+                                        {% render 'icon-settings' %}
+                                        <span class="hidden">Settings</span>
                                     </a>
                                     <div id="settingsBox" class="settings-box js-details">
                                         <div class="currency-picker">
@@ -204,11 +205,44 @@
                                         </div>
                                         <div class="language-picker">
                                             <span class="h6">Select Language:</span>
-                                            <ul id="language" class="header__menu-select">
-                                                <li><a href="#" class="active">English</a></li>
-                                                <li><a href="#">French</a></li>
-                                                <li><a href="#">German</a></li>
-                                            </ul>
+                                            <localization-form>
+                                                {%- form 'localization',
+                                                    id: 'LanguageForm',
+                                                    class: 'localization-form'
+                                                -%}
+                                                    <div class="no-js-hidden">
+                                                        <ul
+                                                            id="LanguageList"
+                                                            role="list"
+                                                            class="header__menu-select list-unstyled"
+                                                        >
+                                                            {%- for language in localization.available_languages -%}
+                                                                <li class="localization-form__item">
+                                                                    <a
+                                                                        class="link link--text localization-form{% if language.iso_code == localization.language.iso_code %} active{% endif %} focus-inset"
+                                                                        href="#"
+                                                                        hreflang="{{ language.iso_code }}"
+                                                                        lang="{{ language.iso_code }}"
+                                                                        {% if language.iso_code
+                                                                                == localization.language.iso_code
+                                                                        %}
+                                                                            aria-current="true"
+                                                                        {% endif %}
+                                                                        data-value="{{ language.iso_code }}"
+                                                                    >
+                                                                        {{ language.endonym_name | capitalize }}
+                                                                    </a>
+                                                                </li>
+                                                            {%- endfor -%}
+                                                        </ul>
+                                                        <input
+                                                            type="hidden"
+                                                            name="locale_code"
+                                                            value="{{ localization.language.iso_code }}"
+                                                        >
+                                                    </div>
+                                                {%- endform -%}
+                                            </localization-form>
                                         </div>
                                     </div>
                                 </details-open>
@@ -219,7 +253,7 @@
                                     class="header__menu-item-link cart-page-link mobile-cart-page-link"
                                     data-ajax-cart-toggle-class-button="js-ajax-cart-open"
                                 >
-                                    <i class="icon an an-basket-l" aria-hidden="true"></i>
+                                    {% render 'icon-cart' %}
                                     <span class="cart-count{% if cart.item_count == 0 %} hidden-count{% endif %}">
                                         <span class="cart-count-count" data-ajax-cart-bind-state="cart.item_count">
                                             {{- cart.item_count -}}
