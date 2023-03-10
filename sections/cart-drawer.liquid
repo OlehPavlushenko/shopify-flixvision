@@ -197,15 +197,28 @@
                         </div>
                         <div data-ajax-cart-messages="{{ item.key }}"></div>
                     </div>
-                    <div class="ajax-cart-total">
-                        {{ 'sections.cart.total' | t }}
-                        {% if item.original_line_price != item.final_line_price %}
-                            <del>{{ item.original_line_price | money }}</del>
-                            {{ item.final_line_price | money }}
-                        {% else %}
-                            {{ item.original_line_price | money }}
-                        {% endif %}
-                    </div>
+
+                    {% if settings.currency_code_enabled %}
+                        <div class="ajax-cart-total">
+                            {{ 'sections.cart.total' | t }}
+                            {% if item.original_line_price != item.final_line_price %}
+                                <del>{{ item.original_line_price | money_with_currency }}</del>
+                                {{ item.final_line_price | money_with_currency }}
+                            {% else %}
+                                {{ item.original_line_price | money_with_currency }}
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="ajax-cart-total">
+                            {{ 'sections.cart.total' | t }}
+                            {% if item.original_line_price != item.final_line_price %}
+                                <del>{{ item.original_line_price | money }}</del>
+                                {{ item.final_line_price | money }}
+                            {% else %}
+                                {{ item.original_line_price | money }}
+                            {% endif %}
+                        </div>
+                    {% endif %}
                     <div class="ajax-cart-remove">
                         <a
                             href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
@@ -317,16 +330,15 @@
             </div>
         </div>
         <button type="submit" name="checkout" class="cart-drawer__checkout-btn">
-            {{ 'sections.cart.checkout' | t }} — {{ cart.total_price | money_with_currency }}
+            {% if settings.currency_code_enabled %}
+                {{ 'sections.cart.checkout' | t }} — {{ cart.total_price | money_with_currency }}
+            {% else %}
+                {{ 'sections.cart.checkout' | t }} — {{ cart.total_price | money }}
+            {% endif %}
         </button>
     </div>
 </form>
 
-{% assign amount_format = '{{amount}}' %}
-
-<script type="text/javascript">
-    Shopify.money_format = '${{amount_format}}'
-</script>
 <script type="application/json" data-ajax-cart-initial-state>
     {{ cart | json }}
 </script>
@@ -334,6 +346,7 @@
 <script type="module">
     import { subscribeToCartAjaxRequests, cartRequestAdd, cartRequestChange, cartRequestUpdate, subscribeToCartStateUpdate } from '{{ 'ajax-cart.js' | asset_url }}';
 </script>
+
 <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}

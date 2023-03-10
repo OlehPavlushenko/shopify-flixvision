@@ -193,15 +193,42 @@
                                     <div id="settingsBox" class="settings-box js-details">
                                         <div class="currency-picker">
                                             <span class="h6">Select Currency:</span>
-                                            <ul id="currencies" class="header__menu-select">
-                                                <li class="selected"><a href="#;" class="active">INR</a></li>
-                                                <li><a href="#;">GBP</a></li>
-                                                <li><a href="#;">CAD</a></li>
-                                                <li><a href="#;">USD</a></li>
-                                                <li><a href="#;">AUD</a></li>
-                                                <li><a href="#;">EUR</a></li>
-                                                <li><a href="#;">JPY</a></li>
-                                            </ul>
+                                            <localization-form>
+                                                {% form 'localization',
+                                                    id: 'CurrencyForm',
+                                                    class: 'localization-form'
+                                                %}
+                                                    <div class="no-js-hidden">
+                                                        <ul
+                                                            id="CurrencyList"
+                                                            role="list"
+                                                            class="header__menu-select list-unstyled"
+                                                        >
+                                                            {%- for currency in shop.enabled_currencies -%}
+                                                                <li class="localization-form__item">
+                                                                    <a
+                                                                        class="link link--text localization-form{% if currency == cart.currency %} active{% endif %} focus-inset"
+                                                                        href="#"
+                                                                        lang="{{ currency.iso_code }}"
+                                                                        {% if currency == cart.currency %}
+                                                                            aria-current="true"
+                                                                        {% endif %}
+                                                                        data-value="{{ currency.iso_code }}"
+                                                                    >
+                                                                        {{ currency.iso_code -}}
+                                                                        {{- currency.symbol }}
+                                                                    </a>
+                                                                </li>
+                                                            {%- endfor -%}
+                                                        </ul>
+                                                        <input
+                                                            type="hidden"
+                                                            name="currency_code"
+                                                            value="{{ localization.country.iso_code }}"
+                                                        >
+                                                    </div>
+                                                {% endform %}
+                                            </localization-form>
                                         </div>
                                         <div class="language-picker">
                                             <span class="h6">Select Language:</span>
@@ -259,8 +286,12 @@
                                             {{- cart.item_count -}}
                                         </span>
                                         <span class="cart-count-line"> - </span>
-                                        <span data-ajax-cart-bind-state="cart.total_price | money_with_currency">
-                                            {{- cart.total_price | money_with_currency -}}
+                                        <span class="cart-count-ajax-cart">
+                                            {% if settings.currency_code_enabled %}
+                                                {{ cart.total_price | money_with_currency }}
+                                            {% else %}
+                                                {{ cart.total_price | money }}
+                                            {% endif %}
                                         </span>
                                     </span>
                                 </a>

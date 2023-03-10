@@ -133,6 +133,16 @@
 
         {{ 'main.css' | asset_url | stylesheet_tag }}
 
+        {% if settings.currency_code_enabled %}
+            {% assign amount_format = shop.money_with_currency_format %}
+        {% else %}
+            {% assign amount_format = shop.money_format %}
+        {% endif %}
+
+        <script type="text/javascript">
+            Shopify.money_format = '{{ amount_format }}'
+        </script>
+
         <script src="{{ 'helper-functions.js' | asset_url }}" defer="defer"></script>
         <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
     </body>

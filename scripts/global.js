@@ -672,7 +672,6 @@ class VariantPills extends HTMLElement {
             })
         })
 
-        console.log(this.availableVariant)
         this.updateOptions(event)
         this.updatePrice()
         this.updateImage()
@@ -775,9 +774,11 @@ class LocalizationForm extends HTMLElement {
     constructor() {
         super()
         this.elements = {
-            input: this.querySelector('input[name="locale_code"]'),
+            input: this.querySelector(
+                'input[name="locale_code"], input[name="currency_code"]'
+            ),
         }
-        console.log(this.elements)
+
         this.querySelectorAll("a").forEach((item) =>
             item.addEventListener("click", this.onItemClick.bind(this))
         )

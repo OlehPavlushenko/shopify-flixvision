@@ -29,7 +29,10 @@
             {% assign option_index = forloop.index0 %}
             {% assign downcased_option = swatch | downcase %}
 
-            {% if downcased_option contains 'color' or downcased_option contains 'farbe' %}
+            {% if downcased_option contains 'color'
+                or downcased_option contains 'farbe'
+                or downcased_option contains 'couleur'
+            %}
                 {% assign is_color = true %}
                 {% assign is_first = true %}
                 {% if variant_type == 'pills_color_images' %}
@@ -37,14 +40,19 @@
                 {% endif %}
             {% endif %}
 
-            {% if downcased_option contains 'size' or downcased_option contains 'größe' %}
+            {% if downcased_option contains 'size'
+                or downcased_option contains 'größe'
+                or downcased_option contains 'taille'
+            %}
                 {% assign is_second = true %}
             {% endif %}
 
             {% if downcased_option contains 'fill'
                 or downcased_option contains 'pattern'
                 or downcased_option contains 'material'
+                or downcased_option contains 'matériel'
                 or downcased_option contains 'muster'
+                or downcased_option contains 'modèle'
             %}
                 {% assign is_third = true %}
             {% endif %}
