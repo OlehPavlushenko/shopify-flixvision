@@ -211,12 +211,10 @@ class SectionHeader extends HTMLElement {
 
     show() {
         this.classList.add("show")
-        this.classList.add("fadeInDown")
     }
 
     reset() {
         this.classList.remove("show")
-        this.classList.remove("fadeInDown")
     }
 
     onScroll() {

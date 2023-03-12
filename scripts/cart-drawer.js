@@ -67,60 +67,58 @@ if ("liquidAjaxCart" in window) {
 
     liquidAjaxCart.cartRequestUpdate()
 
-    if (document.querySelector(".js-cart-drawer-shipping").isConnected) {
-        liquidAjaxCart.subscribeToCartStateUpdate(async (state) => {
-            const shippingTotal = document
-                .querySelector(".js-cart-drawer-shipping")
-                .getAttribute("data-total")
-            const cartTotalHeader = document.querySelector(
-                ".cart-count-ajax-cart"
+    liquidAjaxCart.subscribeToCartStateUpdate(async (state) => {
+        const cartTotalHeader = document.querySelector(".cart-count-ajax-cart")
+        if (state.status.cartStateSet && !state.status.requestInProgress) {
+            cartTotalHeader.textContent = Shopify.formatMoney(
+                state.cart.total_price
             )
-            if (state.status.cartStateSet && !state.status.requestInProgress) {
+            const cartDrawerShipping = document.querySelector(
+                ".js-cart-drawer-shipping"
+            )
+            if (cartDrawerShipping && cartDrawerShipping.isConnected) {
                 let currentTotal = state.cart.total_price
-                cartTotalHeader.textContent = Shopify.formatMoney(
-                    state.cart.total_price
-                )
+                const shippingTotal = document
+                    .querySelector(".js-cart-drawer-shipping")
+                    .getAttribute("data-total")
                 calculateProgress(currentTotal, shippingTotal)
+            }
 
-                let getCookieValue = getCookie("cart_recommend")
+            let getCookieValue = getCookie("cart_recommend")
 
-                if (typeof getCookieValue !== "undefined") {
-                    if (
-                        Object.keys(getCookieValue).length <
-                        state.cart.items.length
-                    ) {
-                        refreshCookie(state)
-                    }
-                    if (
-                        Object.keys(getCookieValue).length !== 0 &&
-                        getCookieValue.constructor === Object
-                    ) {
-                        let cartIds = []
-
-                        for (const key in getCookieValue) {
-                            if (
-                                Object.hasOwnProperty.call(getCookieValue, key)
-                            ) {
-                                const id = getCookieValue[key]
-                                cartIds.push(id)
-                            }
-                        }
-
-                        let handles = getRecommendProducts(cartIds)
-
-                        handles.then((result) => {
-                            if (result.length > 0) {
-                                let strHandles = result.join("=")
-                                sentRecommendIds(strHandles)
-                            }
-                        })
-                    }
-                } else {
+            if (typeof getCookieValue !== "undefined") {
+                if (
+                    Object.keys(getCookieValue).length < state.cart.items.length
+                ) {
                     refreshCookie(state)
                 }
+                if (
+                    Object.keys(getCookieValue).length !== 0 &&
+                    getCookieValue.constructor === Object
+                ) {
+                    let cartIds = []
+
+                    for (const key in getCookieValue) {
+                        if (Object.hasOwnProperty.call(getCookieValue, key)) {
+                            const id = getCookieValue[key]
+                            cartIds.push(id)
+                        }
+                    }
+
+                    let handles = getRecommendProducts(cartIds)
+
+                    handles.then((result) => {
+                        if (result.length > 0) {
+                            let strHandles = result.join("=")
+                            sentRecommendIds(strHandles)
+                        }
+                    })
+                }
+            } else {
+                refreshCookie(state)
             }
-        })
-    }
+        }
+    })
 }
 
 function buildNotification(requestState) {
@@ -192,40 +190,26 @@ function closeNotification(modal) {
 }
 
 async function getRecommendProducts(ids) {
-    let productsItems = []
-    const promise = new Promise(function (resolve) {
-        ids.forEach((id) => {
-            fetch(
-                window.Shopify.routes.root +
-                    "recommendations/products.json?product_id=" +
-                    id +
-                    "&limit=4&intent=complementary"
-            )
-                .then((response) => response.json())
-                .then(({ products }) => {
-                    if (products.length > 0) {
-                        for (const key in products) {
-                            if (Object.hasOwnProperty.call(products, key)) {
-                                let element = products[key]
-                                let handle = String(element.handle)
+    const productItems = []
 
-                                if (productsItems.length === 0) {
-                                    productsItems.push(handle)
-                                } else {
-                                    if (!productsItems.includes(handle)) {
-                                        productsItems.push(handle)
-                                    }
-                                }
-                            }
-                        }
+    const promises = ids.map((id) => {
+        return fetch(
+            `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
+        )
+            .then((response) => response.json())
+            .then(({ products }) => {
+                for (const product of products) {
+                    const handle = String(product.handle)
+                    if (!productItems.includes(handle)) {
+                        productItems.push(handle)
                     }
-                })
-        })
-        setTimeout(() => resolve(productsItems), 1000)
+                }
+            })
     })
 
-    let result = await promise
-    return result
+    await Promise.all(promises)
+
+    return productItems
 }
 
 function sentRecommendIds(ids) {
@@ -258,6 +242,23 @@ function sentRecommendIds(ids) {
                     item.querySelector(".card-product__media").classList.add(
                         "media__size--" + imageSize
                     )
+                })
+                const swiper = new Swiper(".js-recommend-swiper", {
+                    // Optional parameters
+                    loop: false,
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                    // Navigation arrows
+                    navigation: {
+                        nextEl: ".swiper-button-next",
+                        prevEl: ".swiper-button-prev",
+                    },
+                    breakpoints: {
+                        551: {
+                            slidesPerView: 2,
+                            spaceBetween: 20,
+                        },
+                    },
                 })
             }
         })

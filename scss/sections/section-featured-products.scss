@@ -2,6 +2,9 @@
     background-color: var(--background-color-featured-products);
     padding-top: calc(.7*var(--pad-top-featured-products));
     padding-bottom: calc(.7*var(--pad-bot-featured-products));
+    .page-width {
+        max-width: var(--width-featured-products);
+    }
 }
 
 @media screen and (min-width: 750px) {
@@ -9,10 +12,6 @@
         padding-top: var(--pad-top-featured-products);
         padding-bottom: var(--pad-bot-featured-products);
     }
-}
-
-.page-width {
-    max-width: var(--width-featured-products);
 }
 
 .featured-products__heading {
