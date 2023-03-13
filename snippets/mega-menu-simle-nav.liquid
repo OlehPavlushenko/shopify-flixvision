@@ -61,10 +61,10 @@
                         href="{{ link.url }}"
                     >
                         {{ link.title | escape }}
-                        {% render 'icon-caret' %}
+                        {% render 'icons-svg', icons: 'down' %}
                     </a>
                     <button class="mega-menu__next-button js-mega-parent-next-button" aria-expanded="true">
-                        {% render 'icon-arrow' %}
+                        {% render 'icons-svg', icons: 'arrow-right' %}
                     </button>
                 </div>
                 <div
@@ -74,7 +74,7 @@
                 >
                     <div class="mega-menu__back">
                         <button class="mega-menu__back-button js-menu-back" aria-expanded="true">
-                            {% render 'icon-caret' %}
+                            {% render 'icons-svg', icons: 'down' %}
                             {{ link.title | escape }}
                         </button>
                         <a
@@ -82,7 +82,7 @@
                             href="#MobileMenuClose"
                             aria-label="{{ 'accessibility.menu_close' | t }}"
                         >
-                            {% render 'icon-close' %}
+                            {% render 'icons-svg', icons: 'close' %}
                         </a>
                     </div>
                     <div class="simple-menu__wrapper">

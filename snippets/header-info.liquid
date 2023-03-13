@@ -1,0 +1,60 @@
+<div class="header-top-border">
+    <div class="top-header-box">
+        <div class="container">
+            <div class="row">
+                <div class="mod-left col-md-8 topcall">
+                    <ul class="sp-contact-info">
+                        <li class="sp-contact-mobile">
+                            {% render 'icons-svg', icons: 'phone' %}
+                            <a href="tel:+7758724444">+775 872 4444</a>
+                        </li>
+                        <li class="sp-contact-email">
+                            {% render 'icons-svg', icons: 'envelope' %}
+                            <a href="mailto:contact@email.com">contact@email.com</a>
+                        </li>
+                        <li class="sp-contact-time">
+                            {% render 'icons-svg', icons: 'calendar' %}
+                            Mon - Fri 8:00 - 17:30
+                        </li>
+                    </ul>
+                </div>
+                <div class="mod-right col-md-4 top-icon">
+                    <div class="top-icon-blocks style-1">
+                        <div class="top-header">
+                            <div class="mod-compare top-icon-block">
+                                <div class="top-icon-button">
+                                    <div id="compare_total">
+                                        <a
+                                            class="compare_total heading"
+                                            href="/pages/compare"
+                                        >
+                                            {% render 'icons-svg', icons: 'compare' %}
+                                            <i class="text">{{ 'pages.compare' | t }}</i>
+                                            <span> 1</span></a
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="top-header">
+                            <div class="mod-wishlist top-icon-block">
+                                <div class="top-icon-button">
+                                    <div id="wishlist_total">
+                                        <a
+                                            class="wishlist_total heading"
+                                            href="/pages/wishlist"
+                                        >
+                                            {% render 'icons-svg', icons: 'heart' %}
+                                            <i class="text">{{ 'pages.wishlist' | t }}</i>
+                                            <span> 1</span></a
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

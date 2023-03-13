@@ -20,7 +20,7 @@
         font-size: 2rem;
     }
 
-    .icon-close , .icon-hamburger {
+    .icon-close , .icon-menu {
         width: 2rem;
         height: 2rem;
         margin: auto;
@@ -102,7 +102,7 @@
         display: block;
     }
   
-    .icon-caret {
+    .icon-down {
         display: none;
         pointer-events: none;
     }
@@ -112,14 +112,14 @@
         margin-left: auto;
     }
   
-    .icon-arrow {
+    .icon-arrow-right {
         display: block;
         width: 1.6rem;
         height: 1.6rem;
         pointer-events: none;
     }
   
-    .icon-close , .icon-hamburger {
+    .icon-close , .icon-menu {
         width: 2rem;
         height: 2rem;
         margin: auto;
@@ -166,7 +166,7 @@
         height: 2rem;
     }
   
-    .mega-menu__back-button .icon-caret {
+    .mega-menu__back-button .icon-down {
         display: block;
         width: 1.4rem;
         height: 1.4rem;

@@ -10,7 +10,10 @@
         "twitter": "Twitter",
         "facebook": "Facebook",
         "pinterest": "Pinterest",
-        "instagram": "Instagram"
+        "instagram": "Instagram",
+        "linkedin": "Linkedin",
+        "whatsapp": "Whatsapp",
+        "youtube": "Youtube"
       }
     }
   },
@@ -198,6 +201,10 @@
       "button": "Subscribe",
       "success": "Thanks for subscribing"
     }
+  },
+  "pages":{
+    "wishlist": "Wishlist",
+    "compare": "Compare"
   },
   "products": {
     "product": {

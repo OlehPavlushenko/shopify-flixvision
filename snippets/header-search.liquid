@@ -1,12 +1,6 @@
-{{ 'component-search-modal.css' | asset_url | stylesheet_tag }}
-{{ 'component-search-tabs.css' | asset_url | stylesheet_tag }}
-
-<script src="{{ 'header-search.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'component-tabs.js' | asset_url }}" defer="defer"></script>
-
 <div class="header__search search_wrapper">
     <a href="#" class="search-modal__toggle-open focus-inset header__menu-item-link js-summary">
-        {% render 'icon-search' %}
+        {% render 'icons-svg', icons: 'search' %}
         <span class="header__menu-item-text">{{ 'sections.search.search' | t }}</span>
     </a>
 
@@ -36,7 +30,7 @@
                                 class="search-modal__close-button link focus-inset js-modal-close-btn"
                                 aria-label="{{ 'accessibility.close' | t }}"
                             >
-                                {% render 'icon-close' %}
+                                {% render 'icons-svg', icons: 'close' %}
                             </button>
                         </div>
 

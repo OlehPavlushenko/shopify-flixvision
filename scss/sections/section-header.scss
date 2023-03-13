@@ -260,3 +260,202 @@ details-open.open #userLinks {
     background:var(--color-secondary-button-background);
 }
 
+.header__logo-link {
+    display: inline-block;
+}
+
+//style header
+
+.style-simple-logo-center {
+    @media screen and (min-width: 992px) {
+        .header__logo-wrapper {
+            text-align: center;
+        }
+    }
+}
+
+.style-minimal {
+    .header-main {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .header-menu-outer {
+        position: relative;
+        .header__logo-wrapper {
+            text-align: left;
+        }
+    }
+    .minimal-social-col {
+        display: none!important;
+    }
+    .list-social {
+        display: flex;
+        .list-social__item {
+            margin-right: 8px;
+        }
+        .list-social__link {
+            display: block;
+        }
+        svg {
+            width: 2rem;
+            height: 2rem;
+            vertical-align: middle;
+        }
+    }
+    .minimal-logo-col,
+    .minimal-elements-col {
+        opacity: 0;
+        z-index: -1;
+        position: relative;
+        display: none!important;
+    }
+    @media screen and (min-width: 992px) {
+        .header-main {
+            padding-bottom: 0;
+        }
+        .minimal-social-col {
+            display: flex!important;
+        }
+
+        .header__logo-wrapper {
+            text-align: center;
+        }
+
+        .header__menu {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .mega-menu__width--two-third .mega-menu {
+            &.mega-menu--open {
+                margin-top: 1.5rem;
+            }
+        }
+    
+        .mega-menu__width--one-half .mega-menu {
+            &.mega-menu--open {
+                margin-top: 1.5rem;
+            }
+        }
+    
+        .mega-menu__width--one-third .mega-menu {
+            &.mega-menu--open {
+                margin-top: 1.5rem;
+            }
+        }
+    
+        .mega-menu__width--one-quarter .mega-menu {
+            &.mega-menu--open {
+                margin-top: 1.5rem;
+            }
+        }
+
+        .simple-menu.mega-menu--open {
+            margin-top: 1.5rem;
+        }
+        
+        .header-wrap {
+            margin-bottom: 2.4rem;
+        }
+        .minimal-logo-col,
+        .minimal-elements-col {
+            display: flex!important;
+        }
+        &.show {
+            .header-wrap {
+                opacity: 0;
+                height: 0;
+                margin: 0;
+                z-index: -1;
+            }
+            .minimal-logo-col,
+            .minimal-elements-col {
+                opacity: 1;
+                z-index: auto;
+                display: flex!important;
+            }
+        }
+        
+        .header-menu-outer {
+            display: block;
+            padding-bottom: 1.5rem;
+        }
+    }
+}
+
+.style-multi-row {
+    @media screen and (min-width: 992px) {
+        .header-wrap {
+            padding-bottom: 1.5rem;
+            padding-top: 1.5rem;
+            border-bottom: 1px solid var(--header-line-color);
+        }
+        .header-menu-outer {
+            padding-bottom: 1.5rem;
+            padding-top: 1.5rem;
+            position: relative;
+            
+            &:before {
+                content: "";
+                box-shadow: inset 0 12px 12px 5px var(--header-line-color);
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                opacity: .3;
+
+            }
+            .header__menu-item--user
+             {
+                display: none;
+            }
+        }
+
+        .header__menu--list {
+            .header__menu-item {
+                text-transform: none;
+                font-size: 1.2rem;
+                line-height: 1.4rem;
+                border-left: 1px solid var(--header-line-color);
+                a {
+                    text-decoration: none;
+                }
+                &:first-child {
+                    border:none;
+                }
+            }
+        }
+
+        .mega-menu__width--two-third .mega-menu {
+            &.mega-menu--open {
+                margin-top: 1.5rem;
+            }
+        }
+    
+        .mega-menu__width--one-half .mega-menu {
+            &.mega-menu--open {
+                margin-top: 1.5rem;
+            }
+        }
+    
+        .mega-menu__width--one-third .mega-menu {
+            &.mega-menu--open {
+                margin-top: 1.5rem;
+            }
+        }
+    
+        .mega-menu__width--one-quarter .mega-menu {
+            &.mega-menu--open {
+                margin-top: 1.5rem;
+            }
+        }
+
+        .simple-menu.mega-menu--open {
+            margin-top: 1.5rem;
+        }
+    }
+}

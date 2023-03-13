@@ -1,6 +1,9 @@
 {% liquid
+    assign style_header = section.settings.style_header
+    assign enable_transparent_header = section.settings.enable_transparent_header
     assign enable_sticky_header = section.settings.enable_sticky_header
     assign menu = section.settings.menu
+    assign topmenu = section.settings.topmenu
     assign logo = section.settings.logo
     assign logo_alt = section.settings.logo.alt | default: shop.name | escape
     assign logo_width = section.settings.logo_width
@@ -9,16 +12,21 @@
     assign search_background_color = section.settings.search_background_color
     assign mobile_background_color = section.settings.mobile_background_color
     assign text_color = section.settings.text_color
+    assign line_color = section.settings.line_color
     assign badge_color = section.settings.badge_color
     assign blocks = section.blocks
     if enable_sticky_header != true
         assign sticky_header = ' sticky-header-false'
+    endif
+    if enable_transparent_header == true and template == 'index'
+        assign transparent_header = ' transparent-header'
     endif
 %}
 
 {% capture styles %}
 --header-background-color: {{ background_color }};
 --header-text-color: {{ text_color }};
+--header-line-color: {{ line_color }};
 --header-badge-color: {{ badge_color }};
 --header-search-background-color: {{ search_background_color }};
 --header-mobile-background-color: {{ mobile_background_color }};
@@ -30,282 +38,30 @@
 {{ 'section-header.css' | asset_url | stylesheet_tag }}
 {{ 'component-mega-menu.css' | asset_url | stylesheet_tag }}
 {{ 'component-mobile-menu.css' | asset_url | stylesheet_tag }}
+{{ 'component-search-modal.css' | asset_url | stylesheet_tag }}
+{{ 'component-search-tabs.css' | asset_url | stylesheet_tag }}
 
-<sticky-header id="shopify-section-header" class="header-wrapper{{ sticky_header }}" style="{{- styles -}}">
-    <header class="header js-header d-flex align-items-center">
-        <div class="header__wrapper container">
-            <div class="row">
-                <div class="col-5 col-sm-5 col-md-3 col-lg-2 align-self-center justify-content-start d-flex">
-                    <div class="header__icon-open">
-                        <a
-                            class="js-menu-toggle focus-inset"
-                            data-id="MegaMenu"
-                            href="#MobileMenuOpen"
-                            aria-label="{{ 'accessibility.menu_open' | t }}"
-                        >
-                            {% render 'icon-hamburger' %}
-                        </a>
-                    </div>
-                    <span class="header__menu--overlay js-mobile-menu-overlay"></span>
-                    <div class="header__logo-wrapper">
-                        {% if request.page_type == 'index' %}
-                            <h1 class="header__heading">
-                                <a href="{{ routes.root_url }}" class="header__logo-link">
-                                    {% if logo != blank %}
-                                        {{
-                                            logo
-                                            | image_url: width: section.settings.width
-                                            | image_tag:
-                                                class: 'header__logo',
-                                                widths: '50, 100, 150, 200, 250, 300, 400, 500',
-                                                height: logo_height,
-                                                width: logo_width,
-                                                alt: logo_alt
-                                        }}
-                                    {% else %}
-                                        <span class="h2">{{ shop.name }}</span>
-                                    {% endif %}
-                                </a>
-                            </h1>
-                        {% else %}
-                            <a href="{{ routes.root_url }}" class="header__logo-link">
-                                {% if logo != blank %}
-                                    {{
-                                        logo
-                                        | image_url: width: section.settings.width
-                                        | image_tag:
-                                            class: 'header__logo',
-                                            widths: '50, 100, 150, 200, 250, 300, 400, 500',
-                                            height: logo_height,
-                                            width: logo_width,
-                                            alt: logo_alt
-                                    }}
-                                {% else %}
-                                    <span class="h2">{{ shop.name }}</span>
-                                {% endif %}
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="col-1 col-sm-1 col-md-5 col-lg-7 align-self-center d-menu-col">
-                    <nav
-                        id="MegaMenu"
-                        class="header__menu header__menu--main js-mobile-menu"
-                        tabindex="-1"
-                    >
-                        <div class="header__icon-box">
-                            <a
-                                class="header__icon-close js-menu-toggle"
-                                href="#MobileMenuClose"
-                                aria-label="{{ 'accessibility.menu_close' | t }}"
-                            >
-                                {% render 'icon-close' %}
-                            </a>
-                        </div>
-                        <div class="header__menu__inner-container">
-                            <div class="header__menu__navigation-container">
-                                {% if menu.links.size > 0 %}
-                                    <ul class="header__menu-list header__menu-list--mobile">
-                                        {% for link in menu.links %}
-                                            {% liquid
-                                                capture mega_menu_snippet
-                                                    for block in blocks
-                                                        case block.type
-                                                            when 'simple_linklist'
-                                                                render 'mega-menu-simle-nav', block: block, link: link
-
-                                                            when 'mega_menu_three'
-                                                                render 'mega-menu-three-nav', block: block, link: link
-
-                                                            when 'mega_menu_four'
-                                                                render 'mage-menu-four-nav', block: block, link: link
-                                                        endcase
-                                                    endfor
-                                                endcapture
-                                            %}
-                                            {% if mega_menu_snippet != blank %}
-                                                {{ mega_menu_snippet }}
-                                            {% else %}
-                                                <li class="header__menu-item header__menu-item--mobile">
-                                                    <a
-                                                        id="headerMenuItemLink-{{forloop.index}}"
-                                                        class="header__menu-item-link header__menu-item-link--mobile"
-                                                        href="{{ link.url }}"
-                                                    >
-                                                        {{ link.title }}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-                <div class="col-6 col-sm-6 col-md-4 col-lg-3 align-self-center icons-col text-right d-flex justify-content-end">
-                    <nav class="header__menu--right">
-                        <ul class="header__menu-list">
-                            <li class="header__menu-item header__menu-item--search">
-                                <details-open>
-                                    {% render 'header-search', blocks: blocks %}
-                                </details-open>
-                            </li>
-                            {% if shop.customer_accounts_enabled %}
-                                <li class="header__menu-item">
-                                    <details-open>
-                                        <a
-                                            class="header__menu-item-link js-summary"
-                                            href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
-                                        >
-                                            {% render 'icon-user' %}
-                                            <span class="header__menu-item-text">
-                                                {% liquid
-                                                    if customer
-                                                        echo 'customer.account_fallback' | t
-                                                    else
-                                                        echo 'customer.log_in' | t
-                                                    endif
-                                                %}
-                                            </span>
-                                        </a>
-                                        <div id="userLinks" class="user-links js-details">
-                                            <ul class="user-links">
-                                                <li><a href="{{ routes.account_login_url }}">Login</a></li>
-                                                <li><a href="{{ routes.account_register_url }}">Sign Up</a></li>
-                                                <li><a href="{{ routes.cart_url }}">View Cart</a></li>
-                                                <li><a href="/pages/wishlist">Wishlist</a></li>
-                                                <li><a href="/pages/compare">Compare</a></li>
-                                            </ul>
-                                        </div>
-                                    </details-open>
-                                </li>
-                            {% endif %}
-                            <li class="header__menu-item">
-                                <details-open>
-                                    <a
-                                        class="header__menu-item-link js-summary"
-                                        href="#"
-                                    >
-                                        {% render 'icon-settings' %}
-                                        <span class="hidden">Settings</span>
-                                    </a>
-                                    <div id="settingsBox" class="settings-box js-details">
-                                        <div class="currency-picker">
-                                            <span class="h6">Select Currency:</span>
-                                            <localization-form>
-                                                {% form 'localization',
-                                                    id: 'CurrencyForm',
-                                                    class: 'localization-form'
-                                                %}
-                                                    <div class="no-js-hidden">
-                                                        <ul
-                                                            id="CurrencyList"
-                                                            role="list"
-                                                            class="header__menu-select list-unstyled"
-                                                        >
-                                                            {%- for currency in shop.enabled_currencies -%}
-                                                                <li class="localization-form__item">
-                                                                    <a
-                                                                        class="link link--text localization-form{% if currency == cart.currency %} active{% endif %} focus-inset"
-                                                                        href="#"
-                                                                        lang="{{ currency.iso_code }}"
-                                                                        {% if currency == cart.currency %}
-                                                                            aria-current="true"
-                                                                        {% endif %}
-                                                                        data-value="{{ currency.iso_code }}"
-                                                                    >
-                                                                        {{ currency.iso_code -}}
-                                                                        {{- currency.symbol }}
-                                                                    </a>
-                                                                </li>
-                                                            {%- endfor -%}
-                                                        </ul>
-                                                        <input
-                                                            type="hidden"
-                                                            name="currency_code"
-                                                            value="{{ localization.country.iso_code }}"
-                                                        >
-                                                    </div>
-                                                {% endform %}
-                                            </localization-form>
-                                        </div>
-                                        <div class="language-picker">
-                                            <span class="h6">Select Language:</span>
-                                            <localization-form>
-                                                {%- form 'localization',
-                                                    id: 'LanguageForm',
-                                                    class: 'localization-form'
-                                                -%}
-                                                    <div class="no-js-hidden">
-                                                        <ul
-                                                            id="LanguageList"
-                                                            role="list"
-                                                            class="header__menu-select list-unstyled"
-                                                        >
-                                                            {%- for language in localization.available_languages -%}
-                                                                <li class="localization-form__item">
-                                                                    <a
-                                                                        class="link link--text localization-form{% if language.iso_code == localization.language.iso_code %} active{% endif %} focus-inset"
-                                                                        href="#"
-                                                                        hreflang="{{ language.iso_code }}"
-                                                                        lang="{{ language.iso_code }}"
-                                                                        {% if language.iso_code
-                                                                                == localization.language.iso_code
-                                                                        %}
-                                                                            aria-current="true"
-                                                                        {% endif %}
-                                                                        data-value="{{ language.iso_code }}"
-                                                                    >
-                                                                        {{ language.endonym_name | capitalize }}
-                                                                    </a>
-                                                                </li>
-                                                            {%- endfor -%}
-                                                        </ul>
-                                                        <input
-                                                            type="hidden"
-                                                            name="locale_code"
-                                                            value="{{ localization.language.iso_code }}"
-                                                        >
-                                                    </div>
-                                                {%- endform -%}
-                                            </localization-form>
-                                        </div>
-                                    </div>
-                                </details-open>
-                            </li>
-                            <li class="header__menu-item">
-                                <a
-                                    href="{{ routes.cart_url }}"
-                                    class="header__menu-item-link cart-page-link mobile-cart-page-link"
-                                    data-ajax-cart-toggle-class-button="js-ajax-cart-open"
-                                >
-                                    {% render 'icon-cart' %}
-                                    <span class="cart-count{% if cart.item_count == 0 %} hidden-count{% endif %}">
-                                        <span class="cart-count-count" data-ajax-cart-bind-state="cart.item_count">
-                                            {{- cart.item_count -}}
-                                        </span>
-                                        <span class="cart-count-line"> - </span>
-                                        <span class="cart-count-ajax-cart">
-                                            {% if settings.currency_code_enabled %}
-                                                {{ cart.total_price | money_with_currency }}
-                                            {% else %}
-                                                {{ cart.total_price | money }}
-                                            {% endif %}
-                                        </span>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
+<sticky-header
+    id="shopify-section-header"
+    class="header-wrapper{{ sticky_header }} {{ style_header }} {{ transparent_header }}"
+    style="{{- styles -}}"
+>
+    {% case style_header %}
+        {% when 'style-simple' %}
+            {% render 'header-style-simple', logo: logo, menu: menu, topmenu: topmenu, blocks: blocks %}
+        {% when 'style-simple-logo-center' %}
+            {% render 'header-style-simple-logo-center', logo: logo, menu: menu, topmenu: topmenu, blocks: blocks %}
+        {% when 'style-minimal' %}
+            {% render 'header-style-minimal', logo: logo, menu: menu, topmenu: topmenu, blocks: blocks %}
+        {% when 'style-multi-row' %}
+            {% render 'header-style-multi-row', logo: logo, menu: menu, topmenu: topmenu, blocks: blocks %}
+    {% endcase %}
 </sticky-header>
 
 <script src="{{ 'section-header.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'details-open.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'header-search.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'component-tabs.js' | asset_url }}" defer="defer"></script>
 
 <script type="application/ld+json">
     {
@@ -351,6 +107,31 @@
     "name": "Header",
     "settings": [
         {
+            "type": "select",
+            "id": "style_header",
+            "label": "Style header",
+            "options": [
+                {
+                    "value": "style-simple",
+                    "label": "Style simple"
+                },
+                {
+                    "value": "style-simple-logo-center",
+                    "label": "Style simple logo center"
+                },
+                {
+                    "value": "style-minimal",
+                    "label": "Style minimal"
+                },
+                {
+                    "value": "style-multi-row",
+                    "label": "Style-multi-row"
+                }
+            ],
+            "default": "style-simple",
+            "info": "You can change the type of header"
+        },
+        {
             "type": "image_picker",
             "id": "logo",
             "label": "Logo"
@@ -372,6 +153,11 @@
             "label": "Menu"
         },
         {
+            "type": "link_list",
+            "id": "topmenu",
+            "label": "Second menu"
+        },
+        {
             "type": "color",
             "id": "background_color",
             "label": "Background color"
@@ -380,6 +166,11 @@
             "type": "color",
             "id": "text_color",
             "label": "Text color"
+        },
+        {
+            "type": "color",
+            "id": "line_color",
+            "label": "Line color"
         },
         {
             "type": "color",
@@ -402,6 +193,12 @@
             "default": true,
             "label": "Enable sticky header",
             "info": "Header shows on the screen as customers scroll up."
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_transparent_header",
+            "default": false,
+            "label": "Enable transparent header on Home Page"
         }
     ],
     "blocks": [

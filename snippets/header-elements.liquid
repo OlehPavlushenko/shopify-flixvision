@@ -1,0 +1,151 @@
+<nav class="header__menu--right">
+    <ul class="header__menu-list">
+        <li class="header__menu-item header__menu-item--search">
+            <details-open>
+                {% render 'header-search', blocks: blocks %}
+            </details-open>
+        </li>
+        {% if shop.customer_accounts_enabled %}
+            <li class="header__menu-item header__menu-item--user">
+                <details-open>
+                    <a
+                        class="header__menu-item-link js-summary"
+                        href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+                    >
+                        {% render 'icons-svg', icons: 'user' %}
+                        <span class="header__menu-item-text">
+                            {% liquid
+                                if customer
+                                    echo 'customer.account_fallback' | t
+                                else
+                                    echo 'customer.log_in' | t
+                                endif
+                            %}
+                        </span>
+                    </a>
+                    <div id="userLinks" class="user-links js-details">
+                        <ul class="user-links">
+                            {% for link in linklists[topmenu].links %}
+                                <li>
+                                    <a href="{{ link.url }}">{{ link.title }}</a>
+                                </li>
+                            {% endfor %}
+                            <li>
+                                <a href="/pages/wishlist">{{ 'pages.wishlist' | t }}</a>
+                            </li>
+                            <li>
+                                <a href="/pages/compare">{{ 'pages.compare' | t }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </details-open>
+            </li>
+        {% endif %}
+        <li class="header__menu-item header__menu-item--params">
+            <details-open>
+                <a
+                    class="header__menu-item-link js-summary"
+                    href="#"
+                >
+                    {% render 'icons-svg', icons: 'params' %}
+                </a>
+                <div id="settingsBox" class="settings-box js-details">
+                    <div class="currency-picker">
+                        <span class="h6">Select Currency:</span>
+                        <localization-form>
+                            {% form 'localization', id: 'CurrencyForm', class: 'localization-form' %}
+                                <div class="no-js-hidden">
+                                    <ul
+                                        id="CurrencyList"
+                                        role="list"
+                                        class="header__menu-select list-unstyled"
+                                    >
+                                        {%- for currency in shop.enabled_currencies -%}
+                                            <li class="localization-form__item">
+                                                <a
+                                                    class="link link--text localization-form{% if currency == cart.currency %} active{% endif %} focus-inset"
+                                                    href="#"
+                                                    lang="{{ currency.iso_code }}"
+                                                    {% if currency == cart.currency %}
+                                                        aria-current="true"
+                                                    {% endif %}
+                                                    data-value="{{ currency.iso_code }}"
+                                                >
+                                                    {{ currency.iso_code -}}
+                                                    {{- currency.symbol }}
+                                                </a>
+                                            </li>
+                                        {%- endfor -%}
+                                    </ul>
+                                    <input
+                                        type="hidden"
+                                        name="currency_code"
+                                        value="{{ localization.country.iso_code }}"
+                                    >
+                                </div>
+                            {% endform %}
+                        </localization-form>
+                    </div>
+                    <div class="language-picker">
+                        <span class="h6">Select Language:</span>
+                        <localization-form>
+                            {%- form 'localization', id: 'LanguageForm', class: 'localization-form' -%}
+                                <div class="no-js-hidden">
+                                    <ul
+                                        id="LanguageList"
+                                        role="list"
+                                        class="header__menu-select list-unstyled"
+                                    >
+                                        {%- for language in localization.available_languages -%}
+                                            <li class="localization-form__item">
+                                                <a
+                                                    class="link link--text localization-form{% if language.iso_code == localization.language.iso_code %} active{% endif %} focus-inset"
+                                                    href="#"
+                                                    hreflang="{{ language.iso_code }}"
+                                                    lang="{{ language.iso_code }}"
+                                                    {% if language.iso_code == localization.language.iso_code %}
+                                                        aria-current="true"
+                                                    {% endif %}
+                                                    data-value="{{ language.iso_code }}"
+                                                >
+                                                    {{ language.endonym_name | capitalize }}
+                                                </a>
+                                            </li>
+                                        {%- endfor -%}
+                                    </ul>
+                                    <input
+                                        type="hidden"
+                                        name="locale_code"
+                                        value="{{ localization.language.iso_code }}"
+                                    >
+                                </div>
+                            {%- endform -%}
+                        </localization-form>
+                    </div>
+                </div>
+            </details-open>
+        </li>
+        <li class="header__menu-item header__menu-item--cart">
+            <a
+                href="{{ routes.cart_url }}"
+                class="header__menu-item-link cart-page-link mobile-cart-page-link"
+                data-ajax-cart-toggle-class-button="js-ajax-cart-open"
+            >
+                {% render 'icons-svg', icons: 'cart' %}
+                <span class="cart-count{% if cart.item_count == 0 %} hidden-count{% endif %}">
+                    <span class="cart-count-count" data-ajax-cart-bind-state="cart.item_count">
+                        {{- cart.item_count -}}
+                    </span>
+                    <span class="cart-count-line"> - </span>
+                    <span class="cart-count-ajax-cart">
+                        {% if settings.currency_code_enabled %}
+                            {{ cart.total_price | money_with_currency }}
+                        {% else %}
+                            {{ cart.total_price | money }}
+                        {% endif %}
+                    </span>
+                </span>
+            </a>
+        </li>
+    </ul>
+</nav>
