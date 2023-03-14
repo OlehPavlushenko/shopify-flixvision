@@ -1,21 +1,17 @@
-<div class="header-main">
-    {% render 'header-info' %}
+{% liquid
+    assign logo = settings.logo
+    assign logo_alt = settings.logo.alt | default: shop.name | escape
+    assign logo_width = settings.logo_width
+    assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio
+%}
 
-    <header class="header-wrap  d-flex align-items-center">
+<header class="header-main js-header-main">
+    {% render 'header-info', settings: settings %}
+
+    <div class="header-wrap  d-flex align-items-center">
         <div class="container">
             <div class="row">
                 <div class="col-5 col-sm-5 col-md-4 col-lg-4 d-flex">
-                    <div class="header__icon-open">
-                        <a
-                            class="js-menu-toggle focus-inset"
-                            data-id="MegaMenu"
-                            href="#MobileMenuOpen"
-                            aria-label="{{ 'accessibility.menu_open' | t }}"
-                        >
-                            {% render 'icons-svg', icons: 'menu' %}
-                        </a>
-                    </div>
-                    <span class="header__menu--overlay js-mobile-menu-overlay"></span>
                     <div class="header__logo-wrapper">
                         {% if request.page_type == 'index' %}
                             <h1 class="header__heading">
@@ -69,18 +65,69 @@
                 </div>
             </div>
         </div>
-    </header>
+    </div>
 
-    <div class="header-menu-outer">
+    <div class="header-menu-outer section-header">
         <div class="container">
             <div class="row">
-                <div class="col-7 col-sm-7 col-md-8 col-lg-8 align-self-center justify-content-start multi-row-menu-col">
+                <div class="col-6 col-sm-6 col-md-8 col-lg-8 d-flex align-self-center justify-content-start multi-row-menu-col">
+                    <div class="header__icon-open">
+                        <a
+                            class="js-menu-toggle focus-inset"
+                            data-id="MegaMenu"
+                            href="#MobileMenuOpen"
+                            aria-label="{{ 'accessibility.menu_open' | t }}"
+                        >
+                            {% render 'icons-svg', icons: 'menu' %}
+                        </a>
+                    </div>
+                    <span class="header__menu--overlay js-mobile-menu-overlay"></span>
+                    <div class="header__logo-wrapper">
+                        {% if request.page_type == 'index' %}
+                            <h1 class="header__heading">
+                                <a href="{{ routes.root_url }}" class="header__logo-link">
+                                    {% if logo != blank %}
+                                        {{
+                                            logo
+                                            | image_url: width: section.settings.width
+                                            | image_tag:
+                                                class: 'header__logo',
+                                                widths: '50, 100, 150, 200, 250',
+                                                height: logo_height,
+                                                width: logo_width,
+                                                alt: logo_alt
+                                        }}
+                                    {% else %}
+                                        <span class="h2">{{ shop.name }}</span>
+                                    {% endif %}
+                                </a>
+                            </h1>
+                        {% else %}
+                            <a href="{{ routes.root_url }}" class="header__logo-link">
+                                {% if logo != blank %}
+                                    {{
+                                        logo
+                                        | image_url: width: section.settings.width
+                                        | image_tag:
+                                            class: 'header__logo',
+                                            widths: '50, 100, 150, 200, 250',
+                                            height: logo_height,
+                                            width: logo_width,
+                                            alt: logo_alt
+                                    }}
+                                {% else %}
+                                    <span class="h2">{{ shop.name }}</span>
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                    </div>
                     {% render 'header-navigation', menu: menu, blocks: blocks %}
                 </div>
-                <div class="col-5 col-sm-5 col-md-4 col-lg-4 align-self-center icons-col text-right d-flex justify-content-end multi-row-elements-col">
-                    {% render 'header-elements', blocks: blocks, topmenu: topmenu, %}
+                <div class="col-6 col-sm-6 col-md-4 col-lg-4 align-self-center icons-col text-right d-flex justify-content-end multi-row-elements-col">
+                    {% render 'header-elements', blocks: blocks, topmenu: topmenu, settings: settings %}
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="sticky-header-placeholder js-sticky-block"></div>
+</header>

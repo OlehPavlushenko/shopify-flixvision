@@ -4,10 +4,8 @@
     assign enable_sticky_header = section.settings.enable_sticky_header
     assign menu = section.settings.menu
     assign topmenu = section.settings.topmenu
-    assign logo = section.settings.logo
-    assign logo_alt = section.settings.logo.alt | default: shop.name | escape
     assign logo_width = section.settings.logo_width
-    assign logo_height = section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio
+
     assign background_color = section.settings.background_color
     assign search_background_color = section.settings.search_background_color
     assign mobile_background_color = section.settings.mobile_background_color
@@ -15,9 +13,8 @@
     assign line_color = section.settings.line_color
     assign badge_color = section.settings.badge_color
     assign blocks = section.blocks
-    if enable_sticky_header != true
-        assign sticky_header = ' sticky-header-false'
-    endif
+    assign settings = section.settings
+
     if enable_transparent_header == true and template == 'index'
         assign transparent_header = ' transparent-header'
     endif
@@ -43,18 +40,24 @@
 
 <sticky-header
     id="shopify-section-header"
-    class="header-wrapper{{ sticky_header }} {{ style_header }} {{ transparent_header }}"
+    class="header-wrapper sticky-header-{{ enable_sticky_header }} {{ style_header }} {{ transparent_header }}"
     style="{{- styles -}}"
+    data-sticky-type="always"
 >
     {% case style_header %}
         {% when 'style-simple' %}
-            {% render 'header-style-simple', logo: logo, menu: menu, topmenu: topmenu, blocks: blocks %}
+            {% render 'header-style-simple', settings: settings, menu: menu, topmenu: topmenu, blocks: blocks %}
         {% when 'style-simple-logo-center' %}
-            {% render 'header-style-simple-logo-center', logo: logo, menu: menu, topmenu: topmenu, blocks: blocks %}
+            {% render 'header-style-simple-logo-center',
+                settings: settings,
+                menu: menu,
+                topmenu: topmenu,
+                blocks: blocks
+            %}
         {% when 'style-minimal' %}
-            {% render 'header-style-minimal', logo: logo, menu: menu, topmenu: topmenu, blocks: blocks %}
+            {% render 'header-style-minimal', settings: settings, menu: menu, topmenu: topmenu, blocks: blocks %}
         {% when 'style-multi-row' %}
-            {% render 'header-style-multi-row', logo: logo, menu: menu, topmenu: topmenu, blocks: blocks %}
+            {% render 'header-style-multi-row', settings: settings, menu: menu, topmenu: topmenu, blocks: blocks %}
     {% endcase %}
 </sticky-header>
 
@@ -188,6 +191,10 @@
             "label": "Mobile background color"
         },
         {
+            "type": "header",
+            "content": "Global Settings"
+        },
+        {
             "type": "checkbox",
             "id": "enable_sticky_header",
             "default": true,
@@ -199,6 +206,46 @@
             "id": "enable_transparent_header",
             "default": false,
             "label": "Enable transparent header on Home Page"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_currency",
+            "default": true,
+            "label": "Enable Currency"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_language",
+            "default": true,
+            "label": "Enable Language"
+        },
+        {
+            "type": "text",
+            "id": "add_mobile",
+            "label": "Add Mobile",
+            "default": "+775 872 4444"
+        },
+        {
+            "type": "text",
+            "id": "add_email",
+            "label": "Add Email",
+            "default": "contact@email.com"
+        },
+        {
+            "type": "text",
+            "id": "add_time",
+            "label": "Add Time",
+            "default": "Mon - Fri 8:00 - 17:30"
+        },
+        {
+            "type": "url",
+            "id": "link_compare",
+            "label": "Link for compare page"
+        },
+        {
+            "type": "url",
+            "id": "link_wishlist",
+            "label": "Link for wishlist page"
         }
     ],
     "blocks": [

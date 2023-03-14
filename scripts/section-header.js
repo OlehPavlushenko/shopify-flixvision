@@ -2,6 +2,7 @@ class SectionHeader extends HTMLElement {
     constructor() {
         super()
 
+        this.headerMain = document.querySelector(".js-header-main")
         this.megaMenuWrappers = [
             ...this.querySelectorAll(".js-mega-menu-wrapper"),
         ]
@@ -18,7 +19,7 @@ class SectionHeader extends HTMLElement {
         this.mobileMenu = this.querySelector(".js-mobile-menu")
         this.mobileMenuOverlay = this.querySelector(".js-mobile-menu-overlay")
 
-        this.init()
+        //this.init()
 
         this.resizeFunction()
         window.addEventListener("resize", this.resizeFunction.bind(this))
@@ -209,28 +210,52 @@ class SectionHeader extends HTMLElement {
         }
     }
 
-    show() {
-        this.classList.add("show")
-    }
+    connectedCallback() {
+        this.stickyBlock = document.querySelector(".js-sticky-block")
+        this.header = document.querySelector(".section-header")
+        this.headerIsAlwaysSticky =
+            this.getAttribute("data-sticky-type") === "always"
+        this.headerBounds = {}
 
-    reset() {
-        this.classList.remove("show")
-    }
+        this.setHeaderHeight()
 
-    onScroll() {
-        const scrollTop =
-            window.pageYOffset || document.documentElement.scrollTop
+        window
+            .matchMedia("(max-width: 990px)")
+            .addEventListener("change", this.setHeaderHeight.bind(this))
 
-        if (
-            scrollTop > this.currentScrollTop &&
-            scrollTop > this.headerBounds.top
-        ) {
-            this.show()
-        } else if (scrollTop <= this.headerBounds.top) {
-            this.reset()
+        if (this.headerIsAlwaysSticky) {
+            this.header.classList.add("shopify-section-header-sticky")
         }
 
-        this.currentScrollTop = scrollTop
+        this.currentScrollTop = 0
+        this.preventReveal = false
+
+        this.onScrollHandler = this.onScroll.bind(this)
+        this.hideHeaderOnScrollUp = () => (this.preventReveal = true)
+
+        this.addEventListener("preventHeaderReveal", this.hideHeaderOnScrollUp)
+        window.addEventListener("scroll", this.onScrollHandler, false)
+
+        this.createObserver()
+    }
+
+    setHeaderHeight() {
+        document.documentElement.style.setProperty(
+            "--header-height",
+            `${this.header.offsetHeight}px`
+        )
+        this.stickyBlock.style.setProperty(
+            "height",
+            `${this.header.offsetHeight}px`
+        )
+    }
+
+    disconnectedCallback() {
+        this.removeEventListener(
+            "preventHeaderReveal",
+            this.hideHeaderOnScrollUp
+        )
+        window.removeEventListener("scroll", this.onScrollHandler)
     }
 
     createObserver() {
@@ -239,17 +264,28 @@ class SectionHeader extends HTMLElement {
             observer.disconnect()
         })
 
-        observer.observe(this)
+        observer.observe(this.header)
     }
 
-    init() {
-        this.onScrollHandler = this.onScroll.bind(this)
-        this.headerBounds = {}
-        this.currentScrollTop = 0
+    onScroll() {
+        const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop
 
-        window.addEventListener("scroll", this.onScrollHandler, false)
+        if (
+            scrollTop > this.currentScrollTop &&
+            scrollTop > this.headerBounds.bottom
+        ) {
+            this.header.classList.add("scrolled-past-header")
+        } else if (
+            scrollTop < this.currentScrollTop &&
+            scrollTop > this.headerBounds.bottom
+        ) {
+            this.header.classList.add("scrolled-past-header")
+        } else if (scrollTop <= this.headerBounds.top) {
+            this.header.classList.remove("scrolled-past-header")
+        }
 
-        this.createObserver()
+        this.currentScrollTop = scrollTop
     }
 }
 
