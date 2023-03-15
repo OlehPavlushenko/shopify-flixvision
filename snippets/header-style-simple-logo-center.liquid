@@ -10,9 +10,9 @@
         <div class="header__wrapper container">
             <div class="row">
                 <div class="col-0 col-sm-0 col-md-0 col-lg-5 align-self-center d-menu-col">
-                    {% render 'header-navigation', menu: menu, blocks: blocks %}
+                    {% render 'header-navigation', menu: menu, blocks: blocks, settings: settings %}
                 </div>
-                <div class="col-6 col-sm-6 col-md-6 col-lg-2 align-self-center justify-content-start d-flex">
+                <div class="col-7 col-sm-7 col-md-6 col-lg-2 align-self-center justify-content-start d-flex">
                     <div class="header__icon-open">
                         <a
                             class="js-menu-toggle focus-inset"
@@ -64,7 +64,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-6 col-sm-6 col-md-6 col-lg-5 align-self-center icons-col text-right d-flex justify-content-end">
+                <div class="col-5 col-sm-5 col-md-6 col-lg-5 align-self-center icons-col text-right d-flex justify-content-end">
                     {% render 'header-elements', blocks: blocks, topmenu: topmenu, settings: settings %}
                 </div>
             </div>

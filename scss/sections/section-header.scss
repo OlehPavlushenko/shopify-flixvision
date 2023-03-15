@@ -324,13 +324,14 @@ details-open.open #userLinks {
 
     .header-menu-outer {
         position: relative;
+        min-height: 6rem;
         .header__logo-wrapper {
             text-align: left;
         }
     }
 
     details-open.open #settingsBox, details-open.open #userLinks {
-        margin-top: 1.7rem;
+        margin-top: 1.9rem;
     }
 
     .minimal-social-col {
@@ -377,30 +378,30 @@ details-open.open #userLinks {
 
         .mega-menu__width--two-third .mega-menu {
             &.mega-menu--open {
-                margin-top: 1.5rem;
+                margin-top: 2rem;
             }
         }
     
         .mega-menu__width--one-half .mega-menu {
             &.mega-menu--open {
-                margin-top: 1.5rem;
+                margin-top: 2rem;
             }
         }
     
         .mega-menu__width--one-third .mega-menu {
             &.mega-menu--open {
-                margin-top: 1.5rem;
+                margin-top: 2rem;
             }
         }
     
         .mega-menu__width--one-quarter .mega-menu {
             &.mega-menu--open {
-                margin-top: 1.5rem;
+                margin-top: 2rem;
             }
         }
 
         .simple-menu.mega-menu--open {
-            margin-top: 1.5rem;
+            margin-top: 2rem;
         }
         
         .header-wrap {
@@ -416,7 +417,6 @@ details-open.open #userLinks {
         .minimal-elements-col {
             opacity: 0;
             z-index: -1;
-            position: relative;
         }
     }
     .header-menu-outer {
@@ -470,6 +470,7 @@ details-open.open #userLinks {
 
     .header-menu-outer {
         padding: 1.5rem 0;
+        min-height: 6rem;
     }
     details-open.open #settingsBox, details-open.open #userLinks {
         margin-top: 1.7rem;
@@ -480,15 +481,17 @@ details-open.open #userLinks {
             display: flex!important;
         }
         details-open.open #settingsBox, details-open.open #userLinks {
-            margin-top: 1.5rem;
+            margin-top: 1.9rem;
         }
         .header-wrap {
             padding-bottom: 2.5rem;
             padding-top: 2.5rem;
             border-bottom: 1px solid var(--header-line-color);
+            background-color: var(--header-background-color);
         }
 
         .header-menu-outer {
+            background-color: var(--header-background-color);
             .header__logo-wrapper {
                 display: none;
             }
@@ -528,30 +531,30 @@ details-open.open #userLinks {
 
         .mega-menu__width--two-third .mega-menu {
             &.mega-menu--open {
-                margin-top: 1.5rem;
+                margin-top: 2rem;
             }
         }
     
         .mega-menu__width--one-half .mega-menu {
             &.mega-menu--open {
-                margin-top: 1.5rem;
+                margin-top: 2rem;
             }
         }
     
         .mega-menu__width--one-third .mega-menu {
             &.mega-menu--open {
-                margin-top: 1.5rem;
+                margin-top: 2rem;
             }
         }
     
         .mega-menu__width--one-quarter .mega-menu {
             &.mega-menu--open {
-                margin-top: 1.5rem;
+                margin-top: 2rem;
             }
         }
 
         .simple-menu.mega-menu--open {
-            margin-top: 1.5rem;
+            margin-top: 2rem;
         }
 
         .top-header {
@@ -710,5 +713,12 @@ details-open.open #userLinks {
 @media screen and (min-width: 992px) {
     #MainContent {
         padding-top: var(--top-header-height);
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .header__menu-item--user,
+    .header__menu-item--params {
+        display: none;
     }
 }

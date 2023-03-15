@@ -203,6 +203,10 @@
     }
   },
   "header":{
+    "navigation": "Navigation",
+    "categories": "Categories",
+    "help": "Need help?",
+    "top-menu": "Informations",
     "language": "Select Language",
     "currency": "Select Currency"
   },
