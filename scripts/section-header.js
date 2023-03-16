@@ -244,10 +244,6 @@ class SectionHeader extends HTMLElement {
             "--header-height",
             `${this.header.offsetHeight}px`
         )
-        this.stickyBlock.style.setProperty(
-            "height",
-            `${this.header.offsetHeight}px`
-        )
     }
 
     disconnectedCallback() {
@@ -276,13 +272,22 @@ class SectionHeader extends HTMLElement {
             scrollTop > this.headerBounds.bottom
         ) {
             this.header.classList.add("scrolled-past-header")
+            this.stickyBlock.style.setProperty(
+                "height",
+                `${this.header.offsetHeight}px`
+            )
         } else if (
             scrollTop < this.currentScrollTop &&
             scrollTop > this.headerBounds.bottom
         ) {
             this.header.classList.add("scrolled-past-header")
+            this.stickyBlock.style.setProperty(
+                "height",
+                `${this.header.offsetHeight}px`
+            )
         } else if (scrollTop <= this.headerBounds.top) {
             this.header.classList.remove("scrolled-past-header")
+            this.stickyBlock.style.setProperty("height", "0")
         }
 
         this.currentScrollTop = scrollTop

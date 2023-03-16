@@ -141,6 +141,7 @@
   },
   "sections": {
     "footer": {
+      "reserved": "All Rights Reserved",
       "view_all": "View all",
       "scroll_up": "Scroll up",
       "divider": "Divider",
