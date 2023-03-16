@@ -64,12 +64,12 @@
             aria-label="CartDrawerClose"
             data-ajax-cart-toggle-class-button="js-ajax-cart-open | remove"
         >
-            {% render 'icon-close' %}
+            {% render 'icons-svg', icons: 'close' %}
         </a>
     </div>
     {% if cart.item_count == 0 %}
         <div class="cart-drawer__empty">
-            {% render 'icon-sad' %}
+            {% render 'icons-svg', icons: 'sad' %}
             <h4>{{ 'sections.cart.empty_title' | t }}</h4>
             {{ 'sections.cart.empty' | t }}
         </div>
@@ -168,7 +168,7 @@
                     >
                         {%- for discount in item.discounts -%}
                             <li class="discounts__discount">
-                                {%- render 'icon-discount' -%}
+                                {% render 'icons-svg', icons: 'discount' %}
                                 {{ discount.title }}
                             </li>
                         {%- endfor -%}
@@ -183,7 +183,7 @@
                                 class="ajax-cart__quantity-button ajax-cart__quantity-button--minus"
                                 data-ajax-cart-request-button
                             >
-                                {% render 'icon-minus' %}
+                                {% render 'icons-svg', icons: 'minus' %}
                             </a>
                             <input
                                 class="ajax-cart-drawer__input cart-drawer__input--qty"
@@ -198,7 +198,7 @@
                                 class="ajax-cart__quantity-button ajax-cart__quantity-button--plus"
                                 data-ajax-cart-request-button
                             >
-                                {% render 'icon-plus' %}
+                                {% render 'icons-svg', icons: 'plus' %}
                             </a>
                         </div>
                         <div data-ajax-cart-messages="{{ item.key }}"></div>
@@ -231,7 +231,7 @@
                             class="ajax-cart__remove-button"
                             data-ajax-cart-request-button
                         >
-                            {% render 'icon-remove' %}
+                            {% render 'icons-svg', icons: 'trash' %}
                             <small>{{ 'sections.cart.remove' | t }}</small>
                         </a>
                     </div>
@@ -249,8 +249,8 @@
                 class="cart-drawer__footer-toggler h4"
                 onclick="javascript:document.body.classList.toggle('cart-drawer-show-footer')"
             >
-                {% render 'icon-plus' %}
-                {% render 'icon-minus' %}
+                {% render 'icons-svg', icons: 'plus' %}
+                {% render 'icons-svg', icons: 'minus' %}
                 {{ 'sections.cart.comments' | t }}
             </div>
             <div class="cart-drawer__footer-content">

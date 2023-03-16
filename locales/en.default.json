@@ -10,7 +10,10 @@
         "twitter": "Twitter",
         "facebook": "Facebook",
         "pinterest": "Pinterest",
-        "instagram": "Instagram"
+        "instagram": "Instagram",
+        "linkedin": "Linkedin",
+        "whatsapp": "Whatsapp",
+        "youtube": "Youtube"
       }
     }
   },
@@ -198,6 +201,18 @@
       "button": "Subscribe",
       "success": "Thanks for subscribing"
     }
+  },
+  "header":{
+    "navigation": "Navigation",
+    "categories": "Categories",
+    "help": "Need help?",
+    "top-menu": "Informations",
+    "language": "Select Language",
+    "currency": "Select Currency"
+  },
+  "pages":{
+    "wishlist": "Wishlist",
+    "compare": "Compare"
   },
   "products": {
     "product": {
