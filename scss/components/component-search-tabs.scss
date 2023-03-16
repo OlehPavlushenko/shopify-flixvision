@@ -120,7 +120,9 @@
 .search-tabs__content.pages .search-tabs__list {
     display: block;
 }
-
+.search-tabs__item {
+    white-space: nowrap;
+}
 @media screen and (max-width: 749px) { 
     .search-modal__input {
         font-size: 2.6rem;
@@ -137,12 +139,9 @@
     .search-tabs__list,
     .search-modal__suggested {
         gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .search-modal__suggested li:first-child {
-        display: block;
-        width: 100%;
+        flex-wrap: nowrap;
+        overflow: auto;
+        padding-bottom: 1rem;
     }
 
     .search-modal__item,

@@ -1,4 +1,5 @@
 {% liquid
+    assign featured_collections = blocks | where: 'type', 'category_top'
     assign mobile = settings.add_mobile
     assign email = settings.add_email
     assign time = settings.add_time
@@ -23,30 +24,32 @@
     </div>
     <div class="header__menu__inner-container">
         <tab-element autofocus="false">
-            <ul class="mobile-menu-tabs js-tablist" role="tablist">
-                <li class="mobile-menu-tabs__item">
-                    <button
-                        role="button"
-                        class="mobile-menu-tabs__btn active js-tab"
-                        role="tab"
-                        aria-selected="true"
-                        aria-controls="menu-panel"
-                    >
-                        {{ 'header.navigation' | t }}
-                    </button>
-                </li>
-                <li class="mobile-menu-tabs__item">
-                    <button
-                        role="button"
-                        class="mobile-menu-tabs__btn js-tab"
-                        role="tab"
-                        aria-selected="false"
-                        aria-controls="category-panel"
-                    >
-                        {{ 'header.categories' | t }}
-                    </button>
-                </li>
-            </ul>
+            {% if featured_collections.size > 0 %}
+                <ul class="mobile-menu-tabs js-tablist" role="tablist">
+                    <li class="mobile-menu-tabs__item">
+                        <button
+                            role="button"
+                            class="mobile-menu-tabs__btn active js-tab"
+                            role="tab"
+                            aria-selected="true"
+                            aria-controls="menu-panel"
+                        >
+                            {{ 'header.navigation' | t }}
+                        </button>
+                    </li>
+                    <li class="mobile-menu-tabs__item">
+                        <button
+                            role="button"
+                            class="mobile-menu-tabs__btn js-tab"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="category-panel"
+                        >
+                            {{ 'header.categories' | t }}
+                        </button>
+                    </li>
+                </ul>
+            {% endif %}
             <div class="mobile-menu-tabs__content-wrapper">
                 <div
                     id="menu-panel"
@@ -218,12 +221,29 @@
                         </div>
                     {% endif %}
                 </div>
-
-                <div
-                    id="category-panel"
-                    class="mobile-menu-tabs__content js-tabpanel hidden"
-                    role="tabpanel"
-                ></div>
+                {% if featured_collections.size > 0 %}
+                    <div
+                        id="category-panel"
+                        class="mobile-menu-tabs__content js-tabpanel hidden"
+                        role="tabpanel"
+                    >
+                        {% for collections in featured_collections %}
+                            {% if collections.settings.category_top != blank -%}
+                                <ul class="header-catagories-top">
+                                    {%- for collection in collections.settings.category_top -%}
+                                        <li class="header-catagories-top__item">
+                                            <a class="header-catagories-top__links" href="{{ collection.url }}">
+                                                {{- collection.title | escape -}}
+                                            </a>
+                                            {% assign svg = collection.metafields.custom.mobile_menu_icon.value %}
+                                            {{ svg | image_url: width: 24 | image_tag }}
+                                        </li>
+                                    {%- endfor -%}
+                                </ul>
+                            {%- endif %}
+                        {%- endfor -%}
+                    </div>
+                {% endif %}
             </div>
         </tab-element>
     </div>

@@ -1,7 +1,8 @@
 
 #userLinksMobile,
 #settingsBoxMobile,
-#helpLinksMobile {
+#helpLinksMobile,
+.mobile-menu-tabs {
     display: none;
 }
 @media screen and (max-width: 991px) {
@@ -505,6 +506,34 @@
                 display: inline-block;
             }
         }
+    }
+
+    .header-catagories-top {
+        padding: 9rem 2rem 4rem;
+        margin: 0;
+        list-style: none;
+        background: var(--header-mobile-background-color);
+        display: block;
+    }
+
+    .header-catagories-top__item {
+        margin: 0;
+        font-size: 1.3rem;
+        text-transform: uppercase;
+        padding: 1.2rem 0;
+        border-bottom: 1px solid var(--color-input-border);
+        display: flex;
+    }
+
+    .header-catagories-top__links {
+        font-size: 1.6rem;
+        line-height: 2rem;
+        text-transform: uppercase;
+        padding-right: 2rem;
+        position: relative;
+        display: block;
+        width: 100%;
+        text-decoration: none;
     }
 }
 @media screen and (max-width: 475px) {
