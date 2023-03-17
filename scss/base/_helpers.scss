@@ -17,6 +17,34 @@
     }
 }
 
+/* Only desktop viewport animation */
+@media screen and (min-width: 990px) {
+    .section-fade {
+      opacity: 0;
+    }
+
+    .section-move-top {
+        opacity: 0;
+        transform: translate(0, 30px);
+    }
+  
+    .section-move-right {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+  
+    .section-move-bottom {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+  
+    .in-viewport-section {
+      opacity: 1;
+      transition: all .5s ease-in-out;
+      transform: translate(0,0);
+    }
+}
+
 /* base */
 
 .no-js:not(html) {
