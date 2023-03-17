@@ -757,3 +757,54 @@ class LocalizationForm extends HTMLElement {
 }
 
 customElements.define("localization-form", LocalizationForm)
+
+// Animate Section
+
+class inViewport {
+    constructor(settings) {
+        this.options = Object.assign(
+            {
+                sectionClass:
+                    ".section-move-right, .section-move-bottom, .section-fade, .section-move-top",
+                inViewportClass: "in-viewport-section",
+                threshold: 0.3,
+                rootMargin: "0px",
+                root: null,
+            },
+            settings
+        )
+
+        const sections = document.querySelectorAll(this.options.sectionClass)
+
+        if ("IntersectionObserver" in window) {
+            // IntersectionObserver Supported
+            const config = {
+                root: this.options.rootMargin.null,
+                rootMargin: this.options.rootMargin,
+                threshold: this.options.threshold,
+            }
+
+            const observer = new IntersectionObserver(onChange, config)
+            sections.forEach((section) => observer.observe(section))
+
+            function onChange(changes, observer) {
+                changes.forEach((change) => {
+                    if (change.intersectionRatio > 0) {
+                        // Stop watching and load the image
+                        loadImage(change.target)
+                        observer.unobserve(change.target)
+                    }
+                })
+            }
+        } else {
+            // IntersectionObserver NOT Supported
+            sections.forEach((section) => loadImage(section))
+        }
+
+        function loadImage(section) {
+            section.classList.add("in-viewport-section")
+        }
+    }
+}
+
+const inViewportSections = new inViewport()
