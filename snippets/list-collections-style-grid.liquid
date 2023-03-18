@@ -16,6 +16,10 @@
 
     if columns_desktop == 4
         assign columns_class = 'col-md-6 col-lg-3'
+    elsif columns_desktop == 6
+        assign columns_class = 'col-md-4 col-lg-2'
+    elsif columns_desktop == 5
+        assign columns_class = 'col-md-custom col-lg-custom'
     elsif columns_desktop == 3
         assign columns_class = 'col-md-4 col-lg-4'
     else
@@ -33,31 +37,46 @@
     assign title_color = block.settings.title_color | default: 'inherit'
     assign sub_title_color = block.settings.sub_title_color | default: 'inherit'
 
+    assign overlay = block.settings.overlay_color | default: 'transparent'
+    assign overlay_opacity = block.settings.opacity | times: 0.1
+    assign cover_color = block.settings.background_color | default: '#fff'
+    assign link_color = block.settings.link_color
+    assign link_hover_color = block.settings.link_hover_color
+    assign count_color = block.settings.count_color
+
     assign pad_top = block.settings.padding_top
     assign pad_bot = block.settings.padding_bottom
 %}
 {%- capture styles -%}
-                            --sub_title_color-list-collections-default: {{ sub_title_color }};
-                            --title-color-list-collections-default: {{ title_color }};
-                            --text-color-list-collections-default: {{ text_color }};
-                            --background-color-list-collections-default: {{- background_color }};
-                            --pad-top-list-collections-default: {{ pad_top }}px;
-                            --pad-bot-list-collections-default: {{ pad_bot }}px;
+--sub_title_color-list-collections-grid: {{ sub_title_color }};
+--title-color-list-collections-grid: {{ title_color }};
+--text-color-list-collections-grid: {{ text_color }};
+--background-color-list-collections-grid: {{ background_color }};
 
-                        {%- endcapture -%}
+--overlay-color-list-collections-grid: {{ overlay }};
+--overlay_opacity-list-collections-grid: {{ overlay_opacity }};
+--background-cover-color-list-collections-grid: {{ cover_color }};
+--link-color-list-collections-grid: {{ link_color }};
+--link-hover-color-list-collections-grid: {{ link_hover_color }};
+--count-color-list-collections-grid: {{ count_color }};
+
+--pad-top-list-collections-grid: {{ pad_top }}px;
+--pad-bot-list-collections-grid: {{ pad_bot }}px;
+
+{%- endcapture -%}
 
 {%- assign styles = styles | strip_newlines -%}
 
 <div
-    class="collections-default full_width--{{ full_width }}"
+    class="collections-grid full_width--{{ full_width }}"
     style="{{ styles }}"
     {{ block.shopify_attributes }}
 >
-    <div class="collections-default__wrapper container">
+    <div class="collections-grid__wrapper container">
         {% if sub_heading != blank or heading != blank or text != blank %}
             <div class="row">
                 <div class="col-12">
-                    <div class="collections-default__head head-alignment--{{head_alignment}}">
+                    <div class="collections-list__head head-alignment--{{head_alignment}}">
                         {% if sub_heading != blank %}
                             <h5 class="featured-list-collections__sub_heading h5">
                                 {{ sub_heading | escape }}
@@ -97,9 +116,9 @@
 
                         <div class="card-collection__content card-collection__content--{{ text_alignment }}">
                             <h3>
-                                <a href="{{ collection.url }}">
+                                <span href="{{ collection.url }}">
                                     {{ collection.title | escape }}
-                                </a>
+                                </span>
                             </h3>
                             {% if count %}
                                 <h5>

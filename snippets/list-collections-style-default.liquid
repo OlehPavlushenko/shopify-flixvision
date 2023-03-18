@@ -16,6 +16,10 @@
 
     if columns_desktop == 4
         assign columns_class = 'col-md-6 col-lg-3'
+    elsif columns_desktop == 6
+        assign columns_class = 'col-md-4 col-lg-2'
+    elsif columns_desktop == 5
+        assign columns_class = 'col-md-custom col-lg-custom'
     elsif columns_desktop == 3
         assign columns_class = 'col-md-4 col-lg-4'
     else
@@ -37,14 +41,14 @@
     assign pad_bot = block.settings.padding_bottom
 %}
 {%- capture styles -%}
-                            --sub_title_color-list-collections-default: {{ sub_title_color }};
-                            --title-color-list-collections-default: {{ title_color }};
-                            --text-color-list-collections-default: {{ text_color }};
-                            --background-color-list-collections-default: {{- background_color }};
-                            --pad-top-list-collections-default: {{ pad_top }}px;
-                            --pad-bot-list-collections-default: {{ pad_bot }}px;
+    --sub_title_color-list-collections-default: {{ sub_title_color }};
+    --title-color-list-collections-default: {{ title_color }};
+    --text-color-list-collections-default: {{ text_color }};
+    --background-color-list-collections-default: {{ background_color }};
+    --pad-top-list-collections-default: {{ pad_top }}px;
+    --pad-bot-list-collections-default: {{ pad_bot }}px;
 
-                        {%- endcapture -%}
+{%- endcapture -%}
 
 {%- assign styles = styles | strip_newlines -%}
 
@@ -57,7 +61,7 @@
         {% if sub_heading != blank or heading != blank or text != blank %}
             <div class="row">
                 <div class="col-12">
-                    <div class="collections-default__head head-alignment--{{head_alignment}}">
+                    <div class="collections-list__head head-alignment--{{head_alignment}}">
                         {% if sub_heading != blank %}
                             <h5 class="featured-list-collections__sub_heading h5">
                                 {{ sub_heading | escape }}
