@@ -201,7 +201,11 @@
       "label": "Your email",
       "button": "Subscribe",
       "success": "Thanks for subscribing"
+    },
+    "collections": {
+      "products": "Products"
     }
+
   },
   "header":{
     "navigation": "Navigation",

@@ -11,9 +11,40 @@
     padding: 0 2rem;
 }
 
+.full_width--true {
+    .container, .page-width {
+        max-width: 100%;
+    }
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0;
+    margin-right: -10px;
+    margin-left: -10px;
+}
+.row>*{
+    box-sizing:border-box;
+    flex-shrink:0;
+    width:100%;
+    max-width:100%;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top:0;
+}
+
 @media screen and (min-width: 991px) {
     .container, .page-width {
       padding: 0 2.5rem;
+    }
+    .row{
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+    .row>*{
+        padding-right: 15px;
+        padding-left: 15px;
     }
 }
 
