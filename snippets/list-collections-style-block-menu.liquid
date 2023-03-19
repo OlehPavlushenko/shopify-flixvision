@@ -1,60 +1,63 @@
 {% liquid
+    assign collections = block.settings.featured_collections
     assign sub_heading = block.settings.collections_sub_heading
     assign heading = block.settings.collections_title
     assign text = block.settings.collections_text
     assign head_alignment = block.settings.head_alignment
 
-    assign collections_left = block.settings.left_collections
-    assign collection_center = block.settings.center_collections
-    assign collections_right = block.settings.right_collections
+    assign collections = block.settings.featured_collections
     assign img_size = block.settings.img_size
     assign text_alignment = block.settings.content_alignment
-    assign order_alignment = block.settings.order_alignment
     assign full_width = block.settings.full_width
 
     assign count = block.settings.count_products
+    assign columns_desktop = block.settings.columns_desktop
+    assign columns_mobile = block.settings.columns_mobile
+
+    if columns_desktop == 4
+        assign columns_class = 'col-md-6 col-lg-3'
+    elsif columns_desktop == 6
+        assign columns_class = 'col-md-4 col-lg-2'
+    elsif columns_desktop == 5
+        assign columns_class = 'col-md-custom col-lg-custom'
+    elsif columns_desktop == 3
+        assign columns_class = 'col-md-4 col-lg-4'
+    else
+        assign columns_class = 'col-md-6 col-lg-6'
+    endif
+
+    if columns_mobile == '2'
+        assign columns_mobile_class = 'col-6 col-sm-6'
+    else
+        assign columns_mobile_class = 'col-12 col-sm-6'
+    endif
 
     assign background_color = block.settings.block_color | default: 'transparent'
     assign text_color = block.settings.text_color | default: 'inherit'
     assign title_color = block.settings.title_color | default: 'inherit'
     assign sub_title_color = block.settings.sub_title_color | default: 'inherit'
 
-    assign overlay = block.settings.overlay_color | default: 'transparent'
-    assign overlay_opacity = block.settings.opacity | times: 0.1
-    assign cover_color = block.settings.background_color | default: '#fff'
-    assign link_color = block.settings.link_color
-    assign link_hover_color = block.settings.link_hover_color
-    assign count_color = block.settings.count_color
-
     assign pad_top = block.settings.padding_top
     assign pad_bot = block.settings.padding_bottom
 %}
 {%- capture styles -%}
---sub_title_color-list-collections-collage: {{ sub_title_color }};
---title-color-list-collections-collage: {{ title_color }};
---text-color-list-collections-collage: {{ text_color }};
---background-color-list-collections-collage: {{ background_color }};
-
---overlay-color-list-collections-collage: {{ overlay }};
---overlay_opacity-list-collections-collage: {{ overlay_opacity }};
---background-cover-color-list-collections-collage: {{ cover_color }};
---link-color-list-collections-collage: {{ link_color }};
---link-hover-color-list-collections-collage: {{ link_hover_color }};
---count-color-list-collections-collage: {{ count_color }};
-
---pad-top-list-collections-collage: {{ pad_top }}px;
---pad-bot-list-collections-collage: {{ pad_bot }}px;
+    --sub_title_color-list-collections-menu: {{ sub_title_color }};
+    --title-color-list-collections-menu: {{ title_color }};
+    --text-color-list-collections-menu: {{ text_color }};
+    --background-color-list-collections-menu: {{ background_color }};
+    --pad-top-list-collections-menu: {{ pad_top }}px;
+    --pad-bot-list-collections-menu: {{ pad_bot }}px;
 
 {%- endcapture -%}
 
 {%- assign styles = styles | strip_newlines -%}
 
 <div
-    class="collections-collage full_width--{{ full_width }}"
+    class="collections-menu full_width--{{ full_width }}"
     style="{{ styles }}"
     {{ block.shopify_attributes }}
 >
-    <div class="collections-collage__wrapper container">
+    <div class="collections-menu__wrapper container">
         {% if sub_heading != blank or heading != blank or text != blank %}
             <div class="row">
                 <div class="col-12">
@@ -78,46 +81,9 @@
                 </div>
             </div>
         {% endif %}
-        <div class="row list-collections-grid order-alignment--{{ order_alignment }}">
-            <div class="col-12 col-sm-8 col-md-3 col-lg-3 list-collections-grid__item list-collections-grid__item--left">
-                <div class="row">
-                    {% for collection in collections_left %}
-                        <div class="col-6 col-md-12">
-                            <div class="card-collection">
-                                <div class="card-collection__media-wrapper ">
-                                    <picture class="card-collection__media media__size--{{ img_size }} media">
-                                        <a href="{{ collection.url }}"
-                                            ><span class="visually-hidden">
-                                                {{ collection.title }}
-                                            </span></a
-                                        >
-                                        {% render 'image',
-                                            image_box: collection.featured_image,
-                                            image_box_class: 'card-collection__image'
-                                        %}
-                                    </picture>
-                                </div>
-
-                                <div class="card-collection__content card-collection__content--{{ text_alignment }}">
-                                    <h3>
-                                        <span href="{{ collection.url }}">
-                                            {{ collection.title | escape }}
-                                        </span>
-                                    </h3>
-                                    {% if count %}
-                                        <h5>
-                                            {{ collection.all_products_count }}
-                                            {{ 'sections.collections.products' | t }}
-                                        </h5>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-6 col-lg-6 list-collections-grid__item list-collections-grid__item--center">
-                {% for collection in collection_center %}
+        <div class="row list-collections-grid">
+            {% for collection in collections %}
+                <div class="{{columns_mobile_class}} {{ columns_class }} list-collections-grid__item">
                     <div class="card-collection">
                         <div class="card-collection__media-wrapper ">
                             <picture class="card-collection__media media__size--{{ img_size }} media">
@@ -135,9 +101,9 @@
 
                         <div class="card-collection__content card-collection__content--{{ text_alignment }}">
                             <h3>
-                                <span href="{{ collection.url }}">
+                                <a href="{{ collection.url }}">
                                     {{ collection.title | escape }}
-                                </span>
+                                </a>
                             </h3>
                             {% if count %}
                                 <h5>
@@ -147,45 +113,8 @@
                             {% endif %}
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-            <div class="col-12 col-sm-8 col-md-3 col-lg-3 list-collections-grid__item list-collections-grid__item--right">
-                <div class="row">
-                    {% for collection in collections_right %}
-                        <div class="col-6 col-md-12">
-                            <div class="card-collection">
-                                <div class="card-collection__media-wrapper ">
-                                    <picture class="card-collection__media media__size--{{ img_size }} media">
-                                        <a href="{{ collection.url }}"
-                                            ><span class="visually-hidden">
-                                                {{ collection.title }}
-                                            </span></a
-                                        >
-                                        {% render 'image',
-                                            image_box: collection.featured_image,
-                                            image_box_class: 'card-collection__image'
-                                        %}
-                                    </picture>
-                                </div>
-
-                                <div class="card-collection__content card-collection__content--{{ text_alignment }}">
-                                    <h3>
-                                        <span href="{{ collection.url }}">
-                                            {{ collection.title | escape }}
-                                        </span>
-                                    </h3>
-                                    {% if count %}
-                                        <h5>
-                                            {{ collection.all_products_count }}
-                                            {{ 'sections.collections.products' | t }}
-                                        </h5>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
                 </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>

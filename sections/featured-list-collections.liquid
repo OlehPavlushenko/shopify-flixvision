@@ -15,11 +15,6 @@
                     {% when 'block' %}
                         {{ 'section-featured-list-collections-block.css' | asset_url | stylesheet_tag }}
                         {% render 'list-collections-style-block', block: block %}
-                    {% when 'block_menu' %}
-                        {{ 'section-featured-list-collections-block-menu.css' | asset_url | stylesheet_tag }}
-                        {% render 'list-collections-style-block-menu', block: block %}
-                    {% when 'slider' %}
-
                 {% endcase %}
             {% endfor %}
         </div>
@@ -854,32 +849,6 @@
                     "unit": "px",
                     "label": "Padding bottom",
                     "default": 30
-                }
-            ]
-        },
-        {
-            "type": "block_menu",
-            "name": "List style with menu",
-            "settings": [
-                {
-                    "type": "text",
-                    "id": "button_label",
-                    "default": "Button label",
-                    "label": "Button label first",
-                    "info": "Leave the label blank to hide the button."
-                }
-            ]
-        },
-        {
-            "type": "slider",
-            "name": "Collections slider style",
-            "settings": [
-                {
-                    "type": "text",
-                    "id": "button_label",
-                    "default": "Button label",
-                    "label": "Button label first",
-                    "info": "Leave the label blank to hide the button."
                 }
             ]
         }
