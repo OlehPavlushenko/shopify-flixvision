@@ -6,6 +6,7 @@
 
     assign collections_top = block.settings.top_collections
     assign collections_bot = block.settings.bot_collections
+    assign order_alignment = block.settings.order_alignment
     assign img_size = block.settings.img_size
     assign text_alignment = block.settings.content_alignment
     assign full_width = block.settings.full_width
@@ -76,73 +77,95 @@
                 </div>
             </div>
         {% endif %}
-        <div class="row list-collections-grid">
-            {% for collection in collections_top %}
-                <div class="col-12 col-sm-6 col-md-6 col-lg-3 list-collections-grid__item list-collections-grid__item--top">
-                    <div class="card-collection">
-                        <div class="card-collection__media-wrapper ">
-                            <picture class="card-collection__media media__size--{{ img_size }} media">
-                                <a href="{{ collection.url }}"
-                                    ><span class="visually-hidden">
-                                        {{ collection.title }}
-                                    </span></a
-                                >
-                                {% render 'image',
-                                    image_box: collection.featured_image,
-                                    image_box_class: 'card-collection__image'
-                                %}
-                            </picture>
-                        </div>
+        <div class="row list-collections-grid order-alignment--{{order_alignment}}">
+            <div class="col-6 col-sm-12 col-md-6 list-collections-grid__item--left">
+                <div class="row">
+                    {% for collection in collections_top -%}
+                        {% liquid
+                            if forloop.last
+                                assign columns_class = 'col-sm-4 col-md-12 col-lg-12'
+                            else
+                                assign columns_class = 'col-sm-4 col-md-6 col-lg-6'
+                            endif
+                        %}
+                        <div class="{{ columns_class }} list-collections-grid__item">
+                            <div class="card-collection">
+                                <div class="card-collection__media-wrapper ">
+                                    <picture class="card-collection__media media__size--{{ img_size }} media">
+                                        <a href="{{ collection.url }}"
+                                            ><span class="visually-hidden">
+                                                {{ collection.title }}
+                                            </span></a
+                                        >
+                                        {% render 'image',
+                                            image_box: collection.featured_image,
+                                            image_box_class: 'card-collection__image'
+                                        %}
+                                    </picture>
+                                </div>
 
-                        <div class="card-collection__content card-collection__content--{{ text_alignment }}">
-                            <h3>
-                                <span href="{{ collection.url }}">
-                                    {{ collection.title | escape }}
-                                </span>
-                            </h3>
-                            {% if count %}
-                                <h5>
-                                    {{ collection.all_products_count }}
-                                    {{ 'sections.collections.products' | t }}
-                                </h5>
-                            {% endif %}
+                                <div class="card-collection__content card-collection__content--{{ text_alignment }}">
+                                    <h3>
+                                        <span href="{{ collection.url }}">
+                                            {{ collection.title | escape }}
+                                        </span>
+                                    </h3>
+                                    {% if count %}
+                                        <h5>
+                                            {{ collection.all_products_count }}
+                                            {{ 'sections.collections.products' | t }}
+                                        </h5>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-            {% for collection in collections_bot %}
-                <div class="col-12 col-sm-6 col-md-6 col-lg-6 list-collections-grid__item list-collections-grid__item--top">
-                    <div class="card-collection">
-                        <div class="card-collection__media-wrapper ">
-                            <picture class="card-collection__media media__size--{{ img_size }} media">
-                                <a href="{{ collection.url }}"
-                                    ><span class="visually-hidden">
-                                        {{ collection.title }}
-                                    </span></a
-                                >
-                                {% render 'image',
-                                    image_box: collection.featured_image,
-                                    image_box_class: 'card-collection__image'
-                                %}
-                            </picture>
-                        </div>
+            </div>
+            <div class="col-6 col-sm-12 col-md-6 list-collections-grid__item--right">
+                <div class="row">
+                    {% for collection in collections_bot %}
+                        {% liquid
+                            if forloop.first
+                                assign columns_class = 'col-sm-4 col-md-12 col-lg-12'
+                            else
+                                assign columns_class = 'col-sm-4 col-md-6 col-lg-6'
+                            endif
+                        %}
+                        <div class="{{ columns_class }} list-collections-grid__item">
+                            <div class="card-collection">
+                                <div class="card-collection__media-wrapper ">
+                                    <picture class="card-collection__media media__size--{{ img_size }} media">
+                                        <a href="{{ collection.url }}"
+                                            ><span class="visually-hidden">
+                                                {{ collection.title }}
+                                            </span></a
+                                        >
+                                        {% render 'image',
+                                            image_box: collection.featured_image,
+                                            image_box_class: 'card-collection__image'
+                                        %}
+                                    </picture>
+                                </div>
 
-                        <div class="card-collection__content card-collection__content--{{ text_alignment }}">
-                            <h3>
-                                <span href="{{ collection.url }}">
-                                    {{ collection.title | escape }}
-                                </span>
-                            </h3>
-                            {% if count %}
-                                <h5>
-                                    {{ collection.all_products_count }}
-                                    {{ 'sections.collections.products' | t }}
-                                </h5>
-                            {% endif %}
+                                <div class="card-collection__content card-collection__content--{{ text_alignment }}">
+                                    <h3>
+                                        <span href="{{ collection.url }}">
+                                            {{ collection.title | escape }}
+                                        </span>
+                                    </h3>
+                                    {% if count %}
+                                        <h5>
+                                            {{ collection.all_products_count }}
+                                            {{ 'sections.collections.products' | t }}
+                                        </h5>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
 </div>

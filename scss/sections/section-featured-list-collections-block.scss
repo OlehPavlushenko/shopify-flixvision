@@ -47,13 +47,23 @@
     }
 
     .list-collections-grid {
-        margin-bottom: -3rem;
+        margin-bottom: -2rem;
     }
 
     .list-collections-grid__item {
-        padding-bottom: 3rem;
+        padding-bottom: 2rem;
     }
-
+    
+    @media screen and (min-width: 991px) {
+        .list-collections-grid {
+            margin-bottom: -3rem;
+        }
+    
+        .list-collections-grid__item {
+            padding-bottom: 3rem;
+        }
+    }
+    
     @media screen and (min-width: 768px) {
         .col-md-custom {
             flex: auto;
@@ -165,6 +175,12 @@
             }
         }
 
+        @media screen and (max-width: 767px) {
+            h3 {
+                font-size: calc(var(--font-heading-scale) * 1.2rem);
+            }
+        }
+
         h5 {
             font-weight: 400;
             margin-bottom: 0;
@@ -176,44 +192,28 @@
         .list-collections-grid__item--left,
         .list-collections-grid__item--right {
             .row > div .card-collection {
-                padding-bottom: 1rem;
+                //padding-bottom: 1rem;
                 .media__size--portrait {
                     margin-bottom: 2.8rem;
                 }
             }
         }
     }
-    .order-alignment--center {
-        .list-collections-grid__item--left {
-            order: 1;
-        }
-        .list-collections-grid__item--center {
-            order: 2;
-        }
-        .list-collections-grid__item--right {
-            order: 3;
-        }
-    }
     .order-alignment--left {
         .list-collections-grid__item--left {
-            order: 2;
-        }
-        .list-collections-grid__item--center {
             order: 1;
         }
         .list-collections-grid__item--right {
-            order: 3;
+            order: 2;
         }
     }
     .order-alignment--right {
         .list-collections-grid__item--left {
-            order: 1;
-        }
-        .list-collections-grid__item--center {
-            order: 3;
-        }
-        .list-collections-grid__item--right {
             order: 2;
+        }
+        
+        .list-collections-grid__item--right {
+            order: 1;
         }
     }
 
