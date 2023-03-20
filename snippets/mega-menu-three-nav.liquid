@@ -62,7 +62,7 @@
                         <li class='mega-menu__list-item'>
                             <a class='mega-menu__list-item-link' href='{{ mega_menu_link.url }}'>
                             {{- title -}}
-                            {% if badge_name %}
+                            {% if badge_name != blank %}
                             <span style='background:{{ badge_color }};' class='mega-menu__list-badge'>{{ badge_name }}</span>
                             {% endif %}
                             </a>

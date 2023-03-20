@@ -27,7 +27,7 @@
                 <li class="simple-menu__list-item">
                     <a class="simple-menu__list-item-link" href="{{ simple_menu_link.url }}">
                     {{ title }}
-                    {% if badge_name %}
+                    {% if badge_name != blank %}
                     <span style="background:{{ badge_color }};" class="simple-menu__list-badge">{{ badge_name }}</span>
                     {% endif %}
                     </a>
