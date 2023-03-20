@@ -1,0 +1,242 @@
+{{ 'section-announcement-bar-default.css' | asset_url | stylesheet_tag }}
+
+{% if section.blocks.size > 0 %}
+    {% for block in section.blocks %}
+        {% case block.type %}
+            {% when 'default' %}
+                {%- liquid
+                    assign text = block.settings.text
+                    assign text_alignment = block.settings.text_alignment
+                    assign background_color = block.settings.background_color
+                    assign text_color = block.settings.text_color
+                    assign link_color = block.settings.link_color
+                    assign full_width = block.settings.full_width
+                    assign pad_top = block.settings.padding_top
+                    assign pad_bot = block.settings.padding_bottom
+                -%}
+
+                {%- capture styles -%}
+                    --announcement-default-background-color: {{- background_color -}};
+                    --announcement-default-text-color: {{- text_color -}};
+                    --announcement-default-link-color: {{- link_color -}};
+                    --announcement-default-pad-top: {{ pad_top }}px;
+                    --announcement-default-pad-bot: {{ pad_bot }}px;
+                  {%- endcapture -%}
+
+                {%- assign styles = styles | strip_newlines -%}
+                {% if text != blank %}
+                    <div
+                        class="announcement-bar-default full_width--{{ full_width }} text-alignment--{{ text_alignment }}"
+                        style="{{- styles -}}"
+                    >
+                        <div class="announcement-bar-default__wrapper container">
+                            <div class="row">
+                                <div class="col-md-12  align-self-center announcement-bar-default__text">
+                                    {{ text }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% when 'marquee' %}
+                {%- liquid
+                    assign text = block.settings.text
+                    assign text_alignment = block.settings.text_alignment
+                    assign background_color = block.settings.background_color
+                    assign text_color = block.settings.text_color
+                    assign link_color = block.settings.link_color
+                    assign full_width = block.settings.full_width
+                    assign pad_top = block.settings.padding_top
+                    assign pad_bot = block.settings.padding_bottom
+                -%}
+
+                {%- capture styles -%}
+                    --announcement-marquee-background-color: {{- background_color -}};
+                    --announcement-marquee-text-color: {{- text_color -}};
+                    --announcement-marquee-link-color: {{- text_color -}};
+                    --announcement-marquee-pad-top: {{ pad_top }}px;
+                    --announcement-marquee-pad-bot: {{ pad_bot }}px;
+                    {%- endcapture -%}
+
+                {%- assign styles = styles | strip_newlines -%}
+                {% if text != blank %}
+                    <div
+                        class="announcement-bar-marquee full_width--{{ full_width }} text-alignment--{{ text_alignment }}"
+                        style="{{- styles -}}"
+                    >
+                        <div class="announcement-bar-marquee__wrapper container">
+                            <div class="overflow-hidden">
+                                <div id="crawl-line">
+                                    {% assign crawl_line = text | split: '<p>' %}
+                                    {% for line in crawl_line %}
+                                        {% assign crawl_text = line | split: '</p>' %}
+                                        {% if line != blank %}
+                                            <div class="crawl-line__slide announcement-bar-marquee__text">
+                                                {{ crawl_text }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="module">
+                        import marquee from "{{ 'vanilla-marquee.min.js' | asset_url }}"
+                        const myScroller = new marquee(document.getElementById('crawl-line'), {
+                            css3easing: 'linear',
+                            delayBeforeStart: 50,
+                            duplicated: true,
+                            duration: 25000,
+                            gap: 0,
+                            pauseOnHover: true,
+                            recalcResize: false,
+                            speed: 0,
+                            startVisible: true,
+                        })
+                    </script>
+                {% endif %}
+        {% endcase %}
+    {% endfor %}
+{% endif %}
+
+{% schema %}
+{
+    "name": "Announcement bar",
+    "settings": [],
+    "blocks": [
+        {
+            "name": "Info bar default",
+            "type": "default",
+            "settings": [
+                {
+                    "type": "richtext",
+                    "id": "text",
+                    "default": "<p>Welcome to our store</p>",
+                    "label": "Text"
+                },
+                {
+                    "type": "select",
+                    "id": "text_alignment",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "center",
+                    "label": "Text alignment"
+                },
+                {
+                    "type": "paragraph",
+                    "content": "Style options"
+                },
+                {
+                    "type": "color",
+                    "id": "background_color",
+                    "label": "Background color"
+                },
+                {
+                    "type": "color",
+                    "id": "text_color",
+                    "label": "Text color"
+                },
+                {
+                    "type": "color",
+                    "id": "link_color",
+                    "label": "Link color"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "full_width",
+                    "default": false,
+                    "label": "Enabled full width?"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top",
+                    "min": 0,
+                    "max": 60,
+                    "step": 5,
+                    "unit": "px",
+                    "label": "Padding top",
+                    "default": 10
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom",
+                    "min": 0,
+                    "max": 60,
+                    "step": 5,
+                    "unit": "px",
+                    "label": "Padding bottom",
+                    "default": 10
+                }
+            ]
+        },
+        {
+            "name": "Info bar crawl line",
+            "type": "marquee",
+            "settings": [
+                {
+                    "type": "richtext",
+                    "id": "text",
+                    "label": "Text"
+                },
+                {
+                    "type": "paragraph",
+                    "content": "Style options"
+                },
+                {
+                    "type": "color",
+                    "id": "background_color",
+                    "label": "Background color"
+                },
+                {
+                    "type": "color",
+                    "id": "text_color",
+                    "label": "Text color"
+                },
+                {
+                    "type": "color",
+                    "id": "link_color",
+                    "label": "Link color"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "full_width",
+                    "default": false,
+                    "label": "Enabled full width?"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top",
+                    "min": 0,
+                    "max": 60,
+                    "step": 5,
+                    "unit": "px",
+                    "label": "Padding top",
+                    "default": 10
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom",
+                    "min": 0,
+                    "max": 60,
+                    "step": 5,
+                    "unit": "px",
+                    "label": "Padding bottom",
+                    "default": 10
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
