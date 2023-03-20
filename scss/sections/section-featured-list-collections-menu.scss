@@ -89,6 +89,7 @@
 
     .card-collection__content {
         background: #fff;
+        padding: 2rem;
         @media screen and (max-width: 767px) {
             padding: 1rem;
         }
@@ -111,6 +112,9 @@
             }
             @media screen and (max-width: 767px) {
                 font-size: calc(var(--font-heading-scale) * 1.2rem);
+            }
+            span {
+                font-size: 12px;
             }
         }
 
