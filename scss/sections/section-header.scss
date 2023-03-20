@@ -269,13 +269,6 @@ details-open.open #userLinks {
     &.sticky-header-false {
         box-shadow:none;
     }
-    &.transparent-header {
-        position: absolute!important;
-        left: 0;
-        top: 0;
-        width: 100%;
-        background: none;
-    }
     position: relative;
     box-shadow: none;
     &.sticky-header-true {
@@ -304,9 +297,14 @@ details-open.open #userLinks {
             background-color: transparent;
         }
     }
-    &.transparent-header {
-        position: absolute!important;
-        background-color: transparent;
+    @media screen and (min-width: 992px) {
+        &.transparent-header {
+            position: absolute!important;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: none;
+        }
     }
 }
 .style-simple-logo-center {
@@ -457,13 +455,16 @@ details-open.open #userLinks {
             background-color: transparent;
         }
     }
-    &.transparent-header {
-        position: absolute!important;
-        background-color: transparent;
-        .header-wrap {
-            border-bottom: none;
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
+   
+    @media screen and (min-width: 992px) {
+        &.transparent-header {
+            position: absolute!important;
+            background-color: transparent;
+            .header-wrap {
+                border-bottom: none;
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
         }
     }
 }
@@ -690,13 +691,20 @@ details-open.open #userLinks {
             background-color: transparent;
         }
     }
-    &.transparent-header {
-        position: absolute!important;
-        background-color: transparent;
-        .header-wrap {
-            border-bottom: none;
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
+   
+    @media screen and (min-width: 992px) {
+        &.transparent-header {
+            position: absolute!important;
+            background-color: transparent;
+            .header-wrap {
+                border-bottom: none;
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+                background-color: transparent;
+            }
+            .header-menu-outer {
+                background-color: transparent;
+            }
         }
     }
 }
