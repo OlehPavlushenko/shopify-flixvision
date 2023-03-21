@@ -808,3 +808,54 @@ class inViewport {
 }
 
 const inViewportSections = new inViewport()
+
+// Countdown element
+
+class countdownContainer extends HTMLElement {
+    constructor() {
+        super()
+        this.daysSpan = this.querySelector(".days")
+        this.hoursSpan = this.querySelector(".hours")
+        this.minutesSpan = this.querySelector(".minutes")
+        this.secondsSpan = this.querySelector(".seconds")
+
+        this.deadline = this.getAttribute("data-date")
+        this.initializeClock(this.deadline)
+    }
+
+    initializeClock(endTime) {
+        this.updateClock(endTime)
+        this.timeInterval = setInterval(() => this.updateClock(endTime), 1000)
+    }
+
+    updateClock(endTime) {
+        const t = this.getTimeRemaining(endTime)
+
+        this.daysSpan.innerHTML = t.days
+        this.hoursSpan.innerHTML = ("0" + t.hours).slice(-2)
+        this.minutesSpan.innerHTML = ("0" + t.minutes).slice(-2)
+        this.secondsSpan.innerHTML = ("0" + t.seconds).slice(-2)
+
+        if (t.total <= 0) {
+            clearInterval(this.timeInterval)
+        }
+    }
+
+    getTimeRemaining(endTime) {
+        const total = Date.parse(endTime) - Date.parse(new Date())
+        const seconds = Math.floor((total / 1000) % 60)
+        const minutes = Math.floor((total / 1000 / 60) % 60)
+        const hours = Math.floor((total / (1000 * 60 * 60)) % 24)
+        const days = Math.floor(total / (1000 * 60 * 60 * 24))
+
+        return {
+            total,
+            days,
+            hours,
+            minutes,
+            seconds,
+        }
+    }
+}
+
+customElements.define("countdown-container", countdownContainer)
