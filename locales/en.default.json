@@ -208,6 +208,10 @@
 
   },
   "header":{
+    "days": "Days",
+    "hours": "Hrs",
+    "minutes": "Min",
+    "seconds": "Sec",
     "navigation": "Navigation",
     "categories": "Categories",
     "help": "Need help?",

@@ -88,7 +88,7 @@
 
     .banner--fill {
         min-height: auto;
-        height: 100vh;
+        height: calc(100vh - var(--announcement-bar-height) - var(--header-height));
     }
 }
 

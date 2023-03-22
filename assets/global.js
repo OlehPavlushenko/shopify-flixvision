@@ -808,3 +808,121 @@ class inViewport {
 }
 
 const inViewportSections = new inViewport()
+
+// Countdown element
+
+class countdownContainer extends HTMLElement {
+    constructor() {
+        super()
+        this.daysSpan = this.querySelector(".days")
+        this.hoursSpan = this.querySelector(".hours")
+        this.minutesSpan = this.querySelector(".minutes")
+        this.secondsSpan = this.querySelector(".seconds")
+
+        this.deadline = this.getAttribute("data-date")
+        this.initializeClock(this.deadline)
+    }
+
+    initializeClock(endTime) {
+        this.updateClock(endTime)
+        this.timeInterval = setInterval(() => this.updateClock(endTime), 1000)
+    }
+
+    updateClock(endTime) {
+        const t = this.getTimeRemaining(endTime)
+
+        this.daysSpan.innerHTML = t.days
+        this.hoursSpan.innerHTML = ("0" + t.hours).slice(-2)
+        this.minutesSpan.innerHTML = ("0" + t.minutes).slice(-2)
+        this.secondsSpan.innerHTML = ("0" + t.seconds).slice(-2)
+
+        if (t.total <= 0) {
+            clearInterval(this.timeInterval)
+        }
+    }
+
+    getTimeRemaining(endTime) {
+        const total = Date.parse(endTime) - Date.parse(new Date())
+        const seconds = Math.floor((total / 1000) % 60)
+        const minutes = Math.floor((total / 1000 / 60) % 60)
+        const hours = Math.floor((total / (1000 * 60 * 60)) % 24)
+        const days = Math.floor(total / (1000 * 60 * 60 * 24))
+
+        return {
+            total,
+            days,
+            hours,
+            minutes,
+            seconds,
+        }
+    }
+}
+
+customElements.define("countdown-container", countdownContainer)
+
+// Promo Popup element
+
+class PromoPopup extends HTMLElement {
+    constructor() {
+        super()
+
+        this.popup = this.querySelector(".js-promo-popup")
+        this.detailsContainer = this.popup.querySelector(
+            ".js-promo-popup-wrapper"
+        )
+        this.closeButton = this.querySelector(".js-promo-popup-close")
+        this.linkButton = this.querySelector(".js-promo-popup-btn")
+        this.sessionStorageName = this.popup.dataset.name
+
+        this.closeButton.addEventListener("click", this.close.bind(this))
+
+        if (this.linkButton && this.linkButton.isConnected) {
+            this.linkButton.addEventListener(
+                "click",
+                this.setSessionStorage.bind(this)
+            )
+        }
+
+        if (!this.getSessionStorage()) {
+            this.addTimer()
+        }
+    }
+
+    close(e) {
+        e.preventDefault()
+        this.popup.classList.remove("promo-popup--show")
+        document.body.classList.remove("overflow-hidden")
+        this.setSessionStorage()
+    }
+
+    setSessionStorage() {
+        sessionStorage.setItem(this.sessionStorageName, "true")
+    }
+
+    getSessionStorage() {
+        return sessionStorage.getItem(this.sessionStorageName) === "true"
+    }
+
+    addTimer() {
+        let delay = 1000 * this.popup.dataset.delay
+        setTimeout(this.show.bind(this), delay)
+    }
+
+    onBodyClick(e) {
+        if (!this.detailsContainer.contains(e.target)) {
+            this.popup.classList.remove("promo-popup--show")
+            document.body.classList.remove("overflow-hidden")
+        }
+    }
+
+    show(e) {
+        this.onBodyClickEvent =
+            this.onBodyClickEvent || this.onBodyClick.bind(this)
+        document.body.addEventListener("click", this.onBodyClickEvent)
+
+        this.popup.classList.add("promo-popup--show")
+        document.body.classList.add("overflow-hidden")
+    }
+}
+
+customElements.define("promo-popup", PromoPopup)

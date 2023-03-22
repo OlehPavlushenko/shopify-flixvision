@@ -48,6 +48,18 @@
     }
 }
 
+.text-alignment--left {
+    text-align: left;
+}
+
+.text-alignment--right {
+    text-align: right;
+}
+
+.text-alignment--center {
+    text-align: center;
+}
+
 /* Only desktop viewport animation */
 @media screen and (min-width: 990px) {
     .section-fade {
