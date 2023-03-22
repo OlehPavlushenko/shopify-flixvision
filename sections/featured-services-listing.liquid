@@ -18,24 +18,24 @@
 
 {{ 'section-featured-multi-column.css' | asset_url | stylesheet_tag }}
 
-<div class='featured-multi-column' style='{{ styles }}'>
-    <div class='featured-multi-column-width page-width'>
-        <ul class='featured-multi-column-list grid--3-col-desktop' role='list'>
-            <li class='featured-multi-column-list__item grid__item'>
+<div class="featured-multi-column" style="{{ styles }}">
+    <div class="featured-multi-column-width page-width">
+        <ul class="featured-multi-column-list grid--3-col-desktop" role="list">
+            <li class="featured-multi-column-list__item grid__item">
                 {% for block in section.blocks %}
                     {% if block.type == 'column-first' %}
                         {% render 'multi-column-text', block: block %}
                     {% endif %}
                 {% endfor %}
             </li>
-            <li class='featured-multi-column-list__item grid__item'>
+            <li class="featured-multi-column-list__item grid__item">
                 {% for block in section.blocks %}
                     {% if block.type == 'column-second' %}
                         {% render 'multi-column-text', block: block %}
                     {% endif %}
                 {% endfor %}
             </li>
-            <li class='featured-multi-column-list__item grid__item'>
+            <li class="featured-multi-column-list__item grid__item">
                 {% for block in section.blocks %}
                     {% if block.type == 'column-third' %}
                         {% render 'multi-column-text', block: block %}
@@ -48,7 +48,7 @@
 
 {% schema %}
 {
-    "name": "Multi column text",
+    "name": "Services listing",
     "class": "index-section",
     "tag": "section",
     "max_blocks": 9,
@@ -100,6 +100,11 @@
             "name": "First Column",
             "settings": [
                 {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
                     "type": "text",
                     "id": "title",
                     "default": "Column",
@@ -123,6 +128,11 @@
             "limit": 3,
             "name": "Second Column",
             "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
                 {
                     "type": "text",
                     "id": "title",
@@ -148,6 +158,11 @@
             "name": "Third Column",
             "settings": [
                 {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
                     "type": "text",
                     "id": "title",
                     "default": "Column",
@@ -169,7 +184,7 @@
     ],
     "presets": [
         {
-            "name": "Multi column text",
+            "name": "Services listing",
             "blocks": [
                 {
                     "type": "column-first"
