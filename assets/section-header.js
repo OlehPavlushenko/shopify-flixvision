@@ -213,6 +213,7 @@ class SectionHeader extends HTMLElement {
     connectedCallback() {
         this.stickyBlock = document.querySelector(".js-sticky-block")
         this.header = document.querySelector(".section-header")
+        this.announcement = document.querySelector(".index-announcement")
         this.headerIsAlwaysSticky =
             this.getAttribute("data-sticky-type") === "always"
         this.headerBounds = {}
@@ -243,6 +244,10 @@ class SectionHeader extends HTMLElement {
         document.documentElement.style.setProperty(
             "--header-height",
             `${this.header.offsetHeight}px`
+        )
+        document.documentElement.style.setProperty(
+            "--announcement-bar-height",
+            `${this.announcement.offsetHeight}px`
         )
     }
 

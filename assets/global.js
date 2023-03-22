@@ -859,3 +859,70 @@ class countdownContainer extends HTMLElement {
 }
 
 customElements.define("countdown-container", countdownContainer)
+
+// Promo Popup element
+
+class PromoPopup extends HTMLElement {
+    constructor() {
+        super()
+
+        this.popup = this.querySelector(".js-promo-popup")
+        this.detailsContainer = this.popup.querySelector(
+            ".js-promo-popup-wrapper"
+        )
+        this.closeButton = this.querySelector(".js-promo-popup-close")
+        this.linkButton = this.querySelector(".js-promo-popup-btn")
+        this.sessionStorageName = this.popup.dataset.name
+
+        this.closeButton.addEventListener("click", this.close.bind(this))
+
+        if (this.linkButton && this.linkButton.isConnected) {
+            this.linkButton.addEventListener(
+                "click",
+                this.setSessionStorage.bind(this)
+            )
+        }
+
+        if (!this.getSessionStorage()) {
+            this.addTimer()
+        }
+    }
+
+    close(e) {
+        e.preventDefault()
+        this.popup.classList.remove("promo-popup--show")
+        document.body.classList.remove("overflow-hidden")
+        this.setSessionStorage()
+    }
+
+    setSessionStorage() {
+        sessionStorage.setItem(this.sessionStorageName, "true")
+    }
+
+    getSessionStorage() {
+        return sessionStorage.getItem(this.sessionStorageName) === "true"
+    }
+
+    addTimer() {
+        let delay = 1000 * this.popup.dataset.delay
+        setTimeout(this.show.bind(this), delay)
+    }
+
+    onBodyClick(e) {
+        if (!this.detailsContainer.contains(e.target)) {
+            this.popup.classList.remove("promo-popup--show")
+            document.body.classList.remove("overflow-hidden")
+        }
+    }
+
+    show(e) {
+        this.onBodyClickEvent =
+            this.onBodyClickEvent || this.onBodyClick.bind(this)
+        document.body.addEventListener("click", this.onBodyClickEvent)
+
+        this.popup.classList.add("promo-popup--show")
+        document.body.classList.add("overflow-hidden")
+    }
+}
+
+customElements.define("promo-popup", PromoPopup)

@@ -130,7 +130,7 @@
                 {% if title != blank %}
                     <div
                         class="announcement-bar-countdown full_width--{{ full_width }}"
-                        style="{{- styles -}}; background-image: url( {{ image | image_url: width: 2050  }} );"
+                        style="{{- styles -}}; background-image: url({{ image | image_url: width: 2050 }});"
                     >
                         <div class="announcement-bar-countdown__wrapper container">
                             <div class="row">
@@ -160,21 +160,104 @@
                                     </countdown-container>
                                     <div class="countdown__block">
                                         <div class="countdown__box-left">
-                                            <div class="countdown__text-title">{{ title }}</div>
-                                            <div class="countdown__text-sub-title">{{ sub_title }}</div>
+                                            <div class="countdown__text-title">{{ title | escape }}</div>
+                                            <div class="countdown__text-sub-title">{{ sub_title | escape }}</div>
                                         </div>
                                         <div class="countdown__box-right">
-                                            <div class="countdown__text-sale">{{ sale }}</div>
+                                            <div class="countdown__text-sale">{{ sale | escape }}</div>
                                             <div class="countdown__text-sale-number">{{ sale_number }}</div>
                                         </div>
                                     </div>
-                                    <div class="countdown__btn">
-                                        <a class="button button--primary button--middle" href="{{ link }}">{{ btn }}</a>
-                                    </div>
+                                    {% if btn != blank %}
+                                        <div class="countdown__btn">
+                                            <a class="button button--primary button--middle" href="{{ link }}">
+                                                {{- btn -}}
+                                            </a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
+                {% endif %}
+            {% when 'promo' %}
+                {% if title != blank %}
+                    {%- liquid
+                        assign delay = block.settings.delay
+                        assign title = block.settings.title
+                        assign sub_title = block.settings.sub_title
+                        assign text = block.settings.text
+                        assign text_alignment = block.settings.text_alignment
+
+                        assign btn = block.settings.btn
+                        assign link = block.settings.link
+                        assign image = block.settings.image
+                        assign background_color = block.settings.background_color
+                        assign text_color = block.settings.text_color
+                        assign link_color = block.settings.link_color
+                    -%}
+
+                    {%- capture styles -%}
+                        --announcement-promo-background-color: {{ background_color }};
+                        --announcement-promo-text-color: {{ text_color }};
+                        --announcement-promo-link-color: {{ link_color }};
+                      {%- endcapture -%}
+
+                    {%- assign styles = styles | strip_newlines -%}
+                    <promo-popup>
+                        <div
+                            role="dialog"
+                            aria-labelledby="promoPopupTitle"
+                            aria-describedby="promoPopupDesc"
+                            style="{{ styles }}"
+                            data-delay="{{ delay }}"
+                            data-name="announcementPromoPopup"
+                            class="promo-popup js-promo-popup announcement-bar-promo text-alignment--{{ text_alignment }}"
+                        >
+                            <div class="promo-popup__wrapper js-promo-popup-wrapper">
+                                <button class="promo-popup__close js-promo-popup-close">
+                                    {% render 'icons-svg', icons: 'close' %}
+                                </button>
+                                {% if image != blank %}
+                                    <div class="promo-popup__image">
+                                        {{ image | image_url: width: 75 | image_tag }}
+                                    </div>
+                                {% endif %}
+
+                                {% if sub_title != blank %}
+                                    <h4
+                                        class="promo-popup__sub-title"
+                                    >
+                                        {{ sub_title | escape }}
+                                    </h4>
+                                {% endif %}
+                                {% if title != blank %}
+                                    <h3
+                                        id="promoPopupTitle"
+                                        class="promo-popup__title h0"
+                                    >
+                                        {{ title }}
+                                    </h3>
+                                {% endif %}
+
+                                {% if text != blank %}
+                                    <div id="promoPopupDesc" class="promo-popup__text rte--large">
+                                        {{ text }}
+                                    </div>
+                                {% endif %}
+                                {% if btn != blank %}
+                                    <div class="promo-popup__btn">
+                                        <a
+                                            class="button button--primary button--middle js-promo-popup-btn"
+                                            href="{{ link }}"
+                                        >
+                                            {{- btn -}}
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </promo-popup>
                 {% endif %}
         {% endcase %}
     {% endfor %}
@@ -183,6 +266,7 @@
 {% schema %}
 {
     "name": "Announcement bar",
+    "class": "index-announcement",
     "settings": [],
     "blocks": [
         {
@@ -651,6 +735,92 @@
                     "unit": "px",
                     "label": "Padding bottom",
                     "default": 10
+                }
+            ]
+        },
+        {
+            "name": "Info bar promo",
+            "type": "promo",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "delay",
+                    "default": "2",
+                    "info": "Fill number of seconds (e.g. 30)",
+                    "label": "Delay"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "text",
+                    "id": "sub_title",
+                    "default": "Make Your Shopify Store a Selling Machine!",
+                    "label": "Sub title"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "default": "Are you ready to <span>blow up your sales?</span>",
+                    "label": "Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "text",
+                    "default": "<p>Welcome to our store</p>",
+                    "label": "Text"
+                },
+                {
+                    "type": "text",
+                    "id": "btn",
+                    "default": "Shop now",
+                    "label": "Button"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link"
+                },
+                {
+                    "type": "select",
+                    "id": "text_alignment",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "center",
+                    "label": "Text alignment"
+                },
+                {
+                    "type": "paragraph",
+                    "content": "Style options"
+                },
+                {
+                    "type": "color_background",
+                    "id": "background_color",
+                    "label": "Background color"
+                },
+                {
+                    "type": "color",
+                    "id": "text_color",
+                    "label": "Text color"
+                },
+                {
+                    "type": "color",
+                    "id": "link_color",
+                    "label": "Link color"
                 }
             ]
         }
