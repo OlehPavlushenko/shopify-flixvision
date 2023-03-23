@@ -260,5 +260,63 @@
         }
       }
     }
+  },
+  "sections": {
+    "apps": {
+      "name": "Apps",
+      "settings": {
+        "include_margins": {
+          "label": "Make section margins the same as theme"
+        }
+      },
+      "presets": {
+        "name": "Apps"
+      }
+    },
+    "cookie_police": {
+      "name": "Cookie Police",
+      "settings": {
+        "style": {
+          "label": "Popup Style",
+          "options": {
+            "option_1": {
+              "label": "Style 1"
+            },
+            "option_2": {
+              "label": "Style 2"
+            }
+          }
+        },
+        "background_color": {
+          "label": "Background color"
+        },
+        "text_color": {
+          "label": "Text color"
+        },
+        "title_color": {
+          "label": "Title color"
+        },
+        "title": {
+          "label": "Heading"
+        },
+        "text": {
+          "label": "Text"
+        },
+        "button_text": {
+          "label": "Button text"
+        },
+        "button_style": {
+          "label": "Button style",
+          "options": {
+            "primary": {
+              "label": "Primary"
+            },
+            "secondary": {
+              "label": "Secondary"
+            }
+          }
+        }
+      }
+    }
   }
 }
