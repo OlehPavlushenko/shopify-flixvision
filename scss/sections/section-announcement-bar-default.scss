@@ -108,6 +108,7 @@
     .announcement-bar-countdown__text {
         display: flex;
         align-items: center;
+        
         .countdown-box {
             min-width: 250px;
             display: flex;
@@ -214,6 +215,51 @@
                 font-weight: 400;
                 padding: 0;
                 min-width: 1px;
+            }
+        }
+        @media (min-width: 768px) and (max-width: 999px) {
+            flex-wrap: wrap;
+            countdown-container {
+                flex-basis: 100%;
+                margin-bottom: 2rem;
+                .countdown-box {
+                    justify-content: center;
+                }
+            }
+            .countdown__block, .countdown__btn {
+                flex-basis: 33%;
+            }
+        }
+        @media (min-width: 320px) and (max-width: 767px) {
+            flex-wrap: wrap;
+            countdown-container {
+                flex-basis: 100%;
+                .countdown-box {
+                    justify-content: center;
+                }
+            }
+            .countdown__block,countdown-container {
+                margin-bottom: 2rem;
+            }
+            .countdown__block, .countdown__btn {
+                flex-basis: 100%;
+                padding-left: 0;
+                justify-content: center;
+                
+            }
+        }
+        @media (min-width: 320px) and (max-width: 540px) { 
+            .countdown__block {
+                flex-wrap: wrap;
+                .countdown__box-left {
+                    margin-bottom: 2rem;
+                }
+                .countdown__box-left,
+                .countdown__box-right {
+                    padding-left: 0;
+                    flex-basis: 51%;
+                    text-align: center;
+                }
             }
         }
     }
