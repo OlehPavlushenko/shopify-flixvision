@@ -273,6 +273,39 @@
         "name": "Apps"
       }
     },
+    "newsletter-popup": {
+      "name": "Newsletter popup",
+      "settings": {
+        "show": {
+          "label": "Enable"
+        },
+        "background_color": {
+          "label": "Background color"
+        },
+        "text_color": {
+          "label": "Text color"
+        },
+        "link_color": {
+          "label": "Link color"
+        },
+        "image": {
+          "label": "Image"
+        },
+        "title": {
+          "label": "Heading"
+        },
+        "text": {
+          "label": "Text"
+        },
+        "info": {
+          "label": "Shared Indormation"
+        },
+        "delay": {
+          "label": "Delay",
+          "info": "Fill number of seconds (e.g. 30)"
+        }
+      }
+    },
     "cookie_police": {
       "name": "Cookie Police",
       "settings": {
