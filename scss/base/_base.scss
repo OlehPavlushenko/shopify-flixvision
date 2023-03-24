@@ -33,6 +33,11 @@ body {
     flex-shrink: 0;
 }
 
+.shopify-challenge__container {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
 @media screen and (min-width: 750px) {
     body {
         font-size: 1.4rem;
