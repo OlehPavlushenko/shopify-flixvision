@@ -276,7 +276,7 @@
                                                     name="contact[tags]"
                                                     value="newsletter"
                                                 >
-
+                                                <input type="hidden" name="challenge" value="false">
                                                 {% capture newsletter_button %}
                                                 <button
                                                 type="submit"
@@ -292,10 +292,10 @@
                                                     assign input_label = 'sections.newsletter.label' | t
                                                     assign input_placeholder = 'sections.newsletter.placeholder' | t
 
-                                                    render 'input', mod_input_id: input_id, mod_input_name: 'contact[email]', mod_input_type: 'email', mod_input_label: input_label, mod_input_placeholder: input_placeholder, mod_is_required: true, mod_autocomplete: 'email', mod_custom_html: newsletter_button, mod_custom_input_classes: 'js-newsletter-email'
+                                                    render 'input', mod_input_id: input_id, mod_input_name: 'contact[email]', mod_value: form.email, mod_input_type: 'email', mod_input_label: input_label, mod_form: true, mod_input_placeholder: input_placeholder, mod_is_required: true, mod_autocomplete: 'email', mod_custom_html: newsletter_button, mod_custom_input_classes: 'js-newsletter-email'
 
                                                     if form.errors
-                                                        assign error_message = form.errors.translated_fields.email
+                                                        assign error_message = form.errors.translated_fields.email | capitalize | append: '&nbsp' | append: form.errors.messages.email
                                                         assign error_message_id = form.id | append: '-error'
 
                                                         render 'error-message', mod_message: error_message, mod_is_input: true, mod_id: error_message_id

@@ -883,8 +883,21 @@ class PromoPopup extends HTMLElement {
             )
         }
 
-        if (!this.getSessionStorage()) {
-            this.addTimer()
+        this.searchPosted = window.location.search
+        this.searchCustomer = window.location.search.split("&")
+
+        if (this.searchPosted == "?customer_posted=true") {
+            this.popup.classList.add("subscribing")
+            this.setSessionStorage()
+        }
+        if (this.searchCustomer.includes("form_type=customer")) {
+            this.popup.classList.add("customerIn")
+            this.setSessionStorage()
+        }
+        if (window.location.pathname !== "/challenge") {
+            if (!this.getSessionStorage()) {
+                this.addTimer()
+            }
         }
     }
 
@@ -909,7 +922,11 @@ class PromoPopup extends HTMLElement {
     }
 
     onBodyClick(e) {
-        if (!this.detailsContainer.contains(e.target)) {
+        console.log(e.target)
+        if (
+            this.popup.contains(e.target) &&
+            !this.detailsContainer.contains(e.target)
+        ) {
             this.popup.classList.remove("promo-popup--show")
             document.body.classList.remove("overflow-hidden")
         }
