@@ -883,17 +883,20 @@ class PromoPopup extends HTMLElement {
             )
         }
 
-        this.searchPosted = window.location.search
-        this.searchCustomer = window.location.search.split("&")
+        if (this.sessionStorageName === "newsletterPromoPopup") {
+            this.searchPosted = window.location.search
+            this.searchCustomer = window.location.search.split("&")
 
-        if (this.searchPosted == "?customer_posted=true") {
-            this.popup.classList.add("subscribing")
-            this.setSessionStorage()
+            if (this.searchPosted == "?customer_posted=true") {
+                this.popup.classList.add("subscribing")
+                this.setSessionStorage()
+            }
+            if (this.searchCustomer.includes("form_type=customer")) {
+                this.popup.classList.add("customerIn")
+                this.setSessionStorage()
+            }
         }
-        if (this.searchCustomer.includes("form_type=customer")) {
-            this.popup.classList.add("customerIn")
-            this.setSessionStorage()
-        }
+
         if (window.location.pathname !== "/challenge") {
             if (!this.getSessionStorage()) {
                 this.addTimer()
