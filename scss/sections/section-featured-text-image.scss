@@ -145,12 +145,29 @@
 }
 
 .featured-text-image__grid {
-    overflow: hidden;
+    .grid__item {
+        padding: 0;
+    }
+}
+
+.grid__item--media {
+    margin-top:  calc(-0.5 * var(--pad-top-text-image));
+    margin-left: -2rem;
+    margin-right: -2rem;
+    max-width: inherit!important;
 }
 
 @media screen and (min-width: 750px) {
+    .featured-text-image__grid { 
+        overflow: hidden;
+    }
     .featured-text-image__grid--reverse {
         flex-direction: row-reverse;
+    }
+    .grid__item--media {
+        margin-top:  0;
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 
@@ -181,16 +198,27 @@
     align-items: flex-start;
     height: 100%;
     justify-content: space-between;
-    padding: 5rem 0;
+    padding: 3rem 0;
+    margin-bottom:  calc(-0.5 * var(--pad-bot-text-image));
 }
 
 @media screen and (min-width: 750px) {
     .featured-text-image__content { 
         padding: 5rem 0;
+        margin-bottom:  0;
     }
 
     .featured-text-image__grid--reverse .featured-text-image__content {
         margin-right: auto;
+    }
+
+    .featured-text-image__grid .featured-text-image__content {
+        padding-left: 3rem;
+    }
+
+    .featured-text-image__grid--reverse .featured-text-image__content {
+        padding-right: 3rem;
+        padding-left: 0;
     }
 }
 
@@ -199,32 +227,45 @@
         padding: 5rem 0;
     }
 
+    .featured-text-image__grid .featured-text-image__content {
+        max-width: 100%;
+        padding-left: 30%;
+    }
+
     .featured-text-image__grid--reverse .featured-text-image__content {
         max-width: 70%;
+        padding-right: 0;
+        padding-left: 0;
     }
 }
 
 .featured-text-image__content .button {
     text-decoration: none;
-    margin-top: 6.7rem;
+    margin-top: 3rem;
     background-color: var(--btn_bg_color-text-image);
+    border-color: var(--btn_bg_color-text-image);
     color: var(--btn_link_color-text-image);
 }
 
 .featured-text-image__content .button:hover,
 .featured-text-image__content .button:focus {
     background-color: var(--btn_bg_color_hover-text-image);
+    border-color: var(--btn_bg_color_hover-text-image);
     color: var(--btn_link_color_hover-text-image);
 }
 
 .featured-text-image__heading {
     margin-bottom: 0;
     color: var(--title-color-text-image);
+    text-transform: none;
 }
 
 .featured-text-image__text  {
-    margin-top: 3rem;
+    margin-top: 1rem;
     color: var(--text-color-text-image);
+    @media screen and (min-width: 750px) {
+        margin-top: 3rem;
+    }
 }
 
 .featured-text-image__text p {

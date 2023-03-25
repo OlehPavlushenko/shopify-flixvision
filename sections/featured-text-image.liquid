@@ -58,30 +58,30 @@
 {{ 'section-featured-text-image.css' | asset_url | stylesheet_tag }}
 
 {% if heading != blank %}
-    <div class='featured-text-image {% if video != blank %}has-video{% endif %}' style='{{ styles }}'>
-        <div class='page-width'>
-            <div class='featured-text-image__grid {% if layout_position == 'text_first' %}featured-text-image__grid--reverse{% endif %} grid grid--1-col grid--2-col-tablet'>
-                <div class='grid__item grid__item--media'>
+    <div class="featured-text-image {% if video != blank %}has-video{% endif %}" style="{{ styles }}">
+        <div class="page-width">
+            <div class="featured-text-image__grid {% if layout_position == 'text_first' %}featured-text-image__grid--reverse{% endif %} grid grid--1-col grid--2-col-tablet">
+                <div class="grid__item grid__item--media">
                     {% if image != blank and video == blank %}
-                        <picture class='featured-text-image__media media'>
+                        <picture class="featured-text-image__media media">
                             {% if mobile_image != blank %}
-                                <source srcset='{{ image_mobile }}' media='(max-width: 749px)'>
+                                <source srcset="{{ image_mobile }}" media="(max-width: 749px)">
                             {% endif %}
 
                             <img
-                                srcset='{{ image_desktop }}'
-                                src='{{ image_desktop | image_url: width: 1440 }}'
-                                class='featured-text-image__media--image'
-                                sizes='100vw'
-                                alt='{{ image.alt | escape }}'
-                                width='{{ image.width }}'
-                                height='{{ image.width | divided_by: image.aspect_ratio }}'
-                                loading='lazy'
+                                srcset="{{ image_desktop }}"
+                                src="{{ image_desktop | image_url: width: 1440 }}"
+                                class="featured-text-image__media--image"
+                                sizes="100vw"
+                                alt="{{ image.alt | escape }}"
+                                width="{{ image.width }}"
+                                height="{{ image.width | divided_by: image.aspect_ratio }}"
+                                loading="lazy"
                             >
                         </picture>
                     {% endif %}
                     {% if video != blank %}
-                        <div class='featured-text-image-video'>
+                        <div class="featured-text-image-video">
                             {% render 'video-item',
                                 id: section.id,
                                 image: image,
@@ -95,17 +95,17 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class='grid__item grid__item--content'>
-                    <div class='featured-text-image__content'>
+                <div class="grid__item grid__item--content">
+                    <div class="featured-text-image__content">
                         {%- if heading != blank or text != blank -%}
-                            <div class='featured-text-image__element'>
+                            <div class="featured-text-image__element">
                                 {%- if heading != blank -%}
-                                    <h2 class='featured-text-image__heading h3' {{ block.shopify_attributes }}>
+                                    <h2 class="featured-text-image__heading h3" {{ block.shopify_attributes }}>
                                         {{ heading | escape }}
                                     </h2>
                                 {%- endif -%}
                                 {%- if text != blank -%}
-                                    <div class='featured-text-image__text rte--large' {{ block.shopify_attributes }}>
+                                    <div class="featured-text-image__text rte--large" {{ block.shopify_attributes }}>
                                         {{ text }}
                                     </div>
                                 {%- endif -%}
@@ -113,8 +113,8 @@
                         {%- endif -%}
                         {%- if button_label != blank and button_link != blank -%}
                             <a
-                                href='{{ button_link }}'
-                                class='button button--primary button--middle'
+                                href="{{ button_link }}"
+                                class="button button--primary button--middle"
                                 {{ block.shopify_attributes }}
                             >
                                 {{ button_label | escape }}

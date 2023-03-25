@@ -1,5 +1,7 @@
 {% liquid
     assign text = section.settings.text
+    assign text_alignment = section.settings.text_alignment
+    assign width = section.settings.width
 
     assign background_color = section.settings.bg_color | default: 'transparent'
     assign text_color = section.settings.text_color | default: 'inherit'
@@ -8,23 +10,24 @@
     assign pad_bot = section.settings.padding_bottom
 %}
 
-{%- capture styles -%}
---link-color-large-text: {{- link_color -}};
---text-color-large-text: {{- text_color -}};
---background-color-large-text: {{- background_color -}};
+{% capture styles %}
+--link-color-large-text: {{ link_color }};
+--text-color-large-text: {{ text_color }};
+--background-color-large-text: {{ background_color }};
 --pad-top-large-text: {{ pad_top }}px;
 --pad-bot-large-text: {{ pad_bot }}px;
-{%- endcapture -%}
+--width-large-text: {{ width }}px;
+{% endcapture %}
 
-{%- assign styles = styles | strip_newlines -%}
+{% assign styles = styles | strip_newlines %}
 
 {{ 'section-featured-large-text.css' | asset_url | stylesheet_tag }}
 
 {% if text != blank %}
-    <div class='featured-large-text' style='{{- styles -}}'>
-        <div class='page-width'>
-            <div class='featured-large-text__blocks'>
-                <div class='featured-large-text__text'>{{ text }}</div>
+    <div class="featured-large-text text-alignment--{{ text_alignment }}" style="{{ styles }}">
+        <div class="page-width container">
+            <div class="featured-large-text__blocks">
+                <div class="featured-large-text__text">{{ text }}</div>
             </div>
         </div>
     </div>
@@ -41,6 +44,36 @@
             "id": "text",
             "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
             "label": "Description"
+        },
+        {
+            "type": "select",
+            "id": "text_alignment",
+            "options": [
+                {
+                    "value": "left",
+                    "label": "Left"
+                },
+                {
+                    "value": "center",
+                    "label": "Center"
+                },
+                {
+                    "value": "right",
+                    "label": "Right"
+                }
+            ],
+            "default": "center",
+            "label": "Text alignment"
+        },
+        {
+            "type": "range",
+            "id": "width",
+            "min": 1000,
+            "max": 1800,
+            "step": 40,
+            "default": 1200,
+            "unit": "px",
+            "label": "Section Width"
         },
         {
             "type": "paragraph",
