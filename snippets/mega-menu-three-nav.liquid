@@ -26,7 +26,7 @@
                             {% if column_url.size > 0 %}
                                 <a class='js-mega-menu-title' href='{{ column_url }}'>{{ column_title }}</a>
                             {% else %}
-                            <span class='js-mega-menu-title' href='{{ column_url }}'>{{ column_title | escape }}</span>
+                            <a class='js-mega-menu-title no-link' href='#'>{{ column_title | escape }}</a>
                             {% endif %}
                             <button class='mega-menu__next-button js-mega-submenu-next-button' aria-expanded='true'>
                                 {% render 'icons-svg', icons: 'arrow-right' %}

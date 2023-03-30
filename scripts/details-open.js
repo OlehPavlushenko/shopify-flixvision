@@ -67,6 +67,11 @@ class DetailsOpen extends HTMLElement {
         if (this.detailsContainer.classList.contains("search-modal")) {
             this.detailsContainer.querySelector(".js-modal-input").value = ""
             this.detailsContainer
+                .querySelectorAll(".search-modal__suggested button")
+                .forEach((button) => {
+                    button.removeAttribute("disabled")
+                })
+            this.detailsContainer
                 .querySelector("header-search")
                 .removeAttribute("results")
             this.detailsContainer

@@ -221,7 +221,7 @@ class SectionHeader extends HTMLElement {
         this.setHeaderHeight()
 
         window
-            .matchMedia("(max-width: 990px)")
+            .matchMedia("(min-width: 320px)")
             .addEventListener("change", this.setHeaderHeight.bind(this))
 
         if (this.headerIsAlwaysSticky) {

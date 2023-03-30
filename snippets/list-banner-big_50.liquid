@@ -1,6 +1,6 @@
-<div class="featured-list-banners__box featured-list-banners__box--two-big-50">
+<div class="featured-list-banners__box featured-list-banners__box--big-50 big-banners">
     <div class="container">
-        <div class="row">
+        <div class="row featured-list-banners__scroll">
             {% for block in blocks %}
                 {% liquid
                     assign image = block.settings.item_img
@@ -16,7 +16,7 @@
                 %}
 
                 {% if image.size > 0 %}
-                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 card-list-banner__{{ block.type }}">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 card-list-banner__{{ block.type }}">
                         <div class="card-list-banner__item">
                             {% if link.size > 0 %}
                                 <a href="{{ link }}">

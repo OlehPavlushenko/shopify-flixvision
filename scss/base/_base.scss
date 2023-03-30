@@ -25,6 +25,34 @@ body {
     background-color: var(--color-body-background);
 }
 
+#page_preloader__bg {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    background: var(--color-body-background);
+    text-align: center;
+    z-index: 111111;
+    backdrop-filter: blur(0.4rem);
+	-webkit-backdrop-filter: blur(.4rem);
+    svg {
+        width: 5rem;
+        height: 5rem;
+        display: inline-block;
+        vertical-align: middle;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+    &.off {
+      visibility: hidden;
+      display: none;
+    }
+}
+
 #MainContent {
     flex: 1 0 auto;
 }
