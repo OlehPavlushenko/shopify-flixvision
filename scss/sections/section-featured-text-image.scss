@@ -2,6 +2,14 @@
     background-color: var(--background-color-text-image);
     padding-top: calc(.5*var(--pad-top-text-image));
     padding-bottom: calc(.5*var(--pad-top-text-image));
+    .page-width {
+        max-width: var(--width-text-image);
+    }
+    &.full_width--true {
+        .page-width {
+            max-width: 100%;
+        }
+    }
 }
 
 @media screen and (min-width: 750px) {

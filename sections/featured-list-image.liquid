@@ -34,37 +34,37 @@
 {%- endcapture -%}
 
 <link
-    rel='stylesheet'
-    href='{{ 'section-featured-list-image.css' | asset_url }}'
-    media='print'
+    rel="stylesheet"
+    href="{{ 'section-featured-list-image.css' | asset_url }}"
+    media="print"
     onload="this.media='all'"
 >
 <noscript>{{ 'section-featured-list-image.css' | asset_url | stylesheet_tag }}</noscript>
 
-<div class='list-image' style='{{- styles -}}'>
-    <div class='list-image__page-width page-width'>
-        <div class='list-image__box' tabindex='-1'>
+<div class="list-image" style="{{- styles -}}">
+    <div class="list-image__page-width page-width">
+        <div class="list-image__box" tabindex="-1">
             {% if image != blank %}
-                <picture class='list-image__media-placeholder'>
+                <picture class="list-image__media-placeholder">
                     <img
-                        srcset='{{- image_desktop -}}'
-                        src='{{ image | image_url: width: 790 }}'
-                        class='list-image__media--image-placeholder'
-                        sizes='100vw'
-                        width='{{ image.width }}'
-                        height='{{ image.width | divided_by: image.aspect_ratio }}'
-                        alt='{{ title | escape }}'
-                        loading='lazy'
+                        srcset="{{- image_desktop -}}"
+                        src="{{ image | image_url: width: 790 }}"
+                        class="list-image__media--image-placeholder"
+                        sizes="100vw"
+                        width="{{ image.width }}"
+                        height="{{ image.width | divided_by: image.aspect_ratio }}"
+                        alt="{{ title | escape }}"
+                        loading="lazy"
                     >
                 </picture>
             {% endif %}
             {% if title != blank %}
-                <h2 class='list-image__heading h3'>
+                <h2 class="list-image__heading h3">
                     {{ title | escape }}
                 </h2>
             {% endif %}
             {% if section.blocks.size > 0 %}
-                <div class='list-image__row'>
+                <div class="list-image__row">
                     {% for block in section.blocks %}
                         {% liquid
                             assign image_block = block.settings.image
@@ -102,25 +102,25 @@
                                         {%- if collection_block.width >= 2800 -%}{{ collection_block | image_url: width: 2800 }} 2800w{%- endif -%}
                                     {%- endcapture -%}
                                     <div
-                                        class='list-image__content list-image__content--{{ image_position_mobile }} count-item--{{ forloop.index }} list-image__limited--{{ limited_list_mobile }}'
+                                        class="list-image__content list-image__content--{{ image_position_mobile }} count-item--{{ forloop.index }} list-image__limited--{{ limited_list_mobile }}"
                                         {{ block.shopify_attributes }}
                                     >
-                                        <div class='list-image__list'>
+                                        <div class="list-image__list">
                                             <a
-                                                href='{{ collection.url }}'
-                                                class='list-image__link focus-inset'
-                                                tabindex='0'
+                                                href="{{ collection.url }}"
+                                                class="list-image__link focus-inset"
+                                                tabindex="0"
                                             >
-                                                <span class='visually-hidden'>
+                                                <span class="visually-hidden">
                                                     {{ collection.title | escape }}
                                                 </span>
                                             </a>
-                                            <div class='list-image__indent'>
-                                                <h3 class='list-image__title h5'>
+                                            <div class="list-image__indent">
+                                                <h3 class="list-image__title h5">
                                                     {{ collection.title | escape }}
                                                 </h3>
                                                 {% if collection.description != blank %}
-                                                    <div class='list-image__text'>
+                                                    <div class="list-image__text">
                                                         {{
                                                             collection.description
                                                             | strip_html
@@ -131,31 +131,31 @@
                                                 {% endif %}
                                             </div>
                                         </div>
-                                        <div class='list-image__image'>
+                                        <div class="list-image__image">
                                             {% if image_block == blank %}
-                                                <picture class='list-image__media'>
+                                                <picture class="list-image__media">
                                                     <img
-                                                        srcset='{{- collection_block -}}'
-                                                        src='{{ collection_block | image_url: width: 790 }}'
-                                                        class='list-image__media--image'
-                                                        sizes='100vw'
-                                                        width='{{ collection.featured_image.width }}'
-                                                        height='{{ collection.featured_image.width | divided_by: collection.featured_image.aspect_ratio }}'
-                                                        alt='{{ collection.title | escape }}'
-                                                        loading='lazy'
+                                                        srcset="{{- collection_block -}}"
+                                                        src="{{ collection_block | image_url: width: 790 }}"
+                                                        class="list-image__media--image"
+                                                        sizes="100vw"
+                                                        width="{{ collection.featured_image.width }}"
+                                                        height="{{ collection.featured_image.width | divided_by: collection.featured_image.aspect_ratio }}"
+                                                        alt="{{ collection.title | escape }}"
+                                                        loading="lazy"
                                                     >
                                                 </picture>
                                             {% else %}
-                                                <picture class='list-image__media'>
+                                                <picture class="list-image__media">
                                                     <img
-                                                        srcset='{{- image_block -}}'
-                                                        src='{{ image_block | image_url: width: 790 }}'
-                                                        class='list-image__media--image'
-                                                        sizes='100vw'
-                                                        alt='{{ collection.title | escape }}'
-                                                        width='{{ block.settings.image.width }}'
-                                                        height='{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}'
-                                                        loading='lazy'
+                                                        srcset="{{- image_block -}}"
+                                                        src="{{ image_block | image_url: width: 790 }}"
+                                                        class="list-image__media--image"
+                                                        sizes="100vw"
+                                                        alt="{{ collection.title | escape }}"
+                                                        width="{{ block.settings.image.width }}"
+                                                        height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
+                                                        loading="lazy"
                                                     >
                                                 </picture>
                                             {% endif %}
@@ -179,25 +179,25 @@
                                     {%- if product_block.width >= 2800 -%}{{ product_block | image_url: width: 2800 }} 2800w{%- endif -%}
                                 {%- endcapture -%}
                                 <div
-                                    class='list-image__content list-image__content--{{ image_position_mobile }} count-item--{{ forloop.index }} list-image__limited--{{ limited_list_mobile }}'
+                                    class="list-image__content list-image__content--{{ image_position_mobile }} count-item--{{ forloop.index }} list-image__limited--{{ limited_list_mobile }}"
                                     {{ block.shopify_attributes }}
                                 >
-                                    <div class='list-image__list'>
+                                    <div class="list-image__list">
                                         <a
-                                            href='{{ product.url | within: collection }}'
-                                            class='list-image__link focus-inset'
-                                            tabindex='0'
+                                            href="{{ product.url | within: collection }}"
+                                            class="list-image__link focus-inset"
+                                            tabindex="0"
                                         >
-                                            <span class='visually-hidden'>
+                                            <span class="visually-hidden">
                                                 {{ product.title | escape }}
                                             </span>
                                         </a>
-                                        <div class='list-image__indent'>
-                                            <h3 class='list-image__title h5'>
+                                        <div class="list-image__indent">
+                                            <h3 class="list-image__title h5">
                                                 {{ product.title | escape }}
                                             </h3>
                                             {% if product.description != blank %}
-                                                <div class='list-image__text'>
+                                                <div class="list-image__text">
                                                     {{
                                                         product.description
                                                         | strip_html
@@ -208,31 +208,31 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <div class='list-image__image'>
+                                    <div class="list-image__image">
                                         {% if image_block == blank %}
-                                            <picture class='list-image__media'>
+                                            <picture class="list-image__media">
                                                 <img
-                                                    srcset='{{- product_block -}}'
-                                                    src='{{ product_block | image_url: width: 790 }}'
-                                                    class='list-image__media--image'
-                                                    sizes='100vw'
-                                                    alt='{{ product.title | escape }}'
-                                                    width='{{ product.featured_media.width }}'
-                                                    height='{{ product.featured_media.width | divided_by: product.featured_media.aspect_ratio }}'
-                                                    loading='lazy'
+                                                    srcset="{{- product_block -}}"
+                                                    src="{{ product_block | image_url: width: 790 }}"
+                                                    class="list-image__media--image"
+                                                    sizes="100vw"
+                                                    alt="{{ product.title | escape }}"
+                                                    width="{{ product.featured_media.width }}"
+                                                    height="{{ product.featured_media.width | divided_by: product.featured_media.aspect_ratio }}"
+                                                    loading="lazy"
                                                 >
                                             </picture>
                                         {% else %}
-                                            <picture class='list-image__media'>
+                                            <picture class="list-image__media">
                                                 <img
-                                                    srcset='{{- image_block -}}'
-                                                    src='{{ image_block | image_url: width: 790 }}'
-                                                    class='list-image__media--image'
-                                                    sizes='100vw'
-                                                    width='{{ block.settings.image.width }}'
-                                                    height='{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}'
-                                                    alt='{{ product.title | escape }}'
-                                                    loading='lazy'
+                                                    srcset="{{- image_block -}}"
+                                                    src="{{ image_block | image_url: width: 790 }}"
+                                                    class="list-image__media--image"
+                                                    sizes="100vw"
+                                                    width="{{ block.settings.image.width }}"
+                                                    height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
+                                                    alt="{{ product.title | escape }}"
+                                                    loading="lazy"
                                                 >
                                             </picture>
                                         {% endif %}
@@ -240,42 +240,42 @@
                                 </div>
                             {%- when 'custom' -%}
                                 <div
-                                    class='list-image__content list-image__content--{{ image_position_mobile }} count-item--{{ forloop.index }} list-image__limited--{{ limited_list_mobile }}'
+                                    class="list-image__content list-image__content--{{ image_position_mobile }} count-item--{{ forloop.index }} list-image__limited--{{ limited_list_mobile }}"
                                     {{ block.shopify_attributes }}
                                 >
-                                    <div class='list-image__list'>
+                                    <div class="list-image__list">
                                         {% if link != blank %}
-                                            <a href='{{ link }}' class='list-image__link focus-inset' tabindex='0'>
-                                                <span class='visually-hidden'>
+                                            <a href="{{ link }}" class="list-image__link focus-inset" tabindex="0">
+                                                <span class="visually-hidden">
                                                     {{ title | escape }}
                                                 </span>
                                             </a>
                                         {% endif %}
                                         {% if title != blank %}
-                                            <div class='list-image__indent'>
-                                                <h3 class='list-image__title h5'>
+                                            <div class="list-image__indent">
+                                                <h3 class="list-image__title h5">
                                                     {{ title | escape }}
                                                 </h3>
                                                 {% if text != blank %}
-                                                    <div class='list-image__text'>
+                                                    <div class="list-image__text">
                                                         {{ text }}
                                                     </div>
                                                 {% endif %}
                                             </div>
                                         {% endif %}
                                     </div>
-                                    <div class='list-image__image'>
+                                    <div class="list-image__image">
                                         {% if image_block != blank %}
-                                            <picture class='list-image__media'>
+                                            <picture class="list-image__media">
                                                 <img
-                                                    srcset='{{- image_block -}}'
-                                                    src='{{ image_block | image_url: width: 790 }}'
-                                                    class='list-image__media--image'
-                                                    sizes='100vw'
-                                                    alt='{{ title | escape }}'
-                                                    width='{{ block.settings.image.width }}'
-                                                    height='{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}'
-                                                    loading='lazy'
+                                                    srcset="{{- image_block -}}"
+                                                    src="{{ image_block | image_url: width: 790 }}"
+                                                    class="list-image__media--image"
+                                                    sizes="100vw"
+                                                    alt="{{ title | escape }}"
+                                                    width="{{ block.settings.image.width }}"
+                                                    height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
+                                                    loading="lazy"
                                                 >
                                             </picture>
                                         {% endif %}

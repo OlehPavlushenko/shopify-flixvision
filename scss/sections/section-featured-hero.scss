@@ -1,9 +1,9 @@
 .featured-hero {
     display: flex;
     flex-direction: column;
-    min-height: initial;
     overflow: hidden;
     position: relative;
+    min-height: 375px;
 }
 
 .featured-hero .video-media {
@@ -18,7 +18,7 @@
     width: 100%; 
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .featured-hero .video-media { 
         position: absolute;
         left: 0;
@@ -39,7 +39,7 @@
     visibility: hidden;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .featured-hero {
         min-height: 45rem;
         flex-direction: row;
@@ -79,7 +79,7 @@
     object-fit: cover;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .featured-hero__media {
         position: absolute;
         height: 100%;
@@ -87,12 +87,11 @@
     }
 
     .banner--fill {
-        min-height: auto;
         height: calc(100vh - var(--announcement-bar-height) - var(--header-height));
     }
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (max-width: 767px) {
     .banner--fill .featured-hero__media {
         min-height: auto;
     }
@@ -120,7 +119,7 @@
     opacity: var(--background-color-opacity-hero);
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (max-width: 767px) {
     .featured-hero__content { 
         background-color: var(--background-color-block-hero);
     }
@@ -134,7 +133,7 @@
     background-color: var(--background-color-hero);
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .featured-hero__content--top-middle,
     .featured-hero__content--top-left,
     .featured-hero__content--top-right {
@@ -209,7 +208,7 @@
 }
 
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .featured-hero__box > * + .featured-hero__button {
         margin-top: 2.4rem;
     }
@@ -224,7 +223,7 @@
     margin-top: 1.6rem;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .featured-hero__box > * + .featured-hero__text {
         margin-top: 1.4rem;
     }
@@ -238,13 +237,13 @@
     margin-top: 0;
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (max-width: 767px) {
     .featured-hero__content .button {
         flex-grow: 1;
     }
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .featured-hero__box {
         padding: 6rem;
         width: calc(var(--text-width-block-hero) + 100px);

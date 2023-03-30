@@ -5,6 +5,11 @@
 .mobile-menu-tabs {
     display: none;
 }
+
+.no-link {
+    cursor: default;
+    pointer-events: none;
+}
 @media screen and (max-width: 991px) {
     .overflow-hidden {
         overflow: hidden;
@@ -128,7 +133,7 @@
   
     .mega-menu__next-button {
         padding: .4rem .8rem;
-        margin-left: auto;
+        margin-left: 20px;
     }
   
     .icon-arrow-right {
@@ -279,10 +284,35 @@
         padding: 0;
         margin: 0;
         list-style: none;
+        .mega-menu__list-item {
+            position: relative;
+            padding-right: 30px;
+            .mega-menu__list-badge {
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translate(0,-50%);
+            }
+        }
+    }
+    .simple-menu__list-item {
+        position: relative;
+        padding-right: 30px;
+        margin-bottom: 1rem;
+        .simple-menu__list-item-link {
+            margin-bottom: 0;
+        }
+        .simple-menu__list-badge {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(0,-50%);
+        }
     }
   
-    .mega-menu__list-badge {
-        font-size: 1.2rem;
+    .mega-menu__list-badge,
+    .simple-menu__list-badge {
+        font-size: 1.1rem;
         line-height: 1.4rem;
         text-decoration: none;
         margin-left: .4rem;

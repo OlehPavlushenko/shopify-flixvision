@@ -1,6 +1,7 @@
 {% liquid
     assign image = section.settings.image
     assign mobile_image = section.settings.image_mobile
+    assign full_width = section.settings.full_width
     assign video = section.settings.video
     assign video_title = section.settings.video_title
     assign video_type = section.settings.video_type
@@ -25,6 +26,7 @@
 
     assign pad_top = section.settings.padding_top
     assign pad_bot = section.settings.padding_bottom
+    assign width = section.settings.width
 %}
 
 {% capture styles %}
@@ -37,6 +39,7 @@
   --btn_bg_color_hover-text-image: {{ btn_bg_color_hover }};
   --pad-top-text-image: {{ pad_top }}px;
   --pad-bot-text-image: {{ pad_bot }}px;
+  --width-text-image: {{ width }}px;
 {% endcapture %}
 
 {%- assign styles = styles | strip_newlines -%}
@@ -58,7 +61,10 @@
 {{ 'section-featured-text-image.css' | asset_url | stylesheet_tag }}
 
 {% if heading != blank %}
-    <div class="featured-text-image {% if video != blank %}has-video{% endif %}" style="{{ styles }}">
+    <div
+        class="featured-text-image full_width--{{ full_width }} {% if video != blank %}has-video{% endif %}"
+        style="{{ styles }}"
+    >
         <div class="page-width">
             <div class="featured-text-image__grid {% if layout_position == 'text_first' %}featured-text-image__grid--reverse{% endif %} grid grid--1-col grid--2-col-tablet">
                 <div class="grid__item grid__item--media">
@@ -70,7 +76,7 @@
 
                             <img
                                 srcset="{{ image_desktop }}"
-                                src="{{ image_desktop | image_url: width: 1440 }}"
+                                src="{{ image | image_url: width: 1440 }}"
                                 class="featured-text-image__media--image"
                                 sizes="100vw"
                                 alt="{{ image.alt | escape }}"
@@ -140,6 +146,22 @@
             "type": "image_picker",
             "id": "image_mobile",
             "label": "Mobile image"
+        },
+        {
+            "type": "checkbox",
+            "id": "full_width",
+            "default": false,
+            "label": "Enabled full width?"
+        },
+        {
+            "type": "range",
+            "id": "width",
+            "min": 1000,
+            "max": 1800,
+            "step": 40,
+            "default": 1200,
+            "unit": "px",
+            "label": "Section Width"
         },
         {
             "type": "select",

@@ -30,6 +30,14 @@ details-open {
     transition: margin 0.3s ease, visibility 0.3s ease;
     visibility: hidden;
     margin-top: 2rem;
+    @media screen and (max-width: 749px) { 
+        position: fixed;
+        top: 0;
+        z-index: 99;
+        .search-modal__close-button {
+            display: block;
+        }
+    }
 }
 
 details-open.open .header__search .search-modal {
@@ -56,6 +64,11 @@ details-open .header__search .search-modal__overlay:after {
     transition: height 0.3s ease;
     z-index: -99;
     opacity: 0;
+    @media screen and (max-width: 749px) { 
+        z-index: 98;
+        top: 0;
+        position: fixed;
+    }
 }
 
 details-open.open .header__search .search-modal__overlay:after {
