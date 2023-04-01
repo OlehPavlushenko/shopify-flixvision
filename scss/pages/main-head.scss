@@ -1,0 +1,100 @@
+.main-head {
+    .head-alignment--left {
+        text-align: left;
+    }
+    
+    .head-alignment--right {
+        text-align: right;
+    }
+    
+    .head-alignment--center {
+        text-align: center;
+    }
+    color: var(--text-color-main-head);
+    .main-head__head {
+        position: relative;
+        overflow: hidden;
+        &::after{
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--overlay-color-main-head);
+            opacity: var(--overlay-color-opacity-main-head);
+        }
+        padding-top: calc(.7*var(--pad-top-main-head));
+        padding-bottom: calc(.7*var(--pad-bot-main-head));
+        
+        @media screen and (min-width: 991px) {
+            padding-top: var(--pad-top-main-head);
+            padding-bottom: var(--pad-bot-main-head);
+            min-height: 570px;
+        }
+        .main-head__media {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .main-head__media--image {
+            display: block;
+            max-width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;
+        }
+        .main-head__wrapper {
+            position: relative;
+            z-index: 1;
+            .row {
+                min-height: 350px;
+                @media screen and (min-width: 991px) {
+                    min-height: 570px;
+                }
+                > div {
+                    margin-top: auto;
+                }
+            }
+        }
+        .main-head__sub_heading {
+            color: var(--sub_title_color-main-head);
+            margin-bottom: -5px;
+        }
+        .main-head__heading {
+            color: var(--title-color-main-head);
+            text-transform: none;
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.collections-default {
+    padding-top: 0;
+    .collections-list__head {
+        
+        margin-bottom: 3rem;
+    }
+    .collections-default__wrapper {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .featured-list-collections__sub_heading {
+        margin-bottom: 4px;
+    }
+    .featured-list-collections__heading {
+        text-transform: none;
+    }
+    
+    @media screen and (max-width: 767px) {
+        
+    }
+}

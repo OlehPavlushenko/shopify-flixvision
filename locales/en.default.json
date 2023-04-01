@@ -15,6 +15,12 @@
         "whatsapp": "Whatsapp",
         "youtube": "Youtube"
       }
+    },
+    "pagination": {
+      "label": "Pagination",
+      "page": "Page {{ number }}",
+      "next": "Next page",
+      "previous": "Previous page"
     }
   },
   "accessibility": {
@@ -204,6 +210,41 @@
     },
     "collections": {
       "products": "Products"
+    },
+    "collection_template": {
+      "apply": "Apply",
+      "apply_filter": "Apply Filter",
+      "clear": "Clear",
+      "clear_all": "Clear all",
+      "clear_all_filters": "Clear all filters",
+      "empty": "No products found",
+      "from": "From",
+      "filter_and_sort": "Filter and sort",
+      "filter_by_label": "Filter by",
+      "filter_button": "Filter",
+      "filters_selected": {
+        "one": "{{ count }} selected",
+        "other": "{{ count }} selected"
+      },
+      "max_price": "The highest price is {{ price }}",
+      "product_count": {
+        "one": "Showing {{ product_count }} of {{ count }} product",
+        "other": "Showing {{ product_count }} of {{ count }} products"
+      },
+      "item_count_html": {
+        "one": "Showing {{ item_count }} of {{ count }} items",
+        "other": "Showing <span class='js-item-count'>{{ item_count }}<\/span> of <span class='js-total-item-count'>{{ count }}<\/span> items"
+      },
+      "load_more": "Load more",
+      "reset": "Reset",
+      "sort_button": "Sort",
+      "sort_by_label": "Sort by",
+      "title": "Collection",
+      "to": "To",
+      "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">clear all<\/a>",
+      "products": "Products",
+      "show_results": "Show results",
+      "close": "Close"
     }
 
   },

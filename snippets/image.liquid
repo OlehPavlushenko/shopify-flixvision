@@ -1,3 +1,4 @@
+{% assign alt = alt | default: image_box.src.alt | escape %}
 <img
     srcset="
         {% if image_box.width >= 475 %}{{ image_box | image_url: width: 475 }} 475w,{% endif %}
@@ -9,7 +10,7 @@
     "
     src="{{ image_box | image_url: width: 1440 }}"
     sizes="(min-width: 1440px) {{ '1440px' | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(100vw / 2)"
-    alt="{{ image_box.src.alt | escape }}"
+    alt="{{ alt }}"
     height="{{ image_box.height }}"
     width="{{ image_box.width }}"
     loading="lazy"
