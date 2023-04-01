@@ -1,5 +1,7 @@
 {% liquid
     assign image = section.settings.image
+    assign img_size = section.settings.img_size
+    assign full_width = section.settings.full_width
     assign title = section.settings.title
     assign limited_list_mobile = section.settings.limited_list
 
@@ -9,6 +11,7 @@
 
     assign pad_top = section.settings.padding_top
     assign pad_bot = section.settings.padding_bottom
+    assign width = section.settings.width
 %}
 
 {% capture styles %}
@@ -17,21 +20,10 @@
   --background-color-list-image: {{- background_color -}};
   --pad-top-list-image: {{ pad_top }}px;
   --pad-bot-list-image: {{ pad_bot }}px;
-
+  --width-list-image: {{ width }}px;
 {% endcapture %}
 
 {% assign styles = styles | strip_newlines %}
-
-{%- capture image_desktop -%}
-  {%- if image.width >= 375 -%}{{ image | image_url: width: 375 }} 375w,{%- endif -%}
-  {%- if image.width >= 550 -%}{{ image | image_url: width: 550 }} 550w,{%- endif -%}
-  {%- if image.width >= 750 -%}{{ image | image_url: width: 750 }} 750w,{%- endif -%}
-  {%- if image.width >= 1100 -%}{{ image | image_url: width: 1100 }} 1100w,{%- endif -%}
-  {%- if image.width >= 1500 -%}{{ image | image_url: width: 1500 }} 1500w,{%- endif -%}
-  {%- if image.width >= 1780 -%}{{ image | image_url: width: 1780 }} 1780w,{%- endif -%}
-  {%- if image.width >= 2000 -%}{{ image | image_url: width: 2000 }} 2000w,{%- endif -%}
-  {%- if image.width >= 2800 -%}{{ image | image_url: width: 2800 }} 2800w{%- endif -%}
-{%- endcapture -%}
 
 <link
     rel="stylesheet"
@@ -41,27 +33,18 @@
 >
 <noscript>{{ 'section-featured-list-image.css' | asset_url | stylesheet_tag }}</noscript>
 
-<div class="list-image" style="{{- styles -}}">
+<div class="list-image full_width--{{ full_width }}" style="{{- styles -}}">
     <div class="list-image__page-width page-width">
         <div class="list-image__box" tabindex="-1">
             {% if image != blank %}
-                <picture class="list-image__media-placeholder">
-                    <img
-                        srcset="{{- image_desktop -}}"
-                        src="{{ image | image_url: width: 790 }}"
-                        class="list-image__media--image-placeholder"
-                        sizes="100vw"
-                        width="{{ image.width }}"
-                        height="{{ image.width | divided_by: image.aspect_ratio }}"
-                        alt="{{ title | escape }}"
-                        loading="lazy"
-                    >
+                <picture class="list-image__media-placeholder media__size--{{ img_size }} media">
+                    {% render 'image', image_box: image, image_box_class: 'list-image__media--image-placeholder', alt: title | escape %}
                 </picture>
             {% endif %}
             {% if title != blank %}
-                <h2 class="list-image__heading h3">
+                <h3 class="list-image__heading h2">
                     {{ title | escape }}
-                </h2>
+                </h3>
             {% endif %}
             {% if section.blocks.size > 0 %}
                 <div class="list-image__row">
@@ -75,32 +58,11 @@
                             assign limited_caption = block.settings.limited_caption
                         %}
 
-                        {% capture image_block %}
-                            {%- if image_block.width >= 375 -%}{{ image_block | image_url: width: 375 }} 375w,{%- endif -%}
-                            {%- if image_block.width >= 550 -%}{{ image_block | image_url: width: 550 }} 550w,{%- endif -%}
-                            {%- if image_block.width >= 750 -%}{{ image_block | image_url: width: 750 }} 750w,{%- endif -%}
-                            {%- if image_block.width >= 1100 -%}{{ image_block | image_url: width: 1100 }} 1100w,{%- endif -%}
-                            {%- if image_block.width >= 1500 -%}{{ image_block | image_url: width: 1500 }} 1500w,{%- endif -%}
-                            {%- if image_block.width >= 1780 -%}{{ image_block | image_url: width: 1780 }} 1780w,{%- endif -%}
-                            {%- if image_block.width >= 2000 -%}{{ image_block | image_url: width: 2000 }} 2000w,{%- endif -%}
-                            {%- if image_block.width >= 2800 -%}{{ image_block | image_url: width: 2800 }} 2800w{%- endif -%}
-                        {% endcapture %}
-
                         {% case block.type %}
                             {%- when 'collection' -%}
                                 {% assign collection_list = block.settings.collection_list %}
                                 {% for collection in collection_list.products limit: 1 %}
                                     {% assign collection_block = collection.featured_image %}
-                                    {%- capture collection_block -%}
-                                        {%- if collection_block.width >= 375 -%}{{ collection_block | image_url: width: 375 }} 375w,{%- endif -%}
-                                        {%- if collection_block.width >= 550 -%}{{ collection_block | image_url: width: 550 }} 550w,{%- endif -%}
-                                        {%- if collection_block.width >= 750 -%}{{ collection_block | image_url: width: 750 }} 750w,{%- endif -%}
-                                        {%- if collection_block.width >= 1100 -%}{{ collection_block | image_url: width: 1100 }} 1100w,{%- endif -%}
-                                        {%- if collection_block.width >= 1500 -%}{{ collection_block | image_url: width: 1500 }} 1500w,{%- endif -%}
-                                        {%- if collection_block.width >= 1780 -%}{{ collection_block | image_url: width: 1780 }} 1780w,{%- endif -%}
-                                        {%- if collection_block.width >= 2000 -%}{{ collection_block | image_url: width: 2000 }} 2000w,{%- endif -%}
-                                        {%- if collection_block.width >= 2800 -%}{{ collection_block | image_url: width: 2800 }} 2800w{%- endif -%}
-                                    {%- endcapture -%}
                                     <div
                                         class="list-image__content list-image__content--{{ image_position_mobile }} count-item--{{ forloop.index }} list-image__limited--{{ limited_list_mobile }}"
                                         {{ block.shopify_attributes }}
@@ -133,30 +95,22 @@
                                         </div>
                                         <div class="list-image__image">
                                             {% if image_block == blank %}
-                                                <picture class="list-image__media">
-                                                    <img
-                                                        srcset="{{- collection_block -}}"
-                                                        src="{{ collection_block | image_url: width: 790 }}"
-                                                        class="list-image__media--image"
-                                                        sizes="100vw"
-                                                        width="{{ collection.featured_image.width }}"
-                                                        height="{{ collection.featured_image.width | divided_by: collection.featured_image.aspect_ratio }}"
-                                                        alt="{{ collection.title | escape }}"
-                                                        loading="lazy"
-                                                    >
+                                                <picture class="list-image__media media__size--{{ img_size }} media">
+                                                    {%
+                                                        render 'image',
+                                                        image_box: collection_block,
+                                                        image_box_class: 'list-image__media--image',
+                                                        alt: collection.title | escape
+                                                    %}
                                                 </picture>
                                             {% else %}
-                                                <picture class="list-image__media">
-                                                    <img
-                                                        srcset="{{- image_block -}}"
-                                                        src="{{ image_block | image_url: width: 790 }}"
-                                                        class="list-image__media--image"
-                                                        sizes="100vw"
-                                                        alt="{{ collection.title | escape }}"
-                                                        width="{{ block.settings.image.width }}"
-                                                        height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
-                                                        loading="lazy"
-                                                    >
+                                                <picture class="list-image__media media__size--{{ img_size }} media">
+                                                    {%
+                                                        render 'image',
+                                                        image_box: image_block,
+                                                        image_box_class: 'list-image__media--image',
+                                                        alt: collection.title | escape
+                                                    %}
                                                 </picture>
                                             {% endif %}
                                         </div>
@@ -168,16 +122,6 @@
                                     assign product_block = product.featured_media
                                 %}
 
-                                {%- capture product_block -%}
-                                    {%- if product_block.width >= 375 -%}{{ product_block | image_url: width: 375 }} 375w,{%- endif -%}
-                                    {%- if product_block.width >= 550 -%}{{ product_block | image_url: width: 550 }} 550w,{%- endif -%}
-                                    {%- if product_block.width >= 750 -%}{{ product_block | image_url: width: 750 }} 750w,{%- endif -%}
-                                    {%- if product_block.width >= 1100 -%}{{ product_block | image_url: width: 1100 }} 1100w,{%- endif -%}
-                                    {%- if product_block.width >= 1500 -%}{{ product_block | image_url: width: 1500 }} 1500w,{%- endif -%}
-                                    {%- if product_block.width >= 1780 -%}{{ product_block | image_url: width: 1780 }} 1780w,{%- endif -%}
-                                    {%- if product_block.width >= 2000 -%}{{ product_block | image_url: width: 2000 }} 2000w,{%- endif -%}
-                                    {%- if product_block.width >= 2800 -%}{{ product_block | image_url: width: 2800 }} 2800w{%- endif -%}
-                                {%- endcapture -%}
                                 <div
                                     class="list-image__content list-image__content--{{ image_position_mobile }} count-item--{{ forloop.index }} list-image__limited--{{ limited_list_mobile }}"
                                     {{ block.shopify_attributes }}
@@ -210,30 +154,22 @@
                                     </div>
                                     <div class="list-image__image">
                                         {% if image_block == blank %}
-                                            <picture class="list-image__media">
-                                                <img
-                                                    srcset="{{- product_block -}}"
-                                                    src="{{ product_block | image_url: width: 790 }}"
-                                                    class="list-image__media--image"
-                                                    sizes="100vw"
-                                                    alt="{{ product.title | escape }}"
-                                                    width="{{ product.featured_media.width }}"
-                                                    height="{{ product.featured_media.width | divided_by: product.featured_media.aspect_ratio }}"
-                                                    loading="lazy"
-                                                >
+                                            <picture class="list-image__media media__size--{{ img_size }} media">
+                                                {%
+                                                    render 'image',
+                                                    image_box: product_block,
+                                                    image_box_class: 'list-image__media--image',
+                                                    alt: product.title | escape
+                                                %}
                                             </picture>
                                         {% else %}
-                                            <picture class="list-image__media">
-                                                <img
-                                                    srcset="{{- image_block -}}"
-                                                    src="{{ image_block | image_url: width: 790 }}"
-                                                    class="list-image__media--image"
-                                                    sizes="100vw"
-                                                    width="{{ block.settings.image.width }}"
-                                                    height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
-                                                    alt="{{ product.title | escape }}"
-                                                    loading="lazy"
-                                                >
+                                            <picture class="list-image__media media__size--{{ img_size }} media">
+                                                {%
+                                                    render 'image',
+                                                    image_box: image_block,
+                                                    image_box_class: 'list-image__media--image',
+                                                    alt: product.title | escape
+                                                %}
                                             </picture>
                                         {% endif %}
                                     </div>
@@ -266,17 +202,13 @@
                                     </div>
                                     <div class="list-image__image">
                                         {% if image_block != blank %}
-                                            <picture class="list-image__media">
-                                                <img
-                                                    srcset="{{- image_block -}}"
-                                                    src="{{ image_block | image_url: width: 790 }}"
-                                                    class="list-image__media--image"
-                                                    sizes="100vw"
-                                                    alt="{{ title | escape }}"
-                                                    width="{{ block.settings.image.width }}"
-                                                    height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
-                                                    loading="lazy"
-                                                >
+                                            <picture class="list-image__media media__size--{{ img_size }} media">
+                                                {%
+                                                    render 'image',
+                                                    image_box: image_block,
+                                                    image_box_class: 'list-image__media--image',
+                                                    alt: title | escape
+                                                %}
                                             </picture>
                                         {% endif %}
                                     </div>
@@ -306,6 +238,45 @@
             "type": "image_picker",
             "id": "image",
             "label": "Image placeholder"
+        },
+        {
+            "type": "select",
+            "id": "img_size",
+            "label": "Image size for mobile",
+            "options": [
+                {
+                    "value": "cropped",
+                    "label": "Cropped"
+                },
+                {
+                    "value": "landscape",
+                    "label": "Landscape"
+                },
+                {
+                    "value": "square",
+                    "label": "Square"
+                },
+                {
+                    "value": "portrait",
+                    "label": "Portrait"
+                }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "id": "full_width",
+            "default": false,
+            "label": "Enabled full width?"
+        },
+        {
+            "type": "range",
+            "id": "width",
+            "min": 1000,
+            "max": 1800,
+            "step": 40,
+            "default": 1200,
+            "unit": "px",
+            "label": "Section Width"
         },
         {
             "type": "range",

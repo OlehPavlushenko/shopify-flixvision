@@ -1,20 +1,28 @@
-
-.list-image__page-width {
-    margin: 0 auto;
-    overflow: hidden;
-    width: 100%;
-}
-
 .list-image {
     background-color: var(--background-color-list-image);
-    padding-top: calc(.5*var(--pad-top-list-image));
-    padding-bottom: calc(.5*var(--pad-top-list-image));
+    padding-top: calc(.7*var(--pad-top-list-image));
+    padding-bottom: calc(.7*var(--pad-top-list-image));
+    .page-width {
+        max-width: var(--width-list-image);
+    }
+    &.full_width--true {
+        .page-width {
+            max-width: 100%;
+        }
+    }
 }
 
 @media screen and (min-width: 750px) {
     .list-image {
         padding-top: var(--pad-top-list-image);
         padding-bottom: var(--pad-bot-list-image);
+    }
+    .list-image__page-width {
+        overflow: hidden;
+        padding-top: 15px;
+        margin-top: -15px;
+        padding-bottom: 15px;
+        margin-bottom: -15px;
     }
 }
 
@@ -53,12 +61,16 @@
     height: 100%;
     width: 100%;
     object-fit: cover;
-    transition: transform .4s ease;
+    transition: all .3s ease;
     background-color: var(--color-tertiary);
 }
 
 .list-image__box {
     position: relative;
+    @media screen and (min-width: 750px) {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
 }
 
 .list-image__content {
@@ -74,10 +86,9 @@
         width: calc(50% - 5rem);
     }
 
-    .list-image__content:hover .list-image__indent, 
-    .list-image__content:focus .list-image__indent {
-        border-bottom-width: 2px;
-        padding-bottom: 2rem;
+    .list-image__content:hover .list-image__indent h3
+    {
+        color: var(--color-primary);
     }
 
     .list-image__content:hover .list-image__image,
@@ -97,6 +108,10 @@
 .list-image__content:hover img,
 .list-image__content:focus img {
     transform: scale(1.1);
+}
+
+.list-image__content:hover .list-image__image {
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
 @media screen and (max-width: 749px) { 
@@ -206,12 +221,14 @@
 
     .list-image__content--right .list-image__image {
         order: 2;
-        padding-left: 2rem;
+        margin-left: 2rem;
+        width: calc(50% - 2rem);
     }
 
     .list-image__content--left .list-image__image {
         order: 1;
-        padding-right: 2rem;
+        margin-right: 2rem;
+        width: calc(50% - 2rem);
     }
 }
 
@@ -220,6 +237,7 @@
     position: relative;
     padding-right: 1.4rem;
     color: var(--text-color-list-image);
+    text-transform: none;
 }
 
 .list-image__title .icon-arrow {
