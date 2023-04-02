@@ -2,6 +2,7 @@
     assign text = section.settings.text
     assign text_alignment = section.settings.text_alignment
     assign width = section.settings.width
+    assign full_width = section.settings.full_width
 
     assign background_color = section.settings.bg_color | default: 'transparent'
     assign text_color = section.settings.text_color | default: 'inherit'
@@ -24,7 +25,10 @@
 {{ 'section-featured-large-text.css' | asset_url | stylesheet_tag }}
 
 {% if text != blank %}
-    <div class="featured-large-text text-alignment--{{ text_alignment }}" style="{{ styles }}">
+    <div
+        class="featured-large-text text-alignment--{{ text_alignment }} full_width--{{ full_width }}"
+        style="{{ styles }}"
+    >
         <div class="page-width container">
             <div class="featured-large-text__blocks">
                 <div class="featured-large-text__text">{{ text }}</div>
@@ -64,6 +68,12 @@
             ],
             "default": "center",
             "label": "Text alignment"
+        },
+        {
+            "type": "checkbox",
+            "id": "full_width",
+            "default": false,
+            "label": "Enabled full width?"
         },
         {
             "type": "range",

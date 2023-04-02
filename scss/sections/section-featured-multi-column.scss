@@ -2,6 +2,11 @@
     background-color: var(--background-color-multi-column);
     padding-top: calc(.5*var(--pad-top-multi-column));
     padding-bottom: calc(.5*var(--pad-top-multi-column));
+    &.full_width--true {
+        .page-width {
+            max-width: 100%;
+        }
+    }
 } 
 
 @media screen and (min-width: 750px) {

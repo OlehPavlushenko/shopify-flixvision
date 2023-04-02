@@ -15,6 +15,7 @@
     assign pad_top_copyright = section.settings.padding_top_copyright
     assign pad_bot_copyright = section.settings.padding_bottom_copyright
     assign blocks = section.blocks
+    assign full_width = section.settings.full_width
 %}
 
 {% capture styles %}
@@ -40,7 +41,7 @@
 {{ 'section-footer.css' | asset_url | stylesheet_tag }}
 {{ 'component-footer.css' | asset_url | stylesheet_tag }}
 
-<footer class="footer" style="{{ styles }}">
+<footer class="footer full_width--{{ full_width }}" style="{{ styles }}">
     {% if blocks.size > 0 %}
         <div class="footer__row">
             <div class="footer__wrapper page-width">
@@ -495,6 +496,12 @@
             "id": "social_icon_color",
             "default": "#fff",
             "label": "Social icon color"
+        },
+        {
+            "type": "checkbox",
+            "id": "full_width",
+            "default": false,
+            "label": "Enabled full width?"
         },
         {
             "type": "range",

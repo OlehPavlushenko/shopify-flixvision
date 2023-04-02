@@ -1,3 +1,8 @@
+.full_width--true {
+    .page-width {
+        max-width: 100%;
+    }
+}
 .footer__row {
     color: var(--footer-text-color);
     background-color: var(--footer-background-color);

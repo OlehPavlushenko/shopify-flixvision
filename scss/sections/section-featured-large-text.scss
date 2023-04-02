@@ -4,6 +4,11 @@
     .page-width {
         max-width: var(--width-large-text);
     }
+    &.full_width--true {
+        .container {
+            max-width: 100%;
+        }
+    }
 }
 
 .featured-large-text__blocks {
