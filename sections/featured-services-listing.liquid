@@ -4,6 +4,7 @@
     assign text_color = section.settings.text_color | default: 'inherit'
     assign pad_top = section.settings.padding_top
     assign pad_bot = section.settings.padding_bottom
+    assign full_width = section.settings.full_width
 %}
 
 {% capture styles %}
@@ -18,7 +19,7 @@
 
 {{ 'section-featured-multi-column.css' | asset_url | stylesheet_tag }}
 
-<div class="featured-multi-column" style="{{ styles }}">
+<div class="featured-multi-column full_width--{{ full_width }}" style="{{ styles }}">
     <div class="featured-multi-column-width page-width">
         <ul class="featured-multi-column-list grid--3-col-desktop" role="list">
             <li class="featured-multi-column-list__item grid__item">
@@ -71,6 +72,12 @@
             "type": "color",
             "id": "text_color",
             "label": "Caption color"
+        },
+        {
+            "type": "checkbox",
+            "id": "full_width",
+            "default": false,
+            "label": "Enabled full width?"
         },
         {
             "type": "range",

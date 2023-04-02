@@ -14,6 +14,7 @@
     assign badge_color = section.settings.badge_color
     assign blocks = section.blocks
     assign settings = section.settings
+    assign full_width = section.settings.full_width
 
     if enable_transparent_header == true and template == 'index'
         assign transparent_header = ' transparent-header'
@@ -41,7 +42,7 @@
 
 <sticky-header
     id="shopify-section-header"
-    class="header-wrapper sticky-header-{{ enable_sticky_header }} {{ style_header }} {{ transparent_header }}"
+    class="header-wrapper full_width--{{ full_width }} sticky-header-{{ enable_sticky_header }} {{ style_header }} {{ transparent_header }}"
     style="{{- styles -}}"
     data-sticky-type="always"
 >
@@ -195,6 +196,12 @@
         {
             "type": "header",
             "content": "Global Settings"
+        },
+        {
+            "type": "checkbox",
+            "id": "full_width",
+            "default": false,
+            "label": "Enabled full width?"
         },
         {
             "type": "checkbox",
