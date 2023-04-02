@@ -1,0 +1,171 @@
+{% assign image = section.settings.image %}
+{% assign mobile_image = section.settings.image_mobile %}
+{% assign heading = section.settings.heading %}
+{% assign text = section.settings.text %}
+{% assign collage = section.settings.layout_collage %}
+{% assign post = section.settings.post_per_page %}
+
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+{% if current_tags %}
+          {% assign tags_link = canonical_url %}
+          {% assign tags_link = tags_link | split: 'tagged/' %}
+          {% assign tags_link = tags_link[1] %}
+          {% if canonical_url contains '?blog=oldest' %}
+            {% assign tags_link = tags_link | split: '?blog=oldest' %}
+            {% assign tags_name = tags_link[0] | split: '+' %}
+          {% else %}
+            {% assign tags_name = tags_link | split: '+' %}
+          {% endif %}
+          {% unless canonical_url contains 'state-' %}
+            <ul class="main-blog_tags">
+                <li>
+                    <span class="main-blog__title-filter">
+                        {{ 'blogs.filter' | t }}:
+                    </span>
+                </li>
+            {%- for tag_name in tags_name -%}
+              <li>
+                {% assign links_current = '' %}
+                {% if canonical_url contains '?blog=oldest' %}
+                  {% assign links_tag = tags_link[0] | split: '+' %}
+                {% else %}
+                  {% assign links_tag = tags_link | split: '+' %}
+                {% endif %}
+                {%- for link_tag in links_tag -%}
+                  {% if link_tag != tag_name %}
+                    {% assign links_current = links_current | append: link_tag | append: '+' %}
+                  {% endif %}
+                {%- endfor -%}
+                {% assign links_current = links_current | split: '+' %}
+                {% assign url_current = '' %}
+
+                {%- for link_current in links_current -%}
+                  {% if forloop.last == true %}
+                    {% assign url_current = url_current | append: link_current %}
+                  {% else %}
+                    {% assign url_current = url_current | append: link_current | append: '+' %}
+                  {% endif %}
+                {%- endfor -%}
+                {% if canonical_url contains '?blog=oldest' %}
+                  {% if url_current != blank %}
+                    <a class="main-blog__tags--link utility" href="{{ blog.url }}/tagged/{{ url_current }}?blog=oldest">
+                  {% else %}
+                    <a class="main-blog__tags--link utility" href="{{ blog.url }}?blog=oldest">
+                  {% endif %}
+                {% else %}
+                  {% if url_current != blank %}
+                    <a class="main-blog__tags--link utility" href="{{ blog.url }}/tagged/{{ url_current }}">
+                  {% else %}
+                    <a class="main-blog__tags--link utility" href="{{ blog.url }}">
+                  {% endif %}
+                {% endif %}  
+                {% assign filter_name = tag_name | camelcase %}
+                {% for tag in blog.tags %}
+                  {% assign compare_name = tag | camelcase %}
+                  {% if filter_name contains compare_name %}
+                    {{ tag }}
+                  {% endif %}
+                {%- endfor -%}
+                {% render 'icons-svg', icons: 'close' %}
+
+                </a> 
+              </li>
+            {%- endfor -%}
+            <li>
+              {% if canonical_url contains '?blog=oldest' %}
+                <a class="main-blog__tags--clear utility" href="{{ blog.url }}?blog=oldest">{{ 'blogs.clear' | t }}</a>
+              {% else %}
+                <a class="main-blog__tags--clear utility" href="{{ blog.url }}">{{ 'blogs.clear' | t }}</a>
+              {% endif %}
+              
+            </li>
+            </ul>
+          {% endunless %}
+        {% endif %}
+<div class="main-blog js-blog-post-grid">
+    {%- paginate blog.articles by post -%}
+        <div
+            id="main-blog-post-grid"
+            class="blog-articles{% if collage %} blog-articles__layout--{{ collage }}{% endif %}"
+            data-id="{{ section.id }}"
+        >
+            {%- for article in blog.articles -%}
+                <div class="blog-articles__article article article-{{ forloop.index }}">
+                    {%- render 'article-card', article: article, show_image: true -%}
+                </div>
+            {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+            {%- liquid
+                assign current_count = paginate.current_offset | plus: post
+                if current_count > blog.articles_count
+                    assign current_count = blog.articles_count
+                endif
+            -%}
+            <blog-load-more class="main-blog__load-more-container js-blog-load-more-container">
+                {% render 'pagination', paginate: paginate %}
+                <p class="main-blog__product-count" role="status">
+                    {{ 'blogs.post_count_html' | t: post_count: current_count, count: blog.articles_count }}
+                </p>
+                <button type="button" class="main-blog__load-more-button js-blog-load-more">
+                    {{ 'blogs.load_more' | t }}
+                </button>
+            </blog-load-more>
+        {%- endif -%}
+    {%- endpaginate -%}
+</div>
+
+<script src="{{ 'main-blog.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+    "name": "t:sections.main-blog.name",
+    "tag": "section",
+    "class": "spaced-section",
+    "settings": [
+        {
+            "type": "range",
+            "id": "post_per_page",
+            "min": 1,
+            "max": 24,
+            "step": 1,
+            "default": 12,
+            "label": "t:sections.main-blog.settings.post_per_page.label"
+        },
+        {
+            "type": "checkbox",
+            "id": "layout_collage",
+            "label": "t:sections.main-blog.settings.layout_collage.label",
+            "default": false
+        }
+    ],
+    "blocks": [
+        {
+            "type": "title",
+            "name": "t:sections.main-blog.blocks.title.name",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "checkbox",
+                    "id": "show_caption",
+                    "default": false,
+                    "label": "t:sections.main-blog.blocks.title.settings.show_caption.label"
+                }
+            ]
+        },
+        {
+            "type": "link",
+            "name": "t:sections.main-blog.blocks.link.name",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "label",
+                    "default": "Read More",
+                    "label": "t:sections.main-blog.blocks.link.settings.text.label"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

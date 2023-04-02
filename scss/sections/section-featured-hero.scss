@@ -194,6 +194,11 @@
 .featured-hero__box > * + .featured-hero__button {
     margin-top: 2.4rem;
 }
+.featured-hero__button {
+    .button {
+        margin-bottom: 1rem;
+    }
+}
 
 .featured-hero__button a.button--primary {
     background-color: var(--btn_bg_color-text-image);

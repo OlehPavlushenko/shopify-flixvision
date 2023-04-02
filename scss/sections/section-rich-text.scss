@@ -1,75 +1,138 @@
 .rich-text {
-  margin: auto;
-  max-width: 110rem;
-  text-align: center;
-  /* 1.5rem margin on left & right */
-  width: calc(100% - 3rem);
-}
+    background: var(--background-color-rich-text);
+    padding-top: calc(.7*var(--pad-top-rich-text));
+    padding-bottom: calc(.7*var(--pad-bot-rich-text));
+    color: var(--text-color-rich-text);
+    .container {
+        max-width: var(--width-rich-text);
+    }
+    &.full_width--true {
+        .container {
+            max-width: 100%;
+        }
+    }
+    h2 {
+        color: var(--title-color-rich-text);
+    }
+    .button {
+        text-decoration: none;
+        background-color: var(--btn_bg_color-rich-text);
+        border-color: var(--btn_bg_color-rich-text);
+        color: var(--btn_link_color_hover-rich-text);
+        &.button--outline {
+            background: none;
+            color: var(--btn_bg_color-rich-text);;
+        }
+    }
+    
+    .button:hover,
+    .button:focus {
+        background-color: var(--btn_bg_color_hover-rich-text);
+        border-color: var(--btn_bg_color_hover-rich-text);
+        color: var(--btn_link_color_hover-rich-text);
+    }
+    .button--outline.button:hover,
+    .button--outline.button:focus{
+        background: none;
+        color: var(--btn_bg_color_hover-rich-text);
+    }
+    &.text-alignment--left {
+        .rich-text__blocks {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-.rich-text.rich-text--full-width {
-  max-width: initial;
-  width: 100%;
-}
-
-.rich-text__blocks {
-  margin: auto;
-  /* 2.5rem margin on left & right */
-  width: calc(100% - 5rem);
-}
-
-.rich-text__blocks * {
-  overflow-wrap: break-word;
-}
-
-.rich-text--full-width .rich-text__blocks {
-  /* 4rem (1.5rem + 2.5rem) margin on left & right */
-  width: calc(100% - 8rem);
-}
-
-.rich-text:not(.rich-text--full-width),
-.rich-text--full-width.color-background-1 {
-  margin-top: 5rem;
-  margin-bottom: 5rem;
-}
-
-.rich-text:not(.color-background-1) {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+        h2 {
+            flex-basis: 35%;
+            padding-right: 3rem;
+        }
+       
+        .rich-text__text {
+            flex-basis: 50%;
+            padding-right: 3rem;
+            margin-top: 0;
+            p:last-child {
+                margin-bottom: 0;
+            }
+        }
+        .button {
+            flex-basis: auto;
+            margin-top: 0;
+            margin-left: auto;
+        }
+        @media (min-width: 991px) and (max-width: 1199px) {
+            h2 {
+                flex-basis: 40%;
+                padding-right: 2rem;
+            }
+        
+            .rich-text__text {
+                flex-basis: 40%;
+                padding-right: 2rem;
+                margin-top: 0;
+                p:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+        @media (min-width: 768px) and (max-width: 990px) {
+            h2 {
+                flex-basis: 50%;
+                padding-right: 2rem;
+            }
+        
+            .rich-text__text {
+                flex-basis: 50%;
+                padding-right: 2rem;
+                margin-top: 0;
+                p:last-child {
+                    margin-bottom: 0;
+                }
+            }
+            .button { 
+                margin-left: 0;
+                margin-top: 2rem;
+            }
+        }
+        @media (min-width: 320px) and (max-width: 767px) { 
+            .rich-text__blocks {
+                display: block;
+            }
+            .rich-text__text { 
+                margin-top: 1rem;
+            }
+            .button { 
+                margin-left: 0;
+                margin-top: 2rem;
+            }
+        }
+    }
 }
 
 @media screen and (min-width: 750px) {
-  .rich-text {
-    /* 5rem margin on left & right */
-    width: calc(100% - 10rem);
-  }
-
-  .rich-text__blocks {
-    max-width: 50rem;
-  }
-
-  .rich-text--full-width .rich-text__blocks {
-    /* 7.5rem (5rem + 2.5rem) margin on left & right */
-    width: calc(100% - 15rem);
-  }
+    .rich-text {
+        padding-top: var(--pad-top-rich-text);
+        padding-bottom: var(--pad-bot-rich-text);
+    }
 }
 
-@media screen and (min-width: 990px) {
-  .rich-text__blocks {
-    max-width: 78rem;
-  }
+.rich-text__blocks * {
+    overflow-wrap: break-word;
 }
 
 /* Blocks */
 
 .rich-text__blocks > * {
-  margin-top: 0;
-  margin-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-transform: none;
 }
 
 .rich-text__blocks > * + * {
-  margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .rich-text__blocks > * + a {
-  margin-top: 3rem;
+    margin-top: 2rem;
 }

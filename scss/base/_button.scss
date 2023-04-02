@@ -12,7 +12,7 @@ button,
     border: .1rem solid var(--color-primary-button-background);
     text-decoration: none;
     transition-duration: 0.4s;
-    transition-property: background-color, border-color;
+    transition-property: background-color, border-color, color;
     cursor: pointer;
 }
 
