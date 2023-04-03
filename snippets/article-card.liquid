@@ -19,93 +19,55 @@
             {%- case block.type -%}
                 {%- when 'title' -%}
                     <header class="article-card__header" {{ block.shopify_attributes }}>
-                        {%- if block.settings.show_caption -%}
-                            {% for tag in article.tags %}
-                                {% if tag contains 'state-' %}
-                                    {% assign tag_state = 'true' %}
-                                    <span class="article-card__caption article-card__caption--state caption">
-                                        {{- tag | replace: 'state-', '' | append: ', USA' -}}
-                                    </span>
-                                {% endif %}
-                            {%- endfor -%}
-                            {% if tag_state != 'true' %}
-                                <span class="article-card__caption caption">{{ article.author -}}</span>
-                            {% endif %}
-                        {%- endif -%}
                         <h2 class="article-card__title h5" id="Article-{{ article.id }}">
                             <a href="{{ article.url }}">{{ article.title | escape }}</a>
                         </h2>
-                        {%- if block.settings.show_date -%}
-                            <span class="circle-divider caption-with-letter-spacing">
-                                {{- article.published_at | time_tag: format: 'month_year' -}}
-                            </span>
-                        {%- endif -%}
                     </header>
                     {%- if show_image == true and article.image -%}
                         <div class="article-card__image-wrapper">
-                            <div class="article-card__image media media--landscape">
-                                <a href="{{ article.url }}" class="article-card__image--link"></a>
-                                <img
-                                    srcset="
-                                        {%- if article.image.src.width >= 165 -%}{{ article.image.src | image_url: width: 165 }} 165w,{%- endif -%}
-                                        {%- if article.image.src.width >= 360 -%}{{ article.image.src | image_url: width: 360 }} 360w,{%- endif -%}
-                                        {%- if article.image.src.width >= 533 -%}{{ article.image.src | image_url: width: 533 }} 533w,{%- endif -%}
-                                        {%- if article.image.src.width >= 720 -%}{{ article.image.src | image_url: width: 720 }} 720w,{%- endif -%}
-                                        {%- if article.image.src.width >= 940 -%}{{ article.image.src | image_url: width: 940 }} 940w,{%- endif -%}
-                                        {%- if article.image.src.width >= 1066 -%}{{ article.image.src | image_url: width: 1066 }} 1066w{%- endif -%}
-                                    "
-                                    src="{{ article.image.src | image_url: width: 533 }}"
-                                    sizes="(min-width: 1100px) 535px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)"
-                                    alt="{{ article.image.src.alt | escape }}"
-                                    width="{{ article.image.width }}"
-                                    height="{{ article.image.height }}"
-                                    loading="lazy"
-                                    class="motion-reduce"
+                            {%- if block.settings.show_date -%}
+                                <time
+                                    class="article-card__time"
+                                    datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M' }}"
                                 >
-                            </div>
+                                    <span>{{ article.published_at | date: '%d' -}}</span>
+                                    {{ article.published_at | date: '%b' -}}
+                                </time>
+                            {%- endif -%}
+                            <picture class="article-card__media media__size--{{ img_size }} media">
+                                <a href="{{ article.url }}" class="article-card__image--link"
+                                    ><span class="hidden">{{ article.title | escape }}</span></a
+                                >
+
+                                {% render 'image', image_box: article.image, image_box_class: 'article-card____image' %}
+                            </picture>
                         </div>
                     {%- endif -%}
                     {%- if article.tags.size > 0 -%}
                         <ul class="article-template__tags">
-                            {% assign tags_link = canonical_url %}
-                            {% if tags_link contains 'tagged' %}
-                                {% if tags_link contains 'state-' %}
-                                    {% assign tags_link_state = 'false' %}
-                                {% else %}
-                                    {% assign tags_link = tags_link | split: 'tagged/' %}
-                                {% endif %}
-                                {% if canonical_url contains '?blog=oldest' %}
-                                    {% if tags_link_state != 'false' %}
-                                        {% assign tags_link = tags_link[1] | split: '?blog=oldest' %}
-                                        {% assign tags_current = tags_current | append: tags_link[0] | append: '+' %}
-                                    {% endif %}
-                                {% else %}
-                                    {% if tags_link_state != 'false' %}
-                                        {% assign tags_current = tags_current | append: tags_link[1] | append: '+' %}
-                                    {% endif %}
-                                {% endif %}
-                            {% endif %}
+                            {%- liquid
+                                assign tags_link = canonical_url
+                                if tags_link contains 'tagged'
+                                    assign tags_link = tags_link | split: 'tagged/'
+
+                                    if tags_link_state != 'false'
+                                        assign tags_current = tags_current | append: tags_link[1] | append: '+'
+                                    endif
+                                endif
+                            %}
+
                             {% for tag in article.tags %}
                                 {% unless tag contains 'state-' %}
                                     <li class="article-template__tags--item">
                                         {% if current_tags contains tag %}
                                             <span class="article-template__tags--link utility current">{{ tag }}</span>
                                         {% else %}
-                                            {% if canonical_url contains '?blog=oldest' %}
-                                                <a
-                                                    class="article-template__tags--link utility"
-                                                    href="{{ blog.url }}/tagged/{{ tags_current }}{{ tag | handle }}?blog=oldest"
-                                                >
-                                                    {{- tag -}}
-                                                </a>
-                                            {% else %}
-                                                <a
-                                                    class="article-template__tags--link utility"
-                                                    href="{{ blog.url }}/tagged/{{ tags_current }}{{ tag | handle }}"
-                                                >
-                                                    {{- tag -}}
-                                                </a>
-                                            {% endif %}
+                                            <a
+                                                class="article-template__tags--link utility"
+                                                href="{{ blog.url }}/tagged/{{ tags_current }}{{ tag | handle }}"
+                                            >
+                                                {{- tag -}}
+                                            </a>
                                         {% endif %}
                                     </li>
                                 {% endunless %}
@@ -132,7 +94,10 @@
                                 {{ block.settings.label }}
                             </a>
                             {%- if article.comments_count > 0 and blog.comments_enabled? -%}
-                                <span>{{ 'blogs.article.comments' | t: count: article.comments_count }}</span>
+                                <span class="article-card__comments">
+                                    {%- render 'icons-svg', icons: 'bubble' -%}
+                                    {{- article.comments_count -}}
+                                </span>
                             {%- endif -%}
                         </div>
                     </div>

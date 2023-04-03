@@ -1,17 +1,47 @@
+.main-blog-page {
+    color: var(--text-color-main-blog);
+    background: var(--background-color-main-blog);
+    padding-top: calc(.7*var(--pad-top-main-blog));
+    padding-bottom: calc(.7*var(--pad-bot-main-blog));
+    @media screen and (min-width: 991px) {
+        padding-top: var(--pad-top-main-blog);
+        padding-bottom: var(--pad-bot-main-blog);
+    }
+    &.content--left {
+        text-align: left;
+    }
+    
+    &.content--right {
+        text-align: right;
+        .article-template__tags {
+            justify-content: flex-end;
+        }
+        .article-template__tags--item {
+            margin-left: .8rem;
+        }
+    }
+    
+    &.content--center {
+        text-align: center;
+        .article-template__tags {
+            justify-content: center;
+        }
+        .article-template__tags--item {
+            margin-right: .4rem;
+            margin-left: .4rem;
+        }
+    }
+}
+
 .blog-articles {
-  margin: 0 auto;
-  padding: 5rem 2.4rem 3.5rem;
-  max-width: 1440px;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   position: relative;
   z-index: 1;
-}
-
-@media all and (max-width: 749px) {
-  .blog-articles {
-    padding: 5rem 2rem 3.5rem;
+  margin: 0 -1rem -3rem;
+  @media screen and (min-width: 991px) {
+    margin: 0 -1.5rem -3rem;
   }
 }
 
@@ -20,6 +50,13 @@
   max-width: 25%;
   flex-grow: 1;
   flex-shrink: 0;
+}
+
+.article-card {
+    padding: 0 1rem 3rem;
+    @media screen and (min-width: 991px) {
+        padding: 0 1.5rem 3rem;
+    }
 }
 
 .blog-articles__layout--true .blog-articles__article {
@@ -75,9 +112,15 @@
     width: 100%;
   }
 }
+@media all and (max-width: 475px) {
+    .blog-articles__article {
+        width: 100%!important;
+        max-width: 100%!important;
+      }
+}
 
 .main-blog_tags {
-  margin: .6rem 0 0 0;
+  margin: .6rem 0 3rem 0;
   padding: 0;
   list-style: none;
   display: flex;
@@ -94,7 +137,7 @@
 
 .main-blog__tags--link {
   border: 1px solid var(--color-secondary-button-background);
-  border-radius: var(--button-border-radius);
+  //border-radius: var(--button-border-radius);
   background: none;
   padding: .4rem 1rem .6rem;
   display: inline-block;
@@ -139,12 +182,26 @@
 }
 
 .article-card {
-  padding: 0 1rem 6.5rem 1rem;
+  //padding: 0 1rem 5rem 1rem;
 }
 
-@media all and (max-width: 749px) {
-  .article-card {
-    padding: 0 1rem 3rem 1rem;
+.list-collections-box {
+  display: flex;
+  align-items: center;
+}
+.list-collections-count {
+  order: 1;
+  margin-bottom: 0;
+  padding-right: 30px;
+}
+.pagination-wrapper {
+  order: 2;
+  margin-left: auto;
+  .pagination__item--next {
+      padding-left: 0;
+  }
+  .pagination__item--prev {
+      padding-right: 0;
   }
 }
 
@@ -172,21 +229,41 @@
 
 .article-card__image-wrapper {
   margin-bottom: .8rem;
+  position: relative;
+}
+.article-card__time {
+    position: absolute;
+    left: 2rem;
+    bottom: 2rem;
+    padding: .4rem;
+    min-width: 40px;
+    background: var(--background-color-main-blog);
+    color: var(--link-color-main-blog);
+    z-index: 2;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    text-align: center;
+    border-radius: var(--button-border-radius);
+    span {
+        display: block;
+        font-weight: bold;
+        font-size: 1.6rem;
+        line-height: 2rem;
+        margin-bottom: -.4rem;
+    }
 }
 
 .article-card__caption {
-  font-family: var(--america-mono-font);
   margin-bottom: .5rem;
   text-transform: capitalize;
-  display: none;
-  font-weight: 500;
+  font-size: 1.4rem;
 }
 
 .article-card__caption--state {
   display: block;
 }
 
-@media all and (max-width: 749px) {
+@media all and (max-width: 767px) {
   .article-card__caption {
     display: block;
     font-size: 1.2rem;
@@ -211,7 +288,7 @@
   color: var(--color-link-text);
 }
 
-@media all and (max-width: 749px) {
+@media all and (max-width: 767px) {
   .article-card__title a {
     font-size: 1.6rem;
     line-height: 2rem;
@@ -238,7 +315,7 @@
   flex: 0 0 auto;
 }
 
-@media all and (max-width: 749px) {
+@media all and (max-width: 767px) {
   .article-template__tags--item {
     margin-right: .5rem;
   }
@@ -252,7 +329,7 @@
   color: var(--color-secondary-button-background);
   display: inline-block;
   text-transform: capitalize;
-  border-radius: var(--button-border-radius);
+  //border-radius: var(--button-border-radius);
 }
 
 .article-template__tags--link:hover {
@@ -278,7 +355,7 @@
   border: none;
 }
 
-@media all and (max-width: 749px) {
+@media all and (max-width: 767px) {
   .article-card__link {
    font-size: 1.4rem;
   }
@@ -293,12 +370,7 @@
   height: auto;
 }
 
-.main-blog .pagination-wrapper {
-  margin: 0 0 5rem 0;
-}
-
 .main-blog__load-more-container {
-  margin: 3.5rem 0 5em;
   text-align: center;
   display: block;
 }
@@ -311,19 +383,56 @@
 }
 
 .main-blog__load-more-button {
-  border-color: var(--color-button-ink);
-  border-radius: 0;
-  color: var(--color-black);
-  font-family: var(--floyd-font);
-  font-size: 1.4rem;
-  font-weight: 300;
-  letter-spacing: -0.01em;
-  line-height: 1.4;
-  padding: 1rem 2rem;
+  border-color: var(--color-input);
+  background: none;
+  color: var(--color-input);
+  order: 2;
+  margin-left: auto;
+  &:hover {
+    border-color: var(--color-input);
+    background: var(--color-input);
+    color: var(--color-primary-button-text);
+  }
 }
 
-@media all and (min-width: 749px) {
-  .main-blog__load-more-container {
-    margin: 0 0 5rem 0;
+.main-blog__box {
+  display: flex;
+  align-items: center;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  @media screen and (max-width: 767px) {
+    display: block;
+    text-align: center;
   }
+}
+.main-blog__product-count {
+  order: 1;
+  margin-bottom: 0;
+  padding-right: 30px;
+  @media screen and (max-width: 767px) {
+    padding-right: 0;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+  }
+}
+.pagination-wrapper {
+  order: 2;
+  margin-left: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  .pagination__item--next {
+      padding-left: 0;
+  }
+  .pagination__item--prev {
+      padding-right: 0;
+  }
+}
+
+.article-card__comments {
+    border-left: 1px solid var(--color-input);
+    padding-left: 8px;
+    margin-left: 8px;
+    svg {
+        vertical-align: bottom;
+    }
 }
