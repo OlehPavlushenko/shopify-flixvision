@@ -273,6 +273,60 @@
         "name": "Apps"
       }
     },
+    "main-blog": {
+      "name": "Blog posts",
+      "settings": {
+        "header": {
+          "content": "Blog post card"
+        },
+        "show_image": {
+          "label": "Show featured image",
+          "info": "For best results, use an image with a 2:3 aspect ratio."
+        },
+        "paragraph": {
+          "content": "To change excerpts, edit your [blog posts.](https:\/\/help.shopify.com\/en\/manual\/online-store\/blogs\/writing-blogs#display-an-excerpt-from-a-blog-post)"
+        },
+        "image": {
+          "label": "Desktop Image"
+        },
+        "image_2": {
+          "label": "Mobile Image"
+        },
+        "heading": {
+          "label": "Title"
+        },
+        "text": {
+          "label": "Text"
+        },
+        "post_per_page": {
+          "label": "Post per page"
+        },
+        "layout_collage": {
+          "label": "Use layout Collage"
+        }
+      },
+      "blocks": {
+        "title": {
+          "name": "Title",
+          "settings": {
+            "show_date": {
+              "label": "Show date"
+            },
+            "show_caption": {
+              "label": "Show caption"
+            }
+          }
+        },
+        "link": {
+          "name": "Link",
+          "settings": {
+            "text": {
+              "label": "Label of link"
+            }
+          }
+        }
+      }
+    },
     "newsletter-popup": {
       "name": "Newsletter popup",
       "settings": {
