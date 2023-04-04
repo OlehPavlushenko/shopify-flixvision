@@ -60,6 +60,22 @@
     text-align: center;
 }
 
+div.swiper-pagination {
+    position: relative;
+    margin-top: 5rem;
+    .swiper-pagination-bullet {
+        width: 12px;
+        height: 12px;
+        background: var(--color-light);
+        box-shadow: inset 0 0 5px rgba(0,0,0, .3);
+        margin: 0 6px;
+    }
+    .swiper-pagination-bullet-active {
+        background: var(--color-primary);
+        box-shadow: inherit;
+    }
+}
+
 /* Only desktop viewport animation */
 @media screen and (min-width: 990px) {
     .section-fade {

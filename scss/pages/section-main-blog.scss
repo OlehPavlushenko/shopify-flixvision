@@ -333,8 +333,8 @@
 }
 
 .article-template__tags--link:hover {
-  color: var(--color-subdued);
-  border-color: var(--color-subdued);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 .article-template__tags--link.current {
@@ -418,8 +418,8 @@
 .pagination-wrapper {
   order: 2;
   margin-left: auto;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin-top: 0!important;
+  margin-bottom: 0!important;
   .pagination__item--next {
       padding-left: 0;
   }
