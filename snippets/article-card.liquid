@@ -25,15 +25,13 @@
                     </header>
                     {%- if show_image == true and article.image -%}
                         <div class="article-card__image-wrapper">
-                            {%- if block.settings.show_date -%}
-                                <time
-                                    class="article-card__time"
-                                    datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M' }}"
-                                >
-                                    <span>{{ article.published_at | date: '%d' -}}</span>
-                                    {{ article.published_at | date: '%b' -}}
-                                </time>
-                            {%- endif -%}
+                            <time
+                                class="article-card__time"
+                                datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M' }}"
+                            >
+                                <span>{{ article.published_at | date: '%d' -}}</span>
+                                {{ article.published_at | date: '%b' -}}
+                            </time>
                             <picture class="article-card__media media__size--{{ img_size }} media">
                                 <a href="{{ article.url }}" class="article-card__image--link"
                                     ><span class="hidden">{{ article.title | escape }}</span></a

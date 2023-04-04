@@ -247,6 +247,7 @@ class VariantPills extends HTMLElement {
         this.swatchSecond = this.querySelector(".js-swatch-second")
         this.swatchThird = this.querySelector(".js-swatch-third")
         this.swatchElement = this.querySelectorAll(".js-swatch-element")
+
         this.price = this.closest(".js-card-product-wrapper").querySelector(
             ".js-card-product-price"
         )
@@ -946,3 +947,50 @@ class PromoPopup extends HTMLElement {
 }
 
 customElements.define("promo-popup", PromoPopup)
+
+class SwiperSection extends HTMLElement {
+    constructor() {
+        super()
+
+        this.countDesktop =
+            parseInt(this.querySelector(".js-swiper").dataset.countDesktop) || 3
+        this.countMobile =
+            parseInt(this.querySelector(".js-swiper").dataset.countMobile) || 2
+        this.swiper = null
+        this.init()
+    }
+
+    init() {
+        const sectionSwiper = new Swiper(".js-swiper", {
+            // Optional parameters
+            loop: false,
+            slidesPerView: this.countMobile,
+            spaceBetween: 20,
+            // Navigation arrows
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            breakpoints: {
+                550: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                991: {
+                    slidesPerView: 2,
+                    spaceBetween: 30,
+                },
+                1200: {
+                    slidesPerView: this.countDesktop,
+                    spaceBetween: 30,
+                },
+            },
+        })
+    }
+}
+
+customElements.define("swiper-section", SwiperSection)
