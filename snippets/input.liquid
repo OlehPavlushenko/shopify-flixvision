@@ -53,12 +53,12 @@
 %}
 
 <{{ tag_name }}
-    class='input-label{% if custom_container_classes %} {{ custom_container_classes }}{% endif %}'
+    class="input-label{% if custom_container_classes %} {{ custom_container_classes }}{% endif %}"
 >
     <label
-        class='label'
+        class="label"
         {% if input_id %}
-            for='{{ input_id }}'
+            for="{{ input_id }}"
         {% endif %}
     >
         {{ input_label }}
@@ -66,50 +66,56 @@
 
     {% if use_textarea %}
         <textarea
-            name='{{ input_name }}'
+            rows="5"
+            name="{{ input_name }}"
             {% if input_id %}
-                id='{{ input_id }}'
-            {% endif %}
-            placeholder='{{ input_placeholder }}'
-            {% if custom_input_classes %}
-                class='{{ custom_input_classes }}'
-            {% endif %}
-        ></textarea>
-    {% else %}
-        <input
-            type='{{ input_type }}'
-            {% if input_id %}
-                id='{{ input_id }}'
-            {% endif %}
-            name='{{ input_name }}'
-            placeholder='{{ input_placeholder }}'
-            {% if value %}
-                value='{{ value }}'
-            {% endif %}
-            autocorrect='off'
-            {% if autocapitalize %}
-                autocapitalize='{{ autocapitalize }}'
-            {% else %}
-                autocapitalize='off'
-            {% endif %}
-            {% if autocomplete %}
-                autocomplete='{{ autocomplete }}'
-            {% endif %}
-            {% if custom_input_classes %}
-                class='{{ custom_input_classes }}'
-            {% endif %}
-            {% if input_type == 'email' %}
-                pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'
+                id="{{ input_id }}"
             {% endif %}
             {% if is_required %}
-                aria-required='true' required
+                aria-required="true" required
+            {% endif %}
+            placeholder="{{ input_placeholder }}"
+            {% if custom_input_classes %}
+                class="{{ custom_input_classes }}"
+            {% endif %}
+        >{% if value %}
+        {{ value }}
+    {% endif %}</textarea>
+    {% else %}
+        <input
+            type="{{ input_type }}"
+            {% if input_id %}
+                id="{{ input_id }}"
+            {% endif %}
+            name="{{ input_name }}"
+            placeholder="{{ input_placeholder }}"
+            {% if value %}
+                value="{{ value }}"
+            {% endif %}
+            autocorrect="off"
+            {% if autocapitalize %}
+                autocapitalize="{{ autocapitalize }}"
+            {% else %}
+                autocapitalize="off"
+            {% endif %}
+            {% if autocomplete %}
+                autocomplete="{{ autocomplete }}"
+            {% endif %}
+            {% if custom_input_classes %}
+                class="{{ custom_input_classes }}"
+            {% endif %}
+            {% if input_type == 'email' %}
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            {% endif %}
+            {% if is_required %}
+                aria-required="true" required
             {% endif %}
             {% if form %}
                 {% if form.errors %}
-                    aria-invalid='true'
-                    aria-describedby='{{ form.id }}-error'
+                    aria-invalid="true"
+                    aria-describedby="{{ form.id }}-error"
                 {% elsif form.posted_successfully? %}
-                    aria-describedby='{{ form.id }}-success'
+                    aria-describedby="{{ form.id }}-success"
                 {% endif %}
             {% endif %}
         >

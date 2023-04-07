@@ -1,5 +1,6 @@
 button,
-.button {
+.button,
+.shopify-challenge__button {
     font-size: 1.5rem;
     line-height: 1.2;
     display: inline-flex;
@@ -18,7 +19,8 @@ button,
 
 /* TODO: create variables with background and color */
 button:hover,
-.button:hover {
+.button:hover,
+.shopify-challenge__button:hover {
     color: var(--color-primary-button-text);
     border-color: var(--color-primary-button-background-hover);
     background-color: var(--color-primary-button-background-hover);
@@ -39,12 +41,22 @@ button[aria-disabled="true"],
     background-color: var(--color-secondary-button-background);
     color: var(--color-secondary-button-text);
     border: .1rem solid var(--color-secondary-button-background);
+    &.button--outline {
+        background: none;
+        border: .1rem solid var(--color-secondary-button-background);
+        color: var(--color-secondary-button-background);
+    }
 }
 
 .button--secondary:hover {
     color: var(--color-secondary-button-text);
     background-color: var(--color-secondary-button-background-hover);
     border-color: var(--color-secondary-button-background-hover);
+    &.button--outline {
+        background: none;
+        border: .1rem solid var(--color-secondary-button-background-hover);
+        color: var(--color-secondary-button-background-hover);
+    }
 }
 
 .button--secondary:disabled,
@@ -86,4 +98,8 @@ button[aria-disabled="true"],
         font-size: 1.8rem;
         padding: 1.4rem 2.8rem;
     }
+}
+
+.shopify-challenge__button {
+    margin-top: 3rem!important;
 }
