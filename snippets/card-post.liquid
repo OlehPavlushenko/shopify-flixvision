@@ -1,27 +1,27 @@
 {% if article and article != empty %}
     <article
-        class="card-post{% if article.image == blank or show_image == false %} card-post--no-image{% endif %}"
+        class="card-post article-card--{{ fill }}{% if article.image == blank or show_image == false %} card-post--no-image{% endif %}"
         aria-labelledby="Article-{{ article.id }}"
     >
-        <div class="card-post__info">
-            {%- if article.image -%}
-                <div class="card-post__image-wrapper">
-                    <time
-                        class="card-post__time"
-                        datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M' }}"
+        {%- if article.image -%}
+            <div class="card-post__image-wrapper">
+                <time
+                    class="card-post__time"
+                    datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M' }}"
+                >
+                    <span>{{ article.published_at | date: '%d' -}}</span>
+                    {{ article.published_at | date: '%b' -}}
+                </time>
+                <picture class="card-post__media media__size--{{ img_size }} media">
+                    <a href="{{ article.url }}" class="card-post__image--link"
+                        ><span class="hidden">{{ article.title | escape }}</span></a
                     >
-                        <span>{{ article.published_at | date: '%d' -}}</span>
-                        {{ article.published_at | date: '%b' -}}
-                    </time>
-                    <picture class="card-post__media media__size--{{ img_size }} media">
-                        <a href="{{ article.url }}" class="card-post__image--link"
-                            ><span class="hidden">{{ article.title | escape }}</span></a
-                        >
 
-                        {% render 'image', image_box: article.image, image_box_class: 'card-post____image' %}
-                    </picture>
-                </div>
-            {%- endif -%}
+                    {% render 'image', image_box: article.image, image_box_class: 'card-post____image' %}
+                </picture>
+            </div>
+        {%- endif -%}
+        <div class="card-post__info">
             {%- if article.tags.size > 0 -%}
                 <ul class="card-post-template__tags">
                     {%- liquid
