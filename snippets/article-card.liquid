@@ -11,7 +11,7 @@
 {% endcomment %}
 
 <article
-    class="article-card{% if article.image == blank or show_image == false %} article-card--no-image{% endif %}"
+    class="article-card{% if article.image == blank %} article-card--no-image{% endif %}"
     aria-labelledby="Article-{{ article.id }}"
 >
     <div class="article-card__info">

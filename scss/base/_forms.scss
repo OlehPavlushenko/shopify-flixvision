@@ -315,9 +315,12 @@ option:hover {
     color: var(--color-error);
 }
 
+.form__message {
+    margin-bottom: 2rem;
+}
+
 .success-message {
     background-color: var(--color-success);
-    border-radius: .3rem;
     color: var(--color-light);
     font-size: 1.4rem;
     letter-spacing: -0.01em;
@@ -326,6 +329,7 @@ option:hover {
     padding: .5rem 1rem;
     display: flex;
     align-items: center;
+    font-weight: 400;
 }
 
 .success-message img {
@@ -334,9 +338,9 @@ option:hover {
 }
 
 .error-message {
-    background-color: var(--color-error);
-    border-radius: .3rem;
-    color: var(--color-light);
+    background-color: var(--color-input-background);
+    border: .1rem solid var(--color-input-border);
+    color: var(--color-error);
     font-size: 1.4rem;
     letter-spacing: -0.01em;
     line-height: 1.4;
@@ -344,6 +348,7 @@ option:hover {
     padding: .5rem 1rem;
     display: flex;
     align-items: center;
+    font-weight: 400;
 }
 
 .error-message--input {
@@ -372,4 +377,16 @@ fieldset {
     border: none;
     padding: 0;
     margin: 0;
+}
+
+.form-status {
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.form__message .icon, .customer .form__message svg {
+    flex-shrink: 0;
+    height: 1.3rem;
+    margin-right: 0.5rem;
+    width: 1.3rem;
 }

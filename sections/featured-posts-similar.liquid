@@ -1,9 +1,10 @@
 {% liquid
-    assign blocks = section.blocks
     assign sub_heading = section.settings.sub_heading
     assign heading = section.settings.title
     assign text = section.settings.text
     assign head_alignment = section.settings.head_alignment
+    assign fill_image = section.settings.fill_image
+    assign button = section.settings.button
     assign full_width = section.settings.full_width
 
     assign columns_desktop = section.settings.columns_desktop
@@ -42,7 +43,27 @@
 {{ 'section-featured-posts.css' | asset_url | stylesheet_tag }}
 {{ 'component-card-post.css' | asset_url | stylesheet_tag }}
 
-{% if blocks.size > 0 %}
+{% liquid
+    assign counter = 1
+    for tag in article.tags
+        assign skip_articles = article.handle | split: '.....'
+        for related_article in blog.articles
+            if related_article.tags contains tag
+                if counter > 8
+                    break
+                endif
+
+                unless skip_articles contains related_article.handle
+                    assign temp = related_article.handle | split: '.....'
+                    assign counter = counter | plus: 1
+                    assign similarItems = similarItems | append: temp | append: ' '
+                endunless
+            endif
+        endfor
+    endfor
+    assign similarItems = similarItems | split: ' ' | uniq | join: ' '
+%}
+{% if similarItems.size > 0 %}
     <div
         class="featured-posts full_width--{{ full_width }}"
         style="{{ styles }}"
@@ -78,21 +99,17 @@
                     data-count-mobile="{{ columns_mobile }}"
                 >
                     <ul class="featured-posts__list columns__desktop--{{ columns_desktop }} columns__mobile--{{ columns_mobile }} swiper-wrapper">
-                        {%- for block in blocks -%}
-                            {% liquid
-                                assign post = block.settings.post
-                                assign fill_image = block.settings.fill_image
-                                assign button = block.settings.button
-                            %}
-
-                            <li class="featured-posts__item swiper-slide">
-                                {% render 'card-post',
-                                    article: post,
-                                    img_size: img_size,
-                                    fill: fill_image,
-                                    label: button
-                                %}
-                            </li>
+                        {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
+                            {% if similarItems contains article.handle %}
+                                <li class="featured-posts__item swiper-slide">
+                                    {% render 'card-post',
+                                        article: article,
+                                        img_size: img_size,
+                                        fill: fill_image,
+                                        label: button
+                                    %}
+                                </li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                     <div class="swiper-button-prev">{% render 'icons-svg', icons: 'prev' %}</div>
@@ -106,8 +123,8 @@
 
 {% schema %}
 {
-    "name": "Featured Posts",
-    "class": "index-section",
+    "name": "Featured Posts Similar",
+    "class": "posts-section",
     "tag": "section",
     "settings": [
         {
@@ -148,6 +165,20 @@
             "label": "Head Text alignment"
         },
         {
+            "type": "blog",
+            "id": "blog",
+            "label": "Blog"
+        },
+        {
+            "type": "range",
+            "id": "post_limit",
+            "min": 2,
+            "max": 8,
+            "step": 1,
+            "default": 3,
+            "label": "Posts Limit"
+        },
+        {
             "type": "range",
             "id": "columns_desktop",
             "min": 2,
@@ -171,6 +202,18 @@
                     "label": "2 columns"
                 }
             ]
+        },
+        {
+            "type": "checkbox",
+            "id": "fill_image",
+            "default": false,
+            "label": "Fill Image"
+        },
+        {
+            "type": "text",
+            "id": "button",
+            "default": "Read More",
+            "label": "Button"
         },
         {
             "type": "paragraph",
@@ -279,35 +322,11 @@
             "default": 30
         }
     ],
-    "blocks": [
-        {
-            "name": "Post ",
-            "type": "post",
-            "settings": [
-                {
-                    "type": "article",
-                    "id": "post",
-                    "label": "Post"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "fill_image",
-                    "default": false,
-                    "label": "Fill Image"
-                },
-                {
-                    "type": "text",
-                    "id": "button",
-                    "default": "Read More",
-                    "label": "Button"
-                }
-            ]
-        }
-    ],
     "presets": [
         {
-            "name": "Featured Posts"
+            "name": "Featured Posts Similar"
         }
-    ]
+    ],
+    "templates": ["article"]
 }
 {% endschema %}
