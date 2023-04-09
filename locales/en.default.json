@@ -30,6 +30,7 @@
     "menu_open": "Menu open",
     "menu_close": "Menu close",
     "close": "Close",
+    "error": "Error",
     "unit_price_separator": "per",
     "link_messages": {
       "new_window": "Opens in a new window.",
@@ -81,11 +82,13 @@
     "login_page": {
       "cancel": "Cancel",
       "create_account": "Create account",
-      "email": "Email",
+      "email": "Enter your email",
       "forgot_password": "Forgot your password?",
+      "email_error": "Email can't be blank.",
+      "password_error": "Password can't be blank.",
       "guest_continue": "Continue",
       "guest_title": "Continue as a guest",
-      "password": "Password",
+      "password": "Enter your password",
       "title": "Login",
       "sign_in": "Sign in",
       "submit": "Submit"
@@ -125,16 +128,19 @@
       "none": "You haven't placed any orders yet."
     },
     "recover_password": {
-      "title": "Reset your password",
-      "subtext": "We will send you an email to reset your password",
-      "success": "We've sent you an email with a link to update your password."
+      "title": "Forgot password?",
+      "title_success": "Password Reset Email Sent",
+      "subtext": "Enter your email and we will send you an email to reset your password.",
+      "success": "We've sent a link to reset your password to your email. Follow the directions in the email to reset your password.",
+      "success_2": "If you can't find the email check your spam folder."
     },
     "register": {
       "title": "Create account",
       "first_name": "First name",
       "last_name": "Last name",
-      "email": "Email",
-      "password": "Password",
+      "email": "Enter your email",
+      "password": "Enter your password",
+      "mailing_list": "Sign up for our mailing list",
       "submit": "Create"
     },
     "reset_password": {

@@ -258,7 +258,6 @@
                                     <small id="CommentForm-author-error">
                                         <span class="form__message error-message error-message--input">
                                             {%- render 'icon-error' -%}
-                                            {{- 'blogs.article.name' | t }}
                                             {{ form.errors.messages.author }}.</span
                                         >
                                     </small>
@@ -292,7 +291,6 @@
                                     <small id="CommentForm-email-error">
                                         <span class="form__message error-message error-message--input">
                                             {%- render 'icon-error' -%}
-                                            {{- 'blogs.article.email' | t }}
                                             {{ form.errors.messages.email }}.</span
                                         >
                                     </small>
@@ -327,7 +325,6 @@
                                 <small id="CommentForm-body-error">
                                     <span class="form__message error-message error-message--input">
                                         {%- render 'icon-error' -%}
-                                        {{- 'blogs.article.message' | t }}
                                         {{ form.errors.messages.body }}.</span
                                     >
                                 </small>
