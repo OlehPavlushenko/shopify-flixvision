@@ -7,7 +7,7 @@
 @media screen and (min-width: 768px) {
   .customer:not(.account, .order, .addresses) {
     max-width: 55.8rem;
-    padding: 0 3rem;
+    padding: 0 2rem;
     margin: 6rem auto 6rem;
   }
 }
@@ -624,9 +624,6 @@ button.floating-form__background {
 }
 
 @media only screen and (min-width: 768px) {
-  .customer .field {
-    margin-top: 0;
-  }
   .floating-form__field-group {
     width: 100%;
     display: flex;
@@ -852,7 +849,7 @@ label[for='AddressProvinceNew'] {
 
 @media only screen and (min-width: 768px) {
   .account__nav {
-    background-color: #1C355E;
+    background-color: var(--color-dark);
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;
@@ -863,17 +860,21 @@ label[for='AddressProvinceNew'] {
   }
 
   .account__nav__heading {
-    color: var(--color-reverse);
+    color: var(--color-white);
     margin-bottom: 0;
   }
 
   .account__nav__linklist {
     flex-flow: column nowrap;
-    gap: 4.4rem;
+    gap: 2rem;
   }
 
   .account__nav__link {
     color: var(--color-white);
+    &:hover, &.active-page {
+      text-decoration: underline;
+      color: var(--color-white);
+    }
   }
 }
 
@@ -888,15 +889,17 @@ label[for='AddressProvinceNew'] {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 2.7rem;
+  padding-bottom: 2.7rem;
+  border-bottom: 1px solid var(--color-input);
+  h1 {
+    margin-bottom: 0;
+  }
 }
 
 .account__main__header > * {
   flex-basis: 35%;
 }
 
-.account__main__header .button {
-  padding: 2rem 2.4rem;
-}
 
 @media only screen and (min-width: 768px) {
   .account__main {
@@ -906,10 +909,6 @@ label[for='AddressProvinceNew'] {
 
   .account__main__header > * {
     flex-basis: auto;
-  }
-
-  .account__main__header .button {
-    padding: 2rem 4rem;
   }
 }
 
@@ -938,8 +937,10 @@ label[for='AddressProvinceNew'] {
 .account .orders-list__order {
   display: flex;
   flex-flow: column nowrap;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   padding: 3.5rem 2.3rem;
+  background-color: var(--color-input-background);
+  border: 1px solid var(--color-input);
 }
 
 .account .order__content {
@@ -972,7 +973,6 @@ label[for='AddressProvinceNew'] {
 
   .account .orders-list__order {
     flex-flow: row nowrap;
-    justify-content: space-between;
     column-gap: 2rem;;
   }
 
@@ -990,7 +990,6 @@ label[for='AddressProvinceNew'] {
 .account .order__product-images {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
 }
 
 .order__product__image {
@@ -1004,16 +1003,13 @@ label[for='AddressProvinceNew'] {
 }
 
 .order__product__image img {
-  object-fit: contain;
   object-position: center;
-  width: 100%;
-  height: 100%;
 }
 
 @media only screen and (min-width: 990px) {
   .order__product-images {
     justify-content: flex-start;
-    gap: 4rem;
+    gap: 2rem;
   }
   .account .order__product-images .order__product__image:nth-child(n+4) {
     display: block;
@@ -1100,6 +1096,24 @@ label[for='AddressProvinceNew'] {
   }
 }
 
+.reset-password {
+  margin: 6rem auto 6rem;
+  max-width: 100%;
+  padding: 0;
+  .label {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .reset-password {
+    max-width: 55.8rem;
+    padding: 0 2rem;
+    margin: 6rem auto 6rem;
+  }
+}
+
+
 .reset-password .input-with-floating-label,
 .reset-password .input-with-floating-label.field input {
   width: 100%;
@@ -1116,16 +1130,8 @@ label[for='AddressProvinceNew'] {
 }
 
 .reset-password .form__message {
-  font-family: var(--akademie-font);
-  font-size: 1.6rem;
-  font-weight: normal;
-  text-align: left;
-  background-color: var(--color-white);
-  padding: 5px 1rem;
   margin-top: 8px;
   margin-bottom: 1.7rem;
-  border: 1px solid var(--color-ink);
-  border-radius: 3px;
   display: inline-block;
   width: 100%;
 }
@@ -1140,12 +1146,6 @@ label[for='AddressProvinceNew'] {
   vertical-align: top;
 }
 
-.reset-password .form__error-heading,
-.reset-password .form__error-heading .form__message {
-  background-color: var(--color-vintage);
-  color: var(--color-error);
-}
-
 @media screen and (min-width: 768px) {
   .reset-password .form__message {
     font-size: 1.2rem;
@@ -1154,5 +1154,17 @@ label[for='AddressProvinceNew'] {
 
   .reset-password__text {
     margin-bottom: 5rem;
+  }
+}
+
+.account__edit {
+  margin-bottom: 4rem;
+  .account-page__address {
+    margin-bottom: 2rem;
+  }
+  .account__edit--default {
+    font-size: 18px;
+    line-height: 20px;
+    margin-bottom: 20px;
   }
 }

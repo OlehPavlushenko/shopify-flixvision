@@ -11,8 +11,8 @@
     src="{{ image_box | image_url: width: 1440 }}"
     sizes="(min-width: 1440px) {{ '1440px' | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(100vw / 2)"
     alt="{{ alt }}"
-    height="{{ image_box.height }}"
-    width="{{ image_box.width }}"
+    height="{{ height | default: image_box.height }}"
+    width="{{ width | default: image_box.width }}"
     loading="lazy"
     class="{{ image_box_class | default: 'image__box' }} media__image"
 >

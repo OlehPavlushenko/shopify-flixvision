@@ -8,6 +8,7 @@
         </p>
 
         {%- form 'recover_customer_password' -%}
+            <input type="hidden" name="challenge" value="false">
             {%- liquid
                 assign recover_success = form.posted_successfully?
                 assign mod_recover_label = 'customer.login_page.email' | t
@@ -52,6 +53,7 @@
         {%- endif -%}
         {%- if recover_success != true -%}
             {%- form 'customer_login', novalidate: 'novalidate' -%}
+                <input type="hidden" name="challenge" value="false">
                 {% unless template.name == 'register' %}
                     {%- if form.errors -%}
                         <div class="form-error form__error-heading form__message">

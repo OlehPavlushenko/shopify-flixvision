@@ -1,5 +1,6 @@
 <div class="customer register">
     {%- form 'create_customer', novalidate: 'novalidate' -%}
+        <input type="hidden" name="challenge" value="false">
         {% unless template.name == 'login' %}
             {%- if form.errors -%}
                 <div class="form-error form__error-heading form__message">

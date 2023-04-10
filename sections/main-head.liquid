@@ -69,22 +69,24 @@
         <div class="main-head__wrapper container">
             {% if sub_heading != blank or heading != blank or text != blank %}
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-10 col-lg-8">
-                        {% if sub_heading != blank %}
-                            <h5 class="main-head__sub_heading h5">
-                                {{ sub_heading | escape }}
-                            </h5>
-                        {% endif %}
-                        {% if heading != blank %}
-                            <h2 class="main-head__heading h0">
-                                {{ heading | escape }}
-                            </h2>
-                        {% endif %}
-                        {% if text != blank %}
-                            <div class="main-head__text rte--large">
-                                {{ text }}
-                            </div>
-                        {% endif %}
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="main-head__content">
+                            {% if sub_heading != blank %}
+                                <h5 class="main-head__sub_heading h5">
+                                    {{ sub_heading | escape }}
+                                </h5>
+                            {% endif %}
+                            {% if heading != blank %}
+                                <h2 class="main-head__heading h0">
+                                    {{ heading | escape }}
+                                </h2>
+                            {% endif %}
+                            {% if text != blank %}
+                                <div class="main-head__text rte--large">
+                                    {{ text }}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             {% endif %}
