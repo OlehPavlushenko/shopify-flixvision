@@ -132,6 +132,7 @@
     "orders": {
       "title": "Order history",
       "order_number": "Order",
+      "orders": "Orders",
       "order_number_link": "Order number {{ number }}",
       "date": "Date",
       "payment_status": "Payment status",

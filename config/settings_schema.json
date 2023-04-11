@@ -352,5 +352,17 @@
         "default": true
       }
     ]
+  },
+  {
+    "name": "t:sections.support.name",
+    "settings": [
+      {
+        "type": "text",
+        "id": "email",
+        "default": "help@flix.com",
+        "label": "t:sections.support.settings.email.label",
+        "info": "t:sections.support.settings.email.info"
+      }
+    ]
   }
 ]

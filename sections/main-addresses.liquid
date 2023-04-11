@@ -1,7 +1,7 @@
 {{ 'section-main-customer.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'customer.js' | asset_url }}" defer></script>
 
-{%- paginate customer.addresses by 5 -%}
+{%- paginate customer.addresses by 4 -%}
     <div class="address-page page-wrapper">
         {% render 'account-header', mod_header_class: 'h3', mod_screen_size: 'mobile' %}
 
@@ -30,7 +30,7 @@
                                 aria-controls="EditAddress_{{ address.id }}"
                                 aria-expanded="false"
                                 data-address-id="{{ address.id }}"
-                                class="button--link"
+                                class="button button--link"
                             >
                                 {{ 'customer.addresses.edit' | t }}
                             </button>
@@ -39,7 +39,7 @@
                                 aria-label="{{ 'customer.addresses.delete_address' | t }} {{ forloop.index }}"
                                 data-target="{{ address.url }}"
                                 data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}"
-                                class="button--link"
+                                class="button button--link"
                             >
                                 {{ 'customer.addresses.delete' | t }}
                             </button>
@@ -53,8 +53,12 @@
                                 <div class="floating-form__container">
                                     <div class="floating-form__header">
                                         <h2 class="h3">{{ 'customer.addresses.edit_address' | t }}</h2>
-                                        <button type="reset" aria-label="Close pop-up" class="button--svg button--link">
-                                            {%- render 'icon-close' -%}
+                                        <button
+                                            type="reset"
+                                            aria-label="Close pop-up"
+                                            class="button--svg button--link button--close"
+                                        >
+                                            {%- render 'icons-svg', icons: 'close' -%}
                                         </button>
                                     </div>
 
@@ -62,7 +66,7 @@
                                         <div class="floating-form__field-group field">
                                             {% assign mod_firstname_label = 'customer.addresses.first_name' | t %}
                                             {% capture mod_input_id %}AddressFirstName_{{ form.id }}{% endcapture %}
-                                            {% render 'input-with-floating-label',
+                                            {% render 'input',
                                                 mod_input_id: mod_input_id,
                                                 mod_input_name: 'address[first_name]',
                                                 mod_input_type: 'text',
@@ -76,7 +80,7 @@
 
                                             {% assign mod_lastname_label = 'customer.addresses.last_name' | t %}
                                             {% capture mod_input_id %}AddressLastName_{{ form.id }}{% endcapture %}
-                                            {% render 'input-with-floating-label',
+                                            {% render 'input',
                                                 mod_input_id: mod_input_id,
                                                 mod_input_name: 'address[first_name]',
                                                 mod_input_type: 'text',
@@ -91,7 +95,7 @@
 
                                         {% assign mod_company_label = 'customer.addresses.company' | t %}
                                         {% capture mod_input_id %}AddressCompany_{{ form.id }}{% endcapture %}
-                                        {% render 'input-with-floating-label',
+                                        {% render 'input',
                                             mod_input_id: mod_input_id,
                                             mod_input_name: 'address[company]',
                                             mod_input_type: 'text',
@@ -104,7 +108,7 @@
                                         %}
                                         {% assign mod_address1_label = 'customer.addresses.address1' | t %}
                                         {% capture mod_input_id %}AddressAddress1_{{ form.id }}{% endcapture %}
-                                        {% render 'input-with-floating-label',
+                                        {% render 'input',
                                             mod_input_id: mod_input_id,
                                             mod_input_name: 'address[address1]',
                                             mod_input_type: 'text',
@@ -118,7 +122,7 @@
 
                                         {% assign mod_address2_label = 'customer.addresses.address2' | t %}
                                         {% capture mod_input_id %}AddressAddress2_{{ form.id }}{% endcapture %}
-                                        {% render 'input-with-floating-label',
+                                        {% render 'input',
                                             mod_input_id: mod_input_id,
                                             mod_input_name: 'address[address2]',
                                             mod_input_type: 'text',
@@ -132,7 +136,7 @@
 
                                         {% assign mod_city_label = 'customer.addresses.city' | t %}
                                         {% capture mod_input_id %}AddressCity_{{ form.id }}{% endcapture %}
-                                        {% render 'input-with-floating-label',
+                                        {% render 'input',
                                             mod_input_id: mod_input_id,
                                             mod_input_name: 'address[city]',
                                             mod_input_type: 'text',
@@ -184,7 +188,7 @@
 
                                         {% assign mod_zip_label = 'customer.addresses.zip' | t %}
                                         {% capture mod_input_id %}AddressZip_{{ form.id }}{% endcapture %}
-                                        {% render 'input-with-floating-label',
+                                        {% render 'input',
                                             mod_input_id: mod_input_id,
                                             mod_input_name: 'address[zip]',
                                             mod_input_type: 'text',
@@ -199,7 +203,7 @@
 
                                         {% assign mod_phone_label = 'customer.addresses.phone' | t %}
                                         {% capture mod_input_id %}AddressPhone_{{ form.id }}{% endcapture %}
-                                        {% render 'input-with-floating-label',
+                                        {% render 'input',
                                             mod_input_id: mod_input_id,
                                             mod_input_name: 'address[phone]',
                                             mod_input_type: 'text',
@@ -222,7 +226,10 @@
                                             <button class="button button--half">
                                                 {{ 'customer.addresses.update' | t }}
                                             </button>
-                                            <button type="reset" class="button--half">
+                                            <button
+                                                type="reset"
+                                                class="button button--secondary button--outline button--half"
+                                            >
                                                 {{ 'customer.addresses.cancel' | t }}
                                             </button>
                                         </div>
@@ -250,15 +257,19 @@
                     <div class="floating-form__container">
                         <div class="floating-form__header">
                             <h2 id="AddressNewHeading" class="h3">{{ 'customer.addresses.add_new' | t }}</h2>
-                            <button type="reset" aria-label="Close pop-up" class="button--svg button--link">
-                                {%- render 'icon-close' -%}
+                            <button
+                                type="reset"
+                                aria-label="Close pop-up"
+                                class="button--svg button--close button--link"
+                            >
+                                {%- render 'icons-svg', icons: 'close' -%}
                             </button>
                         </div>
 
                         {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading' -%}
                             <div class="floating-form__field-group field">
                                 {% assign mod_firstname_label = 'customer.addresses.first_name' | t %}
-                                {% render 'input-with-floating-label',
+                                {% render 'input',
                                     mod_input_id: 'AddressFirstNameNew',
                                     mod_input_name: 'address[first_name]',
                                     mod_input_type: 'text',
@@ -271,7 +282,7 @@
                                 %}
 
                                 {% assign mod_lastname_label = 'customer.addresses.last_name' | t %}
-                                {% render 'input-with-floating-label',
+                                {% render 'input',
                                     mod_input_id: 'AddressLastNameNew',
                                     mod_input_name: 'address[last_name]',
                                     mod_input_type: 'text',
@@ -285,7 +296,7 @@
                             </div>
 
                             {% assign mod_company_label = 'customer.addresses.company' | t %}
-                            {% render 'input-with-floating-label',
+                            {% render 'input',
                                 mod_input_id: 'AddressCompanyNew',
                                 mod_input_name: 'address[company]',
                                 mod_input_type: 'text',
@@ -298,7 +309,7 @@
                             %}
 
                             {% assign mod_address1_label = 'customer.addresses.address1' | t %}
-                            {% render 'input-with-floating-label',
+                            {% render 'input',
                                 mod_input_id: 'AddressAddress1New',
                                 mod_input_name: 'address[address1]',
                                 mod_input_type: 'text',
@@ -311,7 +322,7 @@
                             %}
 
                             {% assign mod_address2_label = 'customer.addresses.address2' | t %}
-                            {% render 'input-with-floating-label',
+                            {% render 'input',
                                 mod_input_id: 'AddressAddress2New',
                                 mod_input_name: 'address[address2]',
                                 mod_input_type: 'text',
@@ -324,7 +335,7 @@
                             %}
 
                             {% assign mod_city_label = 'customer.addresses.city' | t %}
-                            {% render 'input-with-floating-label',
+                            {% render 'input',
                                 mod_input_id: 'AddressCityNew',
                                 mod_input_name: 'address[city]',
                                 mod_input_type: 'text',
@@ -372,7 +383,7 @@
                             </div>
 
                             {% assign mod_zip_label = 'customer.addresses.zip' | t %}
-                            {% render 'input-with-floating-label',
+                            {% render 'input',
                                 mod_input_id: 'AddressZipNew',
                                 mod_input_name: 'address[zip]',
                                 mod_input_type: 'text',
@@ -386,7 +397,7 @@
                             %}
 
                             {% assign mod_phone_label = 'customer.addresses.phone' | t %}
-                            {% render 'input-with-floating-label',
+                            {% render 'input',
                                 mod_input_id: 'AddressPhoneNew',
                                 mod_input_name: 'address[phone]',
                                 mod_input_type: 'text',
@@ -408,7 +419,9 @@
                                 <button class="button button--half">
                                     {{ 'customer.addresses.save' | t }}
                                 </button>
-                                <button type="reset" class="button--half">{{ 'customer.addresses.cancel' | t }}</button>
+                                <button type="reset" class="button button--secondary button--outline button--half">
+                                    {{ 'customer.addresses.cancel' | t }}
+                                </button>
                             </div>
                         {%- endform -%}
                     </div>
@@ -422,13 +435,13 @@
                     aria-label="{{ 'general.pagination.label' | t }}"
                 >
                     {%- if paginate.previous -%}
-                        <a href="{{ paginate.previous.url }}" class="button paginate__button--prev">
+                        <a href="{{ paginate.previous.url }}" class="button button--secondary paginate__button--prev">
                             {{ 'general.pagination.previous' | t }}
                         </a>
                     {%- endif -%}
 
                     {%- if paginate.next -%}
-                        <a href="{{ paginate.next.url }}" class="button paginate__button--next">
+                        <a href="{{ paginate.next.url }}" class="button button--secondary paginate__button--next">
                             {{ 'general.pagination.next' | t }}
                         </a>
                     {%- endif -%}
