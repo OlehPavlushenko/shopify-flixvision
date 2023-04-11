@@ -1,4 +1,9 @@
 .main-head {
+    .main-head__content {
+        @media screen and (min-width: 991px) {
+            max-width: 60%;
+        }
+    }
     .head-alignment--left {
         text-align: left;
     }
@@ -9,6 +14,9 @@
     
     .head-alignment--center {
         text-align: center;
+        .main-head__content {
+            margin: 0 auto;
+        }
     }
     color: var(--text-color-main-head);
     .main-head__head {

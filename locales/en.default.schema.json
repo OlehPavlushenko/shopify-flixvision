@@ -262,6 +262,15 @@
     }
   },
   "sections": {
+    "support": {
+      "name": "Support",
+      "settings": {
+        "email": {
+          "label": "Support email address",
+          "info": "The email address posted across the site for users to directly questions to."
+        }
+      }
+    },
     "apps": {
       "name": "Apps",
       "settings": {
