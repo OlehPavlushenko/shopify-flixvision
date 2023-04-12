@@ -2,6 +2,8 @@
     assign sub_heading = section.settings.collections_sub_heading
     assign heading = section.settings.collections_title
     assign text = section.settings.collections_text
+    assign btn = section.settings.btn
+    assign link = section.settings.link
     assign head_alignment = section.settings.head_alignment
     assign image = section.settings.image
     assign mobile_image = section.settings.image_mobile
@@ -86,6 +88,9 @@
                                     {{ text }}
                                 </div>
                             {% endif %}
+                            {% if link != blank %}
+                                <a href="{{ link }}" class="button btn--arrow">{{ btn }}</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -115,6 +120,17 @@
             "type": "richtext",
             "id": "collections_text",
             "label": "Heading"
+        },
+        {
+            "type": "text",
+            "id": "btn",
+            "default": "Return to collections",
+            "label": "Button"
+        },
+        {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
         },
         {
             "type": "image_picker",

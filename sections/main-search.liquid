@@ -1,0 +1,390 @@
+<div class="main-search__wrapper">
+    {{ 'template-collection.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'main-search.js' | asset_url }}" defer="defer"></script>
+
+    <link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
+
+    <noscript>{{ 'component-card.css' | asset_url | stylesheet_tag }}</noscript>
+    <noscript>{{ 'component-price.css' | asset_url | stylesheet_tag }}</noscript>
+    <noscript>{{ 'component-search.css' | asset_url | stylesheet_tag }}</noscript>
+
+    {%- liquid
+        comment
+            This code checks the query param for category which is used to set the active tab. Javascript implementation would have been too late in the squence
+        endcomment
+        assign type = 'product'
+        assign page_url = content_for_header | split: '"pageurl":"' | last | split: '"' | first | split: request.host | last | replace: '\/', '/' | replace: '%20', ' ' | replace: '\u0026', '&'
+        for i in (1..1)
+            unless page_url contains '?'
+                break
+            endunless
+
+            assign query_string = page_url | split: '?' | last
+            assign query_parts = query_string | split: '&'
+
+            for part in query_parts
+                assign key_and_value = part | split: '='
+                if key_and_value.size > 1
+                    if key_and_value[0] == 'category'
+                        assign type = key_and_value[1]
+                    endif
+                endif
+            endfor
+        endfor
+    -%}
+    <main-search
+        {% if search.performed %}
+            loading="true"
+        {% endif %}
+    >
+        {% paginate search.results by 200 %}
+            <tab-element autofocus="false">
+                <div class="template-search spaced-section{% unless search.performed and search.results.size > 0 %} template-search--empty{% endunless %}">
+                    <div
+                        class="page-width center template-search__header"
+                        style="background-color: {{ settings.search_color }};"
+                    >
+                        <div class="template-search__search">
+                            <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+                                <div class="field">
+                                    <span class="icon">
+                                        <svg
+                                            aria-hidden="true"
+                                            focusable="false"
+                                            role="presentation"
+                                            class="icon icon-plus"
+                                            width="19"
+                                            height="19"
+                                            viewBox="0 0 19 19"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.03 11.68A5.784 5.784 0 112.85 3.5a5.784 5.784 0 018.18 8.18zm.26 1.12a6.78 6.78 0 11.72-.7l5.4 5.4a.5.5 0 11-.71.7l-5.41-5.4z" fill="currentColor"/>
+                                        </svg>
+                                    </span>
+                                    <input
+                                        class="search__input field__input"
+                                        id="Search-In-Template"
+                                        type="search"
+                                        name="q"
+                                        value="{{ search.terms | escape }}"
+                                        {% if search.performed %}
+                                            autofocus
+                                        {% endif %}
+                                        placeholder="{%- if search.performed -%}{{ 'templates.search.again' | t }}{%- else -%}{{ 'general.search.search' | t }}{%- endif -%}"
+                                    >
+                                </div>
+                            </form>
+                        </div>
+                        {%- if search.performed -%}
+                            <p class="template-search__result_summary" role="status">
+                                {%- if search.results_count -%}
+                                    <span class="total-counter">0</span>
+                                    {{- 'templates.search.results_with_count.custom' | t: terms: search.terms }}
+                                {%- endif -%}
+                            </p>
+                        {%- endif -%}
+                        {% liquid
+                            assign products_count = 0
+                            assign stay_floyd_count = 0
+                            assign lived_in_count = 0
+
+                            for item in search.results
+                                if item.object_type == 'product'
+                                    assign products_count = products_count | plus: 1
+                                endif
+
+                                if item.object_type == 'article'
+                                    assign blog = item.handle | split: '/'
+                                    if blog[0] == 'stay-floyd'
+                                        assign stay_floyd_count = stay_floyd_count | plus: 1
+                                    endif
+
+                                    if blog[0] == 'lived-in'
+                                        assign lived_in_count = lived_in_count | plus: 1
+                                    endif
+                                endif
+                            endfor
+
+                            assign total_results = products_count | plus: lived_in_count | plus: stay_floyd_count
+                        %}
+                        <div
+                            data-liquid-total="{{ total_results }}"
+                            class="template-search__wrapper {% unless search.performed %} hidden {% endunless %}"
+                        >
+                            <ul class="tabs js-tablist" role="tablist">
+                                <li>
+                                    <button
+                                        class="js-tab {% if type == 'product'%}active{% endif %}"
+                                        role="tab"
+                                        aria-selected="true"
+                                        aria-controls="products-panel"
+                                    >
+                                        {{ 'general.search.terms.products' | t }} ({{ products_count }})
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        class="js-tab {% if type == 'lived-in'%}active{% endif %}"
+                                        role="tab"
+                                        aria-selected="false"
+                                        aria-controls="lived-in-panel"
+                                    >
+                                        {{ 'general.search.terms.lived_in' | t }} ({{ lived_in_count }})
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        class="js-tab {% if type == 'stay-floyd'%}active{% endif %}"
+                                        role="tab"
+                                        aria-selected="false"
+                                        aria-controls="stay-floyd-panel"
+                                    >
+                                        {{ 'general.search.terms.stay_floyd' | t }} ({{ stay_floyd_count }})
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        class="js-tab {% if type == 'faqs'%}active{% endif %}"
+                                        role="tab"
+                                        aria-selected="false"
+                                        aria-controls="faq-panel-search"
+                                    >
+                                        {{ 'general.search.terms.faqs' | t }}
+                                        <span id="faq-counter-search">(0)</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tabs-content__wrapper">
+                        {%- if search.performed -%}
+                            <div
+                                id="products-panel"
+                                data-limit="{{ products_count }}"
+                                data-step="12"
+                                class="tabs-content js-tabpanel products {% if type != 'product'%}hidden{% endif %}"
+                                role="tabpanel"
+                            >
+                                {%- if products_count > 0 -%}
+                                    <ul
+                                        class="list-unstyled grid grid--gapless grid--2-col grid--3-col-desktop slider slider--all-screens slider--no-snap-mobile"
+                                        role="list"
+                                        data-mobile-offset="true"
+                                    >
+                                        {%- for item in search.results -%}
+                                            {% if item.object_type == 'product' %}
+                                                <li class="grid__item slider__slide hidden">
+                                                    {% render 'product-card', product_card_product: item %}
+                                                </li>
+                                            {% endif %}
+                                        {%- endfor -%}
+                                    </ul>
+                                    <div class="load-more__wrapper">
+                                        <p class="counter"></p>
+                                        <button role="button" class="load-more hidden">
+                                            {{ 'general.search.load_more' | t }}
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div
+                                id="lived-in-panel"
+                                data-limit="{{ lived_in_count }}"
+                                data-step="12"
+                                class="tabs-content js-tabpanel articles {% if type != 'lived-in'%}hidden{% endif %}"
+                                role="tabpanel"
+                            >
+                                {%- if lived_in_count > 0 -%}
+                                    <ul
+                                        class="list-unstyled grid grid--gapless grid--2-col grid--4-col-desktop slider slider--all-screens slider--no-snap-mobile"
+                                        role="list"
+                                        d
+                                    >
+                                        {%- for item in search.results -%}
+                                            {% liquid
+                                                assign blog = item.handle | split: '/'
+                                                assign blog = blog[0]
+                                            %}
+
+                                            {% if blog == 'lived-in' %}
+                                                {% if item.object_type == 'article' %}
+                                                    <li class="grid__item slider__slide hidden">
+                                                        {% assign blog_type = 'general.search.terms.lived_in' | t %}
+                                                        {% render 'search-article-card',
+                                                            mod_caption: blog_type,
+                                                            article: item,
+                                                            show_image: true
+                                                        %}
+                                                    </li>
+                                                {% endif %}
+                                            {% endif %}
+                                        {%- endfor -%}
+                                    </ul>
+                                    <div class="load-more__wrapper">
+                                        <p class="counter"></p>
+                                        <button role="button" class="load-more hidden">
+                                            {{ 'general.search.load_more' | t }}
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div
+                                id="stay-floyd-panel"
+                                data-limit="{{ stay_floyd_count }}"
+                                data-step="9"
+                                class="tabs-content js-tabpanel articles {% if type != 'stay-floyd'%}hidden{% endif %}"
+                                role="tabpanel"
+                            >
+                                {%- if stay_floyd_count > 0 -%}
+                                    <ul
+                                        class="list-unstyled grid grid--gapless grid--2-col grid--3-col-desktop slider slider--all-screens slider--no-snap-mobile"
+                                        role="list"
+                                        d
+                                    >
+                                        {%- for item in search.results -%}
+                                            {% liquid
+                                                assign blog = item.handle | split: '/'
+                                                assign blog = blog[0]
+                                            %}
+
+                                            {% if blog == 'stay-floyd' %}
+                                                {% if item.object_type == 'article' %}
+                                                    <li class="grid__item slider__slide hidden">
+                                                        {% for tag in item.tags %}
+                                                            {% if tag contains 'state-' %}
+                                                                {% assign state = tag
+                                                                    | replace: 'state-', ''
+                                                                    | append: ', USA'
+                                                                %}
+                                                            {% endif %}
+                                                        {%- endfor -%}
+                                                        {% render 'search-article-card',
+                                                            mod_caption: state,
+                                                            article: item,
+                                                            show_image: true
+                                                        %}
+                                                    </li>
+                                                {% endif %}
+                                            {% endif %}
+                                        {%- endfor -%}
+                                    </ul>
+                                    <div class="load-more__wrapper">
+                                        <p class="counter"></p>
+                                        <button role="button" class="load-more hidden">
+                                            {{ 'general.search.load_more' | t }}
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div
+                                id="faq-panel-search"
+                                data-step="10"
+                                class="tabs-content js-tabpanel faqs {% if type != 'faqs'%}hidden{% endif %}"
+                                role="tabpanel"
+                            >
+                                <ul
+                                    class="list-unstyled grid grid--gapless grid--2-col slider slider--all-screens slider--no-snap-mobile"
+                                    role="list"
+                                    data-mobile-offset="true"
+                                >
+                                    <div class="load-more__wrapper">
+                                        <p class="counter"></p>
+                                        <button role="button" class="load-more hidden">
+                                            {{ 'general.search.load_more' | t }}
+                                        </button>
+                                    </div>
+                                </ul>
+                            </div>
+                        {%- endif -%}
+                    </div>
+                    <div class="template-search__loading-state">
+                        <svg
+                            aria-hidden="true"
+                            focusable="false"
+                            role="presentation"
+                            class="spinner"
+                            viewBox="0 0 66 66"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                        </svg>
+                    </div>
+                </div>
+            </tab-element>
+        {% endpaginate %}
+    </main-search>
+</div>
+
+{% schema %}
+{
+    "name": "t:sections.main-search.name",
+    "tag": "section",
+    "class": "spaced-section",
+    "settings": [
+        {
+            "type": "header",
+            "content": "t:sections.main-search.settings.header__1.content"
+        },
+        {
+            "type": "select",
+            "id": "image_ratio",
+            "options": [
+                {
+                    "value": "adapt",
+                    "label": "t:sections.main-search.settings.image_ratio.options__1.label"
+                },
+                {
+                    "value": "portrait",
+                    "label": "t:sections.main-search.settings.image_ratio.options__2.label"
+                },
+                {
+                    "value": "square",
+                    "label": "t:sections.main-search.settings.image_ratio.options__3.label"
+                }
+            ],
+            "default": "adapt",
+            "label": "t:sections.main-search.settings.image_ratio.label"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_secondary_image",
+            "default": false,
+            "label": "t:sections.main-search.settings.show_secondary_image.label"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_image_padding",
+            "default": false,
+            "label": "t:sections.main-search.settings.enable_image_padding.label"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_vendor",
+            "default": false,
+            "label": "t:sections.main-search.settings.show_vendor.label"
+        },
+        {
+            "type": "header",
+            "content": "t:sections.main-search.settings.header__2.content"
+        },
+        {
+            "type": "checkbox",
+            "id": "article_show_date",
+            "default": true,
+            "label": "t:sections.main-search.settings.article_show_date.label"
+        },
+        {
+            "type": "checkbox",
+            "id": "article_show_author",
+            "default": false,
+            "label": "t:sections.main-search.settings.article_show_author.label"
+        }
+    ]
+}
+{% endschema %}
