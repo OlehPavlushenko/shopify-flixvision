@@ -1,5 +1,21 @@
 {
   "general": {
+    "search": {
+      "search": "Search",
+      "type_here": "Type here",
+      "suggestions": "Suggestions",
+      "terms": {
+        "products": "Products",
+        "articles": "Articles",
+        "pages": "Pages",
+        "faqs": "FAQs",
+        "no_results": "No results for",
+        "no_results_terms": "No results for “{{ terms }}”",
+        "no_results_description": "It looks like this search returned no results, but don't worry, we'll find you something just as good."
+      },
+      "view_all_results": "View All Results",
+      "load_more": "Load More"
+    },
     "password_page": {
       "login_form_heading": "Enter store using password:",
       "login_password_button": "Enter using password",
@@ -224,6 +240,13 @@
       "no_results": "No results found for “{{ terms }}”. Check the spelling or use a different word or phrase.",
       "page": "Page",
       "products": "Products",
+      "results_with_count": {
+        "one": "{{ count }} result found for “{{ terms }}”",
+        "other": "{{ count }} results found for “{{ terms }}”",
+        "custom": " results for “{{ terms }}”"
+      },
+      "title": "Search results",
+      "again": "Search again",
       "results_pages_with_count": {
         "one": "{{ count }} page",
         "other": "{{ count }} pages"
@@ -236,15 +259,10 @@
         "one": "{{ count }} product",
         "other": "{{ count }} products"
       },
-      "results_with_count": {
-        "one": "{{ count }} result",
-        "other": "{{ count }} results"
-      },
       "results_with_count_and_term": {
         "one": "{{ count }} result found for “{{ terms }}”",
         "other": "{{ count }} results found for “{{ terms }}”"
       },
-      "title": "Search results",
       "search_for": "Search for “{{ terms }}”",
       "suggestions": "Suggestions",
       "pages": "Pages"

@@ -7,6 +7,10 @@ swiper-section {
     padding-top: calc(.7*var(--pad-top-featured-posts));
     padding-bottom: calc(.7*var(--pad-bot-featured-posts));
     color: var(--text-color-featured-posts);
+    @media screen and (min-width: 991px) {
+        padding-top: var(--pad-top-featured-posts);
+        padding-bottom: var(--pad-bot-featured-posts);
+    }
     .page-width {
         max-width: var(--width-featured-posts);
     }
