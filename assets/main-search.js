@@ -105,7 +105,7 @@ class MainSearch extends HTMLElement {
                 "resources[type]"
             )}=product,article,collection,page&${encodeURIComponent(
                 "resources[options][fields]"
-            )}=body,product_type,tag,title,variants.barcode,variants.sku,variants.title,vendor,author&section_id=main-search`
+            )}=product_type,tag,title,variants.title,vendor&section_id=main-search`
         )
             .then((response) => {
                 if (!response.ok) {

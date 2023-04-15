@@ -1,3 +1,47 @@
+{% liquid
+    assign post_limit = section.settings.post_limit
+    assign fill_image = section.settings.fill_image
+    assign button = section.settings.button
+    assign full_width = section.settings.full_width
+    assign columns_desktop = section.settings.columns_desktop
+    assign bg_color = section.settings.bg_color | default: 'transparent'
+
+    assign text_color = section.settings.text_color | default: 'inherit'
+    assign title_color = section.settings.title_color | default: 'inherit'
+    assign link_color = section.settings.link_color | default: 'inherit'
+
+    assign img_size = section.settings.img_size
+    assign width = section.settings.width
+    assign pad_top = section.settings.padding_top
+    assign pad_bot = section.settings.padding_bottom
+
+    assign bg_post_color = section.settings.bg_post_color | default: 'transparent'
+    assign text_post_color = section.settings.text_post_color | default: 'inherit'
+    assign title_post_color = section.settings.title_post_color | default: 'inherit'
+    assign link_post_color = section.settings.link_post_color | default: 'inherit'
+%}
+{% capture styles %}
+
+    --background-color-search-terms: {{ bg_color }};
+    --title-post-color-search-terms: {{ title_color }};
+    --text-post-color-search-terms: {{ text_color }};
+    --link-post-color-search-terms: {{ link_color }};
+
+
+    --background-color-featured-posts: {{ bg_post_color }};
+    --title-post-color-featured-posts: {{ title_post_color }};
+    --text-post-color-featured-posts: {{ text_post_color }};
+    --link-post-color-featured-posts: {{ link_post_color }};
+
+    --width-search-terms: {{ width }}px;
+    --pad-top-search-terms: {{ pad_top }}px;
+    --pad-bot-search-terms: {{ pad_bot }}px;
+{% endcapture %}
+
+{%- assign styles = styles | strip_newlines -%}
+
+{{ 'component-card-post.css' | asset_url | stylesheet_tag }}
+
 <div class="main-search__wrapper">
     {{ 'section-main-search.css' | asset_url | stylesheet_tag }}
 
@@ -5,7 +49,7 @@
         comment
             This code checks the query param for category which is used to set the active tab. Javascript implementation would have been too late in the squence
         endcomment
-        assign type = 'product'
+        assign type = ''
         assign page_url = content_for_header | split: '"pageurl":"' | last | split: '"' | first | split: request.host | last | replace: '\/', '/' | replace: '%20', ' ' | replace: '\u0026', '&'
         for i in (1..1)
             unless page_url contains '?'
@@ -18,548 +62,312 @@
             for part in query_parts
                 assign key_and_value = part | split: '='
                 if key_and_value.size > 1
-                    if key_and_value[0] == 'category'
+                    if key_and_value[0] == 'type'
                         assign type = key_and_value[1]
                     endif
                 endif
             endfor
         endfor
     -%}
-    <main-search
-        {% if search.performed %}
-            loading="true"
-        {% endif %}
-    >
-        {% paginate search.results by 200 %}
-            <tab-element autofocus="false">
-                {% assign product_terms = section.blocks | where: 'type', 'product_card' %}
-                {% assign articles_terms = section.blocks | where: 'type', 'post_card' %}
-                <div class="template-main-search spaced-section{% unless search.performed and search.results.size > 0 %} template-main-search--empty{% endunless %}">
-                    <div
-                        class="template-main-search__header"
-                    >
-                        <div class="template-main-search__search">
-                            <form action="{{ routes.search_url }}" method="get" role="search" class="search">
-                                <div class="field">
-                                    <span class="icon">
-                                        <svg
-                                            aria-hidden="true"
-                                            focusable="false"
-                                            role="presentation"
-                                            class="icon icon-plus"
-                                            width="19"
-                                            height="19"
-                                            viewBox="0 0 19 19"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.03 11.68A5.784 5.784 0 112.85 3.5a5.784 5.784 0 018.18 8.18zm.26 1.12a6.78 6.78 0 11.72-.7l5.4 5.4a.5.5 0 11-.71.7l-5.41-5.4z" fill="currentColor"/>
-                                        </svg>
-                                    </span>
-                                    <input
-                                        class="search__input field__input"
-                                        id="Search-In-Template"
-                                        type="search"
-                                        name="q"
-                                        value="{{ search.terms | escape }}"
-                                        {% if search.performed %}
-                                            autofocus
-                                        {% endif %}
-                                        placeholder="{%- if search.performed -%}{{ 'templates.search.again' | t }}{%- else -%}{{ 'sections.search.placeholder' | t }}{%- endif -%}"
-                                    >
-                                </div>
-                            </form>
-                        </div>
-                        {%- if search.performed -%}
-                            <p class="template-main-search__result_summary" role="status">
-                                {%- if search.results_count -%}
-                                    <span class="total-counter">0</span>
-                                    {{- 'templates.search.results_with_count.custom' | t: terms: search.terms }}
-                                {%- endif -%}
-                            </p>
-                        {%- endif -%}
-
-                        {% liquid
-                            assign products_count = 0
-                            assign articles_count = 0
-                            assign pages_count = 0
-
-                            for item in search.results
-                                if item.object_type == 'product'
-                                    assign products_count = products_count | plus: 1
-                                endif
-
-                                if item.object_type == 'article'
-                                    assign articles_count = articles_count | plus: 1
-                                endif
-
-                                if item.object_type == 'page'
-                                    assign pages_count = pages_count | plus: 1
-                                endif
-                            endfor
-
-                            assign total_results = products_count | plus: articles_count | plus: pages_count
-                        %}
-                        <div
-                            data-liquid-total="{{ total_results }}"
-                            class="template-main-search__wrapper {% unless search.performed %} hidden {% endunless %}"
-                        >
-                            <ul class="tabs js-tablist" role="tablist">
-                                <li>
-                                    <button
-                                        class="js-tab {% if type == 'product'%}active{% endif %}"
-                                        role="tab"
-                                        aria-selected="true"
-                                        aria-controls="products-panel"
-                                    >
-                                        {{ 'general.search.terms.products' | t }} ({{ products_count }})
-                                    </button>
-                                </li>
-                                {% if articles_terms.size > 0 %}
-                                    <li>
-                                        <button
-                                            class="js-tab {% if type == 'article'%}active{% endif %}"
-                                            role="tab"
-                                            aria-selected="false"
-                                            aria-controls="article-panel"
-                                        >
-                                            {{ 'general.search.terms.articles' | t }} ({{ articles_count }})
-                                        </button>
-                                    </li>
-                                {% endif %}
-                                <li>
-                                    <button
-                                        class="js-tab {% if type == 'page'%}active{% endif %}"
-                                        role="tab"
-                                        aria-selected="false"
-                                        aria-controls="page-panel"
-                                    >
-                                        {{ 'general.search.terms.pages' | t }} ({{ pages_count }})
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="tabs-content__wrapper">
-                        {%- if search.performed -%}
-                            <div
-                                id="products-panel"
-                                data-limit="{{ products_count }}"
-                                data-step="5"
-                                class="container tabs-content js-tabpanel products {% if type != 'product'%}hidden{% endif %}"
-                                role="tabpanel"
+    <main-search>
+        <div class="template-main-search {% unless search.performed and search.results.size > 0 %} template-main-search--empty{% endunless %}">
+            <div
+                class="template-main-search__header"
+            >
+                <div class="template-main-search__search">
+                    <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+                        <div class="field">
+                            <input name="options[prefix]" type="hidden" value="last">
+                            <input name="sort_by" type="hidden" value="price-ascending">
+                            <input
+                                class="search__input field__input"
+                                id="SearchInTemplate"
+                                type="search"
+                                name="q"
+                                value="{{ search.terms | escape }}"
+                                autofocus="off"
+                                autocorrect="off"
+                                autocomplete="off"
+                                autocapitalize="off"
+                                spellcheck="false"
+                                placeholder="{%- if search.performed -%}{{ 'templates.search.again' | t }}{%- else -%}{{ 'sections.search.placeholder' | t }}{%- endif -%}"
                             >
-                                {%- if products_count > 0 -%}
-                                    <ul
-                                        class="template-main-search-tabs__list list-unstyled"
-                                        role="list"
-                                        data-mobile-offset="true"
-                                    >
-                                        {%- for item in search.results -%}
-                                            {% if item.object_type == 'product' %}
-                                                <li class="grid__item hidden">{{ item.title }}</li>
-                                            {% endif %}
-                                        {%- endfor -%}
-                                    </ul>
-                                    <div class="load-more__wrapper">
-                                        <p class="counter"></p>
-                                        <button
-                                            role="button"
-                                            class="load-more hidden button  button--secondary button--outline"
-                                        >
-                                            {{ 'general.search.load_more' | t }}
-                                        </button>
-                                    </div>
-                                {% endif %}
-                            </div>
-
-                            {% if articles_terms.size > 0 %}
-                                {% liquid
-                                    assign post_limit = articles_terms[0].settings.post_limit
-                                    assign fill_image = articles_terms[0].settings.fill_image
-                                    assign button = articles_terms[0].settings.button
-                                    assign full_width = articles_terms[0].settings.full_width
-                                    assign columns_desktop = articles_terms[0].settings.columns_desktop
-                                    assign bg_color = articles_terms[0].settings.bg_color | default: 'transparent'
-                                    assign text_post_color = articles_terms[0].settings.text_post_color | default: 'inherit'
-                                    assign title_post_color = articles_terms[0].settings.title_post_color | default: 'inherit'
-                                    assign link_post_color = articles_terms[0].settings.link_post_color | default: 'inherit'
-
-                                    assign img_size = articles_terms[0].settings.img_size
-                                    assign width = articles_terms[0].settings.width
-                                    assign pad_top = articles_terms[0].settings.padding_top
-                                    assign pad_bot = articles_terms[0].settings.padding_bottom
-                                %}
-                                {% capture styles %}
-                                    --title-post-color-featured-posts: {{ title_post_color }};
-                                    --text-post-color-featured-posts: {{ text_post_color }};
-                                    --link-post-color-featured-posts: {{ link_post_color }};
-                                    --background-color-featured-posts: {{ bg_color }};
-                                    --width-featured-posts: {{ width }}px;
-                                    --pad-top-featured-posts: {{ pad_top }}px;
-                                    --pad-bot-featured-posts: {{ pad_bot }}px;
-                                {% endcapture %}
-
-                                {%- assign styles = styles | strip_newlines -%}
-                                {{ 'component-card-post.css' | asset_url | stylesheet_tag }}
-                                <div
-                                    id="article-panel"
-                                    data-limit="{{ articles_count }}"
-                                    data-step="{{ post_limit }}"
-                                    class="tabs-content js-tabpanel articles {% if type != 'article'%}hidden{% endif %} full_width--{{ full_width }}"
-                                    role="tabpanel"
-                                    style="{{ styles }}"
+                            <button class="icon-btn" type="submit" aria-label="Search">
+                                <svg
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    role="presentation"
+                                    class="icon icon-plus"
+                                    width="19"
+                                    height="19"
+                                    viewBox="0 0 19 19"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
                                 >
-                                    {%- if articles_count > 0 -%}
-                                        <div class="container">
-                                            <ul
-                                                class="template-main-search-tabs__list list-unstyled columns--{{ columns_desktop }}"
-                                                role="list"
-                                            >
-                                                {%- for item in search.results -%}
-                                                    {% if item.object_type == 'article' %}
-                                                        <li class="grid__item template-main-search-tabs__item hidden">
-                                                            {% render 'card-post',
-                                                                article: item,
-                                                                img_size: img_size,
-                                                                fill: fill_image,
-                                                                label: button
-                                                            %}
-                                                        </li>
-                                                    {% endif %}
-                                                {%- endfor -%}
-                                            </ul>
-                                            <div class="load-more__wrapper">
-                                                <p class="counter"></p>
-                                                <button
-                                                    role="button"
-                                                    class="load-more hidden button  button--secondary button--outline"
-                                                >
-                                                    {{ 'general.search.load_more' | t }}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-
-                            <div
-                                id="page-panel"
-                                data-limit="{{ pages_count }}"
-                                data-step="5"
-                                class="container tabs-content js-tabpanel pages {% if type != 'pages'%}hidden{% endif %}"
-                                role="tabpanel"
-                            >
-                                {%- if pages_count > 0 -%}
-                                    <ul
-                                        class="template-main-search-tabs__list list-unstyled"
-                                        role="list"
-                                        d
-                                    >
-                                        {%- for item in search.results -%}
-                                            {% if item.object_type == 'page' %}
-                                                <li class="grid__item hidden">{{ item.title }}</li>
-                                            {% endif %}
-                                        {%- endfor -%}
-                                    </ul>
-                                    <div class="load-more__wrapper">
-                                        <p class="counter"></p>
-                                        <button
-                                            role="button"
-                                            class="load-more hidden button  button--secondary button--outline"
-                                        >
-                                            {{ 'general.search.load_more' | t }}
-                                        </button>
-                                    </div>
-                                {% endif %}
-                            </div>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.03 11.68A5.784 5.784 0 112.85 3.5a5.784 5.784 0 018.18 8.18zm.26 1.12a6.78 6.78 0 11.72-.7l5.4 5.4a.5.5 0 11-.71.7l-5.41-5.4z" fill="currentColor"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                {%- if search.performed -%}
+                    <p class="template-main-search__result_summary" role="status">
+                        {%- if search.results_count -%}
+                            {{ search.results_count }}
+                            {{- 'templates.search.results_with_count.custom' | t: terms: search.terms }}
                         {%- endif -%}
+                    </p>
+                {%- endif -%}
+                {%- if search.performed or search.results_count > 0 -%}
+                    <div
+                        class="template-main-search__wrapper"
+                    >
+                        <ul class="tabs" role="tablist">
+                            <li
+                                {% unless canonical_url contains 'type' %}
+                                    class="active"
+                                {% endunless %}
+                            >
+                                <a href="/search?options[prefix]=last&sort_by=price-ascending&q={{ search.terms }}">
+                                    {{- 'general.search.all_results' | t -}}
+                                </a>
+                            </li>
+                            <li class="{% if type == 'product'%}active{% endif %}">
+                                <a
+                                    href="/search?type=product&options[prefix]=last&sort_by=price-ascending&q={{ search.terms }}"
+                                >
+                                    {{ 'general.search.terms.products' | t }}
+                                </a>
+                            </li>
+
+                            <li class="{% if type == 'article'%}active{% endif %}">
+                                <a
+                                    href="/search?type=article&options[prefix]=last&q={{ search.terms }}"
+                                >
+                                    {{ 'general.search.terms.articles' | t }}
+                                </a>
+                            </li>
+                            <li class="{% if type == 'page'%}active{% endif %}">
+                                <a
+                                    href="/search?type=page&options[prefix]=last&q={{ search.terms }}"
+                                >
+                                    {{ 'general.search.terms.pages' | t }}
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="template-main-search__loading-state">
-                        <svg
-                            aria-hidden="true"
-                            focusable="false"
-                            role="presentation"
-                            class="spinner"
-                            viewBox="0 0 66 66"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                        </svg>
+                {%- endif -%}
+            </div>
+
+            {%- if search.performed or search.results_count > 0 -%}
+                <div class="tabs-content__wrapper">
+                    <div
+                        id="terms-panel"
+                        class="tabs-content full_width--{{ full_width }}"
+                        role="tabpanel"
+                        style="{{ styles }}"
+                    >
+                        {% paginate search.results by post_limit %}
+                            <div class="container">
+                                <ul
+                                    class="template-main-search-tabs__list columns--{{ columns_desktop }}"
+                                >
+                                    {% assign sorted_results = search.results %}
+                                    {%- for result in sorted_results -%}
+                                        {% if result.object_type == 'product' %}
+                                            <li class="grid__item">{{ result.title }}</li>
+                                        {% endif %}
+                                    {%- endfor -%}
+                                    {%- for result in sorted_results -%}
+                                        {%- if result.object_type == 'article' %}
+                                            <li class="grid__item template-main-search-tabs__item">
+                                                {% render 'card-post',
+                                                    article: result,
+                                                    img_size: img_size,
+                                                    fill: fill_image,
+                                                    label: button
+                                                %}
+                                            </li>
+                                        {% elsif result.object_type == 'page' %}
+                                            <li class="grid__item">{{ result.title }}</li>
+                                        {% endif %}
+                                    {%- endfor -%}
+                                </ul>
+                                <div class="load-more__wrapper">
+                                    <p class="counter"></p>
+                                    <button
+                                        role="button"
+                                        class="load-more hidden button  button--secondary button--outline"
+                                    >
+                                        {{ 'general.search.load_more' | t }}
+                                    </button>
+                                </div>
+                                {% render 'pagination', paginate: paginate %}
+                            </div>
+                        {% endpaginate %}
                     </div>
                 </div>
-            </tab-element>
-        {% endpaginate %}
+            {%- endif -%}
+
+            <div class="template-main-search__loading-state">
+                <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    role="presentation"
+                    class="spinner"
+                    viewBox="0 0 66 66"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                </svg>
+            </div>
+        </div>
     </main-search>
 </div>
 
-<script src="{{ 'main-search.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'main-searchs.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
     "name": "Main Search",
     "tag": "section",
     "class": "spaced-section",
-    "settings": [],
-    "blocks": [
+    "settings": [
         {
-            "type": "product_card",
-            "name": "Product card",
-            "limit": 1,
-            "settings": [
-                {
-                    "type": "range",
-                    "id": "post_limit",
-                    "min": 3,
-                    "max": 24,
-                    "step": 1,
-                    "default": 3,
-                    "label": "Posts Limit"
-                },
-                {
-                    "type": "range",
-                    "id": "columns_desktop",
-                    "min": 3,
-                    "max": 5,
-                    "step": 1,
-                    "default": 4,
-                    "label": "Number of columns"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "fill_image",
-                    "default": false,
-                    "label": "Fill Image"
-                },
-                {
-                    "type": "text",
-                    "id": "button",
-                    "default": "More details",
-                    "label": "Button"
-                },
-                {
-                    "type": "select",
-                    "id": "img_size",
-                    "label": "Image size",
-                    "options": [
-                        {
-                            "value": "cropped",
-                            "label": "Cropped"
-                        },
-                        {
-                            "value": "landscape",
-                            "label": "Landscape"
-                        },
-                        {
-                            "value": "square",
-                            "label": "Square"
-                        },
-                        {
-                            "value": "portrait",
-                            "label": "Portrait"
-                        },
-                        {
-                            "value": "circle",
-                            "label": "Circle"
-                        }
-                    ]
-                },
-                {
-                    "type": "checkbox",
-                    "id": "full_width",
-                    "default": false,
-                    "label": "Enabled full width?"
-                },
-                {
-                    "type": "range",
-                    "id": "width",
-                    "min": 1000,
-                    "max": 1800,
-                    "step": 40,
-                    "default": 1200,
-                    "unit": "px",
-                    "label": "Section Width"
-                },
-                {
-                    "type": "paragraph",
-                    "content": "Style options Post"
-                },
-                {
-                    "type": "color",
-                    "id": "bg_color",
-                    "label": "Background color"
-                },
-                {
-                    "type": "color",
-                    "id": "title_post_color",
-                    "label": "Title post color"
-                },
-                {
-                    "type": "color",
-                    "id": "text_post_color",
-                    "label": "Text post color"
-                },
-                {
-                    "type": "color",
-                    "id": "link_post_color",
-                    "label": "Link post color"
-                },
-                {
-                    "type": "range",
-                    "id": "padding_top",
-                    "min": 0,
-                    "max": 60,
-                    "step": 5,
-                    "unit": "px",
-                    "label": "Padding top",
-                    "default": 30
-                },
-                {
-                    "type": "range",
-                    "id": "padding_bottom",
-                    "min": 0,
-                    "max": 60,
-                    "step": 5,
-                    "unit": "px",
-                    "label": "Padding bottom",
-                    "default": 30
-                }
-            ]
+            "type": "range",
+            "id": "post_limit",
+            "min": 3,
+            "max": 24,
+            "step": 1,
+            "default": 3,
+            "label": "Posts Limit"
         },
         {
-            "type": "post_card",
-            "name": "Post card",
-            "limit": 1,
-            "settings": [
-                {
-                    "type": "range",
-                    "id": "post_limit",
-                    "min": 2,
-                    "max": 24,
-                    "step": 1,
-                    "default": 3,
-                    "label": "Posts Limit"
-                },
-                {
-                    "type": "range",
-                    "id": "columns_desktop",
-                    "min": 2,
-                    "max": 4,
-                    "step": 1,
-                    "default": 4,
-                    "label": "Number of columns"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "fill_image",
-                    "default": false,
-                    "label": "Fill Image"
-                },
-                {
-                    "type": "text",
-                    "id": "button",
-                    "default": "Read More",
-                    "label": "Button"
-                },
-                {
-                    "type": "select",
-                    "id": "img_size",
-                    "label": "Image size",
-                    "options": [
-                        {
-                            "value": "cropped",
-                            "label": "Cropped"
-                        },
-                        {
-                            "value": "landscape",
-                            "label": "Landscape"
-                        },
-                        {
-                            "value": "square",
-                            "label": "Square"
-                        },
-                        {
-                            "value": "portrait",
-                            "label": "Portrait"
-                        },
-                        {
-                            "value": "circle",
-                            "label": "Circle"
-                        }
-                    ]
-                },
-                {
-                    "type": "checkbox",
-                    "id": "full_width",
-                    "default": false,
-                    "label": "Enabled full width?"
-                },
-                {
-                    "type": "range",
-                    "id": "width",
-                    "min": 1000,
-                    "max": 1800,
-                    "step": 40,
-                    "default": 1200,
-                    "unit": "px",
-                    "label": "Section Width"
-                },
-                {
-                    "type": "paragraph",
-                    "content": "Style options Post"
-                },
-                {
-                    "type": "color",
-                    "id": "bg_color",
-                    "label": "Background color"
-                },
-                {
-                    "type": "color",
-                    "id": "title_post_color",
-                    "label": "Title post color"
-                },
-                {
-                    "type": "color",
-                    "id": "text_post_color",
-                    "label": "Text post color"
-                },
-                {
-                    "type": "color",
-                    "id": "link_post_color",
-                    "label": "Link post color"
-                },
-                {
-                    "type": "range",
-                    "id": "padding_top",
-                    "min": 0,
-                    "max": 60,
-                    "step": 5,
-                    "unit": "px",
-                    "label": "Padding top",
-                    "default": 30
-                },
-                {
-                    "type": "range",
-                    "id": "padding_bottom",
-                    "min": 0,
-                    "max": 60,
-                    "step": 5,
-                    "unit": "px",
-                    "label": "Padding bottom",
-                    "default": 30
-                }
-            ]
+            "type": "range",
+            "id": "columns_desktop",
+            "min": 3,
+            "max": 5,
+            "step": 1,
+            "default": 4,
+            "label": "Number of columns"
         },
         {
-            "type": "page_card",
-            "name": "Page card",
-            "limit": 1,
-            "settings": [
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background color"
+        },
+        {
+            "type": "color",
+            "id": "title_color",
+            "label": "Title color"
+        },
+        {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color"
+        },
+        {
+            "type": "color",
+            "id": "link_color",
+            "label": "Link  color"
+        },
+        {
+            "type": "checkbox",
+            "id": "full_width",
+            "default": false,
+            "label": "Enabled full width?"
+        },
+        {
+            "type": "range",
+            "id": "width",
+            "min": 1000,
+            "max": 1800,
+            "step": 40,
+            "default": 1200,
+            "unit": "px",
+            "label": "Section Width"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max": 60,
+            "step": 5,
+            "unit": "px",
+            "label": "Padding top",
+            "default": 30
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "min": 0,
+            "max": 60,
+            "step": 5,
+            "unit": "px",
+            "label": "Padding bottom",
+            "default": 30
+        },
+        {
+            "type": "header",
+            "content": "Style options Post"
+        },
+        {
+            "type": "color",
+            "id": "bg_post_color",
+            "label": "Background post color"
+        },
+        {
+            "type": "color",
+            "id": "title_post_color",
+            "label": "Title post color"
+        },
+
+        {
+            "type": "color",
+            "id": "text_post_color",
+            "label": "Text post color"
+        },
+        {
+            "type": "color",
+            "id": "link_post_color",
+            "label": "Link post color"
+        },
+        {
+            "type": "checkbox",
+            "id": "fill_image",
+            "default": false,
+            "label": "Fill Image"
+        },
+        {
+            "type": "text",
+            "id": "button",
+            "default": "More details",
+            "label": "Button"
+        },
+        {
+            "type": "select",
+            "id": "img_size",
+            "label": "Image size",
+            "options": [
                 {
-                    "type": "text",
-                    "id": "label",
-                    "default": "Read More",
-                    "label": "t:sections.main-blog.blocks.link.settings.text.label"
+                    "value": "cropped",
+                    "label": "Cropped"
+                },
+                {
+                    "value": "landscape",
+                    "label": "Landscape"
+                },
+                {
+                    "value": "square",
+                    "label": "Square"
+                },
+                {
+                    "value": "portrait",
+                    "label": "Portrait"
+                },
+                {
+                    "value": "circle",
+                    "label": "Circle"
                 }
             ]
         }

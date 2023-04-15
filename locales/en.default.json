@@ -13,6 +13,7 @@
         "no_results_terms": "No results for “{{ terms }}”",
         "no_results_description": "It looks like this search returned no results, but don't worry, we'll find you something just as good."
       },
+      "all_results": "All Results",
       "view_all_results": "View All Results",
       "load_more": "Load More"
     },
