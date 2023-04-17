@@ -15,7 +15,12 @@
       },
       "all_results": "All Results",
       "view_all_results": "View All Results",
-      "load_more": "Load More"
+      "load_more": "Load More",
+      "terms_count_html": {
+        "one": "Showing {{ terms_count }} of {{ count }} item",
+        "other": "Showing <span class='js-terms-count'>{{ terms_count }}<\/span> of <span class='js-total-terms-count'>{{ count }}<\/span> item"
+      },
+      "load_more": "Load more"
     },
     "password_page": {
       "login_form_heading": "Enter store using password:",

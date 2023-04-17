@@ -183,6 +183,7 @@ quantity-input {
             height: 20px;
             border-radius: 20px;
             margin-right: 6px;
+            margin-bottom: 6px;
             position: relative;
             input[type="radio"] {
                 display: block;
@@ -242,6 +243,7 @@ quantity-input {
         }
         .swatch-element {
             margin-right: 6px;
+            margin-bottom: 6px;
             input[type="radio"] {
                 display: none;
             }
