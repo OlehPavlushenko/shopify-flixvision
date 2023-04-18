@@ -41,6 +41,10 @@ class BlogLoadMore extends HTMLElement {
                     .parseFromString(responseText, "text/html")
                     .querySelector(`[id*="${sectionId}"]`).innerHTML
                 this.renderPostGrid(html)
+
+                const searchParams = new URLSearchParams(query)
+                searchParams.delete("section_id")
+                history.pushState(null, null, "?" + searchParams.toString())
             })
     }
 
@@ -65,17 +69,6 @@ class BlogLoadMore extends HTMLElement {
         if (itemsFetched >= totalProducts) {
             document.querySelector(".js-blog-load-more").style.display = "none"
         }
-
-        const searchParams = new URLSearchParams(
-            window.location.search
-        ).toString()
-        history.pushState(
-            { searchParams },
-            "",
-            `${window.location.pathname}${
-                searchParams && "?".concat(searchParams)
-            }`
-        )
     }
 }
 

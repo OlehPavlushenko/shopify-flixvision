@@ -6,6 +6,7 @@
 
     assign add_btn = section.settings.enable_add_btn
     assign btn = section.settings.btn
+
     assign variant_type = section.settings.variant
 
     assign columns_desktop = section.settings.columns_desktop
@@ -18,6 +19,7 @@
     assign width = section.settings.width
     assign pad_top = section.settings.padding_top
     assign pad_bot = section.settings.padding_bottom
+
     assign price_variant = false
     if btn == 'quick'
         assign price_variant = true
@@ -38,21 +40,21 @@
 {{ 'component-card-products.css' | asset_url | stylesheet_tag }}
 
 {% if blocks.size > 0 %}
-    <div class='featured-products' style='{{ styles }}'>
-        <div class='page-width'>
+    <div class="featured-products" style="{{ styles }}">
+        <div class="page-width">
             {%- if heading != blank -%}
-                <h3 class='featured-products__heading h3'>
+                <h3 class="featured-products__heading h3">
                     {{ heading | escape }}
                 </h3>
             {%- endif -%}
-            <ul class='featured-products__list columns__desktop--{{ columns_desktop }} columns__mobile--{{ columns_mobile }}'>
+            <ul class="featured-products__list columns__desktop--{{ columns_desktop }} columns__mobile--{{ columns_mobile }}">
                 {%- for block in blocks -%}
                     {% liquid
                         assign product = block.settings.product
                         assign image_custom = block.settings.custom_image
                         assign fill_image = block.settings.fill_image
                     %}
-                    <li class='featured-products__item'>
+                    <li class="featured-products__item">
                         {% render 'card-product',
                             product: product,
                             show_vendor: vendor,

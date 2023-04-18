@@ -39,7 +39,7 @@
         @media screen and (min-width: 991px) {
             padding-top: var(--pad-top-main-head);
             padding-bottom: var(--pad-bot-main-head);
-            min-height: 570px;
+            min-height: 470px;
         }
         .main-head__media {
             position: absolute;
@@ -65,7 +65,7 @@
             .row {
                 min-height: 350px;
                 @media screen and (min-width: 991px) {
-                    min-height: 570px;
+                    min-height: 470px;
                 }
                 > div {
                     margin-top: auto;
@@ -82,6 +82,9 @@
             text-transform: none;
             margin-bottom: 10px;
         }
+    }
+    .button {
+        margin-top: 2rem;
     }
 }
 
