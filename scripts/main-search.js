@@ -18,7 +18,11 @@ class MainSearch extends HTMLElement {
     initialize() {
         const form = this.querySelector("form.search")
         form.addEventListener("submit", this.onFormSubmit.bind(this))
-
+        this.input.focus()
+        this.input.setSelectionRange(
+            this.input.value.length,
+            this.input.value.length
+        )
         this.input.addEventListener(
             "input",
             this.debounce((event) => {
@@ -107,12 +111,10 @@ class MainSearch extends HTMLElement {
 
     setLiveRegionLoadingState() {
         this.setAttribute("loading", true)
-        console.log("set")
     }
 
     unsetLiveRegionLoadingState() {
         this.removeAttribute("loading")
-        console.log("unset")
     }
 
     debounce = (fn, wait) => {
@@ -125,3 +127,80 @@ class MainSearch extends HTMLElement {
 }
 
 customElements.define("main-search", MainSearch)
+
+class SearchLoadMore extends HTMLElement {
+    constructor() {
+        super()
+        window.currentPage = 1
+        this.querySelector(".js-search-load-more").addEventListener(
+            "click",
+            this.loadNextPage.bind(this)
+        )
+    }
+
+    getQueryForSearchPagination(sectionId) {
+        const params = new URLSearchParams(window.location.search)
+        let query = ""
+
+        for (let p of params) {
+            if (p[0] !== "page") {
+                if (query !== "") {
+                    query += "&"
+                }
+
+                query += `${p[0]}=${p[1]}`
+            }
+        }
+
+        const partQuery = `?section_id=${sectionId}&page=${window.currentPage}${
+            query !== "" ? "&" : ""
+        }`
+
+        return partQuery + query
+    }
+
+    loadNextPage() {
+        const sectionId = document.getElementById("main-search-terms-grid")
+            .dataset.id
+        window.currentPage++
+        const query = this.getQueryForSearchPagination(sectionId)
+        fetch(query)
+            .then((response) => response.text())
+            .then((responseText) => {
+                const html = new DOMParser()
+                    .parseFromString(responseText, "text/html")
+                    .querySelector(`[id*="${sectionId}"]`).innerHTML
+                this.renderPostGrid(html)
+
+                const searchParams = new URLSearchParams(query)
+                searchParams.delete("section_id")
+                history.pushState(null, null, "?" + searchParams.toString())
+            })
+    }
+
+    renderPostGrid(html) {
+        const content = new DOMParser().parseFromString(html, "text/html")
+        const postGrid = content.getElementById("main-search-terms-grid")
+        const innerHTML = postGrid.innerHTML
+        const itemsFetched = parseInt(
+            content.querySelector(".js-terms-count").innerHTML
+        )
+        const totalProducts = parseInt(
+            content.querySelector(".js-total-terms-count").innerHTML
+        )
+
+        document.querySelector(".js-terms-count").innerHTML =
+            itemsFetched >= totalProducts ? totalProducts : itemsFetched
+        if (postGrid.querySelector(".js-main-search-item")) {
+            document
+                .getElementById("main-search-terms-grid")
+                .insertAdjacentHTML("beforeend", innerHTML)
+        }
+        if (itemsFetched >= totalProducts) {
+            document.querySelector(".js-search-load-more").style.display =
+                "none"
+        }
+    }
+}
+
+customElements.define("search-load-more", SearchLoadMore)

@@ -113,7 +113,7 @@
                         <blog-load-more class="main-blog__load-more-container main-blog__box js-blog-load-more-container">
                             <button
                                 type="button"
-                                class="main-blog__load-more-button button button--outline js-blog-load-more"
+                                class="main-blog__load-more-button button button--outline js-blog-load-more {% if current_count == blog.articles_count %} hidden{% endif %}"
                             >
                                 {{ 'blogs.load_more' | t }}
                             </button>

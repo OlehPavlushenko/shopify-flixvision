@@ -266,10 +266,19 @@
         "label": "Enabled full width?"
       },
       {
-        "type": "header",
-        "content": "Style options Products"
+        "type": "range",
+        "id": "width",
+        "min": 1000,
+        "max": 1800,
+        "step": 40,
+        "default": 1200,
+        "unit": "px",
+        "label": "Section Width"
       },
-
+      {
+        "type": "header",
+        "content": "Products options"
+      },
       {
         "type": "range",
         "id": "product_limit",
@@ -355,7 +364,7 @@
       },
       {
           "type": "header",
-          "content": "Style options Post"
+          "content": "Post options"
       },
       {
         "type": "range",
@@ -416,7 +425,7 @@
       },
       {
         "type": "header",
-        "content": "Style options Page"
+        "content": "Page options"
       },
       {
         "type": "range",

@@ -22,7 +22,7 @@
     assign link_color = section.settings.link_color | default: 'inherit'
 
     assign img_size = settings.img_size
-    assign width = section.settings.width
+    assign width = settings.width
     assign pad_top = section.settings.padding_top
     assign pad_bot = section.settings.padding_bottom
 
@@ -61,64 +61,81 @@
 
 {{ 'section-main-search.css' | asset_url | stylesheet_tag }}
 {{ 'component-card-post.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+    comment
+        This code checks the query param for category which is used to set the active tab. Javascript implementation would have been too late in the squence
+    endcomment
+    assign type = ''
+    assign page_url = content_for_header | split: '"pageurl":"' | last | split: '"' | first | split: request.host | last | replace: '\/', '/' | replace: '%20', ' ' | replace: '\u0026', '&'
+    for i in (1..1)
+        unless page_url contains '?'
+            break
+        endunless
+
+        assign query_string = page_url | split: '?' | last
+        assign query_parts = query_string | split: '&'
+
+        for part in query_parts
+            assign key_and_value = part | split: '='
+            if key_and_value.size > 1
+                if key_and_value[0] == 'type'
+                    assign type = key_and_value[1]
+                endif
+            endif
+        endfor
+    endfor
+-%}
+
+{%- liquid
+    if type == 'article'
+        assign post_limit = settings.post_limit
+        assign columns_desktop = settings.columns_post
+    elsif type == 'page'
+        assign post_limit = settings.page_limit
+        assign columns_desktop = settings.columns_page
+    elsif type == 'product'
+        assign post_limit = settings.product_limit
+        assign columns_desktop = settings.columns_product
+    else
+        assign post_limit = settings.product_limit
+        assign columns_desktop = settings.columns_product
+    endif
+-%}
+
 <div class="main-serch-section" style="{{ styles }}">
     <div class="main-search__wrapper">
-        {%- liquid
-            comment
-                This code checks the query param for category which is used to set the active tab. Javascript implementation would have been too late in the squence
-            endcomment
-            assign type = ''
-            assign page_url = content_for_header | split: '"pageurl":"' | last | split: '"' | first | split: request.host | last | replace: '\/', '/' | replace: '%20', ' ' | replace: '\u0026', '&'
-            for i in (1..1)
-                unless page_url contains '?'
-                    break
-                endunless
-
-                assign query_string = page_url | split: '?' | last
-                assign query_parts = query_string | split: '&'
-
-                for part in query_parts
-                    assign key_and_value = part | split: '='
-                    if key_and_value.size > 1
-                        if key_and_value[0] == 'type'
-                            assign type = key_and_value[1]
-                        endif
-                    endif
-                endfor
-            endfor
-
-            if type == 'article'
-                assign post_limit = settings.post_limit
-                assign columns_desktop = settings.columns_post
-            elsif type == 'page'
-                assign post_limit = settings.page_limit
-                assign columns_desktop = settings.columns_page
-            else
-                assign post_limit = settings.product_limit
-                assign columns_desktop = settings.columns_product
-            endif
-        -%}
-
         <main-search>
             <div class="template-main-search {% unless search.performed and search.results.size > 0 %} template-main-search--empty{% endunless %}">
                 <div
                     class="template-main-search__header"
                 >
                     <div class="template-main-search__search">
-                        <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+                        <form
+                            action="{{ routes.search_url }}"
+                            method="get"
+                            role="search"
+                            class="search"
+                            autocomplete="off"
+                        >
                             <div class="field">
-                                <input name="options[prefix]" type="hidden" value="last">
-                                <input name="sort_by" type="hidden" value="price-ascending">
+                                {%- if type == 'product' -%}
+                                    <input name="type" type="hidden" value="product">
+                                {%- elsif type == 'article' -%}
+                                    <input name="type" type="hidden" value="article">
+                                {%- elsif type == 'page' -%}
+                                    <input name="type" type="hidden" value="page">
+                                {%- else -%}
+                                    <input name="sort_by" type="hidden" value="price-ascending">
+                                {%- endif -%}
                                 <input
                                     class="search__input field__input"
                                     id="SearchInTemplate"
                                     type="search"
                                     name="q"
                                     value="{{ search.terms | escape }}"
-                                    autofocus="off"
                                     autocorrect="off"
                                     autocomplete="off"
-                                    autocapitalize="off"
                                     spellcheck="false"
                                     placeholder="{%- if search.performed -%}{{ 'templates.search.again' | t }}{%- else -%}{{ 'sections.search.placeholder' | t }}{%- endif -%}"
                                 >
@@ -154,9 +171,9 @@
                         >
                             <ul class="tabs" role="tablist">
                                 <li
-                                    {% unless canonical_url contains 'type' %}
+                                    {% if type == blank %}
                                         class="active"
-                                    {% endunless %}
+                                    {% endif %}
                                 >
                                     <a href="{{ routes.search_url }}?sort_by=price-ascending&q={{ search.terms }}">
                                         {{- 'general.search.all_results' | t -}}
@@ -169,7 +186,6 @@
                                         {{ 'general.search.terms.products' | t }}
                                     </a>
                                 </li>
-
                                 <li class="{% if type == 'article'%}active{% endif %}">
                                     <a
                                         href="{{ routes.search_url }}?type=article&q={{ search.terms }}"
@@ -202,12 +218,14 @@
                                     data-total="{{ search.results_count }}"
                                 >
                                     <ul
+                                        id="main-search-terms-grid"
                                         class="template-main-search-tabs__list"
+                                        data-id="{{ section.id }}"
                                     >
                                         {%- if search.results_count > 0 -%}
                                             {%- for result in search.results -%}
                                                 {% if result.object_type == 'product' %}
-                                                    <li class="grid__item template-main-search-tabs__item">
+                                                    <li class="grid__item template-main-search-tabs__item js-main-search-item">
                                                         {% render 'card-product',
                                                             product: result,
                                                             show_vendor: true,
@@ -226,7 +244,7 @@
 
                                             {%- for result in search.results -%}
                                                 {%- if result.object_type == 'article' %}
-                                                    <li class="grid__item template-main-search-tabs__item grid__item--article">
+                                                    <li class="grid__item template-main-search-tabs__item grid__item--article js-main-search-item js-main-search-item">
                                                         {% render 'card-post',
                                                             article: result,
                                                             img_size: img_size,
@@ -235,7 +253,7 @@
                                                         %}
                                                     </li>
                                                 {% elsif result.object_type == 'page' %}
-                                                    <li class="grid__item template-main-search-tabs__item">
+                                                    <li class="grid__item template-main-search-tabs__item js-main-search-item">
                                                         <h5 class="template-main-search-page__title">
                                                             {{ result.title }}
                                                         </h5>
@@ -273,10 +291,11 @@
                                             <search-load-more class="main-search__load-more-container main-search__box js-search-load-more-container">
                                                 <button
                                                     type="button"
-                                                    class="main-search__load-more-button button button--secondary button--outline js-search-load-more"
+                                                    class="main-search__load-more-button button button--secondary button--outline js-search-load-more{% if current_count == search.results_count %} hidden{% endif %}"
                                                 >
                                                     {{ 'general.search.load_more' | t }}
                                                 </button>
+
                                                 <p class="main-search__product-count" role="status">
                                                     {{
                                                         'general.search.terms_count_html'
@@ -328,48 +347,6 @@
     "class": "spaced-section",
     "settings": [
         {
-            "type": "checkbox",
-            "id": "load_more",
-            "label": "Use load more",
-            "default": false
-        },
-        {
-            "type": "color",
-            "id": "bg_color",
-            "label": "Background color"
-        },
-        {
-            "type": "color",
-            "id": "title_color",
-            "label": "Title color"
-        },
-        {
-            "type": "color",
-            "id": "text_color",
-            "label": "Text color"
-        },
-        {
-            "type": "color",
-            "id": "link_color",
-            "label": "Link  color"
-        },
-        {
-            "type": "checkbox",
-            "id": "full_width",
-            "default": false,
-            "label": "Enabled full width?"
-        },
-        {
-            "type": "range",
-            "id": "width",
-            "min": 1000,
-            "max": 1800,
-            "step": 40,
-            "default": 1200,
-            "unit": "px",
-            "label": "Section Width"
-        },
-        {
             "type": "range",
             "id": "padding_top",
             "min": 0,
@@ -391,90 +368,27 @@
         },
         {
             "type": "header",
-            "content": "Style options Products"
+            "content": "Style options Product"
         },
         {
-            "type": "range",
-            "id": "product_limit",
-            "min": 5,
-            "max": 36,
-            "step": 1,
-            "default": 10,
-            "label": "product Limit"
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background color"
         },
         {
-            "type": "range",
-            "id": "columns_product",
-            "min": 2,
-            "max": 5,
-            "step": 1,
-            "default": 5,
-            "label": "Number of columns"
+            "type": "color",
+            "id": "title_color",
+            "label": "Title color"
         },
         {
-            "type": "checkbox",
-            "id": "enable_add_btn",
-            "default": false,
-            "label": "Enable add to cart button"
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color"
         },
         {
-            "type": "select",
-            "id": "btn",
-            "default": "details",
-            "label": "Link or Quick add to cart",
-            "options": [
-                {
-                    "value": "quick",
-                    "label": "Quick add to cart"
-                },
-                {
-                    "value": "details",
-                    "label": "Details"
-                }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "variant",
-            "default": "pills",
-            "label": "Variant picker type",
-            "options": [
-                {
-                    "value": "pills",
-                    "label": "Pills"
-                },
-                {
-                    "value": "pills_color_images",
-                    "label": "Pills color images"
-                }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "prod_img_size",
-            "label": "Image size",
-            "options": [
-                {
-                    "value": "cropped",
-                    "label": "Cropped"
-                },
-                {
-                    "value": "landscape",
-                    "label": "Landscape"
-                },
-                {
-                    "value": "square",
-                    "label": "Square"
-                },
-                {
-                    "value": "portrait",
-                    "label": "Portrait"
-                },
-                {
-                    "value": "circle",
-                    "label": "Circle"
-                }
-            ]
+            "type": "color",
+            "id": "link_color",
+            "label": "Link  color"
         },
         {
             "type": "header",
@@ -502,63 +416,6 @@
             "label": "Link post color"
         },
         {
-            "type": "range",
-            "id": "post_limit",
-            "min": 6,
-            "max": 36,
-            "step": 6,
-            "default": 12,
-            "label": "Post Limit"
-        },
-        {
-            "type": "range",
-            "id": "columns_post",
-            "min": 2,
-            "max": 4,
-            "step": 1,
-            "default": 3,
-            "label": "Number of columns"
-        },
-        {
-            "type": "checkbox",
-            "id": "fill_image",
-            "default": false,
-            "label": "Fill Image"
-        },
-        {
-            "type": "text",
-            "id": "button",
-            "default": "More details",
-            "label": "Button"
-        },
-        {
-            "type": "select",
-            "id": "img_size",
-            "label": "Image size",
-            "options": [
-                {
-                    "value": "cropped",
-                    "label": "Cropped"
-                },
-                {
-                    "value": "landscape",
-                    "label": "Landscape"
-                },
-                {
-                    "value": "square",
-                    "label": "Square"
-                },
-                {
-                    "value": "portrait",
-                    "label": "Portrait"
-                },
-                {
-                    "value": "circle",
-                    "label": "Circle"
-                }
-            ]
-        },
-        {
             "type": "header",
             "content": "Style options Page"
         },
@@ -577,30 +434,6 @@
             "type": "color",
             "id": "link_page_color",
             "label": "Link post color"
-        },
-        {
-            "type": "range",
-            "id": "page_limit",
-            "min": 6,
-            "max": 36,
-            "step": 6,
-            "default": 12,
-            "label": "Page Limit"
-        },
-        {
-            "type": "range",
-            "id": "columns_page",
-            "min": 2,
-            "max": 4,
-            "step": 1,
-            "default": 3,
-            "label": "Number of columns"
-        },
-        {
-            "type": "text",
-            "id": "button_page",
-            "default": "More details",
-            "label": "Button"
         }
     ]
 }
