@@ -227,6 +227,7 @@ details-open.open .header__search .search-modal__overlay:after {
     display: block;
     width: 100%;
     text-decoration: none;
+    transition: color .3s ease;
 }
 
 .search-modal__item:hover .h4 {

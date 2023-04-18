@@ -48,6 +48,30 @@ swiper-section {
             margin-bottom: 0;
         }
     }
+    &.content--left {
+        text-align: left;
+    }
+    
+    &.content--right {
+        text-align: right;
+        .card-post-template__tags {
+            justify-content: flex-end;
+        }
+        .card-post__tags--item {
+            margin-left: .8rem;
+        }
+    }
+    
+    &.content--center {
+        text-align: center;
+        .card-post-template__tags {
+            justify-content: center;
+        }
+        .card-post__tags--item {
+            margin-right: .4rem;
+            margin-left: .4rem;
+        }
+    }
 }
 
 @media screen and (min-width: 750px) {

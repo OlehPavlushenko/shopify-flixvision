@@ -8,6 +8,7 @@
 
     assign columns_desktop = section.settings.columns_desktop
     assign columns_mobile = section.settings.columns_mobile
+    assign content_alignment = section.settings.content_alignment
 
     assign bg_color = section.settings.bg_color | default: 'transparent'
     assign text_color = section.settings.text_color | default: 'inherit'
@@ -44,7 +45,7 @@
 
 {% if blocks.size > 0 %}
     <div
-        class="featured-posts full_width--{{ full_width }}"
+        class="featured-posts full_width--{{ full_width }} content--{{ content_alignment }}"
         style="{{ styles }}"
     >
         <div class="page-width container">
@@ -171,6 +172,26 @@
                     "label": "2 columns"
                 }
             ]
+        },
+        {
+            "type": "select",
+            "id": "content_alignment",
+            "options": [
+                {
+                    "value": "left",
+                    "label": "Left"
+                },
+                {
+                    "value": "center",
+                    "label": "Center"
+                },
+                {
+                    "value": "right",
+                    "label": "Right"
+                }
+            ],
+            "default": "left",
+            "label": "Text alignment"
         },
         {
             "type": "paragraph",

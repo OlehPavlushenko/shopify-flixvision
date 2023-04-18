@@ -266,6 +266,26 @@
         "label": "Enabled full width?"
       },
       {
+        "type": "select",
+        "id": "content_alignment",
+        "options": [
+            {
+                "value": "left",
+                "label": "Left"
+            },
+            {
+                "value": "center",
+                "label": "Center"
+            },
+            {
+                "value": "right",
+                "label": "Right"
+            }
+        ],
+        "default": "left",
+        "label": "Text alignment"
+      },
+      {
         "type": "range",
         "id": "width",
         "min": 1000,
