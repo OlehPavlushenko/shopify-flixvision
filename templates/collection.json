@@ -1,11 +1,16 @@
 {
   "sections": {
+    "main-header": {
+      "type": "main-collection-header",
+      "settings": {}
+    },
     "main": {
-      "type": "main-collection",
+      "type": "main-collection-product",
       "settings": {}
     }
   },
   "order": [
+    "main-header",
     "main"
   ]
 }
