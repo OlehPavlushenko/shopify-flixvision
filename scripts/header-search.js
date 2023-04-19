@@ -115,9 +115,9 @@ class HeaderSearch extends HTMLElement {
                 searchTerm
             )}&${encodeURIComponent(
                 "resources[type]"
-            )}=product,article,collection,page&${encodeURIComponent(
+            )}=product,article,page&${encodeURIComponent(
                 "resources[options][fields]"
-            )}=product_type,tag,title,variants.title,vendor&section_id=header-search`
+            )}=body,product_type,tag,title,variants.barcode,variants.sku,variants.title,vendor,author&section_id=header-search`
         )
             .then((response) => {
                 if (!response.ok) {

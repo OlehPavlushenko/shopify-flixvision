@@ -7,10 +7,20 @@ class MainSearch extends HTMLElement {
         )
         this.tabPanels = [...this.querySelectorAll(".js-tabpanel")]
         this.parent = this.closest("div")
+        this.mainSearchHeader = document.querySelector(".js-main-search-header")
+        this.mainHeader = document.querySelector(
+            "#shopify-section-header"
+        ).offsetHeight
 
         this.tempTotalWrapper = this.querySelector(
             ".template-main-search__wrapper"
         )
+        this.mainSearchHeaderPos =
+            this.mainSearchHeader.getBoundingClientRect().top +
+            window.pageYOffset -
+            this.mainHeader
+
+        this.searchParams = new URLSearchParams(window.location.search)
         this.tempTotal = 0
         this.initialize()
     }
@@ -23,12 +33,23 @@ class MainSearch extends HTMLElement {
             this.input.value.length,
             this.input.value.length
         )
+
         this.input.addEventListener(
             "input",
             this.debounce((event) => {
                 this.onChange(event)
             }, 500).bind(this)
         )
+
+        let qParam = this.searchParams.get("q")
+        if (qParam) {
+            setTimeout(() => {
+                window.scrollTo({
+                    top: this.mainSearchHeaderPos,
+                    behavior: "smooth",
+                })
+            }, "1")
+        }
     }
 
     getQuery() {
@@ -56,16 +77,13 @@ class MainSearch extends HTMLElement {
     getSearchResults(searchTerm) {
         this.setLiveRegionLoadingState()
 
-        let searchParams = new URLSearchParams(window.location.search)
-
         // get string params URL
-        let typeParam = searchParams.get("type")
+        let typeParam = this.searchParams.get("type")
 
         // make new string URL
         let newSearchParams = new URLSearchParams()
 
         // add new type URL
-
         if (typeParam === "product") {
             newSearchParams.set("type", "product")
         } else if (typeParam === "article") {
@@ -97,6 +115,14 @@ class MainSearch extends HTMLElement {
                 this.renderSearchResults(resultsMarkup)
                 // update string URL
                 history.pushState(null, null, "?" + newSearchParams.toString())
+                console.log(this.mainSearchHeaderPos)
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: this.mainSearchHeaderPos,
+                        behavior: "smooth",
+                    })
+                }, "1")
+                //window.scrollTo(mainSearchHeaderPos, 0)
             })
             .catch((error) => {
                 this.unsetLiveRegionLoadingState()

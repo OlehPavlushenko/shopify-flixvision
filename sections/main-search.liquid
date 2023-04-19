@@ -3,6 +3,7 @@
     assign button = settings.button
     assign button_page = settings.button_page
     assign full_width = settings.full_width
+    assign content_alignment = settings.content_alignment
 
     assign add_btn = settings.enable_add_btn
     assign btn = settings.btn
@@ -108,7 +109,7 @@
         <main-search>
             <div class="template-main-search {% unless search.performed and search.results.size > 0 %} template-main-search--empty{% endunless %}">
                 <div
-                    class="template-main-search__header"
+                    class="template-main-search__header js-main-search-header"
                 >
                     <div class="template-main-search__search">
                         <form
@@ -209,7 +210,7 @@
                     <div class="tabs-content__wrapper">
                         <div
                             id="terms-panel"
-                            class="tabs-content full_width--{{ full_width }}"
+                            class="tabs-content full_width--{{ full_width }} content--{{ content_alignment }}"
                             role="tabpanel"
                         >
                             {% paginate search.results by post_limit %}
