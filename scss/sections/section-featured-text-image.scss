@@ -12,7 +12,7 @@
     }
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .featured-text-image {
         padding-top: var(--pad-top-text-image);
         padding-bottom: var(--pad-bot-text-image);
@@ -115,7 +115,7 @@
     z-index: 1;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .video-media__poster-button {
         width: 8rem;
         height: 8rem;
@@ -134,7 +134,7 @@
     top: 50%;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .video-media__poster-button svg {
         width: 2.6rem;
         height: 2.6rem;
@@ -159,15 +159,19 @@
 }
 
 .grid__item--media {
-    margin-top:  calc(-0.5 * var(--pad-top-text-image));
+    margin-top:  calc(-0.7 * var(--pad-top-text-image));
     margin-left: -2rem;
     margin-right: -2rem;
     max-width: inherit!important;
 }
 
-@media screen and (min-width: 750px) {
+.featured-text-image__element {
+    width: 100%;
+}
+
+@media screen and (min-width: 768px) {
     .featured-text-image__grid { 
-        overflow: hidden;
+        //overflow: hidden;
     }
     .featured-text-image__grid--reverse {
         flex-direction: row-reverse;
@@ -207,10 +211,10 @@
     height: 100%;
     justify-content: space-between;
     padding: 3rem 0;
-    margin-bottom:  calc(-0.5 * var(--pad-bot-text-image));
+    margin-bottom:  calc(-0.7 * var(--pad-bot-text-image));
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .featured-text-image__content { 
         padding: 5rem 0;
         margin-bottom:  0;
@@ -271,7 +275,7 @@
 .featured-text-image__text  {
     margin-top: 1rem;
     color: var(--text-color-text-image);
-    @media screen and (min-width: 750px) {
+    @media screen and (min-width: 768px) {
         margin-top: 3rem;
     }
 }

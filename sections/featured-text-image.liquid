@@ -106,12 +106,12 @@
                         {%- if heading != blank or text != blank -%}
                             <div class="featured-text-image__element">
                                 {%- if heading != blank -%}
-                                    <h2 class="featured-text-image__heading h3" {{ block.shopify_attributes }}>
+                                    <h2 class="featured-text-image__heading h3">
                                         {{ heading | escape }}
                                     </h2>
                                 {%- endif -%}
                                 {%- if text != blank -%}
-                                    <div class="featured-text-image__text rte--large" {{ block.shopify_attributes }}>
+                                    <div class="featured-text-image__text rte--large">
                                         {{ text }}
                                     </div>
                                 {%- endif -%}
@@ -121,7 +121,6 @@
                             <a
                                 href="{{ button_link }}"
                                 class="button button--primary button--middle"
-                                {{ block.shopify_attributes }}
                             >
                                 {{ button_label | escape }}
                             </a>

@@ -509,5 +509,12 @@
   "pages":{
     "wishlist": "Wishlist",
     "compare": "Compare"
+  },
+  "breadcrumbs":{
+    "home": "Home",
+    "collections": "Collections",
+    "search": "Search",
+    "account": "Account",
+    "products": "Products"
   }
 }
