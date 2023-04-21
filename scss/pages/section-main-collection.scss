@@ -1,3 +1,36 @@
+.main-collections {
+    padding: 30px;
+    padding-bottom: 30px;
+    .facets-vertical-sort {
+        padding: 0 0 30px 0;
+    }
+}
+
+.main-collections__view {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .main-collections__grid, .main-collections__list {
+        padding: 4px;
+        height: 28px;
+        width: 28px;
+        text-align: center;
+        background-color: var(--color-light);
+        border-radius: var(--button-border-radius);
+        text-decoration: none;
+        color: var(--color-link-text);
+        &.active {
+            color: var(--color-link-hover-text);
+        }
+    }
+    .main-collections__grid svg {
+        margin-right: -20px;
+    }
+    .main-collections__grid:last-child svg {
+        margin-right: -16px;
+    }
+}
+
 @media screen and (max-width: 749px) {
   .collection .grid__item:only-child {
     flex: 0 0 100%;

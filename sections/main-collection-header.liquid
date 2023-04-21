@@ -1,5 +1,9 @@
 {% liquid
     assign image = collection.image
+    assign show_image = section.settings.show_image
+    assign show_description = section.settings.show_description
+    assign show_sub_collections = section.settings.show_sub_collections
+    assign show_breadcrumbs = section.settings.show_breadcrumbs
     assign full_width = section.settings.full_width
     assign layout_position = section.settings.layout
     assign image_size = section.settings.img_size
@@ -8,6 +12,7 @@
     assign text = collection.description
     assign button_label = section.settings.button_label
     assign button_link = section.settings.button_link
+    assign sub_collections = collection.metafields.custom.sub_collections.value
 
     assign bg_color = section.settings.bg_color | default: 'transparent'
     assign text_color = section.settings.text_color | default: 'inherit'
@@ -63,10 +68,10 @@
     >
         <div class="page-width">
             <div class="featured-text-image__grid {% if layout_position == 'text_first' %}featured-text-image__grid--reverse{% endif %} grid grid--1-col grid--2-col-tablet">
-                <div class="grid__item grid__item--media">
-                    {% if image != blank %}
+                {% if image != blank and show_image %}
+                    <div class="grid__item grid__item--media">
                         <picture class="featured-text-image__media media">
-                            {% if mobile_image != blank %}
+                            {% if image != blank %}
                                 <source srcset="{{ image_mobile }}" media="(max-width: 749px)">
                             {% endif %}
 
@@ -81,41 +86,47 @@
                                 loading="lazy"
                             >
                         </picture>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
                 <div class="grid__item grid__item--content">
                     <div class="featured-text-image__content">
                         {%- if heading != blank or text != blank -%}
                             <div class="featured-text-image__element">
-                                {% render 'breadcrumbs' %}
+                                {% if show_breadcrumbs %}
+                                    {% render 'breadcrumbs' %}
+                                {% endif %}
                                 {%- if heading != blank -%}
                                     <h1 class="featured-text-image__heading h1">
                                         {{ heading | escape }}
                                     </h1>
                                 {%- endif -%}
-                                {%- if text != blank -%}
+                                {%- if text != blank and show_description -%}
                                     <div class="featured-text-image__text rte--large">
                                         {{ text }}
                                     </div>
                                 {%- endif -%}
-                                <div class="collection-sub-catagories">
-                                    <ul class="collection-sub-catagories__list">
-                                        {% assign sub_collections = collection.metafields.custom.sub_collections.value %}
-                                        {% for collection in sub_collections %}
-                                            <li class="collection-sub-catagories__item">
-                                                <picture class="collection-sub-catagories__media media media__size--{{ image_size }}">
-                                                    {% render 'image',
-                                                        image_box: collection.featured_image,
-                                                        image_box_class: 'collection-sub-catagories__image'
-                                                    %}
-                                                </picture>
-                                                <a class="collection-sub-catagories__links" href="{{ collection.url }}">
-                                                    {{- collection.title | escape -}}
-                                                </a>
-                                            </li>
-                                        {%- endfor -%}
-                                    </ul>
-                                </div>
+                                {% if sub_collections != blank and show_sub_collections %}
+                                    <div class="collection-sub-catagories">
+                                        <ul class="collection-sub-catagories__list">
+                                            {% for collection in sub_collections %}
+                                                <li class="collection-sub-catagories__item">
+                                                    <picture class="collection-sub-catagories__media media media__size--{{ image_size }}">
+                                                        {% render 'image',
+                                                            image_box: collection.featured_image,
+                                                            image_box_class: 'collection-sub-catagories__image'
+                                                        %}
+                                                    </picture>
+                                                    <a
+                                                        class="collection-sub-catagories__links"
+                                                        href="{{ collection.url }}"
+                                                    >
+                                                        {{- collection.title | escape -}}
+                                                    </a>
+                                                </li>
+                                            {%- endfor -%}
+                                        </ul>
+                                    </div>
+                                {%- endif -%}
                             </div>
                         {%- endif -%}
                         {%- if button_label != blank and button_link != blank -%}
@@ -208,6 +219,35 @@
             "type": "url",
             "id": "button_link",
             "label": "Button link"
+        },
+        {
+            "type": "paragraph",
+            "content": "t:sections.main-collection-banner.settings.paragraph.content"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_breadcrumbs",
+            "default": true,
+            "label": "t:sections.main-collection-banner.settings.show_breadcrumbs.label"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_description",
+            "default": true,
+            "label": "t:sections.main-collection-banner.settings.show_collection_description.label"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_sub_collections",
+            "default": true,
+            "label": "t:sections.main-collection-banner.settings.show_sub_collections.label"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_image",
+            "default": true,
+            "label": "t:sections.main-collection-banner.settings.show_collection_image.label",
+            "info": "t:sections.main-collection-banner.settings.show_collection_image.info"
         },
         {
             "type": "paragraph",

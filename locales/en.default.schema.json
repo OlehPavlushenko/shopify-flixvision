@@ -650,6 +650,12 @@
         "paragraph": {
           "content": "Add a description or image by editing your collection. [Learn more](https://help.shopify.com/manual/products/collections/collection-layout)"
         },
+        "show_breadcrumbs": {
+          "label": "Show breadcrumbs"
+        },
+        "show_sub_collections": {
+          "label": "Show sub collection"
+        },
         "show_collection_description": {
           "label": "Show collection description"
         },

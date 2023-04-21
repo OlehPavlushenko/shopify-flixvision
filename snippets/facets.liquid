@@ -46,22 +46,22 @@
                         {% endif %}
                     >
                         {%- if filter_type == 'horizontal' and results.filters != empty -%}
-                            <h2 class="facets__heading caption-large text-body" id="verticalTitle" tabindex="-1">
+                            <h3 class="facets__heading" id="verticalTitle" tabindex="-1">
                                 {{ 'products.facets.filter_by_label' | t }}
-                            </h2>
+                            </h3>
                         {%- endif -%}
                         {% comment %} Pills are right below the title for filter type vertical {% endcomment %}
                         {%- if filter_type == 'vertical' -%}
                             <div class="active-facets active-facets-desktop">
                                 <div class="active-facets-vertical-filter">
                                     {%- unless results.filters == empty -%}
-                                        <h2
-                                            class="facets__heading facets__heading--vertical caption-large text-body"
+                                        <h3
+                                            class="facets__heading facets__heading--vertical"
                                             id="verticalTitle"
                                             tabindex="-1"
                                         >
                                             {{ 'products.facets.filter_by_label' | t }}
-                                        </h2>
+                                        </h3>
                                     {%- endunless -%}
                                     <facet-remove class="active-facets__button-wrapper">
                                         <a
@@ -272,7 +272,7 @@
                                             {%- if filter.values.size > 10 and filter_type == 'vertical' -%}
                                                 <show-more-button>
                                                     <button
-                                                        class="button-show-more link underlined-link no-js-hidden"
+                                                        class="button-show-more button--link no-js-hidden"
                                                         id="Show-More-{{ forloop.index }}-{{ section.id }}"
                                                         type="button"
                                                     >
@@ -497,7 +497,6 @@
                                             </option>
                                         {%- endfor -%}
                                     </select>
-                                    {% render 'icons-svg', icons: 'down' %}
                                 </div>
                             </div>
 
@@ -569,7 +568,6 @@
                                         </option>
                                     {%- endfor -%}
                                 </select>
-                                {% render 'icons-svg', icons: 'down' %}
                             </div>
                         </div>
 
@@ -625,7 +623,7 @@
                     <div class="mobile-facets__inner gradient">
                         <div class="mobile-facets__header">
                             <div class="mobile-facets__header-inner">
-                                <h2 class="mobile-facets__heading medium-hide large-up-hide">
+                                <h3 class="mobile-facets__heading medium-hide large-up-hide">
                                     {%- if enable_filtering and enable_sorting -%}
                                         {{ 'products.facets.filter_and_sort' | t }}
                                     {%- elsif enable_filtering -%}
@@ -633,12 +631,12 @@
                                     {%- elsif enable_sorting -%}
                                         {{ 'products.facets.sort_button' | t }}
                                     {%- endif -%}
-                                </h2>
-                                <h2 class="mobile-facets__heading small-hide">
+                                </h3>
+                                <h3 class="mobile-facets__heading small-hide">
                                     {%- if enable_filtering -%}
                                         {{ 'products.facets.filter_button' | t }}
                                     {%- endif -%}
-                                </h2>
+                                </h3>
                                 <p class="mobile-facets__count">
                                     {%- if results.results_count -%}
                                         {{
@@ -674,7 +672,9 @@
                                                         <span class="mobile-facets__arrow no-js-hidden">
                                                             {% render 'icons-svg', icons: 'next' %}
                                                         </span>
-                                                        <noscript>{% render 'icons-svg', icons: 'down' %}</noscript>
+                                                        <noscript>
+                                                            {%- render 'icons-svg', icons: 'down' %}
+                                                        </noscript>
                                                     </div>
                                                 </summary>
                                                 <div
@@ -775,7 +775,9 @@
                                                         <span class="mobile-facets__arrow no-js-hidden">
                                                             {% render 'icons-svg', icons: 'next' %}
                                                         </span>
-                                                        <noscript>{% render 'icons-svg', icons: 'down' %}</noscript>
+                                                        <noscript>
+                                                            {%- render 'icons-svg', icons: 'down' %}
+                                                        </noscript>
                                                     </div>
                                                 </summary>
                                                 <div
@@ -918,7 +920,6 @@
                                                         </option>
                                                     {%- endfor -%}
                                                 </select>
-                                                {% render 'icons-svg', icons: 'down' %}
                                             </div>
                                         </div>
                                     </div>
@@ -1036,7 +1037,6 @@
                                     </option>
                                 {%- endfor -%}
                             </select>
-                            {% render 'icons-svg', icons: 'down' %}
                         </div>
                     </div>
 
