@@ -1,9 +1,15 @@
 .main-collections {
-    padding: 30px;
-    padding-bottom: 30px;
-    .facets-vertical-sort {
-        padding: 0 0 30px 0;
+    padding: 30px 0;
+    .facets-vertical-form {
+        padding-bottom: 10px;
     }
+    .main-collections__view {
+      padding-bottom: 30px;
+      @media screen and (max-width: 767px) {
+        margin-top: 10px;
+        padding-bottom: 0;
+      }
+  }
 }
 
 .main-collections__view {
