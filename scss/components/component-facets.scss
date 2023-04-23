@@ -641,6 +641,7 @@ a.active-facets__button.focused .active-facets__button-inner,
   z-index: 101;
   opacity: 0;
   transition: opacity .3s ease;
+  cursor: pointer;
 }
 
 .mobile-facets__close svg {
@@ -931,8 +932,13 @@ input.mobile-facets__checkbox {
     margin-right: 0;
   }
 
-  .facets-container .main-collections__view {
+  .facets-wrapper .main-collections__view.vertical-style {
     display: none;
+  }
+
+  .facets-wrapper.page-width .main-collections__view.vertical-style {
+    display: flex;
+    padding-bottom: 0;
   }
   
   .facets-vertical .facets__summary {

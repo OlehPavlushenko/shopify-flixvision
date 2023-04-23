@@ -621,12 +621,19 @@
             </summary>
             <facet-filters-form>
                 <form id="FacetFiltersFormMobile" class="mobile-facets">
-                    <div class="mobile-facets__overlay">
+                    <div
+                        class="mobile-facets__overlay"
+                        onclick="this.closest('.mobile-facets__wrapper').querySelector('summary').click()"
+                    >
                         <span class="visually-hidden">{{ 'sections.cart.close' | t }}</span>
                     </div>
                     <div class="mobile-facets__inner gradient">
                         <div class="mobile-facets__header">
-                            <span tabindex="0" class="mobile-facets__close mobile-facets__close--no-js">
+                            <span
+                                tabindex="0"
+                                class="mobile-facets__close mobile-facets__close--no-js"
+                                onclick="this.closest('.mobile-facets__wrapper').querySelector('summary').click()"
+                            >
                                 {% render 'icons-svg', icons: 'close' %}
                             </span>
                             <div class="mobile-facets__header-inner">
@@ -1101,10 +1108,11 @@
             </svg>
         </div>
     </div>
-    <div class="main-collections__view">
+    <grid-list-view class="main-collections__view vertical-style">
         <span>{{- 'products.facets.view_as' | t -}}</span>
         <a
-            class="active main-collections__grid"
+            id="grid-btn"
+            class="active main-collections__grid js-grid-view"
             href="#"
             title="{{- 'products.facets.list' | t -}}"
             data-original-title="Grid"
@@ -1115,14 +1123,15 @@
             {%- render 'icons-svg', icons: 'grid' -%}
         </a>
         <a
-            class="main-collections__list"
+            id="list-btn"
+            class="main-collections__list js-list-view"
             href="#"
             title="{{- 'products.facets.grid' | t -}}"
             data-original-title="List"
         >
             {%- render 'icons-svg', icons: 'list' -%}
         </a>
-    </div>
+    </grid-list-view>
     {%- if filter_type == 'drawer' -%}
         <facet-filters-form class="facets facets-pill small-hide">
             <form id="FacetFiltersPillsForm" class="facets__form">
