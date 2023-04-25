@@ -34,8 +34,8 @@
 
 
 .collection-sub-catagories__media {
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0, .2);
+    background: var(--color-light);
+    box-shadow: 0 3px 7px rgba(0,0,0, .15);
 }
 .collection-sub-catagories__image {
     height: calc(100% - 10px);

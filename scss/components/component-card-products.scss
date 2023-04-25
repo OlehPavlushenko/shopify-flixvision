@@ -2,7 +2,7 @@
     position: relative;
 }
 .card-product__media-wrapper  {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     width: 100%;
     position: relative;
     display: block;
@@ -14,14 +14,14 @@
 
 .card-product__vendor {
     font-size: 1.2rem;
-    margin-bottom: .5rem;
-    text-transform: capitalize;
+    margin-bottom: -.5rem;
+    text-transform: uppercase;
     opacity: .7;
 }
 
 .card-product__title {
     margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .card-product__form {
@@ -298,6 +298,9 @@ quantity-input {
             }
         }
     }
+    .js-swatch-second , .js-swatch-third {
+        display: none;
+    }
 }
 
 .card-product__form .js-ajax-cart-message--error {
@@ -313,4 +316,113 @@ quantity-input {
     background-image: url('error.svg');
     background-repeat: no-repeat;
     background-position: 7px 7px;
+}
+
+.card-product__stock {
+    //position:absolute;
+    //left: 20px;
+    //bottom: 20px;
+    .stock-level {
+      display: none;
+    }
+    box-shadow: 0 0 1px rgba(0,0,0, .1);
+}
+.card-product__stock--lowstock{background-image:none;width:62px;height:6px;display:block; background:var(--color-light); border-radius:12px; position:relative; overflow:hidden;}
+.card-product__stock--lowstock:after { content:" "; position:absolute; left:0; top:0; background:var(--color-warning);height:12px; width:70%; }
+.card-product__stock--nostock{background-image:none;width:62px;height:6px;display:block; background:var(--color-light); border-radius:12px; position:relative;overflow:hidden;}
+.card-product__stock--nostock:after { content:" "; position:absolute; left:0; top:0; background:var(--color-danger);height:12px; width:15%; }
+.card-product__stock--normalstock{background-image:none;width:62px;height:6px;display:block;background:var(--color-light); border-radius:12px; position:relative;overflow:hidden;}
+.card-product__stock--normalstock:after { content:" "; position:absolute; left:0; top:0; background:var(--color-success);height:12px; width:95%; }
+
+.card-product__badge {
+    font-size: 1.1rem;
+    line-height: 1.4rem;
+    padding: .3rem .6rem;
+    display: inline-block;
+    position: absolute;
+    top: 20px;
+    z-index: 2;
+}
+
+.card-product__badge--on-sale {
+    background-color: var(--color-danger);
+    color: var(--color-white);
+    border-radius: 0 4px 0 0;
+    left: 20px;
+}
+
+.card-product__badge--offer {
+    background-color: #9b59b6;
+    color: var(--color-white);
+    border-radius: 0 4px 0 0;
+    left: 20px;
+}
+
+.card-product__badge--on-sale + .card-product__badge--offer {
+    top: 50px;
+    border-radius: 0 0 4px 0;
+}
+
+.card-product__badge--new {
+    background-color: var(--color-success);
+    color: var(--color-white);
+    border-radius: 0 0 0 4px;
+    right: 20px;
+}
+
+.card-product__badge--sold {
+    right: 20px;
+    border-radius: 0 0 0 4px;
+    background-color: var(--color-secondary-button-background-disabled);
+    color: var(--color-secondary-button-text);
+}
+
+.card-product__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-product__countdown {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    text-align: center;
+    position: absolute;
+    left: 11px;
+    bottom: 12px;
+    z-index: 2;
+    width: calc(100% - 22px);
+    >div {
+        background-color: rgba(255,255,255, .8);
+        color: var(--color-primary);
+        border-radius: 2px;
+        padding: 15px 5px;
+        margin: 0 1px;
+        width: calc(25% - 2px);
+        .days,.hours,.minutes,.seconds {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: -5px;
+        }
+        .days-label,.hours-label,.minutes-label,.seconds-label {
+            font-weight: 400;
+            font-size: 12px;
+        }
+    }
+    .days-container {
+        border-radius: 0 2px 2px 0;
+    }
+    .seconds-container { 
+        border-radius: 2px 0 0 2px;
+    }
+}
+
+.card-product__price .price__item {
+    font-size: 16px;
+}
+
+.card-product__price.price--on-sale .badge.sale {
+    margin-left: auto;
 }

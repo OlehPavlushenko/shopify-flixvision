@@ -1,3 +1,28 @@
+{% liquid
+    assign on_sale = false
+    if product.compare_at_price > product.price
+        assign on_sale = true
+    endif
+
+    if new_badge.size > 0
+        assign date_pub_y = product.published_at | date: '%Y'
+        assign date_pub_d = product.published_at | date: '%j'
+        assign date_now_y = 'now' | date: '%Y'
+        assign date_now_d = 'now' | date: '%j'
+        assign dates_diff_y = date_now_y | minus: date_pub_y | times: 365
+        assign dates_diff_d = date_now_d | minus: date_pub_d
+        assign dates_diff = dates_diff_y | plus: dates_diff_d
+        assign new_products_period = new_badge | plus: 0
+    endif
+
+    assign sold_out = true
+    if product.available
+        assign sold_out = false
+    endif
+
+    assign date_timer = product.metafields.custom.countdown_timer
+%}
+
 {% if product and product != empty %}
     {%- liquid
         assign current_variant = product.selected_or_first_available_variant
@@ -8,7 +33,48 @@
         endif
     -%}
     <div class="card-product__wrapper js-card-product-wrapper">
-        <div class="card-product__media-wrapper ">
+        <div class="card-product__media-wrapper">
+            <div class="card-product__badge card-product__badge--on-sale{% unless on_sale %} hidden{% endunless %}">
+                {{ 'products.product.sale' | t }}
+            </div>
+            {% if date_timer %}
+                <div class="card-product__badge card-product__badge--offer">
+                    {{ 'products.product.offer' | t }}
+                </div>
+                <countdown-container data-date="{{ date_timer }}">
+                    <div id="countdown-{{ product.id }}" class="countdown-box card-product__countdown">
+                        <div class="days-container">
+                            <div class="days"></div>
+                            <div class="days-label">{{ 'header.days' | t }}</div>
+                        </div>
+
+                        <div class="hours-container">
+                            <div class="hours"></div>
+                            <div class="hours-label">{{ 'header.hours' | t }}</div>
+                        </div>
+
+                        <div class="minutes-container">
+                            <div class="minutes"></div>
+                            <div class="minutes-label">{{ 'header.minutes' | t }}</div>
+                        </div>
+
+                        <div class="seconds-container">
+                            <div class="seconds"></div>
+                            <div class="seconds-label">{{ 'header.seconds' | t }}</div>
+                        </div>
+                    </div>
+                </countdown-container>
+            {% endif %}
+            {% if dates_diff <= new_products_period %}
+                <div class="card-product__badge card-product__badge--new {% if sold_out %} hidden{% endif %}">
+                    {{ 'products.product.new' | t }}
+                </div>
+            {% endif %}
+
+            <div class="card-product__badge card-product__badge--sold{% unless sold_out %} hidden{% endunless %}">
+                {{ 'products.product.sold' | t }}
+            </div>
+
             <picture class="card-product__media media__size--{{ img_size }} media js-card-product-media">
                 {% if image_custom != blank %}
                     {% render 'image', image_box: image_custom, image_box_class: 'card-product__image' %}
@@ -19,11 +85,22 @@
         </div>
         <div class="card-product__content card-product__content--{{ fill }}">
             {% if show_vendor %}
-                <span class="card-product__vendor">{{ product.vendor }}</span>
+                <div class="card-product__row">
+                    <span class="card-product__vendor">{{ product.vendor }}</span>
+                    {%- for var in product.variants -%}
+                        {%- assign varQ = var.inventory_quantity -%}
+                    {%- endfor -%}
+                    <div class="card-product__stock">
+                        <span
+                            class="card-product__icon card-product__stock--{% if sold_out %}nostock {% elsif varQ < 10 and sold_out == false %}lowstock{% else %}normalstock{% endif %}"
+                        ></span>
+                        <span class="stock-level">{{ 'products.product.stock_level' | t }}</span>
+                    </div>
+                </div>
             {% endif %}
             <h5 class="card-product__title js-card-product-title">
                 <a href="{{ product.url | within: collection }}">
-                    {{ product.title | truncate: 30 | escape }}
+                    {{ product.title | truncate: 60 | escape }}
                 </a>
             </h5>
             {% render 'price',
@@ -45,6 +122,41 @@
                     </a>
                 {% endif %}
             {% endif %}
+            {%- if show_rating and product.metafields.reviews.rating.value != blank -%}
+                {% liquid
+                    assign rating_decimal = 0
+                    assign decimal = product.metafields.reviews.rating.value.rating | modulo: 1
+                    if decimal >= 0.3 and decimal <= 0.7
+                        assign rating_decimal = 0.5
+                    elsif decimal > 0.7
+                        assign rating_decimal = 1
+                    endif
+                %}
+                <div
+                    class="rating"
+                    role="img"
+                    aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: product.metafields.reviews.rating.value, rating_max: product.metafields.reviews.rating.value.scale_max }}"
+                >
+                    <span
+                        aria-hidden="true"
+                        class="rating-star color-icon-{{ settings.accent_icons }}"
+                        style="--rating: {{ product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"
+                    ></span>
+                </div>
+                <p class="rating-text caption">
+                    <span aria-hidden="true">
+                        {{- product.metafields.reviews.rating.value }} /
+                        {{ product.metafields.reviews.rating.value.scale_max -}}
+                    </span>
+                </p>
+                <p class="rating-count caption">
+                    <span aria-hidden="true">({{ product.metafields.reviews.rating_count }})</span>
+                    <span class="visually-hidden">
+                        {{- product.metafields.reviews.rating_count }}
+                        {{ 'accessibility.total_reviews' | t -}}
+                    </span>
+                </p>
+            {%- endif -%}
         </div>
     </div>
 {% endif %}

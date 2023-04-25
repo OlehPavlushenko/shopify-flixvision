@@ -256,6 +256,11 @@
       "sku": "SKU",
       "on_sale": "Sale",
       "sale": "Sale",
+      "offer": "Offer",
+      "new": "New",
+      "sold": "Sold",
+      "details": "Details",
+      "stock_level": "Availability",
       "product_variants": "Product variants",
       "media": {
         "gallery_viewer": "Gallery Viewer",
