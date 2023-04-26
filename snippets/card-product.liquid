@@ -103,6 +103,7 @@
                     {{ product.title | truncate: 60 | escape }}
                 </a>
             </h5>
+            <div class="card-product__desc" itemprop="name">{{ product.description | strip_html | truncate: 80 }}</div>
             {% render 'price',
                 product: product,
                 price_class: 'card-product__price js-card-product-price',

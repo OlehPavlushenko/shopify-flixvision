@@ -1,4 +1,5 @@
 {% liquid
+    assign load_more = section.settings.load_more
     assign new_badge = section.settings.new_badge
     assign show_vendor = section.settings.show_vendor
     assign show_rating = section.settings.show_rating
@@ -144,9 +145,9 @@
                         <grid-list-view class="main-collections__view mobile-style">
                             <span>{{- 'products.facets.view_as' | t -}}</span>
                             <a
-                                class="active main-collections__grid js-view-button js-grid-view"
+                                class="active main-collections__grid js-view-button js-grid-view js-tooltip"
                                 href="#"
-                                title="{{- 'products.facets.list' | t -}}"
+                                title="{{- 'products.facets.grid' | t -}}"
                                 data-view="grid"
                             >
                                 {%- render 'icons-svg', icons: 'grid' -%}
@@ -155,9 +156,9 @@
                                 {%- render 'icons-svg', icons: 'grid' -%}
                             </a>
                             <a
-                                class="main-collections__list js-view-button js-list-view"
+                                class="main-collections__list js-view-button js-list-view js-tooltip"
                                 href="#"
-                                title="{{- 'products.facets.grid' | t -}}"
+                                title="{{- 'products.facets.list' | t -}}"
                                 data-view="list"
                             >
                                 {%- render 'icons-svg', icons: 'list' -%}
@@ -217,7 +218,40 @@
                         </ul>
 
                         {%- if paginate.pages > 1 -%}
-                            {% render 'pagination', paginate: paginate, anchor: '' %}
+                            {%- liquid
+                                assign current_count = paginate.current_offset | plus: section.settings.products_per_page
+                                if current_count > collection.all_products_count
+                                    assign current_count = collection.all_products_count
+                                endif
+                            -%}
+
+                            {% if load_more %}
+                                <collection-load-more class="main-collection__load-more-container main-collection__box js-collection-load-more-container">
+                                    <button
+                                        type="button"
+                                        class="main-collection__load-more-button button button--secondary button--outline js-collection-load-more{% if current_count == collection.all_products_count %} hidden{% endif %}"
+                                    >
+                                        {{ 'products.load_more' | t }}
+                                    </button>
+
+                                    <p class="main-collection__product-count" role="status">
+                                        {{
+                                            'products.product_count_html'
+                                            | t: product_count: current_count, count: collection.products_count
+                                        }}
+                                    </p>
+                                </collection-load-more>
+                            {% else %}
+                                <div class="main-collection__box">
+                                    {% render 'pagination', paginate: paginate %}
+                                    <p class="main-search__product-count" role="status">
+                                        {{
+                                            'products.product_count_html'
+                                            | t: product_count: current_count, count: collection.products_count
+                                        }}
+                                    </p>
+                                </div>
+                            {% endif %}
                         {%- endif -%}
                     </div>
                 {%- endif -%}
@@ -225,12 +259,19 @@
         </div>
     {%- endpaginate -%}
 </div>
-<script src="{{ 'grid-list-view.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'main-collection.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'vanilla-tooltip.min.js' | asset_url }}" defer="defer"></script>
 {% schema %}
 {
     "name": "t:sections.main-collection-product-grid.name",
     "class": "section",
     "settings": [
+        {
+            "type": "checkbox",
+            "id": "load_more",
+            "label": "Use load more",
+            "default": false
+        },
         {
             "type": "range",
             "id": "products_per_page",

@@ -256,6 +256,7 @@ thead {
     .price__box {
         display: flex;
         align-items: center;
+        min-height: 21px;
     }
     .price__item {
         display: inline-block;

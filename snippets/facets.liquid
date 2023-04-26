@@ -1112,9 +1112,9 @@
         <span>{{- 'products.facets.view_as' | t -}}</span>
         <a
             id="grid-btn"
-            class="active main-collections__grid js-view-button js-grid-view"
+            class="active main-collections__grid js-view-button js-grid-view js-tooltip"
             href="#"
-            title="{{- 'products.facets.list' | t -}}"
+            title="{{- 'products.facets.grid' | t -}}"
             data-view="grid"
         >
             {%- render 'icons-svg', icons: 'grid' -%}
@@ -1124,9 +1124,9 @@
         </a>
         <a
             id="list-btn"
-            class="main-collections__list js-view-button js-list-view"
+            class="main-collections__list js-view-button js-list-view js-tooltip"
             href="#"
-            title="{{- 'products.facets.grid' | t -}}"
+            title="{{- 'products.facets.list' | t -}}"
             data-view="list"
         >
             {%- render 'icons-svg', icons: 'list' -%}

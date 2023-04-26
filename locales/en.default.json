@@ -69,7 +69,12 @@
     "link_messages": {
       "new_window": "Opens in a new window.",
       "external": "Opens external website."
-    }
+    },
+    "loading": "Loading...",
+    "total_reviews": "total reviews",
+    "star_reviews_info": "{{ rating_value }} out of {{ rating_max }} stars",
+    "collapsible_content_title": "Collapsible content",
+    "complementary_products": "Complementary products"
   },
   "customer": {
     "account": {
@@ -310,6 +315,11 @@
       "include_taxes": "Tax included.",
       "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout."
     },
+    "product_count_html": {
+      "one": "Showing {{ product_count }} of {{ count }} product",
+      "other": "Showing <span class='js-product-count'>{{ product_count }}<\/span> of <span class='js-total-product-count'>{{ count }}<\/span> product"
+    },
+    "load_more": "Load more",
     "modal": {
       "label": "Media gallery"
     },
