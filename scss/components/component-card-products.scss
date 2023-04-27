@@ -8,8 +8,41 @@
     display: block;
 }
 
-.open .video-product {
-    z-index: 2;
+.card-product__link {
+    position: absolute;
+    left: 0;
+    top:0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.card-product__image {
+    transition: opacity .3s ease;
+}
+.card-product__media img:only-child {
+    transition: transform .5s ease;
+}
+
+.card-product__image--second {
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+
+.card-product__media-wrapper:hover {
+    .card-product__image {
+        opacity: 0;
+    }
+    .card-product__image--second {
+        opacity: 1;
+        transition: transform .5s ease;
+        transform: scale(1.05);
+    }
+    .card-product__media img:first-child:only-child {
+        transform: scale(1.05);
+        opacity: 1;
+    }
 }
 
 .card-product__vendor {
@@ -67,43 +100,6 @@
     background: rgba(255,255,255, .4);
     z-index: 1;
 }
-
-.video-product {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    background-color: #000;
-    display: flex;
-}
-
-/* component-media */
-
-.video {
-    position:relative;
-    padding-bottom:56.25%;
-    height:0;
-    overflow:hidden;
-    max-width:100%;
-    width:100%;
-    margin: auto;
-}
-
-.video__media {
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    border:none;
-}
-
-.video-product__size--circle ,
-.video-product__size--circle .video {
-    border-radius: 50%;
-}
-
 
 /* component-form */
 
@@ -327,9 +323,6 @@ quantity-input {
 }
 
 .card-product__stock {
-    //position:absolute;
-    //left: 20px;
-    //bottom: 20px;
     .stock-level {
       display: none;
     }
@@ -364,10 +357,11 @@ quantity-input {
     color: var(--color-white);
     border-radius: 0 4px 0 0;
     left: 20px;
+    top: 50px;
 }
 
-.card-product__badge--on-sale + .card-product__badge--offer {
-    top: 50px;
+.card-product__badge--on-sale.hidden + .card-product__badge--offer {
+    top: 20px;
     border-radius: 0 0 4px 0;
 }
 
@@ -443,7 +437,8 @@ quantity-input {
     padding: 1.2rem 2.2rem; 
 }
 
-.card-product__button-sold {
+.card-product__button-sold,
+.card-product__button-notify {
     font-size: 1.7rem;
     padding: 1.2rem 2.2rem; 
 }

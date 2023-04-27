@@ -1,6 +1,15 @@
 {% liquid
+    if use_variant
+        assign target = product.selected_or_first_available_variant
+    else
+        assign target = product
+    endif
+
+    assign compare_at_price = target.compare_at_price
+    assign price = target.price
+
     assign on_sale = false
-    if product.compare_at_price > product.price
+    if compare_at_price > price
         assign on_sale = true
     endif
 
@@ -34,7 +43,10 @@
     -%}
     <div class="card-product__wrapper js-card-product-wrapper">
         <div class="card-product__media-wrapper">
-            <div class="card-product__badge card-product__badge--on-sale{% unless on_sale %} hidden{% endunless %}">
+            <a class="card-product__link" href="{{ product.url | within: collection }}"
+                ><span class="hidden">{{ product.title }}</span></a
+            >
+            <div class="card-product__badge card-product__badge--on-sale{% unless on_sale %} hidden{% endunless %} js-card-product-sale-badge">
                 {{ 'products.product.sale' | t }}
             </div>
             {% if date_timer %}
@@ -81,6 +93,12 @@
                 {% else %}
                     {% render 'image', image_box: image_box, image_box_class: 'card-product__image' %}
                 {% endif %}
+
+                {%- assign image = product.media[1] | where: 'media_type', 'image' -%}
+                {{ image }}
+                {%- if image != blank and secondary_image -%}
+                    {% render 'image', image_box: product.media[1], image_box_class: 'card-product__image--second' %}
+                {% endif %}
             </picture>
         </div>
         <div class="card-product__content card-product__content--{{ fill }}">
@@ -92,7 +110,7 @@
                     {%- endfor -%}
                     <div class="card-product__stock">
                         <span
-                            class="card-product__icon card-product__stock--{% if sold_out %}nostock {% elsif varQ < 10 and sold_out == false %}lowstock{% else %}normalstock{% endif %}"
+                            class="card-product__icon card-product__stock--{% if sold_out %}nostock {% elsif varQ < 10 and sold_out == false %}lowstock{% else %}normalstock{% endif %} js-card-product-stock"
                         ></span>
                         <span class="stock-level">{{ 'products.product.stock_level' | t }}</span>
                     </div>
@@ -115,7 +133,8 @@
                     {% render 'form-collection',
                         product: product,
                         variant_type: variant_type,
-                        show_quantity: show_quantity
+                        show_quantity: show_quantity,
+                        notify_me: notify_me
                     %}
                 {% else %}
                     <a class="button button--secondary" href="{{ product.url | within: collection }}">

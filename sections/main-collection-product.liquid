@@ -7,6 +7,8 @@
     assign btn = section.settings.btn
     assign variant_type = section.settings.variant
     assign prod_img_size = section.settings.prod_img_size
+    assign secondary_image = section.settings.show_secondary_image
+    assign notify_me = section.settings.notify_me
 
     assign price_variant = false
     if btn == 'quick'
@@ -210,6 +212,8 @@
                                         add_btn: add_btn,
                                         btn: btn,
                                         img_size: prod_img_size,
+                                        secondary_image: secondary_image,
+                                        notify_me: notify_me,
                                         image_custom: false,
                                         fill: false
                                     %}
@@ -426,6 +430,12 @@
             "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
         },
         {
+            "type": "checkbox",
+            "id": "notify_me",
+            "label": "Use notify me",
+            "default": false
+        },
+        {
             "type": "header",
             "content": "t:sections.main-collection-product-grid.settings.header__1.content"
         },
@@ -440,6 +450,10 @@
             "type": "select",
             "id": "filter_type",
             "options": [
+                {
+                    "value": "horizontal",
+                    "label": "t:sections.main-collection-product-grid.settings.filter_type.options__1.label"
+                },
                 {
                     "value": "vertical",
                     "label": "t:sections.main-collection-product-grid.settings.filter_type.options__2.label"

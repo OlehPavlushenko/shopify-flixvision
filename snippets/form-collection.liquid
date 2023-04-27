@@ -166,14 +166,27 @@
             </button>
             <div data-ajax-cart-messages="form"></div>
         {% else %}
-            <button
-                type="button"
-                id="SoldOutText-{{ product.id }}"
-                class="button--secondary card-product__button-sold"
-                disabled=""
-            >
-                <span id="SoldOutText">{{ 'products.product.sold_out' | t }}</span>
-            </button>
+            {% if notify_me %}
+                <details-open>
+                    <a
+                        class="button button--primary card-product__button-notify js-summary"
+                        href="#notify"
+                        role="button"
+                    >
+                        Notify Me
+                    </a>
+                    <div class="card-product__form js-details">Form</div>
+                </details-open>
+            {% else %}
+                <button
+                    type="button"
+                    id="SoldOutText-{{ product.id }}"
+                    class="button--secondary card-product__button-sold"
+                    disabled=""
+                >
+                    <span id="SoldOutText">{{ 'products.product.sold_out' | t }}</span>
+                </button>
+            {% endif %}
         {% endif %}
     {% endif %}
 {% endform %}

@@ -425,11 +425,21 @@ class VariantPills extends HTMLElement {
         this.price = this.closest(".js-card-product-wrapper").querySelector(
             ".js-card-product-price"
         )
+        this.saleBadge = this.closest(".js-card-product-wrapper").querySelector(
+            ".js-card-product-sale-badge"
+        )
+        this.percentageBadge = this.closest(
+            ".js-card-product-wrapper"
+        ).querySelector(".js-percentage-badge")
+
         this.image = this.closest(".js-card-product-wrapper").querySelector(
             ".js-card-product-media"
         )
         this.qty = this.closest(".js-card-product-wrapper").querySelector(
             ".js-quantity"
+        )
+        this.stock = this.closest(".js-card-product-wrapper").querySelector(
+            ".js-card-product-stock"
         )
         this.btnCart = this.closest(".js-card-product-wrapper").querySelector(
             ".js-btn-cart"
@@ -839,6 +849,14 @@ class VariantPills extends HTMLElement {
             this.qty.removeAttribute("max")
         }
 
+        if (inventoryQty < 10) {
+            this.stock.classList.remove("card-product__stock--normalstock")
+            this.stock.classList.add("card-product__stock--lowstock")
+        } else {
+            this.stock.classList.remove("card-product__stock--lowstock")
+            this.stock.classList.add("card-product__stock--normalstock")
+        }
+
         const isAvailable = availableVariant.available
 
         //qtyParentElement.classList.toggle('hidden', !isAvailable);
@@ -862,11 +880,19 @@ class VariantPills extends HTMLElement {
         )
         const hasComparePrice = comparePrice !== null
 
+        this.percentageBadge
+        console.log(hasComparePrice)
         this.price.classList.toggle("price--on-sale", hasComparePrice)
+        this.saleBadge.classList.toggle("hidden", !hasComparePrice)
         elementSalePrice.textContent = Shopify.formatMoney(salePrice)
         elementComparePrice.textContent = hasComparePrice
             ? Shopify.formatMoney(comparePrice)
             : ""
+        if (hasComparePrice) {
+            const getPercentage =
+                ((comparePrice - salePrice) / comparePrice) * 100
+            this.percentageBadge.textContent = Math.round(getPercentage) + "%"
+        }
     }
 
     updateImage() {
