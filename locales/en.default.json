@@ -313,7 +313,14 @@
       "xr_button": "View in your space",
       "xr_button_label": "View in your space, loads item in augmented reality window",
       "include_taxes": "Tax included.",
-      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout."
+      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "ask_text":"Have a question about this product?",
+      "ask_value":"Ask about this product",
+      "ask_email":"Enter your email",
+      "ask_name":"Your Name",
+      "ask_phone":"Your Phone",
+      "ask_comment":"Add your comment about the product of interest to you",
+      "ask_send":"Send Message"
     },
     "product_count_html": {
       "one": "Showing {{ product_count }} of {{ count }} product",

@@ -32,6 +32,10 @@ textarea {
     padding: 1rem 1.5rem;
 }
 
+textarea {
+    resize: none;
+}
+
 input:hover,
 select:hover,
 .custom-select__input:hover,

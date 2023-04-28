@@ -1,0 +1,72 @@
+<div id="cardProductAsk" class="ask-product">
+    <button
+        type="button"
+        class="ask-product__close-button button--link link focus-inset js-modal-close-btn"
+        aria-label="{{ 'accessibility.close' | t }}"
+    >
+        {% render 'icons-svg', icons: 'close' %}
+    </button>
+    <div class="ask-product__content">
+        <h3 class="ask-product__title">{{ 'products.product.ask_text' | t }}</h3>
+        <div class="ask-product__notify">
+            {% form 'contact', class: 'notify__form' %}
+                {{ form.errors | default_errors }}
+
+                <input
+                    type="hidden"
+                    name="contact[tags]"
+                    value="{{ 'products.product.ask_value' | t }}"
+                >
+                <label for="product_notify_input" class="hidden">Body</label>
+                <input
+                    id="product_notify_input"
+                    type="hidden"
+                    name="contact[product name]"
+                    value="{{ product.title }}"
+                >
+                <input
+                    id="product_notify_input"
+                    type="hidden"
+                    name="contact[product]"
+                    value="{{ shop.url }}{{ product.url }}"
+                >
+                <div class="notify__wrapper">
+                    <input
+                        required
+                        id="ask_name"
+                        type="text"
+                        name="contact[name]"
+                        class="notify__input input-full"
+                        placeholder="{{ 'products.product.ask_name' | t }}"
+                    >
+                    <input
+                        required
+                        id="ask_email"
+                        type="email"
+                        name="contact[email]"
+                        class="notify__input input-full"
+                        placeholder="{{ 'products.product.ask_email' | t }}"
+                    >
+                    <input
+                        required
+                        id="ask_phone"
+                        pattern="[0-9\-]*"
+                        type="tel"
+                        name="contact[phone]"
+                        class="notify__input input-full"
+                        placeholder="{{ 'products.product.ask_phone' | t }}"
+                    >
+                    <textarea
+                        required
+                        name="contact[comment]"
+                        class="notify__input input-full"
+                        placeholder="{{ 'products.product.ask_comment' | t }}"
+                    ></textarea>
+                    <button class="button button--secondary" type="submit">
+                        {{ 'products.product.ask_send' | t }}
+                    </button>
+                </div>
+            {% endform %}
+        </div>
+    </div>
+</div>

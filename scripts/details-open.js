@@ -85,3 +85,40 @@ class DetailsOpen extends HTMLElement {
 }
 
 customElements.define("details-open", DetailsOpen)
+
+class DetailsOpenNotify extends DetailsOpen {
+    constructor() {
+        super()
+    }
+    onSummaryClick(event) {
+        event.preventDefault()
+        event.target.closest("details-open-notify").classList.contains("open")
+            ? this.close()
+            : this.open(event)
+    }
+    open(event) {
+        this.onBodyClickEvent =
+            this.onBodyClickEvent || this.onBodyClick.bind(this)
+
+        event.target.closest("details-open-notify").classList.add("open")
+        document.body.addEventListener("click", this.onBodyClickEvent)
+        if (event.target.classList.contains("card-product__button-notify")) {
+            trapFocus(this.detailsContainer)
+            document.body.classList.toggle("overflow-hidden-notify")
+        }
+    }
+    close(focusToggle = true) {
+        removeTrapFocus(focusToggle ? this.summaryToggle : null)
+        if (
+            this.detailsContainer.classList.contains(
+                "card-product__notify-form"
+            )
+        ) {
+            document.body.classList.remove("overflow-hidden-notify")
+        }
+        this.classList.remove("open")
+        document.body.removeEventListener("click", this.onBodyClickEvent)
+    }
+}
+
+customElements.define("details-open-notify", DetailsOpenNotify)
