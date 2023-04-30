@@ -1,0 +1,95 @@
+{% liquid
+    assign url = canonical_url | url_decode | split: '?'
+    assign url = url[1] | split: '&'
+
+    assign handles = url[0] | split: '='
+    assign item = handles[1]
+    assign product = all_products[item]
+    assign action = url[1] | split: '='
+    assign title = product.title | truncate: 60 | escape
+%}
+{{ action[1] }}
+
+<div
+    class="modal js-item-notification"
+    tabindex="-1"
+    role="dialog"
+>
+    <svg
+        aria-hidden="true"
+        focusable="false"
+        role="presentation"
+        class="spinner"
+        viewBox="0 0 66 66"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+    </svg>
+    <div class="modal__dialog">
+        <div class="modal__body">
+            <div class="modal__indent">
+                <div class="modal__box">
+                    <div class="modal__media-wrapper">
+                        <picture class="modal__media media js-item-notification-media">
+                            {% render 'image', image_box: product.featured_media, image_box_class: 'modal__image' %}
+                        </picture>
+                    </div>
+                    <h5 class="modal__title js-item-notification-title">{{ title }}</h5>
+                </div>
+
+                {% if action[1] == 'addcompare' %}
+                    <p class="modal__msg modal__msg--successfully">
+                        {% render 'icons-svg', icons: 'check' -%}
+                        {{- 'products.product.compare_successfully' | t }}
+                    </p>
+                {% endif %}
+                {% if action[1] == 'addwishlist' %}
+                    <p class="modal__msg modal__msg--successfully">
+                        {% render 'icons-svg', icons: 'check' -%}
+                        {{- 'products.product.wishlist_successfully' | t }}
+                    </p>
+                {% endif %}
+                {% if action[1] == 'fullcompare' %}
+                    <p class="modal__msg modal__msg--notice">
+                        {% render 'icons-svg', icons: 'check' -%}
+                        {{- 'products.product.compare_full' | t }}
+                    </p>
+                {% endif %}
+
+                {% if action[1] == 'removecompare' %}
+                    <p class="modal__msg modal__msg--remove">
+                        {% render 'icons-svg', icons: 'error' -%}
+                        {{- 'products.product.compare_remove.one' | t: product_title: title }}
+                    </p>
+                {% endif %}
+                {% if action[1] == 'removewishlist' %}
+                    <p class="modal__msg modal__msg--remove">
+                        {% render 'icons-svg', icons: 'error' -%}
+                        {{- 'products.product.wishlist_remove.one' | t: product_title: title }}
+                    </p>
+                {% endif %}
+
+                <div class="modal__button">
+                    <a href="/collections/all" class="button button--link js-modal-close">
+                        {{- 'products.product.continue_shopping' | t -}}
+                    </a>
+                    {% if action[1] == 'addcompare' or action[1] == 'removecompare' %}
+                        <a href="/pages/compare" class="button">{{ 'products.product.go_to_compare' | t }}</a>
+                    {% else %}
+                        <a href="/pages/whishlist" class="button">{{ 'products.product.go_to_compare' | t }}</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="modal__close">
+                <button
+                    type="button"
+                    class="modal__close-btn js-modal-close"
+                    data-dismiss="modal"
+                    aria-hidden="true"
+                >
+                    {% render 'icons-svg', icons: 'close' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

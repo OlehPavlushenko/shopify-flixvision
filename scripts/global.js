@@ -837,7 +837,7 @@ class VariantPills extends HTMLElement {
         const inventoryManagement = availableVariant.inventory_management
         const inventoryPolicy = option ? option.dataset.inventoryPolicy : null
         const inventoryQty = option ? option.dataset.qty : null
-        const qtyParentElement = this.qty.parentElement
+        //const qtyParentElement = this.qty.parentElement
 
         if (option) {
             option.selected = true
@@ -1194,3 +1194,114 @@ class SwiperSection extends HTMLElement {
 }
 
 customElements.define("swiper-section", SwiperSection)
+
+class CompareWishlist extends HTMLElement {
+    constructor() {
+        super()
+
+        this.productsWishlist = []
+
+        this.btnAddCompare = this.querySelector(".js-btn-compare")
+        this.btnAddWishlist = this.querySelector(".js-btn-wishlist")
+
+        this.btnAddCompare.addEventListener(
+            "click",
+            this.onButtonClick.bind(this)
+        )
+    }
+
+    onButtonClick(event) {
+        event.preventDefault()
+        const id = this.btnAddCompare.dataset.productId
+        const name = this.btnAddCompare.dataset.handle
+        this.addProductCompare(id, name)
+    }
+
+    addProductCompare(id, name) {
+        const newProduct = {
+            id,
+            name,
+        }
+
+        let products = JSON.parse(localStorage.getItem("productsCompare")) || []
+
+        if (products.some((product) => product.id === id)) {
+            return // already added
+        }
+
+        if (products.length > 3) {
+            this.buildNotification(name, "fullcompare")
+            return // full added
+        }
+
+        this.buildNotification(name, "addcompare")
+        this.btnAddCompare.classList.add("active")
+
+        products.push(newProduct)
+        localStorage.setItem("productsCompare", JSON.stringify(products))
+    }
+
+    buildNotification(handle, action) {
+        const url = `${window.Shopify.routes.root}collections/all?section_id=compare-notification&id=${action}&handle=${handle}`
+        fetch(url)
+            .then((response) => response.text())
+            .then((text) => {
+                if (text) {
+                    const html = document.createElement("div")
+                    html.innerHTML = text
+                    const notification = html.querySelector(
+                        ".js-item-notification"
+                    )
+                    document.body.appendChild(notification)
+                    notification.classList.add("open")
+                    document.body.classList.add("overflow-hidden")
+                    this.getNotification(notification)
+                }
+            })
+    }
+
+    getNotification() {
+        let imageSize = this.closest(".js-card-product-wrapper")
+            .querySelector(".js-card-product-media")
+            .getAttribute("data-size")
+        let modal = document.querySelector(".js-item-notification")
+        trapFocus(modal)
+
+        modal
+            .querySelector(".js-item-notification-media")
+            .classList.add("media__size--" + imageSize)
+
+        modal.classList.add("open")
+        document.body.classList.add("overflow-hidden")
+
+        let close = document.querySelectorAll(".js-modal-close")
+
+        close.forEach((element) => {
+            element.addEventListener("click", (event) => {
+                event.preventDefault()
+                this.closeNotification(modal)
+            })
+        })
+
+        modal.addEventListener("click", (event) => {
+            if (event.target == modal) {
+                this.closeNotification(modal)
+            }
+        })
+
+        modal.addEventListener("keyup", (event) => {
+            if (event.code.toUpperCase() === "ESCAPE") {
+                closeNotification(modal)
+            }
+        })
+    }
+
+    closeNotification(modal) {
+        modal.classList.remove("open")
+        document.body.classList.remove("overflow-hidden")
+        modal.remove()
+        removeTrapFocus(modal)
+    }
+}
+
+customElements.define("compare-wishlist", CompareWishlist)

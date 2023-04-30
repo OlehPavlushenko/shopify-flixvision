@@ -38,12 +38,12 @@
                             {% endfor %}
                             {% if compare != blank %}
                                 <li>
-                                    <a href="{{ compare }}">{{ 'pages.wishlist' | t }}</a>
+                                    <a href="{{ wishlist }}">{{ 'pages.wishlist' | t }}</a>
                                 </li>
                             {% endif %}
                             {% if wishlist != blank %}
                                 <li>
-                                    <a href="{{ wishlist }}">{{ 'pages.compare' | t }}</a>
+                                    <a href="{{ compare }}">{{ 'pages.compare' | t }}</a>
                                 </li>
                             {% endif %}
                         </ul>

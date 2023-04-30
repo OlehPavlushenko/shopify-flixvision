@@ -506,6 +506,10 @@ details-open-notify.open {
     }
 }
 
+.notify__form .label {
+    display: none;
+}
+
 .ask-product__close-button {
     position: absolute;
     right: 10px;
@@ -514,4 +518,45 @@ details-open-notify.open {
 .notify__input {
     width: 100%;
     margin-bottom: 2rem;
+}
+
+.card-product__btns {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    button:first-child {
+        margin-right: auto;
+    }
+    compare-wishlist {
+        display: flex;
+        align-items: center;
+    }
+    .card-product__button-compare,
+    .card-product__button-wishlist {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        text-align: center;
+        margin-left: 8px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        background-color: var(--color-light);
+        border-color: var(--color-light);
+        color: var(--color-dark);
+        box-shadow:  inset 0 0 15px 0 rgba(0,0,0,0.1);
+        svg {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+        }
+        span {
+            display: none;
+        }
+        &:hover, &.active {
+            background-color: var(--color-dark);
+            border-color: var(--color-dark);
+            color: var(--color-light);
+        }
+        
+    }
 }

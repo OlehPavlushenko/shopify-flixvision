@@ -131,8 +131,13 @@
 .modal__msg {
     color: var(--color-success);
     margin-bottom: 1.5rem;
-    font-size: 1.6rem;
-    span {
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    svg {
+        width: 18px;
+        min-width: 18px;
+        height: 20px;
         margin-right: 1rem;
     }
 }
@@ -141,6 +146,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .button {
+        font-size: 12px;
+    }
 }
 
 .modal__close-btn {
@@ -150,8 +158,13 @@
     position: absolute;
     right: -1rem;
     top: -1rem;
+    color: var(--color-link-text);
+    width: 24px;
     svg {
         pointer-events: none;
+    }
+    &:hover {
+        color: var(--color-link-hover-text);
     }
 }
 

@@ -45,7 +45,7 @@
                                 name="minus"
                                 type="button"
                             >
-                                {% render 'icon-minus' %}
+                                {% render 'icons-svg', icons: 'minus' %}
                             </button>
                             <input
                                 class="quantity__input quantity-selector js-quantity"
@@ -66,7 +66,7 @@
                                 name="plus"
                                 type="button"
                             >
-                                {% render 'icon-plus' %}
+                                {% render 'icons-svg', icons: 'plus' %}
                             </button>
                         </quantity-input>
                     </div>
@@ -85,14 +85,17 @@
                         {% endif %}
                     >
                 {% endif %}
-                <button
-                    type="submit"
-                    name="add"
-                    id="AddToCart-{{ product.id }}"
-                    class="button--secondary js-btn-cart card-product__button-cart"
-                >
-                    <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
-                </button>
+                <div class="card-product__btns">
+                    <button
+                        type="submit"
+                        name="add"
+                        id="AddToCart-{{ product.id }}"
+                        class="button--secondary js-btn-cart card-product__button-cart"
+                    >
+                        <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+                    </button>
+                    {% render 'compare-wishlist-btns', product: product %}
+                </div>
                 <div data-ajax-cart-messages="form"></div>
             </variant-pills>
 
@@ -161,43 +164,51 @@
                     {% endif %}
                 >
             {% endif %}
-
-            <button
-                type="submit"
-                name="add"
-                id="AddToCart-{{ product.id }}"
-                class="button--secondary card-product__button-cart js-btn-cart"
-            >
-                <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
-            </button>
+            <div class="card-product__btns">
+                <button
+                    type="submit"
+                    name="add"
+                    id="AddToCart-{{ product.id }}"
+                    class="button--secondary card-product__button-cart js-btn-cart"
+                >
+                    <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+                </button>
+                {% render 'compare-wishlist-btns', product: product %}
+            </div>
             <div data-ajax-cart-messages="form"></div>
         {% endif %}
     {% endform %}
 {% else %}
     {% if notify_me %}
         <details-open-notify>
-            <a
-                class="button button--primary card-product__button-notify js-summary"
-                href="#notify"
-                role="button"
-            >
-                Notify Me
-            </a>
+            <div class="card-product__btns">
+                <a
+                    class="button button--primary card-product__button-notify js-summary"
+                    href="#notify"
+                    role="button"
+                >
+                    {{ 'products.product.ask_btn' | t }}
+                </a>
+                {% render 'compare-wishlist-btns', product: product %}
+            </div>
             <div class="card-product__notify-form js-details">
-                {% render 'notify-form' %}
+                {% render 'notify-form', product: product %}
             </div>
             <div class="card-product__overlay">
                 <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
             </div>
         </details-open-notify>
     {% else %}
-        <button
-            type="button"
-            id="SoldOutText-{{ product.id }}"
-            class="button--secondary card-product__button-sold"
-            disabled=""
-        >
-            <span id="SoldOutText">{{ 'products.product.sold_out' | t }}</span>
-        </button>
+        <div class="card-product__btns">
+            <button
+                type="button"
+                id="SoldOutText-{{ product.id }}"
+                class="button--secondary card-product__button-sold"
+                disabled=""
+            >
+                <span id="SoldOutText">{{ 'products.product.sold_out' | t }}</span>
+            </button>
+            {% render 'compare-wishlist-btns', product: product %}
+        </div>
     {% endif %}
 {% endif %}

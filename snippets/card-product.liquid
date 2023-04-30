@@ -87,7 +87,10 @@
                 {{ 'products.product.sold' | t }}
             </div>
 
-            <picture class="card-product__media media__size--{{ img_size }} media js-card-product-media">
+            <picture
+                class="card-product__media media__size--{{ img_size }} media js-card-product-media"
+                data-size="{{ img_size }}"
+            >
                 {% if image_custom != blank %}
                     {% render 'image', image_box: image_custom, image_box_class: 'card-product__image' %}
                 {% else %}
@@ -137,9 +140,12 @@
                         notify_me: notify_me
                     %}
                 {% else %}
-                    <a class="button button--secondary" href="{{ product.url | within: collection }}">
-                        {{- 'products.product.details' | t -}}
-                    </a>
+                    <div class="card-product__btns">
+                        <a class="button button--secondary" href="{{ product.url | within: collection }}">
+                            {{- 'products.product.details' | t -}}
+                        </a>
+                        {% render 'compare-wishlist-btns', product: product %}
+                    </div>
                 {% endif %}
             {% endif %}
             {%- if show_rating and product.metafields.reviews.rating.value != blank -%}

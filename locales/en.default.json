@@ -249,6 +249,19 @@
   "products": {
     "product": {
       "add_to_cart": "Add to cart",
+      "add_to_compare": "Add to compare",
+      "go_to_compare": "Go to compare",
+      "continue_shopping": "Continue Shopping",
+      "compare_successfully": "The product has been added to your comparison list.",
+      "compare_full": "You cannot add more than 4 products to comparison list.",
+      "wishlist_successfully": "The product has been added to your wishlist but to save it you need to register first.",
+      "compare_remove": {
+        "one": "The product {{ product_title }} has been removed from your comparison list."
+      },
+      "wishlist_remove": {
+        "one": "The product {{ product_title }} has been removed from your wishlist."
+      },
+      "add_to_wishlist": "Add to wishlist",
       "choose_options": "Choose options",
       "choose_product_options": "Choose options for {{ product_name }}",
       "description": "Description",
@@ -314,7 +327,9 @@
       "xr_button_label": "View in your space, loads item in augmented reality window",
       "include_taxes": "Tax included.",
       "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "ask_btn":"Notify me",
       "ask_text":"Have a question about this product?",
+      "ask_body":"Body",
       "ask_value":"Ask about this product",
       "ask_email":"Enter your email",
       "ask_name":"Your Name",

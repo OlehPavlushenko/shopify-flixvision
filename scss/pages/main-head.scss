@@ -58,6 +58,9 @@
             width: 100%;
             -o-object-fit: cover;
             object-fit: cover;
+            backdrop-filter: blur(0.4rem);
+	        -webkit-backdrop-filter: blur(.4rem);
+            filter: blur(3px);
         }
         .main-head__wrapper {
             position: relative;
