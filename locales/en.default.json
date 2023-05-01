@@ -15,7 +15,6 @@
       },
       "all_results": "All Results",
       "view_all_results": "View All Results",
-      "load_more": "Load More",
       "terms_count_html": {
         "one": "Showing {{ terms_count }} of {{ count }} item",
         "other": "Showing <span class='js-terms-count'>{{ terms_count }}<\/span> of <span class='js-total-terms-count'>{{ count }}<\/span> item"
@@ -250,16 +249,18 @@
     "product": {
       "add_to_cart": "Add to cart",
       "add_to_compare": "Add to compare",
+      "remove_from_list": "Remove from list",
       "go_to_compare": "Go to compare",
       "continue_shopping": "Continue Shopping",
       "compare_successfully": "The product has been added to your comparison list.",
       "compare_full": "You cannot add more than 4 products to comparison list.",
-      "wishlist_successfully": "The product has been added to your wishlist but to save it you need to register first.",
+      "wishlist_full": "You cannot add more than 15 products to wishlist.",
+      "wishlist_successfully": "The product has been added to your wishlist.",
       "compare_remove": {
-        "one": "The product {{ product_title }} has been removed from your comparison list."
+        "one": "The product ( {{ product_title }} ) has been removed from your comparison list."
       },
       "wishlist_remove": {
-        "one": "The product {{ product_title }} has been removed from your wishlist."
+        "one": "The product ( {{ product_title }} - has been removed from your wishlist."
       },
       "add_to_wishlist": "Add to wishlist",
       "choose_options": "Choose options",

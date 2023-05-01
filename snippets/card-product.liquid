@@ -140,12 +140,50 @@
                         notify_me: notify_me
                     %}
                 {% else %}
-                    <div class="card-product__btns">
-                        <a class="button button--secondary" href="{{ product.url | within: collection }}">
-                            {{- 'products.product.details' | t -}}
-                        </a>
-                        {% render 'compare-wishlist-btns', product: product %}
-                    </div>
+                    {% if product.available %}
+                        <div class="card-product__btns">
+                            <a
+                                class="button button--secondary card-product__button-cart"
+                                href="{{ product.url | within: collection }}"
+                            >
+                                {{- 'products.product.details' | t -}}
+                            </a>
+                            {% render 'compare-wishlist-btns', product: product %}
+                        </div>
+                    {% else %}
+                        {% if notify_me %}
+                            <details-open-notify>
+                                <div class="card-product__btns">
+                                    <a
+                                        class="button button--primary card-product__button-notify js-summary"
+                                        href="#notify"
+                                        role="button"
+                                    >
+                                        {{ 'products.product.ask_btn' | t }}
+                                    </a>
+                                    {% render 'compare-wishlist-btns', product: product %}
+                                </div>
+                                <div class="card-product__notify-form js-details">
+                                    {% render 'notify-form', product: product %}
+                                </div>
+                                <div class="card-product__overlay">
+                                    <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+                                </div>
+                            </details-open-notify>
+                        {% else %}
+                            <div class="card-product__btns">
+                                <button
+                                    type="button"
+                                    id="SoldOutText-{{ product.id }}"
+                                    class="button--secondary card-product__button-sold"
+                                    disabled=""
+                                >
+                                    <span id="SoldOutText">{{ 'products.product.sold_out' | t }}</span>
+                                </button>
+                                {% render 'compare-wishlist-btns', product: product %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 {% endif %}
             {% endif %}
             {%- if show_rating and product.metafields.reviews.rating.value != blank -%}

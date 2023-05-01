@@ -523,11 +523,10 @@ details-open-notify.open {
 .card-product__btns {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    button:first-child {
-        margin-right: auto;
-    }
+    justify-content: flex-start;
+    
     compare-wishlist {
+        margin-left: auto;
         display: flex;
         align-items: center;
     }
@@ -556,6 +555,9 @@ details-open-notify.open {
             background-color: var(--color-dark);
             border-color: var(--color-dark);
             color: var(--color-light);
+        }
+        .icon-trash {
+            display: none;
         }
         
     }

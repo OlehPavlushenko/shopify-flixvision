@@ -1,0 +1,13 @@
+{{ 'section-main-wishlist.css' | asset_url | stylesheet_tag }}
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+{{ 'component-card-products.css' | asset_url | stylesheet_tag }}
+
+<div class="main-wishlist-page full_width--{{ full_width }} content--{{ content_alignment }}" style="{{ styles }}">
+    <div class="container">
+        <page-wishlist>
+            <div class="product-list-container js-list-container" data-size="portrait"></div>
+        </page-wishlist>
+    </div>
+</div>
+
+<script src="{{ 'main-wishlist.js' | asset_url }}" defer="defer"></script>

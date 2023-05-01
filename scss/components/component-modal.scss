@@ -129,7 +129,6 @@
 }
 
 .modal__msg {
-    color: var(--color-success);
     margin-bottom: 1.5rem;
     font-size: 1.4rem;
     display: flex;
@@ -139,6 +138,15 @@
         min-width: 18px;
         height: 20px;
         margin-right: 1rem;
+    }
+    &.modal__msg--successfully {
+        color: var(--color-success);
+    }
+    &.modal__msg--remove {
+        color: var(--color-danger);
+    }
+    &.modal__msg--notice {
+        color: var(--color-info);
     }
 }
 

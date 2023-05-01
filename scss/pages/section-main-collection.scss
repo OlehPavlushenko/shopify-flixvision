@@ -210,6 +210,27 @@
   }
 }
 
+.main-collections.full_width--false .product-grid-container.list {
+  margin: 0;
+  display: block;
+  .template-main-collection__item {
+    max-width: 100%;
+  }
+  .card-product__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .card-product__media-wrapper {
+    max-width: calc(40% - 30px);
+    margin-right: 30px;
+  }
+  .card-product__content {
+    max-width: 60%;
+    width: 100%;
+    padding-top: 10px;
+  }
+}
+
 .facets-wrapper.page-width .facets {
   width: auto;
 }

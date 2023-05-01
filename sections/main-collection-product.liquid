@@ -44,6 +44,7 @@
 
 {{ 'section-main-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+{{ 'component-card-products.css' | asset_url | stylesheet_tag }}
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
 
 <div class="main-collections full_width--{{ full_width }} content--{{ content_alignment }}" style="{{ styles }}">
@@ -264,7 +265,6 @@
     {%- endpaginate -%}
 </div>
 <script src="{{ 'main-collection.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'vanilla-tooltip.min.js' | asset_url }}" defer="defer"></script>
 {% schema %}
 {
     "name": "t:sections.main-collection-product-grid.name",

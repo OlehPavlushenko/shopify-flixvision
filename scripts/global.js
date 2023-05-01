@@ -1199,22 +1199,41 @@ class CompareWishlist extends HTMLElement {
     constructor() {
         super()
 
-        this.productsWishlist = []
-
         this.btnAddCompare = this.querySelector(".js-btn-compare")
         this.btnAddWishlist = this.querySelector(".js-btn-wishlist")
 
+        this.removeTitleCompare = this.querySelector(
+            ".js-remove-compare-title"
+        ).textContent
+        this.removeTitleWishlist = this.querySelector(
+            ".js-remove-wishlist-title"
+        ).textContent
+
         this.btnAddCompare.addEventListener(
             "click",
-            this.onButtonClick.bind(this)
+            this.onButtonClickCompare.bind(this)
         )
+        this.btnAddWishlist.addEventListener(
+            "click",
+            this.onButtonClickWishlist.bind(this)
+        )
+
+        this.loadCompareProducts()
+        this.loadWishlistProducts()
     }
 
-    onButtonClick(event) {
+    onButtonClickCompare(event) {
         event.preventDefault()
-        const id = this.btnAddCompare.dataset.productId
+        const id = this.btnAddCompare.dataset.compareId
         const name = this.btnAddCompare.dataset.handle
         this.addProductCompare(id, name)
+    }
+
+    onButtonClickWishlist(event) {
+        event.preventDefault()
+        const id = this.btnAddWishlist.dataset.wishlistId
+        const name = this.btnAddWishlist.dataset.handle
+        this.addProductWishlist(id, name)
     }
 
     addProductCompare(id, name) {
@@ -1224,6 +1243,15 @@ class CompareWishlist extends HTMLElement {
         }
 
         let products = JSON.parse(localStorage.getItem("productsCompare")) || []
+        let existingProduct = products.find((product) => product.id === id)
+
+        if (
+            existingProduct &&
+            this.btnAddCompare.classList.contains("active")
+        ) {
+            this.deleteProductCompare(name, id)
+            return
+        }
 
         if (products.some((product) => product.id === id)) {
             return // already added
@@ -1232,17 +1260,117 @@ class CompareWishlist extends HTMLElement {
         if (products.length > 3) {
             this.buildNotification(name, "fullcompare")
             return // full added
+        } else {
+            this.buildNotification(name, "addcompare")
         }
-
-        this.buildNotification(name, "addcompare")
-        this.btnAddCompare.classList.add("active")
 
         products.push(newProduct)
         localStorage.setItem("productsCompare", JSON.stringify(products))
+        this.btnAddCompare.classList.add("active")
+    }
+
+    addProductWishlist(id, name) {
+        const newProduct = {
+            id,
+            name,
+        }
+
+        let products =
+            JSON.parse(localStorage.getItem("productsWishlist")) || []
+        let existingProduct = products.find((product) => product.id === id)
+
+        if (
+            existingProduct &&
+            this.btnAddWishlist.classList.contains("active")
+        ) {
+            this.deleteProductWishlist(name, id)
+            return
+        }
+
+        if (products.some((product) => product.id === id)) {
+            return // already added
+        }
+
+        if (products.length > 15) {
+            this.buildNotification(name, "fullwishlist")
+            return // full added
+        } else {
+            this.buildNotification(name, "addwishlist")
+        }
+
+        products.push(newProduct)
+        localStorage.setItem("productsWishlist", JSON.stringify(products))
+        this.btnAddWishlist.classList.add("active")
+    }
+
+    deleteProductCompare(name, id) {
+        let products = JSON.parse(localStorage.getItem("productsCompare")) || []
+        let existingProductIndex = products.findIndex(
+            (product) => product.id === id
+        )
+
+        if (existingProductIndex === -1) {
+            return //product not found
+        }
+        this.buildNotification(name, "removecompare")
+
+        products.splice(existingProductIndex, 1)
+        localStorage.setItem("productsCompare", JSON.stringify(products))
+        this.btnAddCompare.classList.remove("active")
+    }
+
+    deleteProductWishlist(name, id) {
+        let products =
+            JSON.parse(localStorage.getItem("productsWishlist")) || []
+        let existingProductIndex = products.findIndex(
+            (product) => product.id === id
+        )
+
+        if (existingProductIndex === -1) {
+            return //product not found
+        }
+        this.buildNotification(name, "removewishlist")
+
+        products.splice(existingProductIndex, 1)
+        localStorage.setItem("productsWishlist", JSON.stringify(products))
+        this.btnAddWishlist.classList.remove("active")
+    }
+
+    loadCompareProducts() {
+        let products = JSON.parse(localStorage.getItem("productsCompare")) || []
+
+        products.forEach((product) => {
+            let element = document.querySelector(
+                `[data-compare-id="${product.id}"]`
+            )
+
+            if (element) {
+                element.classList.add("active")
+            }
+        })
+    }
+
+    loadWishlistProducts() {
+        let products =
+            JSON.parse(localStorage.getItem("productsWishlist")) || []
+
+        products.forEach((product) => {
+            let element = document.querySelector(
+                `[data-wishlist-id="${product.id}"]`
+            )
+
+            if (element) {
+                element.classList.add("active")
+            }
+        })
     }
 
     buildNotification(handle, action) {
-        const url = `${window.Shopify.routes.root}collections/all?section_id=compare-notification&id=${action}&handle=${handle}`
+        const url = `${
+            window.Shopify.routes.root
+        }collections/all?section_id=compare-notification&id=${action}&handle=${encodeURIComponent(
+            handle
+        )}`
         fetch(url)
             .then((response) => response.text())
             .then((text) => {
