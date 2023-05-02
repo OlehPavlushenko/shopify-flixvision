@@ -115,7 +115,7 @@
         </script>
     </head>
 
-    <body class="template-{{- template -}}">
+    <body class="template-{{ template }} template-{{ template | replace: '.', ' ' | handle }}">
         <div id="page_preloader__bg">
             <svg
                 aria-hidden="true"

@@ -1,14 +1,14 @@
 {% liquid
     assign load_more = section.settings.load_more
-    assign new_badge = section.settings.new_badge
-    assign show_vendor = section.settings.show_vendor
-    assign show_rating = section.settings.show_rating
-    assign add_btn = section.settings.enable_add_btn
-    assign btn = section.settings.btn
-    assign variant_type = section.settings.variant
-    assign prod_img_size = section.settings.prod_img_size
-    assign secondary_image = section.settings.show_secondary_image
-    assign notify_me = section.settings.notify_me
+    assign new_badge = settings.new_badge
+    assign show_vendor = settings.show_vendor
+    assign show_rating = settings.show_rating
+    assign add_btn = settings.enable_add_btn
+    assign btn = settings.btn
+    assign variant_type = settings.variant
+    assign prod_img_size = settings.prod_img_size
+    assign secondary_image = settings.show_secondary_image
+    assign notify_me = settings.notify_me
 
     assign price_variant = false
     if btn == 'quick'
@@ -69,7 +69,10 @@
                 </aside>
             {%- endif -%}
 
-            <div class="product-grid-container js-product-grid" id="ProductGridContainer">
+            <div
+                class="product-grid-container js-product-grid{% if section.settings.filter_type == 'vertical' %} product-grid-container__vertical {% endif %}"
+                id="ProductGridContainer"
+            >
                 {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
                 {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
                     <facet-filters-form class="facets facets-vertical-sort small-hide no-js-hidden">
@@ -192,7 +195,7 @@
                             data-id="{{ section.id }}"
                             class="
                                 template-main-collection__list
-                                grid product-grid columns-mobile--{{ section.settings.columns_mobile }}
+                                grid product-grid
                                 columns--{{ section.settings.columns_desktop }}
                             "
                         >
@@ -264,7 +267,9 @@
         </div>
     {%- endpaginate -%}
 </div>
+
 <script src="{{ 'main-collection.js' | asset_url }}" defer="defer"></script>
+
 {% schema %}
 {
     "name": "t:sections.main-collection-product-grid.name",
@@ -332,111 +337,6 @@
         },
         {
             "type": "header",
-            "content": "t:sections.main-collection-product-grid.settings.header__3.content"
-        },
-        {
-            "type": "range",
-            "id": "new_badge",
-            "min": 10,
-            "max": 100,
-            "step": 1,
-            "default": 10,
-            "unit": "day",
-            "label": "'New' products badge",
-            "info": "Number of days for which the product is considered as \"New\""
-        },
-        {
-            "type": "checkbox",
-            "id": "show_secondary_image",
-            "default": false,
-            "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
-        },
-        {
-            "type": "checkbox",
-            "id": "enable_add_btn",
-            "default": false,
-            "label": "Enable add to cart button"
-        },
-        {
-            "type": "select",
-            "id": "btn",
-            "default": "details",
-            "label": "Link or Quick add to cart",
-            "options": [
-                {
-                    "value": "quick",
-                    "label": "Quick add to cart"
-                },
-                {
-                    "value": "details",
-                    "label": "Details"
-                }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "variant",
-            "default": "pills",
-            "label": "Variant picker type",
-            "options": [
-                {
-                    "value": "pills",
-                    "label": "Pills"
-                },
-                {
-                    "value": "pills_color_images",
-                    "label": "Pills color images"
-                }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "prod_img_size",
-            "label": "Image size",
-            "options": [
-                {
-                    "value": "cropped",
-                    "label": "Cropped"
-                },
-                {
-                    "value": "landscape",
-                    "label": "Landscape"
-                },
-                {
-                    "value": "square",
-                    "label": "Square"
-                },
-                {
-                    "value": "portrait",
-                    "label": "Portrait"
-                },
-                {
-                    "value": "circle",
-                    "label": "Circle"
-                }
-            ]
-        },
-        {
-            "type": "checkbox",
-            "id": "show_vendor",
-            "default": false,
-            "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
-        },
-        {
-            "type": "checkbox",
-            "id": "show_rating",
-            "default": false,
-            "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
-            "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
-        },
-        {
-            "type": "checkbox",
-            "id": "notify_me",
-            "label": "Use notify me",
-            "default": false
-        },
-        {
-            "type": "header",
             "content": "t:sections.main-collection-product-grid.settings.header__1.content"
         },
         {
@@ -472,26 +372,6 @@
             "id": "enable_sorting",
             "default": true,
             "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
-        },
-        {
-            "type": "header",
-            "content": "t:sections.main-collection-product-grid.settings.header_mobile.content"
-        },
-        {
-            "type": "select",
-            "id": "columns_mobile",
-            "default": "2",
-            "label": "t:sections.main-collection-product-grid.settings.columns_mobile.label",
-            "options": [
-                {
-                    "value": "1",
-                    "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__1.label"
-                },
-                {
-                    "value": "2",
-                    "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__2.label"
-                }
-            ]
         },
         {
             "type": "header",

@@ -251,6 +251,7 @@
       "add_to_compare": "Add to compare",
       "remove_from_list": "Remove from list",
       "go_to_compare": "Go to compare",
+      "go_to_wishlist": "Go to wishlist",
       "continue_shopping": "Continue Shopping",
       "compare_successfully": "The product has been added to your comparison list.",
       "compare_full": "You cannot add more than 4 products to comparison list.",
@@ -263,6 +264,8 @@
         "one": "The product ( {{ product_title }} - has been removed from your wishlist."
       },
       "add_to_wishlist": "Add to wishlist",
+      "no_results_wishlist":"There are no products wishlist",
+      "no_results_compare":"There are no products to compare",
       "choose_options": "Choose options",
       "choose_product_options": "Choose options for {{ product_name }}",
       "description": "Description",

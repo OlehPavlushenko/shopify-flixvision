@@ -41,7 +41,7 @@
 
 {%- assign styles = styles | strip_newlines -%}
 
-{{ 'section-main-wishlist.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-compare.css' | asset_url | stylesheet_tag }}
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
 {{ 'component-card-products.css' | asset_url | stylesheet_tag }}
 
@@ -50,17 +50,63 @@
         <page-wishlist>
             <div class="product-list-container js-list-container" data-size="portrait"></div>
             <h3 class="main-wishlist-page__title js-page-wishlist-title">
-                {{- 'products.product.no_results_wishlist' | t -}}
+                {{- 'products.product.no_results_compare' | t -}}
             </h3>
         </page-wishlist>
     </div>
 </div>
-
-<script src="{{ 'main-wishlist.js' | asset_url }}" defer="defer"></script>
+<div class="compare-pages">
+    <div class="compare-page">
+        <div class="column compare__header">
+            <div class="compare-item">Product Name</div>
+            <div class="compare-item">Image</div>
+            <div class="compare-item">Rating</div>
+            <div class="compare-item">Price</div>
+            <div class="compare-item">Description</div>
+            <div class="compare-item">Manufacturer</div>
+            <div class="compare-item">Availability</div>
+            <div class="compare-item">Product Code</div>
+            <div class="compare-item">Weight</div>
+            <div class="compare-item">Option</div>
+            <div class="compare-item">Action</div>
+        </div>
+        <div class="column compare__products">
+            <div class="compare__product">
+                <!-- product 1 -->
+                <div class="compare-item">Product 1 Name</div>
+                <div class="compare-item">Product 1 Image</div>
+                <div class="compare-item">Product 1 Rating</div>
+                <div class="compare-item">Product 1 Price</div>
+                <div class="compare-item">Product 1 Description</div>
+                <div class="compare-item">Product 1 Manufacturer</div>
+                <div class="compare-item">Product 1 Availability</div>
+                <div class="compare-item">Product 1 Product Code</div>
+                <div class="compare-item">Product 1 Weight</div>
+                <div class="compare-item">Product 1 Option</div>
+                <div class="compare-item">Product 1 Action</div>
+            </div>
+            <div class="compare__product">
+                <!-- product 2 -->
+                <div class="compare-item">Product 2 Name</div>
+                <div class="compare-item">Product 2 Image</div>
+                <div class="compare-item">Product 2 Rating</div>
+                <div class="compare-item">Product 2 Price</div>
+                <div class="compare-item">Product 2 Description</div>
+                <div class="compare-item">Product 2 Manufacturer</div>
+                <div class="compare-item">Product 2 Availability</div>
+                <div class="compare-item">Product 2 Product Code</div>
+                <div class="compare-item">Product 2 Weight</div>
+                <div class="compare-item">Product 2 Option</div>
+                <div class="compare-item">Product 2 Action</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ 'main-compare.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
-    "name": "Main Page Wishlist",
+    "name": "Main Page Comparelist",
     "class": "section",
     "settings": [
         {

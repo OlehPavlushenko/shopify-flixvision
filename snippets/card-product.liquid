@@ -98,7 +98,6 @@
                 {% endif %}
 
                 {%- assign image = product.media[1] | where: 'media_type', 'image' -%}
-                {{ image }}
                 {%- if image != blank and secondary_image -%}
                     {% render 'image', image_box: product.media[1], image_box_class: 'card-product__image--second' %}
                 {% endif %}

@@ -1,11 +1,16 @@
 {
   "sections": {
+    "main-head": {
+      "type": "main-head",
+      "settings": {}
+    },
     "main": {
-      "type": "main-page",
+      "type": "main-compare",
       "settings": {}
     }
   },
   "order": [
+    "main-head",
     "main"
   ]
 }

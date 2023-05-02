@@ -431,6 +431,28 @@ main-search[loading] .tabs-content__wrapper {
     }
 }
 
+.template-main-search-tabs__item{
+    .card-product__media {
+      background: var(--color-white);
+      box-shadow: 0 3px 7px rgba(0,0,0, .15);
+    }
+    .card-product__image,
+    .card-product__image--second {
+      height: calc(100% - 20px);
+      width: calc(100% - 20px);
+      margin: 10px;
+    }
+    .card-product__media::after {
+      content: "";
+      border: solid 10px var(--color-white);
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      left:0;
+      top: 0;
+    }
+  }
+  
 .main-search__box {
     display: -webkit-box;
     display: -ms-flexbox;
