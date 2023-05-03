@@ -7,8 +7,8 @@
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgba(0,0,0, .1);
+    backdrop-filter: blur(0.4rem);
 }
 
 
@@ -28,9 +28,9 @@
     width: 32rem; /* Could be more or less, depending on screen size */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
+    -webkit-animation-duration: 0.3s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.3s
 }
 
 .js-ajax-cart-request-in-progress .modal__dialog {
@@ -99,12 +99,12 @@
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0} 
+    from {top:53%; opacity:0} 
     to {top:50%; opacity:1}
 }
   
 @keyframes animatetop {
-    from {top:-300px; opacity:0}
+    from {top:53%; opacity:0}
     to {top:50%; opacity:1}
 }
 
@@ -129,11 +129,24 @@
 }
 
 .modal__msg {
-    color: var(--color-success);
     margin-bottom: 1.5rem;
-    font-size: 1.6rem;
-    span {
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    svg {
+        width: 18px;
+        min-width: 18px;
+        height: 20px;
         margin-right: 1rem;
+    }
+    &.modal__msg--successfully {
+        color: var(--color-success);
+    }
+    &.modal__msg--remove {
+        color: var(--color-danger);
+    }
+    &.modal__msg--notice {
+        color: var(--color-info);
     }
 }
 
@@ -141,6 +154,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .button {
+        font-size: 12px;
+    }
 }
 
 .modal__close-btn {
@@ -150,8 +166,19 @@
     position: absolute;
     right: -1rem;
     top: -1rem;
+    color: var(--color-link-text);
+    width: 24px;
     svg {
         pointer-events: none;
+    }
+    &:hover {
+        color: var(--color-link-hover-text);
+    }
+}
+
+.template-page-wishlist {
+    .modal__button--wishlist {
+        display: none;
     }
 }
 

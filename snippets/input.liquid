@@ -107,6 +107,9 @@
             {% if input_type == 'email' %}
                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
             {% endif %}
+            {% if input_type == 'tel' %}
+                pattern="[0-9\-]*"
+            {% endif %}
             {% if is_required %}
                 aria-required="true" required
             {% endif %}

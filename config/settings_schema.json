@@ -251,6 +251,117 @@
     ]
   },
   {
+    "name": "Product Card",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+      },
+      {
+        "type": "range",
+        "id": "new_badge",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "default": 10,
+        "unit": "day",
+        "label": "'New' products badge",
+        "info": "Number of days for which the product is considered as \"New\""
+      },
+      {
+        "type": "checkbox",
+        "id": "show_secondary_image",
+        "default": false,
+        "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_add_btn",
+        "default": false,
+        "label": "Enable add to cart button"
+      },
+      {
+        "type": "select",
+        "id": "btn",
+        "default": "details",
+        "label": "Link or Quick add to cart",
+        "options": [
+          {
+              "value": "quick",
+              "label": "Quick add to cart"
+          },
+          {
+              "value": "details",
+              "label": "Details"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "variant",
+        "default": "pills",
+        "label": "Variant picker type",
+        "options": [
+          {
+              "value": "pills",
+              "label": "Pills"
+          },
+          {
+              "value": "pills_color_images",
+              "label": "Pills color images"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "prod_img_size",
+        "label": "Image size",
+        "options": [
+          {
+              "value": "cropped",
+              "label": "Cropped"
+          },
+          {
+              "value": "landscape",
+              "label": "Landscape"
+          },
+          {
+              "value": "square",
+              "label": "Square"
+          },
+          {
+              "value": "portrait",
+              "label": "Portrait"
+          },
+          {
+              "value": "circle",
+              "label": "Circle"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "default": false,
+        "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_rating",
+        "default": false,
+        "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
+        "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "notify_me",
+        "label": "Use notify me",
+        "default": false
+      }
+    ]
+  },
+  
+  {
     "name": "Main Search",
     "settings": [
       {
@@ -316,71 +427,6 @@
           "step": 1,
           "default": 5,
           "label": "Number of columns"
-      },
-      {
-          "type": "checkbox",
-          "id": "enable_add_btn",
-          "default": false,
-          "label": "Enable add to cart button"
-      },
-      {
-          "type": "select",
-          "id": "btn",
-          "default": "details",
-          "label": "Link or Quick add to cart",
-          "options": [
-              {
-                  "value": "quick",
-                  "label": "Quick add to cart"
-              },
-              {
-                  "value": "details",
-                  "label": "Details"
-              }
-          ]
-      },
-      {
-          "type": "select",
-          "id": "variant",
-          "default": "pills",
-          "label": "Variant picker type",
-          "options": [
-              {
-                  "value": "pills",
-                  "label": "Pills"
-              },
-              {
-                  "value": "pills_color_images",
-                  "label": "Pills color images"
-              }
-          ]
-      },
-      {
-        "type": "select",
-        "id": "prod_img_size",
-        "label": "Image size",
-        "options": [
-            {
-                "value": "cropped",
-                "label": "Cropped"
-            },
-            {
-                "value": "landscape",
-                "label": "Landscape"
-            },
-            {
-                "value": "square",
-                "label": "Square"
-            },
-            {
-                "value": "portrait",
-                "label": "Portrait"
-            },
-            {
-                "value": "circle",
-                "label": "Circle"
-            }
-        ]
       },
       {
           "type": "header",

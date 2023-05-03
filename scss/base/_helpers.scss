@@ -152,13 +152,13 @@ html.no-js .no-js-hidden {
     display: none !important;
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (max-width: 767px) {
     .small-hide {
         display: none !important;
     }
 }
 
-@media screen and (min-width: 750px) and (max-width: 989px) {
+@media screen and (min-width: 768px) and (max-width: 989px) {
     .medium-hide {
         display: none !important;
     }
@@ -210,7 +210,7 @@ html.no-js .no-js-hidden {
     list-style: none;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .grid {
         margin-left: -1rem;
     }
@@ -234,7 +234,7 @@ html.no-js .no-js-hidden {
     width: calc(33.33% - 0.5rem * 2 / 3);
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .grid--3-col .grid__item {
         width: calc(33.33% - 1rem * 2 / 3);
     }
@@ -244,7 +244,7 @@ html.no-js .no-js-hidden {
     width: calc(50% - 0.5rem / 2);
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
     .grid--2-col .grid__item {
         width: calc(50% - 1rem / 2);
     }
@@ -325,4 +325,15 @@ html.no-js .no-js-hidden {
 
 deferred-media {
     display: block;
+}
+
+.building {
+	float:left;
+}
+
+@mixin transition() {
+    -webkit-transition:.4s cubic-bezier(.19,1,.22,1);
+    -moz-transition:.4s cubic-bezier(.19,1,.22,1);
+    -o-transition:.4s cubic-bezier(.19,1,.22,1);
+    transition: .4s cubic-bezier(.19,1,.22,1);
 }

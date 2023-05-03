@@ -16,7 +16,6 @@
         assign money_price = 'products.product.price.from_price_html' | t: price: money_price
     endif
 -%}
-
 <div
     class="
         price
@@ -39,6 +38,19 @@
         <span class="price__item price__item--sale">
             {{ money_price }}
         </span>
-        <span class="badge sale">{{ 'products.product.sale' | t }}</span>
+        <span class="badge sale js-percentage-badge"
+            >-
+            {{-
+                compare_at_price
+                | minus: price
+                | times: 100.0
+                | divided_by: compare_at_price
+                | money_without_currency
+                | replace: ',', '.'
+                | times: 100
+                | remove: '.0'
+            -}}
+            %
+        </span>
     </div>
 </div>

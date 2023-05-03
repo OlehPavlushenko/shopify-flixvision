@@ -30,6 +30,9 @@
         {% render 'meta-tags' %}
         {% render 'seo-schema' %}
 
+        <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
+        <script src="{{ 'helper-functions.js' | asset_url }}" defer="defer"></script>
+
         {{ content_for_header }}
 
         {% liquid
@@ -112,7 +115,7 @@
         </script>
     </head>
 
-    <body class="template-{{- template -}}">
+    <body class="template-{{ template }} template-{{ template | replace: '.', ' ' | handle }}">
         <div id="page_preloader__bg">
             <svg
                 aria-hidden="true"
@@ -162,7 +165,6 @@
             Shopify.money_format = '{{ amount_format }}'
         </script>
         <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
-        <script src="{{ 'helper-functions.js' | asset_url }}" defer="defer"></script>
         <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
     </body>
 </html>
