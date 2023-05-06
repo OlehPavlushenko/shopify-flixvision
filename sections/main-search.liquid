@@ -16,10 +16,7 @@
     assign secondary_image = settings.show_secondary_image
     assign notify_me = settings.notify_me
 
-    assign price_variant = false
-    if btn == 'quick'
-        assign price_variant = true
-    endif
+    assign price_variant = settings.price_variant
 
     assign bg_color = section.settings.bg_color | default: 'transparent'
     assign load_more = settings.load_more

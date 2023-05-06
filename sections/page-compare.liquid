@@ -1,13 +1,12 @@
 {% liquid
     assign new_badge = settings.new_badge
-    assign show_vendor = settings.show_vendor
-    assign show_rating = settings.show_rating
     assign add_btn = settings.enable_add_btn
     assign btn = settings.btn
     assign variant_type = settings.variant
     assign prod_img_size = settings.prod_img_size
     assign secondary_image = settings.show_secondary_image
     assign notify_me = settings.notify_me
+    assign price_variant = settings.price_variant
 
     assign price_variant = false
     if btn == 'quick'

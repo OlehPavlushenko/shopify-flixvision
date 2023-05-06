@@ -357,6 +357,12 @@
         "id": "notify_me",
         "label": "Use notify me",
         "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "price_variant",
+        "label": "Use price variant",
+        "default": true
       }
     ]
   },

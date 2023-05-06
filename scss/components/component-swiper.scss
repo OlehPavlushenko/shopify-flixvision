@@ -41,3 +41,20 @@
     	z-index: 16;
 	}
 }
+
+.template-page-compare {
+	.swiper-container {
+		.swiper-button-next {
+			right: 15px;
+			z-index: 16;
+			top: 57px;
+		}
+		.swiper-button-prev {
+			left: auto;
+			right: 60px;
+			z-index: 16;
+			top: 57px;
+		}
+
+	}
+}

@@ -881,7 +881,7 @@ class VariantPills extends HTMLElement {
         const hasComparePrice = comparePrice !== null
 
         this.percentageBadge
-        console.log(hasComparePrice)
+
         this.price.classList.toggle("price--on-sale", hasComparePrice)
         this.saleBadge.classList.toggle("hidden", !hasComparePrice)
         elementSalePrice.textContent = Shopify.formatMoney(salePrice)
@@ -1202,6 +1202,20 @@ class CompareWishlist extends HTMLElement {
         this.btnAddCompare = this.querySelector(".js-btn-compare")
         this.btnAddWishlist = this.querySelector(".js-btn-wishlist")
 
+        this.btnTitleCompareRemove = this.btnAddCompare
+            .querySelector(".js-remove-compare-title")
+            .getAttribute("title")
+        this.btnTitleCompareAdd = this.btnAddCompare
+            .querySelector(".js-add-compare-title")
+            .getAttribute("title")
+
+        this.btnTitleWishlistRemove = this.btnAddWishlist
+            .querySelector(".js-remove-wishlist-title")
+            .getAttribute("title")
+        this.btnTitleWishlistAdd = this.btnAddWishlist
+            .querySelector(".js-add-wishlist-title")
+            .getAttribute("title")
+
         this.removeTitleCompare = this.querySelector(
             ".js-remove-compare-title"
         ).textContent
@@ -1267,6 +1281,7 @@ class CompareWishlist extends HTMLElement {
         products.push(newProduct)
         localStorage.setItem("productsCompare", JSON.stringify(products))
         this.btnAddCompare.classList.add("active")
+        this.btnAddCompare.setAttribute("title", this.btnTitleCompareRemove)
     }
 
     addProductWishlist(id, name) {
@@ -1301,6 +1316,7 @@ class CompareWishlist extends HTMLElement {
         products.push(newProduct)
         localStorage.setItem("productsWishlist", JSON.stringify(products))
         this.btnAddWishlist.classList.add("active")
+        this.btnAddWishlist.setAttribute("title", this.btnTitleWishlistRemove)
     }
 
     deleteProductCompare(name, id) {
@@ -1317,6 +1333,7 @@ class CompareWishlist extends HTMLElement {
         products.splice(existingProductIndex, 1)
         localStorage.setItem("productsCompare", JSON.stringify(products))
         this.btnAddCompare.classList.remove("active")
+        this.btnAddCompare.setAttribute("title", this.btnTitleCompareAdd)
     }
 
     deleteProductWishlist(name, id) {
@@ -1334,6 +1351,7 @@ class CompareWishlist extends HTMLElement {
         products.splice(existingProductIndex, 1)
         localStorage.setItem("productsWishlist", JSON.stringify(products))
         this.btnAddWishlist.classList.remove("active")
+        this.btnAddWishlist.setAttribute("title", this.btnTitleWishlistAdd)
     }
 
     loadCompareProducts() {
@@ -1346,6 +1364,7 @@ class CompareWishlist extends HTMLElement {
 
             if (element) {
                 element.classList.add("active")
+                element.setAttribute("title", this.btnTitleCompareRemove)
             }
         })
     }
@@ -1361,6 +1380,7 @@ class CompareWishlist extends HTMLElement {
 
             if (element) {
                 element.classList.add("active")
+                element.setAttribute("title", this.btnTitleWishlistRemove)
             }
         })
     }

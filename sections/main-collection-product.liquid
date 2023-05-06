@@ -9,11 +9,7 @@
     assign prod_img_size = settings.prod_img_size
     assign secondary_image = settings.show_secondary_image
     assign notify_me = settings.notify_me
-
-    assign price_variant = false
-    if btn == 'quick'
-        assign price_variant = true
-    endif
+    assign price_variant = settings.price_variant
 
     assign bg_color = section.settings.bg_color | default: 'transparent'
 
@@ -200,9 +196,33 @@
                             "
                         >
                             {%- for product in collection.products -%}
-                                {% assign lazy_load = false %}
-                                {%- if forloop.index > 2 -%}
-                                    {%- assign lazy_load = true -%}
+                                {%- liquid
+                                    assign parent_index = forloop.index
+                                    assign insert_in_grid_content = false
+                                    assign item_pos = 0
+                                    for position in collection.metafields.custom.banner.value
+                                        unless position.ordinal_number
+                                            continue
+                                        endunless
+                                        assign item_pos = position.ordinal_number | times: 1
+                                        if item_pos == parent_index
+                                            assign insert_in_grid_content = true
+                                            assign item_pos = forloop.index0
+                                            break
+                                        endif
+                                    endfor
+                                -%}
+                                {%- if insert_in_grid_content -%}
+                                    <li class="grid__item template-main-collection__item">
+                                        {% for position in collection.metafields.custom.banner.value -%}
+                                            {% if item_pos == forloop.index0 -%}
+                                                {{ position.sub_title }}
+                                                {{ position.title }}
+                                                {{ position.image | image_url: width: 500 | image_tag }}
+                                                break
+                                            {% endif -%}
+                                        {% endfor -%}
+                                    </li>
                                 {%- endif -%}
                                 <li class="grid__item template-main-collection__item">
                                     {% render 'card-product',
@@ -263,6 +283,11 @@
                         {%- endif -%}
                     </div>
                 {%- endif -%}
+                {% render 'recently-viewed',
+                    product: product,
+                    prod_img_size: settings.prod_img_size,
+                    use_variant: price_variant
+                %}
             </div>
         </div>
     {%- endpaginate -%}
@@ -350,10 +375,6 @@
             "type": "select",
             "id": "filter_type",
             "options": [
-                {
-                    "value": "horizontal",
-                    "label": "t:sections.main-collection-product-grid.settings.filter_type.options__1.label"
-                },
                 {
                     "value": "vertical",
                     "label": "t:sections.main-collection-product-grid.settings.filter_type.options__2.label"
