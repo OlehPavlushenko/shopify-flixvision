@@ -9,10 +9,7 @@
     assign secondary_image = settings.show_secondary_image
     assign notify_me = settings.notify_me
 
-    assign price_variant = false
-    if btn == 'quick'
-        assign price_variant = true
-    endif
+    assign price_variant = settings.price_variant
 
     assign url = canonical_url | url_decode | split: '?'
     assign url = url[1] | split: '='

@@ -338,3 +338,26 @@
         padding: 0 1rem;
     }
 }
+
+.footer-product-post, .footer-blog-post {
+    .footer-product-post__media, 
+    .footer-blog-post__media {
+        background: var(--color-white);
+        box-shadow: 0 3px 7px rgba(0,0,0, .15);
+    }
+    .footer-product-post__image, .footer-blog-post__image {
+        height: calc(100% - 10px);
+        width: calc(100% - 10px);
+        margin: 5px;
+    }
+    .footer-product-post__media::after,
+    .footer-blog-post__media::after {
+        content: "";
+        border: solid 5px var(--color-white);
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        left:0;
+        top: 0;
+    }
+}
