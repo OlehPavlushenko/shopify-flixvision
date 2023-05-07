@@ -26,13 +26,16 @@
 -%}
 
 <div class="recently__products" id="recently__products">
-    <h3 class="recently__heading">Recently Products</h3>
-    <ul class="recently__viewed" role="list">
-        <!-- Recently viewed products will appear here -->
-    </ul>
+    <div class="{% if settings != 'vertical' %}page-width{% endif %}">
+        <h3 class="recently__heading">Recently Products</h3>
+        <ul class="recently__viewed" role="list">
+            <!-- Recently viewed products will appear here -->
+        </ul>
+    </div>
 </div>
 
 <script>
+    
     const recentlyViewedProductsKey = 'recentlyViewedProduct'
     {% if product.title != blank %}
       let productCart = true
@@ -165,42 +168,5 @@
     document.addEventListener('DOMContentLoaded', function (event) {
         getRecentlyViewedProducts()
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </script>

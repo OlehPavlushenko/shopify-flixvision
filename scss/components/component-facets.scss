@@ -1049,6 +1049,11 @@ input.mobile-facets__checkbox {
     z-index: 0;
   }
 
+  .facet-checkbox--disabled {
+    opacity: .5;
+    cursor: default!important;
+  }
+
   .no-js .facets-vertical .facets-container {
     display: flex;
     flex-direction: column;
