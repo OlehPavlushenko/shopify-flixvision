@@ -1,35 +1,41 @@
 {% liquid
     assign blocks = section.blocks
     assign heading = section.settings.heading
-    assign vendor = section.settings.show_vendor
-    assign quantity = section.settings.show_quantity
 
-    assign add_btn = section.settings.enable_add_btn
-    assign btn = section.settings.btn
-
-    assign variant_type = section.settings.variant
+    assign new_badge = settings.new_badge
+    assign show_vendor = settings.show_vendor
+    assign show_rating = settings.show_rating
+    assign add_btn = settings.enable_add_btn
+    assign btn = settings.btn
+    assign variant_type = settings.variant
+    assign prod_img_size = settings.prod_img_size
+    assign secondary_image = settings.show_secondary_image
+    assign notify_me = settings.notify_me
+    assign price_variant = settings.price_variant
 
     assign columns_desktop = section.settings.columns_desktop
     assign columns_mobile = section.settings.columns_mobile
 
     assign bg_color = section.settings.bg_color | default: 'transparent'
-    assign title_color = section.settings.title_color | default: 'inherit'
 
-    assign img_size = section.settings.prod_img_size
+    assign text_color = section.settings.text_color | default: 'inherit'
+    assign title_color = section.settings.title_color | default: 'inherit'
+    assign link_color = section.settings.link_color | default: 'inherit'
+
+    assign content_alignment = section.settings.content_alignment
+    assign full_width = section.settings.full_width
+
     assign width = section.settings.width
     assign pad_top = section.settings.padding_top
     assign pad_bot = section.settings.padding_bottom
-
-    assign price_variant = false
-    if btn == 'quick'
-        assign price_variant = true
-    endif
 %}
 
 {% capture styles %}
-    --title-color-featured-products: {{ title_color }};
     --background-color-featured-products: {{ bg_color }};
-    --width-featured-products: {{ width }}px;
+    --title-post-color-featured-products: {{ title_color }};
+    --text-post-color-featured-products: {{ text_color }};
+    --link-post-color-featured-products: {{ link_color }};
+
     --pad-top-featured-products: {{ pad_top }}px;
     --pad-bot-featured-products: {{ pad_bot }}px;
   {% endcapture %}
@@ -40,7 +46,7 @@
 {{ 'component-card-products.css' | asset_url | stylesheet_tag }}
 
 {% if blocks.size > 0 %}
-    <div class="featured-products" style="{{ styles }}">
+    <div class="featured-products full_width--{{ full_width }} content--{{ content_alignment }}" style="{{ styles }}">
         <div class="page-width">
             {%- if heading != blank -%}
                 <h3 class="featured-products__heading h3">
@@ -57,13 +63,17 @@
                     <li class="featured-products__item">
                         {% render 'card-product',
                             product: product,
-                            show_vendor: vendor,
-                            show_quantity: quantity,
+                            show_vendor: show_vendor,
+                            show_rating: show_rating,
+                            new_badge: new_badge,
+                            show_quantity: false,
                             use_variant: price_variant,
                             variant_type: variant_type,
                             add_btn: add_btn,
                             btn: btn,
-                            img_size: img_size,
+                            img_size: prod_img_size,
+                            secondary_image: secondary_image,
+                            notify_me: notify_me,
                             image_custom: image_custom,
                             fill: fill_image
                         %}
@@ -85,56 +95,6 @@
             "id": "heading",
             "default": "Featured Products",
             "label": "Title"
-        },
-        {
-            "type": "checkbox",
-            "id": "show_vendor",
-            "label": "Show vendor",
-            "default": false
-        },
-        {
-            "type": "checkbox",
-            "id": "show_quantity",
-            "label": "Show quantity",
-            "default": false
-        },
-        {
-            "type": "checkbox",
-            "id": "enable_add_btn",
-            "default": false,
-            "label": "Enable add to cart button"
-        },
-        {
-            "type": "select",
-            "id": "btn",
-            "default": "details",
-            "label": "Link or Quick add to cart",
-            "options": [
-                {
-                    "value": "quick",
-                    "label": "Quick add to cart"
-                },
-                {
-                    "value": "details",
-                    "label": "Details"
-                }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "variant",
-            "default": "pills",
-            "label": "Variant picker type",
-            "options": [
-                {
-                    "value": "pills",
-                    "label": "Pills"
-                },
-                {
-                    "value": "pills_color_images",
-                    "label": "Pills color images"
-                }
-            ]
         },
         {
             "type": "range",
@@ -176,6 +136,16 @@
             "label": "Title color"
         },
         {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color"
+        },
+        {
+            "type": "color",
+            "id": "link_color",
+            "label": "Link  color"
+        },
+        {
             "type": "select",
             "id": "prod_img_size",
             "label": "Image size",
@@ -203,14 +173,40 @@
             ]
         },
         {
+            "type": "checkbox",
+            "id": "full_width",
+            "default": false,
+            "label": "Enabled full width?"
+        },
+        {
             "type": "range",
             "id": "width",
             "min": 1000,
-            "max": 1600,
-            "step": 100,
+            "max": 1800,
+            "step": 40,
             "default": 1200,
             "unit": "px",
             "label": "Section Width"
+        },
+        {
+            "type": "select",
+            "id": "content_alignment",
+            "options": [
+                {
+                    "value": "left",
+                    "label": "Left"
+                },
+                {
+                    "value": "center",
+                    "label": "Center"
+                },
+                {
+                    "value": "right",
+                    "label": "Right"
+                }
+            ],
+            "default": "left",
+            "label": "Text alignment"
         },
         {
             "type": "range",

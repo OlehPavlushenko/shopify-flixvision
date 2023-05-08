@@ -504,9 +504,11 @@ quantity-input {
 
 .card-product__price.price--on-sale .badge.sale {
     margin-left: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
     @media (min-width: 320px) and (max-width: 767px) {
         margin-left: 0;
-        margin-top: 10px;
+        
      }
 }
 

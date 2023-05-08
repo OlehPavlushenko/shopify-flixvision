@@ -1,5 +1,5 @@
 {{ product.id }}
 {% liquid
-    assign price_variant = false
+    assign price_variant = settings.price_variant
 %}
 {% render 'recently-viewed', product: product, prod_img_size: settings.prod_img_size, use_variant: price_variant %}

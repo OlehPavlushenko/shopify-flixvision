@@ -220,7 +220,7 @@
                                         <li class="grid__item template-main-collection__item template-main-collection__item--custom">
                                             {% for position in collection.metafields.custom.banner.value -%}
                                                 {% if item_pos == forloop.index0 -%}
-                                                    <div class="item-custom-product__indent">
+                                                    <div class="item-custom-product__indent {% if position.image_position %} item-custom-product__image_position--right{% endif %}">
                                                         <div class="item-custom-product__media-wrapper">
                                                             {% if position.link != blank %}
                                                                 <a

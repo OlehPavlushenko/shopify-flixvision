@@ -35,6 +35,8 @@
     column-gap: 3rem;
     display: flex;
     flex-wrap: nowrap;
+    padding: 10px;
+    margin: -10px;
 }
 
 .search-tabs__list-item {
@@ -50,7 +52,7 @@
         padding-bottom: 2rem;
     }
     .search-tabs__list-item {
-        min-width: 250px;
+        min-width: 320px;
         width: 100%;
     }
 }
@@ -71,7 +73,7 @@
     max-width: 100%;
     width: 100%;
     overflow: hidden;
-    padding-top: 85%;
+    //padding-top: 85%;
 }
 
 .search-blog-post__image, 
@@ -100,6 +102,7 @@
 .search-blog-post__title,
 .search-collection-post__title {
     margin-bottom: 1rem;
+    text-transform: none;
 }
 
 .search-product-post__title a,
@@ -132,16 +135,17 @@
 .search-tabs__content.pages .search-tabs__list {
     display: block;
 }
+
 .search-tabs__item {
     white-space: nowrap;
 }
-@media screen and (max-width: 749px) { 
+
+@media screen and (max-width: 749px) {
     .search-modal__input {
         font-size: 2.6rem;
     }
 
-    .search-modal__suggested  button,
-    .search-tabs__btn {
+    .search-modal__suggested  button {
         padding-left: 1.6rem;
         padding-right: 1.6rem;
     }
@@ -174,8 +178,47 @@
     .search-collection-post__content {
         margin-top: 1rem;
     }
+    .search-product-post__content {
+        padding-left: 10px!important;
+        margin-top: 5px!important;
+    }
 }
 
 .search-main__cta {
     padding-top: 20px;
+}
+
+#products-panel {
+    .search-tabs__list-item {
+        display: flex;
+        align-items: flex-start;
+    }
+    .search-product-post__madia-wrapper {
+        width: 30%;
+        .search-product-post__media {
+            background: var(--color-white);
+            box-shadow: 0 3px 7px rgba(0,0,0, .15);
+        }
+
+        .search-product-post__image {
+            height: calc(100% - 10px);
+            width: calc(100% - 10px);
+            margin: 5px;
+        }
+
+        .search-product-post__media::after {
+            content: "";
+            border: solid 5px var(--color-white);
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            left:0;
+            top: 0;
+        }
+    }
+    .search-product-post__content {
+        width: 70%;
+        padding-left: 20px;
+        margin-top: 10px;
+    }
 }

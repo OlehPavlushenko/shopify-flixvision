@@ -171,7 +171,7 @@ class HeaderSearch extends HTMLElement {
 
     close(clearSearchTerm = false) {
         if (clearSearchTerm) {
-            this.input.value = ""
+            //this.input.value = ""
             this.cachedResults = {}
             this.removeAttribute("results")
             this.resetSuggestions()

@@ -34,11 +34,13 @@
 {{ 'section-ajax-cart.css' | asset_url | stylesheet_tag }}
 {{ 'component-modal.css' | asset_url | stylesheet_tag }}
 {{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}
+{{ 'component-card-products.css' | asset_url | stylesheet_tag }}
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
 
 <div class="cart-overlay" data-ajax-cart-toggle-class-button="js-ajax-cart-open | remove">
     <span class="visually-hidden">{{ 'sections.cart.close' | t }}</span>
 </div>
-<form action="{{ routes.cart_url }}" method="post" data-ajax-cart-section class="cart-drawer" style="{{ styles }}">
+<div action="{{ routes.cart_url }}" method="post" data-ajax-cart-section class="cart-drawer" style="{{ styles }}">
     <div>
         <h2 class="cart-drawer__head">{{ 'sections.cart.cart' | t }}</h2>
         <!-- Free shipping progress markup -->
@@ -369,7 +371,7 @@
             {% endif %}
         </button>
     </div>
-</form>
+</div>
 
 <script type="application/json" data-ajax-cart-initial-state>
     {{ cart | json }}
