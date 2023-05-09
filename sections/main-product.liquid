@@ -1,5 +1,27 @@
-{{ product.id }}
 {% liquid
-    assign price_variant = settings.price_variant
+    assign full_width = true
 %}
-{% render 'recently-viewed', product: product, prod_img_size: settings.prod_img_size, use_variant: price_variant %}
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+<section
+    id="MainProduct-{{ section.id }}"
+    class="main-product full_width--{{ full_width }}"
+    data-section="{{ section.id }}"
+>
+    <div class="main-product__media-row">
+        <div class="container">
+            <div class="main-product__wrapper main-product-media--left js-card-product-wrapper">
+                <div class="main-product__media-wrapper">
+                    {% render 'product-media-card', product: product %}
+                </div>
+                <div class="main-product__info-wrapper">
+                    {% render 'product-info-card', product: product %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% liquid
+        assign price_variant = settings.price_variant
+    %}
+    {% render 'recently-viewed', product: product, prod_img_size: settings.prod_img_size, use_variant: price_variant %}
+</section>

@@ -246,7 +246,7 @@ function sentRecommendIds(ids) {
                 const swiper = new Swiper(".js-recommend-swiper", {
                     // Optional parameters
                     loop: false,
-                    slidesPerView: 1,
+                    slidesPerView: 2,
                     spaceBetween: 10,
                     // Navigation arrows
                     navigation: {
@@ -256,7 +256,7 @@ function sentRecommendIds(ids) {
                     breakpoints: {
                         551: {
                             slidesPerView: 2,
-                            spaceBetween: 20,
+                            spaceBetween: 15,
                         },
                     },
                 })

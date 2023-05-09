@@ -228,7 +228,7 @@ input.cart-drawer__input--property {
 }
 
 .cart-drawer-show-footer .cart-drawer__footer-content {
-	max-height: 35rem;
+	max-height: 38rem;
 	padding: 2rem 3rem;
 }
 
@@ -662,22 +662,29 @@ input.cart-drawer__input--property {
 	}
 }
 
+#cart-recommend .swiper-container {
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-left: -10px;
+	margin-right: -10px;
+}
+
 .cart-recommend__list {
 	padding: 0;
 	list-style: none;
 	display: flex;
+	flex-wrap: nowrap;
 	margin: 0;
 }
 
 .cart-recommend__item {
 	width: 50%;
-	min-width: 50%;
-	//flex: auto;
+	flex: auto;
 	padding-left: 0;
 	padding-right: 0;
 	padding-bottom: 2rem;
 	box-sizing: border-box;
-	.card-product__madia-wrapper {
+	.card-product__media-wrapper {
 		margin-bottom: 1rem;
 	}
 

@@ -1,0 +1,67 @@
+{% liquid
+    assign img_size = settings.prod_img_size
+    assign date_timer = product.metafields.custom.countdown_timer
+
+    if use_variant
+        assign target = product.selected_or_first_available_variant
+    else
+        assign target = product
+    endif
+
+    assign compare_at_price = target.compare_at_price
+    assign price = target.price
+
+    assign on_sale = false
+    if compare_at_price > price
+        assign on_sale = true
+    endif
+
+    if new_badge.size > 0
+        assign date_pub_y = product.published_at | date: '%Y'
+        assign date_pub_d = product.published_at | date: '%j'
+        assign date_now_y = 'now' | date: '%Y'
+        assign date_now_d = 'now' | date: '%j'
+        assign dates_diff_y = date_now_y | minus: date_pub_y | times: 365
+        assign dates_diff_d = date_now_d | minus: date_pub_d
+        assign dates_diff = dates_diff_y | plus: dates_diff_d
+        assign new_products_period = new_badge | plus: 0
+    endif
+
+    assign sold_out = true
+    if product.available
+        assign sold_out = false
+    endif
+
+    assign current_variant = product.selected_or_first_available_variant
+    if current_variant.featured_image != blank
+        assign image_box = current_variant.featured_image
+    else
+        assign image_box = product.featured_image
+    endif
+%}
+<div class="card-product__media-wrapper">
+    <div class="card-product__badge card-product__badge--on-sale{% unless on_sale %} hidden{% endunless %} js-card-product-sale-badge">
+        {{ 'products.product.sale' | t }}
+    </div>
+    {% if date_timer %}
+        <div class="card-product__badge card-product__badge--offer">
+            {{ 'products.product.offer' | t }}
+        </div>
+    {% endif %}
+    {% if dates_diff <= new_products_period %}
+        <div class="card-product__badge card-product__badge--new {% if sold_out %} hidden{% endif %}">
+            {{ 'products.product.new' | t }}
+        </div>
+    {% endif %}
+
+    <div class="card-product__badge card-product__badge--sold{% unless sold_out %} hidden{% endunless %}">
+        {{ 'products.product.sold' | t }}
+    </div>
+
+    <picture
+        class="card-product__media media__size--{{ img_size }} media js-card-product-media"
+        data-size="{{ img_size }}"
+    >
+        {% render 'image', image_box: image_box, image_box_class: 'card-product__image' %}
+    </picture>
+</div>

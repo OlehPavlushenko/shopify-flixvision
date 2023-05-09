@@ -1,19 +1,4 @@
 {% liquid
-    assign new_badge = section.settings.new_badge
-    assign show_vendor = section.settings.show_vendor
-    assign show_rating = section.settings.show_rating
-    assign add_btn = section.settings.enable_add_btn
-    assign btn = section.settings.btn
-    assign variant_type = section.settings.variant
-    assign prod_img_size = section.settings.prod_img_size
-    assign secondary_image = section.settings.show_secondary_image
-    assign notify_me = section.settings.notify_me
-
-    assign price_variant = false
-    if btn == 'quick'
-        assign price_variant = true
-    endif
-
     assign bg_color = section.settings.bg_color | default: 'transparent'
 
     assign text_color = section.settings.text_color | default: 'inherit'
