@@ -1,5 +1,5 @@
 {% liquid
-    assign img_size = settings.prod_img_size
+    assign img_size = 'square'
     assign date_timer = product.metafields.custom.countdown_timer
 
     if use_variant

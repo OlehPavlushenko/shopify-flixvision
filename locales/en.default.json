@@ -276,6 +276,7 @@
       "inventory_out_of_stock": "Out of stock",
       "inventory_out_of_stock_continue_selling": "In stock",
       "sku": "SKU",
+      "barcode": "Barcode",
       "on_sale": "Sale",
       "sale": "Sale",
       "offer": "Offer",
@@ -283,6 +284,7 @@
       "sold": "Sold",
       "details": "Details",
       "stock_level": "Availability",
+      "stock_items": "item(s)",
       "product_variants": "Product variants",
       "media": {
         "gallery_viewer": "Gallery Viewer",
