@@ -1,13 +1,18 @@
 {% liquid
-    assign show_vendor = settings.show_vendor
-    assign show_rating = settings.show_rating
-    assign add_btn = settings.enable_add_btn
-    assign btn = settings.btn
     assign variant_type = settings.variant
-    assign notify_me = settings.notify_me
-
-    assign price_variant = settings.price_variant
     assign date_timer = product.metafields.custom.countdown_timer
+    assign new_badge = settings.new_badge
+
+    if new_badge.size > 0
+        assign date_pub_y = product.published_at | date: '%Y'
+        assign date_pub_d = product.published_at | date: '%j'
+        assign date_now_y = 'now' | date: '%Y'
+        assign date_now_d = 'now' | date: '%j'
+        assign dates_diff_y = date_now_y | minus: date_pub_y | times: 365
+        assign dates_diff_d = date_now_d | minus: date_pub_d
+        assign dates_diff = dates_diff_y | plus: dates_diff_d
+        assign new_products_period = new_badge | plus: 0
+    endif
 
     assign sold_out = true
     if product.available
@@ -15,16 +20,24 @@
     endif
 
     assign current_variant = product.selected_or_first_available_variant
-    if current_variant.featured_image != blank
-        assign image_box = current_variant.featured_image
-    else
-        assign image_box = product.featured_image
-    endif
 %}
 
 <div class="main-product__content">
     <div class="main-product__info">
         <div class="main-product__info-left">
+            {% if date_timer %}
+                <div class="card-product__badge card-product__badge--offer">
+                    {{ 'products.product.offer' | t }}
+                </div>
+            {% endif %}
+            {% if dates_diff <= new_products_period %}
+                <div class="card-product__badge card-product__badge--new {% if sold_out %} hidden{% endif %}">
+                    {{ 'products.product.new' | t }}
+                </div>
+            {% endif %}
+            <div class="card-product__badge card-product__badge--sold{% unless sold_out %} hidden{% endunless %}">
+                {{ 'products.product.sold' | t }}
+            </div>
             <h1 class="main-product__title js-card-product-title" itemprop="name">
                 {{ product.title | escape }}
             </h1>
@@ -36,185 +49,188 @@
                 {%- endfor -%}
 
                 <div class="main-product__stock">
-                <span class="main-product__stock-icon main-product__stock--{% if sold_out %}nostock {% elsif varQ < 10 and sold_out == false %}lowstock{% else %}normalstock{% endif %} js-card-product-stock"> </span>
-                <span class="main-product__stock-title">{{ 'products.product.stock_level' | t }}:</span>
-                <span class="js-card-product-count">{{ varQ }}</span> {{ 'products.product.stock_items' | t }}</span>
-            </div>
-
-                <div class="single_product__sku">
-                    <b>{{ 'products.product.sku' | t }}:</b>
-                    {% assign current_variant = product.selected_or_first_available_variant %}
-                    <span class="variant-sku">{{ current_variant.sku }}</span>
-                </div>
-
-                <div class="single_product__barcode">
-                    <b>{{ 'products.product.barcode' | t }}:</b>
-                    <span class="variant-barcode">{{ current_variant.barcode }}</span>
-                </div>
-            </div>
-        </div>
-        <div class="main-product__info-right">
-            <div class="main-product__box-indent">
-                <div class="main-product__text">
-                    <div class="main-product__text-item">
-                        {% render 'icons-svg', icons: 'car' %}
-                        <div class="main-product__text-title">
-                            <span class="h5">FREE SHIPPING</span>
-                            Free shipping on all US order or order above $99
-                        </div>
-                    </div>
-                    <div class="main-product__text-item">
-                        {% render 'icons-svg', icons: 'phone' %}
-                        <div class="main-product__text-title">
-                            <span class="h5">SUPPORT 24/7</span>
-                            Contact us 24 hours a day, 7 days a week
-                        </div>
-                    </div>
-
-                    <div class="main-product__text-item">
-                        {% render 'icons-svg', icons: 'undo' %}
-                        <div class="main-product__text-title">
-                            <span class="h5">14 DAYS RETURN</span>
-                            Simply return it within 14 days for an exchange.
-                        </div>
-                    </div>
-                </div>
-                <!-- /snippets/compare-wishlist-btns.liquid -->
-                <!-- /snippets/social-sharing.liquid -->
-                <div
-                    class="main-product__social-sharing"
-                    {{ block.shopify_attributes }}
-                >
-                    {% assign share_url = request.origin | append: product.url %}
-                    <ul class="list-social">
-                        <li>{{ 'blogs.article.share' | t }}:</li>
-                        {% render 'social-sharing',
-                            share_title: product.title,
-                            share_permalink: product.url,
-                            share_image: image_box
-                        %}
-                    </ul>
-                </div>
-                <div class="main-product__pay-pal">
-                    <img
-                        src="//cdn.shopify.com/s/files/1/2318/9533/files/pay-pal_03_300x_crop_top.png?v=1613735657"
-                        alt="payment"
+                    <span
+                        class="main-product__stock-icon main-product__stock--{% if sold_out %}nostock {% elsif varQ < 10 and sold_out == false %}lowstock{% else %}normalstock{% endif %} js-card-product-stock"
                     >
+                    </span>
+                    <span class="main-product__stock-title main-product__details--title">
+                        {{- 'products.product.stock_level' | t }}:</span
+                    >
+                    <span class="js-card-product-count">{{ varQ }}</span> {{ 'products.product.stock_items' | t }}
                 </div>
+                {% assign current_variant = product.selected_or_first_available_variant %}
+                {% if current_variant.sku != blank %}
+                    <div class="main-product__sku">
+                        <span class="main-product__sku-title main-product__details--title">
+                            {{- 'products.product.sku' | t }}:</span
+                        >
+
+                        <span class="variant__sku js-variant-sku">{{ current_variant.sku }}</span>
+                    </div>
+                {% endif %}
+                {% if current_variant.barcode != blank %}
+                    <div class="main-product__barcode">
+                        <span class="main-product__barcode-title main-product__details--title">
+                            {{- 'products.product.barcode' | t }}:</span
+                        >
+                        <span class="variant__barcode js-variant-barcode">{{ current_variant.barcode }}</span>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="main-product__price">
+                {% render 'price',
+                    product: product,
+                    price_class: 'card-product__price js-card-product-price',
+                    use_variant: true
+                %}
+                {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
+                    <div class="product__tax caption rte">
+                        {%- if shop.taxes_included -%}
+                            {{ 'products.product.include_taxes' | t }}
+                        {%- endif -%}
+                        {%- if shop.shipping_policy.body != blank -%}
+                            {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                        {%- endif -%}
+                    </div>
+                {%- endif -%}
+                <div class="main-product__short-desc" itemprop="short-description">
+                    {{ product.description | strip_html | truncate: 120 }}
+                </div>
+                {% if date_timer %}
+                    <countdown-container data-date="{{ date_timer }}">
+                        <h5>{{ 'products.product.expires_in' | t }}Expires in :</h5>
+                        <div id="countdown-{{ product.id }}" class="countdown-box card-product__countdown">
+                            <div class="days-container">
+                                <div class="days"></div>
+                                <div class="days-label">{{ 'header.days' | t }}</div>
+                            </div>
+
+                            <div class="hours-container">
+                                <div class="hours"></div>
+                                <div class="hours-label">{{ 'header.hours' | t }}</div>
+                            </div>
+
+                            <div class="minutes-container">
+                                <div class="minutes"></div>
+                                <div class="minutes-label">{{ 'header.minutes' | t }}</div>
+                            </div>
+
+                            <div class="seconds-container">
+                                <div class="seconds"></div>
+                                <div class="seconds-label">{{ 'header.seconds' | t }}</div>
+                            </div>
+                        </div>
+                        <div class="countdown-box__footer">
+                            <div class="countdown-box__footer-text">{{ 'products.product.stock_hurry' | t }}</div>
+                            {%- for var in product.variants -%}
+                                {%- assign varQ = var.inventory_quantity -%}
+                            {%- endfor -%}
+                            <div class="countdown-box__footer-availability">
+                                <span class="js-card-product-count">{{ varQ }}</span>
+                                {{ 'products.product.stock_items' | t }}
+                                {{ 'products.product.stock_left' | t }}
+                            </div>
+                        </div>
+                    </countdown-container>
+                {% endif %}
+            </div>
+            <div class="main-product__action">
+                {% render 'form-product', product: product, variant_type: variant_type, show_quantity: true %}
+            </div>
+            <div class="main-product__popup">
+                <details-open-notify>
+                    <a
+                        class="main-product__button-popup main-product__button-size-guide js-summary"
+                        href="#SizeGuide"
+                        role="button"
+                    >
+                        {% render 'icons-svg', icons: 'shirt' %}
+                        {{ 'products.product.ask_size_guide' | t }}
+                    </a>
+                    <div class="card-product__notify-form js-details">
+                        Size Guide
+                        <button
+                            type="button"
+                            class="ask-product__close-button button--link link focus-inset js-modal-close-btn"
+                            aria-label="{{ 'accessibility.close' | t }}"
+                        >
+                            {% render 'icons-svg', icons: 'close' %}
+                        </button>
+                    </div>
+                    <div class="card-product__overlay">
+                        <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+                    </div>
+                </details-open-notify>
+                <details-open-notify>
+                    <a
+                        class="main-product__button-popup main-product__button-shipping js-summary"
+                        href="#Shipping"
+                        role="button"
+                    >
+                        {% render 'icons-svg', icons: 'gift' %}
+                        {{ 'products.product.ask_shipping' | t }}
+                    </a>
+                    <div class="card-product__notify-form js-details">
+                        Shipping
+                        <button
+                            type="button"
+                            class="ask-product__close-button button--link link focus-inset js-modal-close-btn"
+                            aria-label="{{ 'accessibility.close' | t }}"
+                        >
+                            {% render 'icons-svg', icons: 'close' %}
+                        </button>
+                    </div>
+                    <div class="card-product__overlay">
+                        <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+                    </div>
+                </details-open-notify>
+                <details-open-notify>
+                    <a
+                        class="main-product__button-popup main-product__button-notify js-summary"
+                        href="#notify"
+                        role="button"
+                    >
+                        {% render 'icons-svg', icons: 'envelope' -%}
+                        {{- 'products.product.ask_title' | t }}
+                    </a>
+                    <div class="card-product__notify-form js-details">{% render 'notify-form', product: product %}</div>
+                    <div class="card-product__overlay">
+                        <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+                    </div>
+                </details-open-notify>
+            </div>
+            <div class="main-product__details-bottom">
+                {% if product.collections.size > 0 %}
+                    <div class="main-product__collections">
+                        <span class="main-product__collections-title main-product__details--title">
+                            {{- 'products.product.collections_product' | t }}:</span
+                        >
+                        <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+                        {%- for collection in product.collections offset: 1 -%}
+                            , <a href="{{ collection.url }}">{{ collection.title }}</a>
+                        {%- endfor %}
+                    </div>
+                {% endif %}
+
+                {% if product.type != blank %}
+                    <div class="main-product__type">
+                        <span class="main-product__type-title main-product__details--title">
+                            {{- 'products.product.type_product' | t }}:</span
+                        >
+
+                        <span>{{ product.type }}</span>
+                    </div>
+                {% endif %}
+                {% if product.vendor != blank %}
+                    <div class="main-product__vendor">
+                        <span class="main-product__type-title main-product__details--title">
+                            {{- 'products.product.vendor_product' | t }}:</span
+                        >
+
+                        <span>{{ product.vendor }}</span>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
-
-    {% if date_timer %}
-        <div class="card-product__badge card-product__badge--offer">
-            {{ 'products.product.offer' | t }}
-        </div>
-        <countdown-container data-date="{{ date_timer }}">
-            <div id="countdown-{{ product.id }}" class="countdown-box card-product__countdown">
-                <div class="days-container">
-                    <div class="days"></div>
-                    <div class="days-label">{{ 'header.days' | t }}</div>
-                </div>
-
-                <div class="hours-container">
-                    <div class="hours"></div>
-                    <div class="hours-label">{{ 'header.hours' | t }}</div>
-                </div>
-
-                <div class="minutes-container">
-                    <div class="minutes"></div>
-                    <div class="minutes-label">{{ 'header.minutes' | t }}</div>
-                </div>
-
-                <div class="seconds-container">
-                    <div class="seconds"></div>
-                    <div class="seconds-label">{{ 'header.seconds' | t }}</div>
-                </div>
-            </div>
-        </countdown-container>
-    {% endif %}
-    {% if show_vendor %}
-        <div class="card-product__row">
-            <span class="card-product__vendor">{{ product.vendor }}</span>
-            {%- for var in product.variants -%}
-                {%- assign varQ = var.inventory_quantity -%}
-            {%- endfor -%}
-            <div class="card-product__stock">
-                <span
-                    class="card-product__icon card-product__stock--{% if sold_out %}nostock {% elsif varQ < 10 and sold_out == false %}lowstock{% else %}normalstock{% endif %} js-card-product-stock"
-                ></span>
-                <span class="stock-level">{{ 'products.product.stock_level' | t }}</span>
-            </div>
-        </div>
-    {% endif %}
-    <h5 class="card-product__title js-card-product-title">
-        <a href="{{ product.url | within: collection }}">
-            {{ product.title | truncate: 60 | escape }}
-        </a>
-    </h5>
-    <div class="card-product__desc" itemprop="name">{{ product.description | strip_html | truncate: 80 }}</div>
-    {% render 'price',
-        product: product,
-        price_class: 'card-product__price js-card-product-price',
-        use_variant: price_variant
-    %}
-
-    {% if add_btn %}
-        {% if btn == 'quick' %}
-            {% render 'form-collection',
-                product: product,
-                variant_type: variant_type,
-                show_quantity: true,
-                notify_me: notify_me
-            %}
-        {% else %}
-            {% if product.available %}
-                <div class="card-product__btns">
-                    <a
-                        class="button button--secondary card-product__button-cart"
-                        href="{{ product.url | within: collection }}"
-                    >
-                        {{- 'products.product.details' | t -}}
-                    </a>
-                    {% render 'compare-wishlist-btns', product: product %}
-                </div>
-            {% else %}
-                {% if notify_me %}
-                    <details-open-notify>
-                        <div class="card-product__btns">
-                            <a
-                                class="button button--primary card-product__button-notify js-summary"
-                                href="#notify"
-                                role="button"
-                            >
-                                {{ 'products.product.ask_btn' | t }}
-                            </a>
-                            {% render 'compare-wishlist-btns', product: product %}
-                        </div>
-                        <div class="card-product__notify-form js-details">
-                            {% render 'notify-form', product: product %}
-                        </div>
-                        <div class="card-product__overlay">
-                            <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
-                        </div>
-                    </details-open-notify>
-                {% else %}
-                    <div class="card-product__btns">
-                        <button
-                            type="button"
-                            id="SoldOutText-{{ product.id }}"
-                            class="button--secondary card-product__button-sold"
-                            disabled=""
-                        >
-                            <span id="SoldOutText">{{ 'products.product.sold_out' | t }}</span>
-                        </button>
-                        {% render 'compare-wishlist-btns', product: product %}
-                    </div>
-                {% endif %}
-            {% endif %}
-        {% endif %}
-    {% endif %}
-    {%- if show_rating and product.metafields.reviews.rating.value != blank -%}
-        {% render 'card-rating', product: product %}
-    {%- endif -%}
 </div>

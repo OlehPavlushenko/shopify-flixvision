@@ -488,10 +488,6 @@
               {
                   "value": "portrait",
                   "label": "Portrait"
-              },
-              {
-                  "value": "circle",
-                  "label": "Circle"
               }
           ]
       },

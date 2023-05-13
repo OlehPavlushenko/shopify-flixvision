@@ -2,6 +2,7 @@
     assign full_width = true
 %}
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{{ 'component-breadcrumbs.css' | asset_url | stylesheet_tag }}
 <section
     id="MainProduct-{{ section.id }}"
     class="main-product full_width--{{ full_width }}"
@@ -9,12 +10,68 @@
 >
     <div class="main-product__media-row">
         <div class="container">
+            <div class="main-product__breadcrumbs">
+                {% render 'breadcrumbs' %}
+            </div>
             <div class="main-product__wrapper main-product-media--left main-product-media--no-fill js-card-product-wrapper">
                 <div class="main-product__media-wrapper">
                     {% render 'product-media-card', product: product %}
                 </div>
                 <div class="main-product__info-wrapper">
                     {% render 'product-info-card', product: product %}
+                </div>
+                <div class="main-product__info-right">
+                    <div class="main-product__box-indent">
+                        <div class="main-product__text">
+                            <div class="main-product__text-item">
+                                {% render 'icons-svg', icons: 'car' %}
+                                <div class="main-product__text-title">
+                                    <span class="h5">FREE SHIPPING</span>
+                                    Free shipping on all US order or order above $99
+                                </div>
+                            </div>
+                            <div class="main-product__text-item">
+                                {% render 'icons-svg', icons: 'phone' %}
+                                <div class="main-product__text-title">
+                                    <span class="h5">SUPPORT 24/7</span>
+                                    Contact us 24 hours a day, 7 days a week
+                                </div>
+                            </div>
+
+                            <div class="main-product__text-item">
+                                {% render 'icons-svg', icons: 'undo' %}
+                                <div class="main-product__text-title">
+                                    <span class="h5">14 DAYS RETURN</span>
+                                    Simply return it within 14 days for an exchange.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /snippets/compare-wishlist-btns.liquid -->
+                        <div class="main-product__btns card-product__btns">
+                            {% render 'compare-wishlist-btns', product: product %}
+                        </div>
+                        <!-- /snippets/social-sharing.liquid -->
+                        <div
+                            class="main-product__social-sharing"
+                            {{ block.shopify_attributes }}
+                        >
+                            {% assign share_url = request.origin | append: product.url %}
+                            <ul class="list-social">
+                                <li>{{ 'blogs.article.share' | t }}:</li>
+                                {% render 'social-sharing',
+                                    share_title: product.title,
+                                    share_permalink: product.url,
+                                    share_image: image_box
+                                %}
+                            </ul>
+                        </div>
+                        <div class="main-product__pay-pal">
+                            <img
+                                src="//cdn.shopify.com/s/files/1/2318/9533/files/pay-pal_03_300x_crop_top.png?v=1613735657"
+                                alt="payment"
+                            >
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

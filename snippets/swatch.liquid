@@ -131,7 +131,10 @@
                             <label
                                 for="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}"
                                 {% if is_image and variant.featured_image != blank %}
-                                    style="background-image: url({{ variant.featured_image | img_url: img_size, crop: 'center' }})"
+                                    style="
+                                        background-image: url({{ variant.featured_image | image_url: width: 150, crop: 'center' }});background-position: center;
+                                        background-size: cover;
+                                    "
                                 {% else %}
                                     style="background-color: {{ value | split: ' ' | last | handle }}; background-image: url({{ url_handle | replace: "-", "_" | append: '.' | append: file_extension | file_url }})"
                                 {% endif %}

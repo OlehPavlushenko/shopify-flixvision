@@ -102,7 +102,7 @@ class DetailsOpenNotify extends DetailsOpen {
 
         event.target.closest("details-open-notify").classList.add("open")
         document.body.addEventListener("click", this.onBodyClickEvent)
-        if (event.target.classList.contains("card-product__button-notify")) {
+        if (event.target.classList.contains("js-summary")) {
             trapFocus(this.detailsContainer)
             document.body.classList.toggle("overflow-hidden-notify")
         }
