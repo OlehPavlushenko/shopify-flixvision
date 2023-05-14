@@ -447,4 +447,44 @@
     .main-product__media {
         margin-bottom: 10px;
     }
+    .tabs__content {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        margin-left: -10px;
+    }
+}
+
+tab-element {
+    display: block;
+    width: 100%;
+    .tabs {
+        list-style: none;
+        display: flex;
+        align-items: start;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        margin: 0 0 3rem 0;
+        padding: 0;
+        column-gap: 2rem;
+    }
+    .tabs__item {
+        white-space: nowrap;
+        margin-left: 10px;
+    }
+    .tabs__btn {
+        background-color: transparent;
+        border: none;
+        padding: 0 0 2px;
+        border-radius: 0;
+        border-bottom: 2px solid transparent;
+        color: var(--color-primary-button-background-hover);
+    }
+    
+    .tabs__btn.active,
+    .tabs__btn:hover {
+        color: var(--color-primary-button-background-hover);
+        background-color: transparent;
+        border-color: var(--color-primary-button-background-hover);
+    }
 }
