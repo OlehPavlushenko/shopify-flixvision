@@ -1195,6 +1195,44 @@ class SwiperSection extends HTMLElement {
 
 customElements.define("swiper-section", SwiperSection)
 
+class SwiperMainProduct extends SwiperSection {
+    constructor() {
+        super()
+
+        this.swiper = null
+        this.init()
+    }
+
+    init() {
+        const sectionSwiperThumb = new Swiper(".js-swiper-thumb", {
+            spaceBetween: 10,
+            slidesPerView: 4,
+            freeMode: true,
+            watchSlidesProgress: true,
+        })
+        const sectionSwiper = new Swiper(".js-swiper", {
+            loop: false,
+            effect: "fade",
+            slidesPerView: 1,
+            spaceBetween: 10,
+            freeMode: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            thumbs: {
+                swiper: sectionSwiperThumb,
+            },
+        })
+    }
+}
+
+customElements.define("slider-main-product", SwiperMainProduct)
+
 class CompareWishlist extends HTMLElement {
     constructor() {
         super()

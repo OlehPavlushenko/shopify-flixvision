@@ -212,7 +212,7 @@
 .main-product__stock--normalstock:after { content:" "; position:absolute; left:0; top:0; background:var(--color-success);height:8px; width:95%; }
 
 .main-product__details--title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
 }
 
@@ -486,5 +486,23 @@ tab-element {
         color: var(--color-primary-button-background-hover);
         background-color: transparent;
         border-color: var(--color-primary-button-background-hover);
+    }
+}
+
+.details-img-slider {
+    slider-main-product {
+        display: block;
+        padding: 0;
+        margin: 0;
+        
+    }
+    .swiper-container {
+        overflow: hidden;
+    }
+    .main-product__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: 100%;
     }
 }
