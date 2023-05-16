@@ -82,59 +82,135 @@
             </tab-element>
 
         {% else %}
-            {%- for variant in product.variants -%}
-                {% if variant.featured_image != blank %}
-                    <div class="main-product__media--item">
-                        <picture
-                            class="main-product__media media__size--{{ img_size }} media"
-                            data-size="{{ img_size }}"
-                        >
-                            {% render 'image',
-                                image_box: variant.featured_image,
-                                image_box_class: 'main-product__image'
-                            %}
-                        </picture>
+            <slider-main-product>
+                <div
+                    class="swiper-container js-gallery swiper-gallery"
+                >
+                    <ul class="main-product__list swiper-wrapper">
+                        {%- for variant in product.variants -%}
+                            {% if variant.featured_image != blank %}
+                                <li class="main-product__item swiper-slide">
+                                    <div class="main-product__media--item">
+                                        <picture
+                                            class="main-product__media media__size--{{ img_size }} media"
+                                            data-size="{{ img_size }}"
+                                        >
+                                            {% render 'image',
+                                                image_box: variant.featured_image,
+                                                image_box_class: 'main-product__image'
+                                            %}
+                                        </picture>
+                                    </div>
+                                </li>
+                                {% assign variant_variable = variant.metafields.custom.images_group.value %}
+                                {% for image in variant_variable -%}
+                                    <li class="main-product__item swiper-slide">
+                                        <div class="main-product__media--item">
+                                            <picture
+                                                class="main-product__media media__size--{{ img_size }} media"
+                                                data-size="{{ img_size }}"
+                                            >
+                                                {% render 'image',
+                                                    image_box: image,
+                                                    image_box_class: 'main-product__image'
+                                                %}
+                                            </picture>
+                                        </div>
+                                    </li>
+                                {% endfor -%}
+                            {% endif %}
+                        {%- endfor -%}
+                        {%- for image in product.images -%}
+                            {%- unless variant_images contains image -%}
+                                <li class="main-product__item swiper-slide">
+                                    <div class="main-product__media--item">
+                                        <picture
+                                            class="main-product__media media__size--{{ img_size }} media"
+                                            data-size="{{ img_size }}"
+                                        >
+                                            {% render 'image',
+                                                image_box: image,
+                                                image_box_class: 'main-product__image'
+                                            %}
+                                        </picture>
+                                    </div>
+                                </li>
+                            {%- endunless -%}
+                        {%- endfor -%}
+                    </ul>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <div class="swiper-gallery-box">
+                    <div
+                        class="swiper-container js-gallery-thumb swiper-gallery-thumb"
+                    >
+                        <ul class="main-product__thumb swiper-wrapper">
+                            {%- for variant in product.variants -%}
+                                {% if variant.featured_image != blank %}
+                                    <li class="main-product__item--thumb swiper-slide">
+                                        <div class="main-product__media--item">
+                                            <picture
+                                                class="main-product__media media__size--{{ img_size }} media"
+                                                data-size="{{ img_size }}"
+                                            >
+                                                {% render 'image',
+                                                    image_box: variant.featured_image,
+                                                    image_box_class: 'main-product__image'
+                                                %}
+                                            </picture>
+                                        </div>
+                                    </li>
+                                    {% assign variant_variable = variant.metafields.custom.images_group.value %}
+                                    {% for image in variant_variable -%}
+                                        <li class="main-product__item--thumb swiper-slide">
+                                            <div class="main-product__media--item">
+                                                <picture
+                                                    class="main-product__media media__size--{{ img_size }} media"
+                                                    data-size="{{ img_size }}"
+                                                >
+                                                    {% render 'image',
+                                                        image_box: image,
+                                                        image_box_class: 'main-product__image'
+                                                    %}
+                                                </picture>
+                                            </div>
+                                        </li>
+                                    {% endfor -%}
+                                {% endif %}
+                            {%- endfor -%}
+                            {%- for image in product.images -%}
+                                {%- unless variant_images contains image -%}
+                                    <li class="main-product__item--thumb swiper-slide">
+                                        <div class="main-product__media--item">
+                                            <picture
+                                                class="main-product__media media__size--{{ img_size }} media"
+                                                data-size="{{ img_size }}"
+                                            >
+                                                {% render 'image',
+                                                    image_box: image,
+                                                    image_box_class: 'main-product__image'
+                                                %}
+                                            </picture>
+                                        </div>
+                                    </li>
+                                {%- endunless -%}
+                            {%- endfor -%}
+                        </ul>
                     </div>
-                    {% assign variant_variable = variant.metafields.custom.images_group.value %}
-                    {% for image in variant_variable -%}
-                        <div class="main-product__media--item">
-                            <picture
-                                class="main-product__media media__size--{{ img_size }} media"
-                                data-size="{{ img_size }}"
-                            >
-                                {% render 'image', image_box: image, image_box_class: 'main-product__image' %}
-                            </picture>
-                        </div>
-                    {% endfor -%}
-                {% endif %}
-            {%- endfor -%}
+                    <div class="swiper-button-prev">{% render 'icons-svg', icons: 'prev' %}</div>
+                    <div class="swiper-button-next">{% render 'icons-svg', icons: 'next' %}</div>
+                </div>
+            </slider-main-product>
         {% endif %}
-
-        {% unless grouped_product %}
-            {%- for image in product.images -%}
-                {%- unless variant_images contains image -%}
-                    <div class="main-product__media--item">
-                        <picture
-                            class="main-product__media media__size--{{ img_size }} media"
-                            data-size="{{ img_size }}"
-                        >
-                            {% render 'image', image_box: image, image_box_class: 'main-product__image' %}
-                        </picture>
-                    </div>
-                {%- endunless -%}
-            {%- endfor -%}
-        {% endunless %}
     {%- else -%}
         <slider-main-product>
             <div
-                class="swiper-container swiper js-swiper"
-                data-count-desktop="1"
-                data-count-mobile="1"
+                class="swiper-container js-gallery swiper-gallery"
             >
                 <ul class="main-product__list swiper-wrapper">
                     {%- for image in product.images -%}
                         <li class="main-product__item swiper-slide">
-                            <div class="main-product__media--item">
+                            <div class="main-product__media--item ">
                                 <picture
                                     class="main-product__media media__size--{{ img_size }} media"
                                     data-size="{{ img_size }}"
@@ -145,28 +221,29 @@
                         </li>
                     {% endfor %}
                 </ul>
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="swiper-gallery-box">
+                <div
+                    class="swiper-container js-gallery-thumb swiper-gallery-thumb"
+                >
+                    <ul class="main-product__thumb swiper-wrapper">
+                        {%- for image in product.images -%}
+                            <li class="main-product__item--thumb swiper-slide">
+                                <div class="main-product__media--item">
+                                    <picture
+                                        class="main-product__media media__size--{{ img_size }} media"
+                                        data-size="{{ img_size }}"
+                                    >
+                                        {% render 'image', image_box: image, image_box_class: 'main-product__image' %}
+                                    </picture>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
                 <div class="swiper-button-prev">{% render 'icons-svg', icons: 'prev' %}</div>
                 <div class="swiper-button-next">{% render 'icons-svg', icons: 'next' %}</div>
-                <div class="swiper-pagination featured-posts__pagination"></div>
-            </div>
-            <div
-                thumbsSlider=""
-                class="swiper-container-thumb swiper js-swiper-thumb"
-            >
-                <ul class="main-product__thumb swiper-wrapper">
-                    {%- for image in product.images -%}
-                        <li class="main-product__item swiper-slide">
-                            <div class="main-product__media--item">
-                                <picture
-                                    class="main-product__media media__size--{{ img_size }} media"
-                                    data-size="{{ img_size }}"
-                                >
-                                    {% render 'image', image_box: image, image_box_class: 'main-product__image' %}
-                                </picture>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
             </div>
         </slider-main-product>
     {%- endif -%}

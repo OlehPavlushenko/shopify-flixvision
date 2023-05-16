@@ -1195,27 +1195,58 @@ class SwiperSection extends HTMLElement {
 
 customElements.define("swiper-section", SwiperSection)
 
-class SwiperMainProduct extends SwiperSection {
+class SwiperMainProduct extends HTMLElement {
     constructor() {
         super()
-
-        this.swiper = null
+        this.length = this.querySelectorAll(".js-gallery li").length
+        this.swiperThumb = this.querySelector(".js-gallery-thumb")
+        this.loop = false
+        this.centeredSlides = false
+        if (this.length > 3) {
+            this.loop = true
+            this.centeredSlides = true
+        }
+        if (this.length == 1) {
+            this.swiperThumb.classList.add("hidden")
+        }
+        console.log(this.loop)
         this.init()
     }
 
     init() {
-        const sectionSwiperThumb = new Swiper(".js-swiper-thumb", {
+        const sectionSwiperGalleryThumb = new Swiper(".js-gallery-thumb", {
+            //loop: true,
             spaceBetween: 10,
-            slidesPerView: 4,
+            slidesPerView: 3,
+            grabCursor: true,
             freeMode: true,
+            //slideToClickedSlide: true,
             watchSlidesProgress: true,
+            breakpoints: {
+                550: {
+                    slidesPerView: 4,
+                },
+                991: {
+                    slidesPerView: 4,
+                },
+                1200: {
+                    slidesPerView: 4,
+                },
+            },
         })
-        const sectionSwiper = new Swiper(".js-swiper", {
-            loop: false,
-            effect: "fade",
+
+        const sectionSwiperGallery = new Swiper(".js-gallery", {
+            loop: this.loop,
+            zoom: true,
+            centeredSlides: this.centeredSlides,
+            grabCursor: true,
+            //effect: "fade",
             slidesPerView: 1,
             spaceBetween: 10,
-            freeMode: true,
+            keyboard: {
+                enabled: true,
+            },
+            //freeMode: true,
             navigation: {
                 nextEl: ".swiper-button-next",
                 prevEl: ".swiper-button-prev",
@@ -1225,7 +1256,18 @@ class SwiperMainProduct extends SwiperSection {
                 clickable: true,
             },
             thumbs: {
-                swiper: sectionSwiperThumb,
+                swiper: sectionSwiperGalleryThumb,
+            },
+            breakpoints: {
+                550: {
+                    slidesPerView: 1.6,
+                },
+                991: {
+                    slidesPerView: 1.5,
+                },
+                1200: {
+                    slidesPerView: 1.5,
+                },
             },
         })
     }

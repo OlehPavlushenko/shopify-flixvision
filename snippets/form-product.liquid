@@ -1,4 +1,5 @@
-{% form 'product', product, class: 'main-product__form' %}
+{% capture "form_id" %}product_form-{{ section.id }}-{{ product.id }}{%- endcapture %}
+{% form 'product', product, id: form_id, class: 'main-product__form' %}
     {% if product.available and product.variants.size > 1 %}
         <variant-pills
             class="swatch-wrap"

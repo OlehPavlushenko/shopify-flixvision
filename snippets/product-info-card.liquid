@@ -25,6 +25,9 @@
 <div class="main-product__content">
     <div class="main-product__info">
         <div class="main-product__info-left">
+            <div class="js-card-product-sale-badge" style="display:none">
+                {{ 'products.product.sale' | t }}
+            </div>
             {% if date_timer %}
                 <div class="card-product__badge card-product__badge--offer">
                     {{ 'products.product.offer' | t }}

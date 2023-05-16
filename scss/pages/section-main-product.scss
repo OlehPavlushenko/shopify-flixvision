@@ -492,8 +492,37 @@ tab-element {
 .details-img-slider {
     slider-main-product {
         display: block;
-        padding: 0;
+        padding: 0 0 50px 0;
         margin: 0;
+        position: relative;
+        .swiper-gallery {
+            position: static;
+        }
+        .swiper-pagination {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin: -30px 0 0 0;
+        }
+        .swiper-gallery-box .swiper-button-next,
+        .swiper-gallery-box .swiper-button-prev {
+            top: 50%;
+            margin-top: 0;
+            width: 38px;
+            height: 38px;
+            transform: translate(0,-50%);
+            svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+        .swiper-gallery-box .swiper-button-next {
+            right: 15px;
+        }
+        .swiper-gallery-box .swiper-button-prev {
+            right: auto;
+            left: 15px;
+        }
         
     }
     .swiper-container {
@@ -503,6 +532,46 @@ tab-element {
         list-style: none;
         margin: 0;
         padding: 0;
-        max-width: 100%;
+        min-width: 100%;
+    }
+    .main-product__item {
+        position: relative;
+        height:100%;
+        scroll-snap-align: start;
+        flex: inherit;
+        flex-grow: 1;
+        flex-shrink: 0;
+    }
+    
+    .main-product__item {
+        opacity: .5;
+        &.swiper-slide-active {
+            opacity: 1;
+        }
+    }
+    .main-product__item--thumb {
+        opacity: .5;
+        &.swiper-slide-thumb-active {
+            opacity: 1;
+        }
+    }
+    .swiper-gallery-box {
+        position: relative;
+        margin: 10px 0 0 0;
+        padding: 0;
+        overflow: visible;
+    }
+    .swiper-gallery-thumb {
+        margin-right: 80px;
+        margin-left: 80px;
+        padding-right: 0;
+        padding-left: 0;
+        margin-top: 0;
+        padding-top: 0;
+    }
+    .main-product__thumb {
+        margin: 0!important;
+        padding: 0;
+        list-style: none;
     }
 }
