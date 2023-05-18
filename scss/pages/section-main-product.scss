@@ -27,8 +27,8 @@
     background-color: #fff;
 }
 
-.main-product-media--no-fill .media__image {
-    //object-fit: contain;
+.main-product__details-img--no-fill .media__image {
+    object-fit: contain;
 }
 
 .main-product__info-wrapper {
