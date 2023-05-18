@@ -1151,28 +1151,30 @@ customElements.define("promo-popup", PromoPopup)
 class SwiperSection extends HTMLElement {
     constructor() {
         super()
-
+        this.swiperSlider = this.querySelector(".js-swiper")
+        this.swiperNext = this.querySelector(".js-button-next")
+        this.swiperPrev = this.querySelector(".js-button-prev")
+        this.swiperBullets = this.querySelector(".js-pagination")
         this.countDesktop =
-            parseInt(this.querySelector(".js-swiper").dataset.countDesktop) || 3
-        this.countMobile =
-            parseInt(this.querySelector(".js-swiper").dataset.countMobile) || 2
+            parseInt(this.swiperSlider.dataset.countDesktop) || 3
+        this.countMobile = parseInt(this.swiperSlider.dataset.countMobile) || 2
         this.swiper = null
         this.init()
     }
 
     init() {
-        const sectionSwiper = new Swiper(".js-swiper", {
+        const sectionSwiper = new Swiper(this.swiperSlider, {
             // Optional parameters
             loop: false,
             slidesPerView: this.countMobile,
             spaceBetween: 20,
             // Navigation arrows
             navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
+                nextEl: this.swiperNext,
+                prevEl: this.swiperPrev,
             },
             pagination: {
-                el: ".swiper-pagination",
+                el: this.swiperBullets,
                 clickable: true,
             },
             breakpoints: {
@@ -1198,8 +1200,18 @@ customElements.define("swiper-section", SwiperSection)
 class SwiperMainProduct extends HTMLElement {
     constructor() {
         super()
+        this.swiperGalleryThumb = this.querySelector(".js-gallery-thumb")
+        this.swiperGallery = this.querySelector(".js-gallery")
+        this.swiperNext = this.querySelector(".js-button-next")
+        this.swiperPrev = this.querySelector(".js-button-prev")
+        this.swiperBullets = this.querySelector(".js-pagination")
+
+        this.length = this.querySelectorAll(".js-gallery li").length
         this.length = this.querySelectorAll(".js-gallery li").length
         this.swiperThumb = this.querySelector(".js-gallery-thumb")
+
+        console.log(this.loop)
+
         this.loop = false
         this.centeredSlides = false
         if (this.length > 3) {
@@ -1209,12 +1221,12 @@ class SwiperMainProduct extends HTMLElement {
         if (this.length == 1) {
             this.swiperThumb.classList.add("hidden")
         }
-        console.log(this.loop)
+
         this.init()
     }
 
     init() {
-        const sectionSwiperGalleryThumb = new Swiper(".js-gallery-thumb", {
+        const sectionSwiperGalleryThumb = new Swiper(this.swiperGalleryThumb, {
             //loop: true,
             spaceBetween: 10,
             slidesPerView: 3,
@@ -1235,7 +1247,7 @@ class SwiperMainProduct extends HTMLElement {
             },
         })
 
-        const sectionSwiperGallery = new Swiper(".js-gallery", {
+        const sectionSwiperGallery = new Swiper(this.swiperGallery, {
             loop: this.loop,
             zoom: true,
             centeredSlides: this.centeredSlides,
@@ -1248,11 +1260,11 @@ class SwiperMainProduct extends HTMLElement {
             },
             //freeMode: true,
             navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
+                nextEl: this.swiperNext,
+                prevEl: this.swiperPrev,
             },
             pagination: {
-                el: ".swiper-pagination",
+                el: this.swiperBullets,
                 clickable: true,
             },
             thumbs: {
