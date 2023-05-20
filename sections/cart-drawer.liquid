@@ -244,133 +244,140 @@
             <span class="visually-hidden">{{ 'sections.cart.recommend' | t }}</span>
         </div>
     </div>
+    <form action="{{ routes.cart_url }}" method="post">
+        <div class="cart-drawer__foter">
+            {% if cart_note or cart_attributes %}
+                <div
+                    class="cart-drawer__footer-toggler h4"
+                    onclick="javascript:document.body.classList.toggle('cart-drawer-show-footer')"
+                >
+                    {% render 'icons-svg', icons: 'plus' %}
+                    {% render 'icons-svg', icons: 'minus' %}
+                    {{ 'sections.cart.comments' | t }}
+                </div>
+                <div class="cart-drawer__footer-content">
+                    {% if cart_note %}
+                        <label class="cart-drawer__footer-title h5" for="cart_note">
+                            {{- 'sections.cart.note' | t -}}
+                        </label>
+                        <textarea
+                            id="cart-drawer_note"
+                            name="note"
+                            data-ajax-cart-property-input
+                        >{{ cart.note }}</textarea>
+                    {% endif %}
 
-    <div class="cart-drawer__foter">
-        {% if cart_note or cart_attributes %}
-            <div
-                class="cart-drawer__footer-toggler h4"
-                onclick="javascript:document.body.classList.toggle('cart-drawer-show-footer')"
-            >
-                {% render 'icons-svg', icons: 'plus' %}
-                {% render 'icons-svg', icons: 'minus' %}
-                {{ 'sections.cart.comments' | t }}
-            </div>
-            <div class="cart-drawer__footer-content">
-                {% if cart_note %}
-                    <label class="cart-drawer__footer-title h5" for="cart_note">{{ 'sections.cart.note' | t }}</label>
-                    <textarea id="cart-drawer_note" name="note" data-ajax-cart-property-input>{{ cart.note }}</textarea>
-                {% endif %}
-
-                {% if cart_attributes %}
-                    <div class="cart-drawer__footer-title h5">{{ 'sections.cart.attributes' | t }}</div>
-                    {%- for block in section.blocks -%}
-                        {%- case block.type -%}
-                            {%- when 'input' -%}
-                                {%- assign input = block.settings.label | escape -%}
-                                {% if input != blank %}
-                                    <div class="cart-drawer__property">
-                                        <span class="cart-drawer__property-label"> {{ input }}: </span>
-                                        <input
-                                            type="text"
-                                            name="attributes[{{ input }}]"
-                                            value="{{ cart.attributes['input']}}"
-                                            data-ajax-cart-property-input
-                                            class="cart-drawer__input cart-drawer__input--property"
-                                        >
-                                    </div>
-                                {% endif %}
-                            {%- when 'select' -%}
-                                {%- assign select_label = block.settings.label | escape -%}
-                                {%- assign select_value = block.settings.value -%}
-                                {% if select_value != blank %}
-                                    <div class="cart-drawer__property">
-                                        <span class="cart-drawer__property-label"> {{ select_label }}: </span>
-                                        <select name="attributes[select_label]" data-ajax-cart-property-input>
-                                            {% assign suggested_days = select_value | split: '|' %}
-                                            <option
-                                                value=""
-                                                {% unless suggested_days contains cart.attributes.select_label %}
-                                                    selected
-                                                {% endunless %}
+                    {% if cart_attributes %}
+                        <div class="cart-drawer__footer-title h5">{{ 'sections.cart.attributes' | t }}</div>
+                        {%- for block in section.blocks -%}
+                            {%- case block.type -%}
+                                {%- when 'input' -%}
+                                    {%- assign input = block.settings.label | escape -%}
+                                    {% if input != blank %}
+                                        <div class="cart-drawer__property">
+                                            <span class="cart-drawer__property-label"> {{ input }}: </span>
+                                            <input
+                                                type="text"
+                                                name="attributes[{{ input }}]"
+                                                value="{{ cart.attributes['input']}}"
+                                                data-ajax-cart-property-input
+                                                class="cart-drawer__input cart-drawer__input--property"
                                             >
-                                                {{ 'sections.cart.any_day' | t }}
-                                            </option>
-                                            {% for day in suggested_days %}
+                                        </div>
+                                    {% endif %}
+                                {%- when 'select' -%}
+                                    {%- assign select_label = block.settings.label | escape -%}
+                                    {%- assign select_value = block.settings.value -%}
+                                    {% if select_value != blank %}
+                                        <div class="cart-drawer__property">
+                                            <span class="cart-drawer__property-label"> {{ select_label }}: </span>
+                                            <select name="attributes[select_label]" data-ajax-cart-property-input>
+                                                {% assign suggested_days = select_value | split: '|' %}
                                                 <option
-                                                    value="{{ day }}"
-                                                    {% if day == cart.attributes.select_label %}
+                                                    value=""
+                                                    {% unless suggested_days contains cart.attributes.select_label %}
                                                         selected
-                                                    {% endif %}
+                                                    {% endunless %}
                                                 >
-                                                    {{ day }}
+                                                    {{ 'sections.cart.any_day' | t }}
                                                 </option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                {% endif %}
+                                                {% for day in suggested_days %}
+                                                    <option
+                                                        value="{{ day }}"
+                                                        {% if day == cart.attributes.select_label %}
+                                                            selected
+                                                        {% endif %}
+                                                    >
+                                                        {{ day }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% endif %}
 
-                            {%- when 'radio' -%}
-                                {%- assign radio_label = block.settings.label | escape -%}
-                                {%- assign radio_value = block.settings.value -%}
-                                {% if radio_value != blank %}
-                                    <div class="cart-drawer__property">
-                                        <span class="cart-drawer__property-label">{{ radio_label }}:</span>
-                                        {% assign suggested_time = radio_value | split: '|' %}
-                                        {% for time in suggested_time %}
+                                {%- when 'radio' -%}
+                                    {%- assign radio_label = block.settings.label | escape -%}
+                                    {%- assign radio_value = block.settings.value -%}
+                                    {% if radio_value != blank %}
+                                        <div class="cart-drawer__property">
+                                            <span class="cart-drawer__property-label">{{ radio_label }}:</span>
+                                            {% assign suggested_time = radio_value | split: '|' %}
+                                            {% for time in suggested_time %}
+                                                <label>
+                                                    <input
+                                                        name="attributes[{{radio_label}}]"
+                                                        type="radio"
+                                                        value="{{ time }}"
+                                                        data-ajax-cart-property-input
+                                                        {% if cart.attributes['{{radio_label}}'] == time %}
+                                                            checked
+                                                        {% endif %}
+                                                    >
+                                                    {{ time }}
+                                                </label>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                {%- when 'checkbox' -%}
+                                    {%- assign checkbox = block.settings.label | escape -%}
+                                    {% if checkbox != blank %}
+                                        <div class="cart-drawer__property">
+                                            <span class="ajax-cart__property-label"></span>
                                             <label>
                                                 <input
-                                                    name="attributes[{{radio_label}}]"
-                                                    type="radio"
-                                                    value="{{ time }}"
+                                                    type="hidden"
+                                                    value=""
+                                                    name="attributes[{{ checkbox }}]"
                                                     data-ajax-cart-property-input
-                                                    {% if cart.attributes['{{radio_label}}'] == time %}
+                                                >
+                                                <input
+                                                    type="checkbox"
+                                                    name="attributes[Leave at the door]"
+                                                    value="Yes"
+                                                    data-ajax-cart-property-input
+                                                    {% if cart.attributes['{{ checkbox }}'] == 'Yes' %}
                                                         checked
                                                     {% endif %}
                                                 >
-                                                {{ time }}
+                                                {{ checkbox }}
                                             </label>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-
-                            {%- when 'checkbox' -%}
-                                {%- assign checkbox = block.settings.label | escape -%}
-                                {% if checkbox != blank %}
-                                    <div class="cart-drawer__property">
-                                        <span class="ajax-cart__property-label"></span>
-                                        <label>
-                                            <input
-                                                type="hidden"
-                                                value=""
-                                                name="attributes[{{ checkbox }}]"
-                                                data-ajax-cart-property-input
-                                            >
-                                            <input
-                                                type="checkbox"
-                                                name="attributes[Leave at the door]"
-                                                value="Yes"
-                                                data-ajax-cart-property-input
-                                                {% if cart.attributes['{{ checkbox }}'] == 'Yes' %}
-                                                    checked
-                                                {% endif %}
-                                            >
-                                            {{ checkbox }}
-                                        </label>
-                                    </div>
-                                {% endif %}
-                        {%- endcase -%}
-                    {%- endfor -%}
-                {% endif %}
-            </div>
-        {% endif %}
-        <button type="submit" name="checkout" class="cart-drawer__checkout-btn">
-            {% if settings.currency_code_enabled %}
-                {{ 'sections.cart.checkout' | t }} — {{ cart.total_price | money_with_currency }}
-            {% else %}
-                {{ 'sections.cart.checkout' | t }} — {{ cart.total_price | money }}
+                                        </div>
+                                    {% endif %}
+                            {%- endcase -%}
+                        {%- endfor -%}
+                    {% endif %}
+                </div>
             {% endif %}
-        </button>
-    </div>
+            <button type="submit" name="checkout" class="cart-drawer__checkout-btn">
+                {% if settings.currency_code_enabled %}
+                    {{ 'sections.cart.checkout' | t }} — {{ cart.total_price | money_with_currency }}
+                {% else %}
+                    {{ 'sections.cart.checkout' | t }} — {{ cart.total_price | money }}
+                {% endif %}
+            </button>
+        </div>
+    </form>
 </div>
 
 <script type="application/json" data-ajax-cart-initial-state>

@@ -21,6 +21,10 @@
     overflow: hidden;
     position: sticky;
     top: 60px;
+
+    ul.tabs {
+        display: none;
+    }
 }
 
 .card-product__media-wrapper {

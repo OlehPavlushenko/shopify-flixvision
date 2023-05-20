@@ -1,4 +1,5 @@
 {% liquid
+    assign grouped_product = product.metafields.custom.grouped_images.value
     assign variant_type = settings.variant
     assign date_timer = product.metafields.custom.countdown_timer
     assign new_badge = settings.new_badge
@@ -138,7 +139,12 @@
                 {% endif %}
             </div>
             <div class="main-product__action">
-                {% render 'form-product', product: product, variant_type: variant_type, show_quantity: true %}
+                {% render 'form-product',
+                    product: product,
+                    variant_type: variant_type,
+                    show_quantity: true,
+                    grouped_product: grouped_product
+                %}
             </div>
             <div class="main-product__popup">
                 <details-open-notify>

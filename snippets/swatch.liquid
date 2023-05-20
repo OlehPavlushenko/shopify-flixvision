@@ -115,8 +115,11 @@
                         {% if is_third %}
                             data-lvl-third="{{ value }}"
                         {% endif %}
+                        {% if option_index == 0 and grouped_product %}
+                            aria-controls="{{ value }}-panel"
+                        {% endif %}
                         data-value="{{ value }}"
-                        class="swatch-element {% if is_color %}swatch-element-color {% endif %}{% if is_image %}swatch-element-image {% endif %}{{ value | handle }} js-swatch-element"
+                        class="swatch-element {% if option_index == 0 and grouped_product %} js-element-tab{% endif %}{% if is_color %} swatch-element-color {% endif %}{% if is_image %} swatch-element-image{% endif %} {{ value | handle }} js-swatch-element"
                     >
                         <input
                             id="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}"

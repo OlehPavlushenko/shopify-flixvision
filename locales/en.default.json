@@ -247,6 +247,7 @@
   },
   "products": {
     "product": {
+      "recently": "Recently products",
       "add_to_cart": "Add to cart",
       "add_to_compare": "Add to compare",
       "remove_from_list": "Remove from list",

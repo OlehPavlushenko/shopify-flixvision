@@ -825,6 +825,9 @@ class VariantPills extends HTMLElement {
         this.updatePrice()
         this.updateImage()
         this.updateURL()
+
+        console.log(this.availableVariant[0])
+        swiper.update()
     }
 
     updateOptions(event) {
@@ -934,6 +937,173 @@ class VariantPills extends HTMLElement {
 }
 
 customElements.define("variant-pills", VariantPills)
+
+class VariantProduct extends VariantPills {
+    constructor() {
+        super()
+        this.layout = document.querySelector(".js-layout-slider")
+        this.layoutGrouped = document.querySelector(".js-layout-grouped")
+        this.cardProductCount = document.querySelectorAll(
+            ".js-card-product-count"
+        )
+        this.variantSku = document.querySelector(".js-variant-sku")
+        this.variantBarcode = document.querySelector(".js-variant-barcode")
+    }
+
+    getAvailableVariant(event) {
+        const selectedOptions = []
+        const products = this.variantData
+        this.swatchElement.forEach((element) => {
+            let radio = element.firstElementChild
+            if (radio.checked) {
+                selectedOptions.push(radio.value)
+            }
+        })
+
+        // Filtering the data array by the selected options
+        this.availableVariant = products.filter((product) => {
+            return selectedOptions.every((option, index) => {
+                return product.options[index] === option
+            })
+        })
+
+        this.updateOptions(event)
+        this.updatePrice()
+        this.updateImage()
+        this.updateURL()
+        if (this.layout !== null) {
+            this.updateSlider()
+        }
+
+        console.log(this.availableVariant[0])
+
+        if (this.layoutGrouped !== null) {
+            this.updateSliderGrouped(event)
+        }
+    }
+
+    updateOptions(event) {
+        const availableVariant = this.availableVariant[0]
+        const availableVariantId = availableVariant.id.toString()
+        const selectElement = this.querySelector("select")
+        const option = selectElement.querySelector(
+            `option[value='${availableVariantId}']`
+        )
+        const inventoryManagement = availableVariant.inventory_management
+        const inventoryPolicy = option ? option.dataset.inventoryPolicy : null
+        const inventoryQty = option ? option.dataset.qty : null
+        //const qtyParentElement = this.qty.parentElement
+
+        if (option) {
+            option.selected = true
+        }
+
+        if (inventoryManagement === "shopify" && inventoryPolicy === "deny") {
+            this.qty.setAttribute("max", inventoryQty)
+        } else {
+            this.qty.removeAttribute("max")
+        }
+
+        if (this.cardProductCount !== null) {
+            this.cardProductCount.forEach((element) => {
+                element.textContent = inventoryQty
+            })
+        }
+
+        if (this.variantSku !== null) {
+            this.variantSku.textContent = availableVariant.sku
+        }
+
+        if (this.variantBarcode !== null) {
+            this.variantBarcode.textContent = availableVariant.barcode
+        }
+
+        if (inventoryQty < 10) {
+            this.stock.classList.remove("card-product__stock--normalstock")
+            this.stock.classList.add("card-product__stock--lowstock")
+        } else {
+            this.stock.classList.remove("card-product__stock--lowstock")
+            this.stock.classList.add("card-product__stock--normalstock")
+        }
+
+        const isAvailable = availableVariant.available
+
+        if (!isAvailable) {
+            const headerSwatch = event.target
+                .closest(".swatch--product")
+                .querySelector(".js-swatch-header em")
+            headerSwatch.textContent = event.target.value
+        }
+    }
+
+    updateSliderGrouped(event) {
+        const selectedVariantId = this.availableVariant[0].id.toString()
+        const selectedButton = event.target.closest(".js-element-tab")
+
+        if (selectedButton) {
+            const ariaControls = selectedButton.getAttribute("aria-controls")
+            const headTabs = document.querySelectorAll(".js-tab")
+
+            headTabs.forEach((tab) => {
+                if (tab.getAttribute("aria-controls") === ariaControls) {
+                    tab.click()
+                }
+            })
+        }
+        const swiperContainer = document.querySelector(
+            "#" + this.availableVariant[0].option1 + "-panel .js-gallery"
+        )
+
+        if (swiperContainer) {
+            const slides = swiperContainer.querySelectorAll(".swiper-slide")
+
+            let slideIndex = -1
+            const swiperInstance = swiperContainer.swiper
+
+            if (swiperInstance) {
+                slides.forEach((slide, index) => {
+                    const variantId = slide.getAttribute("data-variant-id")
+                    if (variantId === selectedVariantId) {
+                        slideIndex = index
+                        return
+                    }
+                })
+
+                if (slideIndex !== -1) {
+                    swiperInstance.slideTo(slideIndex)
+                }
+            }
+        }
+    }
+
+    updateSlider() {
+        const selectedVariantId = this.availableVariant[0].id.toString()
+        const swiperContainer = document.querySelector(".js-gallery")
+
+        if (swiperContainer) {
+            const slides = swiperContainer.querySelectorAll(".swiper-slide")
+
+            let slideIndex = -1
+            const swiperInstance = swiperContainer.swiper
+
+            if (swiperInstance) {
+                slides.forEach((slide, index) => {
+                    const variantId = slide.getAttribute("data-variant-id")
+                    if (variantId === selectedVariantId) {
+                        slideIndex = index
+                        return
+                    }
+                })
+
+                if (slideIndex !== -1) {
+                    swiperInstance.slideTo(slideIndex)
+                }
+            }
+        }
+    }
+}
+
+customElements.define("variant-product", VariantProduct)
 
 class LocalizationForm extends HTMLElement {
     constructor() {
@@ -1148,6 +1318,60 @@ class PromoPopup extends HTMLElement {
 
 customElements.define("promo-popup", PromoPopup)
 
+class ProductRecommendations extends HTMLElement {
+    constructor() {
+        super()
+    }
+
+    connectedCallback() {
+        const handleIntersection = (entries, observer) => {
+            if (!entries[0].isIntersecting) return
+            observer.unobserve(this)
+            console.log(
+                `${window.Shopify.routes.root}recommendations/products${this.dataset.url}`
+            )
+            fetch(
+                `${window.Shopify.routes.root}recommendations/products${this.dataset.url}`
+            )
+                .then((response) => response.text())
+                .then((text) => {
+                    const html = document.createElement("div")
+                    html.innerHTML = text
+                    const recommendations = html.querySelector(
+                        "product-recommendations"
+                    )
+
+                    if (
+                        recommendations &&
+                        recommendations.innerHTML.trim().length
+                    ) {
+                        this.innerHTML = recommendations.innerHTML
+                    }
+
+                    if (
+                        !this.querySelector("slideshow-component") &&
+                        this.classList.contains("complementary-products")
+                    ) {
+                        this.remove()
+                    }
+
+                    if (html.querySelector(".grid__item")) {
+                        this.classList.add("product-recommendations--loaded")
+                    }
+                })
+                .catch((e) => {
+                    console.error(e)
+                })
+        }
+
+        new IntersectionObserver(handleIntersection.bind(this), {
+            rootMargin: "0px 0px 400px 0px",
+        }).observe(this)
+    }
+}
+
+customElements.define("product-recommendations", ProductRecommendations)
+
 class SwiperSection extends HTMLElement {
     constructor() {
         super()
@@ -1210,8 +1434,6 @@ class SwiperMainProduct extends HTMLElement {
         this.length = this.querySelectorAll(".js-gallery li").length
         this.swiperThumb = this.querySelector(".js-gallery-thumb")
 
-        console.log(this.loop)
-
         this.loop = false
         this.centeredSlides = false
         if (this.length > 3) {
@@ -1232,7 +1454,7 @@ class SwiperMainProduct extends HTMLElement {
             slidesPerView: 3,
             grabCursor: true,
             freeMode: true,
-            //slideToClickedSlide: true,
+            slideToClickedSlide: true,
             watchSlidesProgress: true,
             breakpoints: {
                 550: {

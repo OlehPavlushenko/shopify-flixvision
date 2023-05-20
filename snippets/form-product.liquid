@@ -1,11 +1,16 @@
 {% capture "form_id" %}product_form-{{ section.id }}-{{ product.id }}{%- endcapture %}
 {% form 'product', product, id: form_id, class: 'main-product__form' %}
     {% if product.available and product.variants.size > 1 %}
-        <variant-pills
+        <variant-product
             class="swatch-wrap"
             data-section="{{ section.id }}-{{ product.id }}"
         >
-            {% render 'swatch' for product.options as swatch, product: product, variant_type: variant_type %}
+            {% render 'swatch'
+                for product.options as swatch,
+                product: product,
+                variant_type: variant_type,
+                grouped_product: grouped_product
+            %}
             <script type="application/json">
                 {{ product.variants | json }}
             </script>
@@ -84,7 +89,7 @@
                     {{ form | payment_button }}
                 {% endcomment %}
             </div>
-        </variant-pills>
+        </variant-product>
 
     {% else %}
         <select

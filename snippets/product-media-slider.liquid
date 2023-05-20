@@ -1,4 +1,4 @@
-<div class="main-product__details-img main-product__details-img--{{ img_fill }}  details-img-slider">
+<div class="main-product__details-img main-product__details-img--{{ img_fill }}  details-img-slider{% if grouped_product %} js-layout-grouped{% else %} js-layout-slider{% endif %}">
     {%- if current_variant.featured_image != blank -%}
         {% if grouped_product %}
             <tab-element autofocus="false">
@@ -37,7 +37,10 @@
                                                     {% assign values = variant.options | join: ' ' %}
                                                     {% if variant.options contains value %}
                                                         {% if variant.featured_image != blank %}
-                                                            <li class="main-product__item swiper-slide">
+                                                            <li
+                                                                class="main-product__item swiper-slide"
+                                                                data-variant-id="{{ variant.id }}"
+                                                            >
                                                                 <div class="main-product__media--item">
                                                                     <picture
                                                                         class="main-product__media media__size--{{ img_size }} media"
@@ -166,7 +169,7 @@
                     <ul class="main-product__list swiper-wrapper">
                         {%- for variant in product.variants -%}
                             {% if variant.featured_image != blank %}
-                                <li class="main-product__item swiper-slide">
+                                <li class="main-product__item swiper-slide" data-variant-id="{{ variant.id }}">
                                     <div class="main-product__media--item">
                                         <picture
                                             class="main-product__media media__size--{{ img_size }} media"
@@ -225,7 +228,10 @@
                         <ul class="main-product__thumb swiper-wrapper">
                             {%- for variant in product.variants -%}
                                 {% if variant.featured_image != blank %}
-                                    <li class="main-product__item--thumb swiper-slide">
+                                    <li
+                                        class="main-product__item--thumb swiper-slide"
+                                        data-variant-id="{{ variant.id }}"
+                                    >
                                         <div class="main-product__media--item">
                                             <picture
                                                 class="main-product__media media__size--{{ img_size }} media"

@@ -76,9 +76,4 @@
             </div>
         </div>
     </div>
-
-    {% liquid
-        assign price_variant = settings.price_variant
-    %}
-    {% render 'recently-viewed', product: product, prod_img_size: settings.prod_img_size, use_variant: price_variant %}
 </section>
