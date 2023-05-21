@@ -1327,9 +1327,7 @@ class ProductRecommendations extends HTMLElement {
         const handleIntersection = (entries, observer) => {
             if (!entries[0].isIntersecting) return
             observer.unobserve(this)
-            console.log(
-                `${window.Shopify.routes.root}recommendations/products${this.dataset.url}`
-            )
+
             fetch(
                 `${window.Shopify.routes.root}recommendations/products${this.dataset.url}`
             )

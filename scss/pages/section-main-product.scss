@@ -35,10 +35,24 @@
     object-fit: contain;
 }
 
-.main-product__info-wrapper {
-    width: calc(50% - 370px);
+.main-product__info-box {
+    width: 50%;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
     position: sticky;
     top: 90px;
+}
+
+.main-product__info-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    .main-product__content {
+        width: calc(100% - 370px);
+        margin-bottom: 30px;
+    }
 }
 
 .main-product__info {
@@ -64,6 +78,17 @@
     width: 370px;
     position: sticky;
     top: 90px;
+    margin-bottom: 30px;
+}
+
+.main-product__info-bottom {
+    width: 100%;
+    margin-top: 30px;
+    padding-left: 40px;
+}
+
+.main-product__row--complementary {
+    margin-top: 30px;
 }
 
 .overflow-hidden-notify .main-product__info-right {
@@ -581,3 +606,75 @@ tab-element {
         list-style: none;
     }
 }
+
+
+.template-product #recently__products.recently__products .recently__item {
+    @media (min-width: 1200px) {
+        max-width: 33.33%;
+    }
+}
+
+accordion-element,
+details {
+    display: block;
+}
+
+
+.main-product__row--accordion {
+    margin-top: 30px;
+    .main-product__accordion-title {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 1rem;
+    }
+    .main-product__accordion-trigger {
+        display: flex;
+        margin-left: auto;
+        width: 3rem;
+        height: 3rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all .3s ease;
+        pointer-events: none;
+    }
+  
+    .main-product__accordion-title:hover .main-product__accordion-trigger,
+    .main-product__accordion-title:hover,
+    .main-product__accordion-title.open,
+    .main-product__accordion-title.open .main-product__accordion-trigger {
+        
+    }
+  
+    .main-product__accordion-trigger .icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin: auto;
+    }
+  
+    .icon-minus,
+    .main-product__accordion-title.open .icon-plus {
+        display: none;
+    }
+  
+    .footer__item details {
+        padding: 0;
+    }
+  
+    .main-product__accordion-title.open .icon-minus {
+        display: block;
+    }
+  
+    .main-product__accordion-content {
+        overflow: hidden;
+        height: 0;
+        margin: 0;
+    }
+  
+    .main-product__accordion-title.open + .main-product__accordion-content { 
+        overflow: visible;
+        margin-bottom: 2rem;
+        padding-right: 1rem;
+    }
+}
+

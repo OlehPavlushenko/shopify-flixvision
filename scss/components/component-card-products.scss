@@ -29,7 +29,7 @@
     .price__box {
         display: flex;
         align-items: center;
-        min-height: 21px;
+        min-height: 41px;
     }
     .price__item {
         display: inline-block;
@@ -662,5 +662,26 @@ details-open-notify.open {
             display: none;
         }
         
+    }
+}
+
+.list-view {
+    .card-product__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+    .card-product__media-wrapper {
+        width: 150px;
+        margin-bottom: 0;
+    }
+    .card-product__content {
+        flex: auto;
+        padding-top: 10px;
+        padding-left: 30px;
+        width: min-content;
+        @media (min-width: 320px) and (max-width: 990px) {
+            padding-left: 15px;
+        }
     }
 }

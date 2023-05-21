@@ -1,5 +1,6 @@
 {% liquid
     assign full_width = true
+    assign blocks = section.blocks
 %}
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
 {{ 'component-breadcrumbs.css' | asset_url | stylesheet_tag }}
@@ -17,63 +18,340 @@
                 <div class="main-product__media-wrapper">
                     {% render 'product-media-card', product: product %}
                 </div>
-                <div class="main-product__info-wrapper">
-                    {% render 'product-info-card', product: product %}
-                </div>
-                <div class="main-product__info-right">
-                    <div class="main-product__box-indent">
-                        <div class="main-product__text">
-                            <div class="main-product__text-item">
-                                {% render 'icons-svg', icons: 'car' %}
-                                <div class="main-product__text-title">
-                                    <span class="h5">FREE SHIPPING</span>
-                                    Free shipping on all US order or order above $99
-                                </div>
-                            </div>
-                            <div class="main-product__text-item">
-                                {% render 'icons-svg', icons: 'phone' %}
-                                <div class="main-product__text-title">
-                                    <span class="h5">SUPPORT 24/7</span>
-                                    Contact us 24 hours a day, 7 days a week
-                                </div>
-                            </div>
+                <div class="main-product__info-box">
+                    <div class="main-product__info-wrapper">
+                        {% render 'product-info-card', product: product %}
+                        <div class="main-product__info-right">
+                            <div class="main-product__box-indent">
+                                <div class="main-product__text">
+                                    <div class="main-product__text-item">
+                                        {% render 'icons-svg', icons: 'car' %}
+                                        <div class="main-product__text-title">
+                                            <span class="h5">FREE SHIPPING</span>
+                                            Free shipping on all US order or order above $99
+                                        </div>
+                                    </div>
+                                    <div class="main-product__text-item">
+                                        {% render 'icons-svg', icons: 'phone' %}
+                                        <div class="main-product__text-title">
+                                            <span class="h5">SUPPORT 24/7</span>
+                                            Contact us 24 hours a day, 7 days a week
+                                        </div>
+                                    </div>
 
-                            <div class="main-product__text-item">
-                                {% render 'icons-svg', icons: 'undo' %}
-                                <div class="main-product__text-title">
-                                    <span class="h5">14 DAYS RETURN</span>
-                                    Simply return it within 14 days for an exchange.
+                                    <div class="main-product__text-item">
+                                        {% render 'icons-svg', icons: 'undo' %}
+                                        <div class="main-product__text-title">
+                                            <span class="h5">14 DAYS RETURN</span>
+                                            Simply return it within 14 days for an exchange.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /snippets/compare-wishlist-btns.liquid -->
+                                <div class="main-product__btns card-product__btns">
+                                    {% render 'compare-wishlist-btns', product: product %}
+                                </div>
+                                <!-- /snippets/social-sharing.liquid -->
+                                <div
+                                    class="main-product__social-sharing"
+                                    {{ block.shopify_attributes }}
+                                >
+                                    {% assign share_url = request.origin | append: product.url %}
+                                    <ul class="list-social">
+                                        <li>{{ 'blogs.article.share' | t }}:</li>
+                                        {% render 'social-sharing',
+                                            share_title: product.title,
+                                            share_permalink: product.url,
+                                            share_image: image_box
+                                        %}
+                                    </ul>
+                                </div>
+                                <div class="main-product__pay-pal">
+                                    <img
+                                        src="//cdn.shopify.com/s/files/1/2318/9533/files/pay-pal_03_300x_crop_top.png?v=1613735657"
+                                        alt="payment"
+                                    >
                                 </div>
                             </div>
                         </div>
-                        <!-- /snippets/compare-wishlist-btns.liquid -->
-                        <div class="main-product__btns card-product__btns">
-                            {% render 'compare-wishlist-btns', product: product %}
-                        </div>
-                        <!-- /snippets/social-sharing.liquid -->
-                        <div
-                            class="main-product__social-sharing"
-                            {{ block.shopify_attributes }}
-                        >
-                            {% assign share_url = request.origin | append: product.url %}
-                            <ul class="list-social">
-                                <li>{{ 'blogs.article.share' | t }}:</li>
-                                {% render 'social-sharing',
-                                    share_title: product.title,
-                                    share_permalink: product.url,
-                                    share_image: image_box
-                                %}
-                            </ul>
-                        </div>
-                        <div class="main-product__pay-pal">
-                            <img
-                                src="//cdn.shopify.com/s/files/1/2318/9533/files/pay-pal_03_300x_crop_top.png?v=1613735657"
-                                alt="payment"
-                            >
+                    </div>
+
+                    <div class="main-product__info-bottom">
+                        {% assign complementary_viewed = blocks | where: 'type', 'complementary_block' %}
+                        {% if complementary_viewed.size > 0 %}
+                            {% render 'complementary-viewed',
+                                product: product,
+                                section: section,
+                                complementary: complementary_viewed[0]
+                            %}
+                        {% endif %}
+                        <div class="main-product__row main-product__row--accordion">
+                            <accordion-element class="main-product__accordion">
+                                <details open>
+                                    <summary class="h3 main-product__accordion-title js-accordion-toggle" tabindex="0">
+                                        Product Info
+                                        <i class="main-product__accordion-trigger">
+                                            {% render 'icons-svg', icons: 'plus' %}
+                                            {% render 'icons-svg', icons: 'minus' %}
+                                        </i>
+                                    </summary>
+                                    <div
+                                        class="main-product__accordion-content js-accordion-content"
+                                        tabindex="-1"
+                                    >
+                                        <p>text Product Info</p>
+                                    </div>
+                                </details>
+                            </accordion-element>
+                            <accordion-element class="main-product__accordion">
+                                <details open>
+                                    <summary class="h3 main-product__accordion-title js-accordion-toggle" tabindex="0">
+                                        Dimensions
+                                        <i class="main-product__accordion-trigger">
+                                            {% render 'icons-svg', icons: 'plus' %}
+                                            {% render 'icons-svg', icons: 'minus' %}
+                                        </i>
+                                    </summary>
+                                    <div
+                                        class="main-product__accordion-content js-accordion-content"
+                                        tabindex="-1"
+                                    >
+                                        <p>text Dimensions</p>
+                                    </div>
+                                </details>
+                            </accordion-element>
+                            <accordion-element class="main-product__accordion">
+                                <details open>
+                                    <summary class="h3 main-product__accordion-title js-accordion-toggle" tabindex="0">
+                                        Materials
+                                        <i class="main-product__accordion-trigger">
+                                            {% render 'icons-svg', icons: 'plus' %}
+                                            {% render 'icons-svg', icons: 'minus' %}
+                                        </i>
+                                    </summary>
+                                    <div
+                                        class="main-product__accordion-content js-accordion-content"
+                                        tabindex="-1"
+                                    >
+                                        <p>text Materials</p>
+                                    </div>
+                                </details>
+                            </accordion-element>
+                            <accordion-element class="main-product__accordion">
+                                <details open>
+                                    <summary class="h3 main-product__accordion-title js-accordion-toggle" tabindex="0">
+                                        FAQ
+                                        <i class="main-product__accordion-trigger">
+                                            {% render 'icons-svg', icons: 'plus' %}
+                                            {% render 'icons-svg', icons: 'minus' %}
+                                        </i>
+                                    </summary>
+                                    <div
+                                        class="main-product__accordion-content js-accordion-content"
+                                        tabindex="-1"
+                                    >
+                                        <p>text FAQ</p>
+                                    </div>
+                                </details>
+                            </accordion-element>
+
+                            <accordion-element class="main-product__accordion">
+                                <details open>
+                                    <summary class="h3 main-product__accordion-title js-accordion-toggle" tabindex="0">
+                                        REVIEWS
+                                        <i class="main-product__accordion-trigger">
+                                            {% render 'icons-svg', icons: 'plus' %}
+                                            {% render 'icons-svg', icons: 'minus' %}
+                                        </i>
+                                    </summary>
+                                    <div
+                                        class="main-product__accordion-content js-accordion-content"
+                                        tabindex="-1"
+                                    >
+                                        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"> </span>
+                                        <div id="shopify-product-reviews" data-id="{{product.id}}">
+                                            {{ product.metafields.spr.reviews }}
+                                        </div>
+                                    </div>
+                                </details>
+                            </accordion-element>
                         </div>
                     </div>
                 </div>
             </div>
+            {% assign reviews_viewed = blocks | where: 'type', '@app' %}
+            {%- for block in reviews_viewed -%}
+                {% render block %}
+            {%- endfor -%}
         </div>
     </div>
 </section>
+
+{% schema %}
+{
+    "name": "Main product",
+    "class": "main-section",
+    "tag": "section",
+    "settings": [],
+    "blocks": [
+        {
+            "type": "@app"
+        },
+        {
+            "name": "Complementary Products",
+            "type": "complementary_block",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "default": "Featured Posts",
+                    "label": "Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "text",
+                    "label": "Heading"
+                },
+                {
+                    "type": "select",
+                    "id": "head_alignment",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "left",
+                    "label": "Head Text alignment"
+                },
+                {
+                    "type": "range",
+                    "id": "products_to_show",
+                    "min": 2,
+                    "max": 10,
+                    "step": 1,
+                    "default": 6,
+                    "label": "Products to show"
+                },
+                {
+                    "type": "range",
+                    "id": "columns_desktop",
+                    "min": 0,
+                    "max": 2,
+                    "step": 1,
+                    "default": 2,
+                    "label": "Number of columns on desktop"
+                },
+
+                {
+                    "type": "select",
+                    "id": "content_alignment",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "left",
+                    "label": "Text alignment"
+                },
+                {
+                    "type": "paragraph",
+                    "content": "Style option Head"
+                },
+                {
+                    "type": "color",
+                    "id": "bg_color",
+                    "label": "Background color"
+                },
+                {
+                    "type": "color",
+                    "id": "title_color",
+                    "label": "Head color"
+                },
+                {
+                    "type": "color",
+                    "id": "text_color",
+                    "label": "head Text color"
+                },
+                {
+                    "type": "paragraph",
+                    "content": "Style options Post"
+                },
+                {
+                    "type": "color",
+                    "id": "title_post_color",
+                    "label": "Title post color"
+                },
+                {
+                    "type": "color",
+                    "id": "text_post_color",
+                    "label": "Text post color"
+                },
+                {
+                    "type": "color",
+                    "id": "link_post_color",
+                    "label": "Link post color"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top",
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px",
+                    "label": "Padding top",
+                    "default": 10
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom",
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px",
+                    "label": "Padding bottom",
+                    "default": 10
+                },
+                {
+                    "type": "range",
+                    "id": "padding_left",
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px",
+                    "label": "Padding left",
+                    "default": 10
+                },
+                {
+                    "type": "range",
+                    "id": "padding_right",
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px",
+                    "label": "Padding right",
+                    "default": 10
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
