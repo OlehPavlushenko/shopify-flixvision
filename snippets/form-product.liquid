@@ -85,6 +85,7 @@
                 <div data-ajax-cart-messages="form"></div>
             </div>
             <div class="main-product__action--pay">
+                {{ form | payment_button }}
                 {% comment %}
                     {{ form | payment_button }}
                 {% endcomment %}
