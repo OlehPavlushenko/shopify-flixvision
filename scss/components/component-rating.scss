@@ -61,3 +61,37 @@
     display: block;
   }
 }
+
+#shopify-product-reviews .spr-icon.spr-icon-star:before,
+.spr-starrating .spr-icon:before,
+.spr-starratings .spr-icon:before {
+    content: "\2605";
+    color: rgba(0,0,0,0.15);
+    color: var(--color-dark);
+}
+
+#shopify-product-reviews .spr-icon.spr-icon-star.spr-icon-star-empty:before,
+.spr-starrating .spr-icon.spr-icon-star-empty:before,
+.spr-starratings .spr-icon.spr-icon-star-empty:before {
+  content: "\2605";
+  color: rgba(0,0,0,0.15);
+  opacity: 1;
+}
+.spr-starrating .spr-icon.spr-icon-star-half-alt:before {
+  content: "\2605";
+  background: linear-gradient(
+    90deg,
+    var(--color-dark) 50%,
+    rgba(0,0,0, 0.15) 50%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+#shopify-product-reviews .spr-icon.spr-icon-star.spr-icon-star-hover:before {
+  content: "\2605";
+  color: var(--color-primary);
+  opacity: 1;
+  
+}

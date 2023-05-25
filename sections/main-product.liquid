@@ -99,7 +99,7 @@
                                         class="main-product__accordion-content js-accordion-content"
                                         tabindex="-1"
                                     >
-                                        <p>text Product Info</p>
+                                        <div>{{ product.description }}</div>
                                     </div>
                                 </details>
                             </accordion-element>
@@ -168,7 +168,6 @@
                                         class="main-product__accordion-content js-accordion-content"
                                         tabindex="-1"
                                     >
-                                        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"> </span>
                                         <div id="shopify-product-reviews" data-id="{{product.id}}">
                                             {{ product.metafields.spr.reviews }}
                                         </div>

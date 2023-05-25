@@ -18,10 +18,12 @@ class Accordion extends HTMLElement {
     open() {
         this.toggle.classList.add("open")
         this.content.classList.add("open")
-        console.log(this.content.scrollHeight)
-        this.content.style.height = `${this.content.scrollHeight}px`
-    }
 
+        // Отображение элемента с помощью стиля "display: block"
+        this.content.style.height = `auto`
+
+        this.content.style.display = "block"
+    }
     close() {
         this.toggle.classList.remove("open")
         this.content.classList.remove("open")

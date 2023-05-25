@@ -534,6 +534,15 @@ input.cart-drawer__input--property {
 	margin-top: 0;
 }
 
+.ajax-cart-discounts {
+	margin-top: 10px;
+	svg {
+		width: 20px;
+		height: 20px;
+		vertical-align: middle;
+	}
+}
+
 /* Footer */
 #shopify-section-cart-drawer > .cart-drawer > div:last-child {
 	flex: 0 0 auto;
