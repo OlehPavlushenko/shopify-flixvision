@@ -39,6 +39,7 @@
                     {% endif %}
                 {% endfor %}
             </select>
+
             <div class="main-product__action--box">
                 <div class="main-product__action--quantity">
                     <quantity-input class="quantity">
@@ -82,10 +83,9 @@
                         <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
                     </button>
                 </div>
-                <div data-ajax-cart-messages="form"></div>
+                <div class="main-product__action--cart-messages" data-ajax-cart-messages="form"></div>
             </div>
             <div class="main-product__action--pay">
-                {{ form | payment_button }}
                 {% comment %}
                     {{ form | payment_button }}
                 {% endcomment %}
@@ -153,7 +153,7 @@
                     <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
                 </button>
             </div>
-            <div data-ajax-cart-messages="form"></div>
+            <div class="main-product__action--cart-messages" data-ajax-cart-messages="form"></div>
         </div>
         <div class="main-product__action--pay">
             {% comment %}

@@ -1,5 +1,7 @@
 {% liquid
     assign grouped_product = product.metafields.custom.grouped_images.value
+    assign combo_products = product.metafields.custom.combo_products.value
+    assign short_description = product.metafields.custom.short_description
     assign variant_type = settings.variant
     assign date_timer = product.metafields.custom.countdown_timer
     assign new_badge = settings.new_badge
@@ -82,25 +84,35 @@
                     </div>
                 {% endif %}
             </div>
+
             <div class="main-product__price">
-                {% render 'price',
-                    product: product,
-                    price_class: 'card-product__price js-card-product-price',
-                    use_variant: true
-                %}
-                {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
-                    <div class="product__tax caption rte">
-                        {%- if shop.taxes_included -%}
-                            {{ 'products.product.include_taxes' | t }}
-                        {%- endif -%}
-                        {%- if shop.shipping_policy.body != blank -%}
-                            {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                        {%- endif -%}
+                {% unless combo_products %}
+                    {% render 'price',
+                        product: product,
+                        price_class: 'card-product__price js-card-product-price',
+                        use_variant: true
+                    %}
+                    {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
+                        <div class="product__tax caption rte">
+                            {%- if shop.taxes_included -%}
+                                {{ 'products.product.include_taxes' | t }}
+                            {%- endif -%}
+                            {%- if shop.shipping_policy.body != blank -%}
+                                {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                            {%- endif -%}
+                        </div>
+                    {%- endif -%}
+                {% endunless %}
+
+                {% if short_description %}
+                    <div
+                        class="main-product__short-desc{% unless combo_products %} margin-top{% endunless %}"
+                        itemprop="short-description"
+                    >
+                        {{ short_description | metafield_tag }}
                     </div>
-                {%- endif -%}
-                <div class="main-product__short-desc" itemprop="short-description">
-                    {{ product.description | strip_html | truncate: 120 }}
-                </div>
+                {% endif %}
+
                 {% if date_timer %}
                     <countdown-container data-date="{{ date_timer }}">
                         <h5>{{ 'products.product.expires_in' | t }}Expires in :</h5>
@@ -140,12 +152,21 @@
                 {% endif %}
             </div>
             <div class="main-product__action">
-                {% render 'form-product',
-                    product: product,
-                    variant_type: variant_type,
-                    show_quantity: true,
-                    grouped_product: grouped_product
-                %}
+                {% if combo_products %}
+                    {% render 'form-product-combo',
+                        product: product,
+                        variant_type: false,
+                        show_quantity: false,
+                        grouped_product: false
+                    %}
+                {% else %}
+                    {% render 'form-product',
+                        product: product,
+                        variant_type: variant_type,
+                        show_quantity: true,
+                        grouped_product: grouped_product
+                    %}
+                {% endif %}
             </div>
             <div class="main-product__popup">
                 <details-open-notify>

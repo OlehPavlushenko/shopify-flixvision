@@ -61,10 +61,10 @@
     flex-wrap: wrap;
 }
 
-.main-product__info-left {
+.main-product__info-left  {
     padding-left: 40px;
     padding-right: 40px;
-    .card-product__badge {
+    > .card-product__badge {
         position: relative;
         top: 0;
         left: 0;
@@ -274,7 +274,10 @@
         }
     }
     .main-product__short-desc {
-        margin-top: 30px;
+        margin-top: 10px;
+        &.margin-top {
+            margin-top: 30px;
+        }
     }
     countdown-container {
         display: block;
@@ -365,6 +368,7 @@
     display: flex;
     margin-top: 30px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .main-product__action--quantity {
@@ -380,12 +384,17 @@
 }
 
 .main-product__action--btn {
-    width: 100%;
+    //width: 100%;
+    flex: auto;
     .card-product__button-cart {
         height: 62px;
         font-size: 2rem;
         width: 100%;
     }
+}
+
+.main-product__action--cart-messages {
+    width: 100%;
 }
 
 .main-product__action--pay {
@@ -675,6 +684,71 @@ details {
         overflow: visible;
         margin-bottom: 2rem;
         padding-right: 1rem;
+    }
+}
+
+.main-product-combo__list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    .main-product-combo__item {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        position: relative;
+        countdown-container,
+        compare-wishlist {
+            display: none!important;
+        }
+        .card-product__badge {
+            top: 10px;
+        }
+        .card-product__badge--on-sale,
+        .card-product__badge--offer {
+            left: 10px;
+        }
+        .card-product__badge--on-sale.hidden + .card-product__badge--offer {
+            top: 10px;
+        }
+        .card-product__badge--new,
+        .card-product__badge--sold {
+            right: 10px;
+        }
+        .card-product__media {
+            background: var(--color-white);
+            box-shadow: 0 3px 7px rgba(0,0,0, .15);
+        }
+        .card-product__image,
+        .card-product__image--second {
+            height: calc(100% - 10px);
+            width: calc(100% - 10px);
+            margin: 5px;
+        }
+        .card-product__media::after {
+            content: "";
+            border: solid 5px var(--color-white);
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            left:0;
+            top: 0;
+        }
+
+        > .icon-plus {
+            width: 20px;
+            height: 20px;
+            margin: auto;
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+        }
+        &:last-child {
+            > .icon-plus {
+                display: none;
+            }
+        }
+    }
+    .card-product__btns {
+        display: none;
     }
 }
 

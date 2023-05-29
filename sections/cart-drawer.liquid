@@ -78,6 +78,7 @@
     {% endif %}
     <div class="cart-drawer__items" data-ajax-cart-section-scroll>
         {% for item in cart.items %}
+            {%- assign property_discount = false -%}
             <div class="ajax-cart__line-item">
                 <div class="ajax-cart-item__media">
                     {% if item.image %}
@@ -144,6 +145,10 @@
                             {%- for property in item.properties -%}
                                 {%- assign property_first_char = property.first | slice: 0 -%}
                                 {%- if property.last != blank and property_first_char != '_' -%}
+                                    {% if property.first == 'Combo Discount' %}
+                                        {%- assign property_discount = true -%}
+                                    {% endif %}
+
                                     <div class="ajax-cart-product-option">
                                         <dt>{{ property.first }}:</dt>
                                         <dd>
@@ -152,7 +157,12 @@
                                                     {{ property.last | split: '/' | last }}
                                                 </a>
                                             {%- else -%}
-                                                {{ property.last }}
+                                                {% if property.first == 'Combo Discount' %}
+                                                    {% render 'icons-svg', icons: 'discount' %}
+                                                    {{ property.last }}
+                                                {%- else -%}
+                                                    {{ property.last }}
+                                                {% endif %}
                                             {%- endif -%}
                                         </dd>
                                     </div>
@@ -175,7 +185,8 @@
                             </li>
                         {%- endfor -%}
                     </ul>
-                    <div class="ajax-cart-item__quantity">
+
+                    <div class="ajax-cart-item__quantity{% if property_discount %} hidden{% endif %}">
                         <div class="ajax-cart-item__quantity-wrapper">
                             <label class="visually-hidden" for="Quantity-{{ item.index | plus: 1 }}">
                                 {{ 'sections.cart.quantity' | t }}
@@ -207,7 +218,7 @@
                     </div>
 
                     {% if settings.currency_code_enabled %}
-                        <div class="ajax-cart-total">
+                        <div class="ajax-cart-total {% if property_discount %} hidden{% endif %}">
                             {{ 'sections.cart.total' | t }}
                             {% if item.original_line_price != item.final_line_price %}
                                 <del>{{ item.original_line_price | money_with_currency }}</del>
@@ -217,7 +228,7 @@
                             {% endif %}
                         </div>
                     {% else %}
-                        <div class="ajax-cart-total">
+                        <div class="ajax-cart-total {% if property_discount %} hidden{% endif %}">
                             {{ 'sections.cart.total' | t }}
                             {% if item.original_line_price != item.final_line_price %}
                                 <del>{{ item.original_line_price | money }}</del>
@@ -227,7 +238,7 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                    <div class="ajax-cart-remove">
+                    <div class="ajax-cart-remove {% if property_discount %} hidden{% endif %}">
                         <a
                             href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
                             class="ajax-cart__remove-button"

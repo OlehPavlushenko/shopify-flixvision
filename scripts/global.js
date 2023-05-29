@@ -827,7 +827,6 @@ class VariantPills extends HTMLElement {
         this.updateURL()
 
         console.log(this.availableVariant[0])
-        swiper.update()
     }
 
     updateOptions(event) {
