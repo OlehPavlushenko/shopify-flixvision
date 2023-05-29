@@ -3,99 +3,101 @@ class SectionHeader extends HTMLElement {
         super()
 
         this.headerMain = document.querySelector(".js-header-main")
-        this.megaMenuWrappers = [
-            ...this.querySelectorAll(".js-mega-menu-wrapper"),
-        ]
-        this.megaSubMenuWrappers = [
-            ...this.querySelectorAll(".js-mega-submenu-wrapper"),
-        ]
+        this.megaMenuWrappers = Array.from(
+            this.querySelectorAll(".js-mega-menu-wrapper")
+        )
+        this.megaSubMenuWrappers = Array.from(
+            this.querySelectorAll(".js-mega-submenu-wrapper")
+        )
 
-        this.megaMenus = [...this.querySelectorAll(".js-mega-menu")]
-        this.megaSubmenus = [...this.querySelectorAll(".js-mega-submenu")]
-        this.menuToggles = [...this.querySelectorAll(".js-menu-toggle")]
-        this.menuBacks = [...this.querySelectorAll(".js-menu-back")]
-        this.submenuBacks = [...this.querySelectorAll(".js-submenu-back")]
+        this.megaMenus = Array.from(this.querySelectorAll(".js-mega-menu"))
+        this.megaSubmenus = Array.from(
+            this.querySelectorAll(".js-mega-submenu")
+        )
+        this.menuToggles = Array.from(this.querySelectorAll(".js-menu-toggle"))
+        this.menuBacks = Array.from(this.querySelectorAll(".js-menu-back"))
+        this.submenuBacks = Array.from(
+            this.querySelectorAll(".js-submenu-back")
+        )
 
         this.mobileMenu = this.querySelector(".js-mobile-menu")
         this.mobileMenuOverlay = this.querySelector(".js-mobile-menu-overlay")
 
-        //this.init()
+        this.resizeFunction = this.resizeFunction.bind(this)
+        this.showMegaMenu = this.showMegaMenu.bind(this)
+        this.showMobileMenu = this.showMobileMenu.bind(this)
+        // Инициализация
+        this.init()
 
-        this.resizeFunction()
-        window.addEventListener("resize", this.resizeFunction.bind(this))
-        ;["click", "enter"].forEach((event) => {
-            this.megaSubMenuWrappers.forEach((wrapper) => {
-                let currentTarget = wrapper.querySelectorAll(
-                    ".js-mega-submenu-next-button"
-                )
-                currentTarget.forEach((details) => {
-                    details.addEventListener(
-                        event,
-                        this.showMegaMenu.bind(this)
-                    )
-                })
-            }),
-                this.menuToggles.forEach((menuToggle) => {
-                    menuToggle.addEventListener(
-                        event,
-                        this.showMobileMenu.bind(this)
-                    )
-                }),
-                this.menuBacks.forEach((menuBack) => {
-                    menuBack.addEventListener(
-                        event,
-                        this.closeMegaMenu.bind(this)
-                    )
-                }),
-                this.submenuBacks.forEach((submenuBack) => {
-                    submenuBack.addEventListener(
-                        event,
-                        this.closeMegaSubMenu.bind(this)
-                    )
-                })
+        // Обработчик изменения размера окна
+        window.addEventListener("resize", this.resizeFunction)
+
+        // Обработчики событий клика и нажатия клавиши "Enter"
+        this.megaSubMenuWrappers.forEach((wrapper) => {
+            let currentTarget = Array.from(
+                wrapper.querySelectorAll(".js-mega-submenu-next-button")
+            )
+            currentTarget.forEach((details) => {
+                details.addEventListener("click", this.showMegaMenu)
+                details.addEventListener("keypress", this.showMegaMenu)
+            })
         })
 
-        //document.body.addEventListener('click', this.onBodyClick.bind(this))
+        this.menuToggles.forEach((menuToggle) => {
+            menuToggle.addEventListener("click", this.showMobileMenu)
+            menuToggle.addEventListener("keypress", this.showMobileMenu)
+        })
 
-        this.addEventListener("keydown", (event) => {
-            if (event.key === "Escape") {
-                this.onKeyUp(event)
+        this.menuBacks.forEach((menuBack) => {
+            menuBack.addEventListener("click", this.closeMegaMenu)
+            menuBack.addEventListener("keypress", this.closeMegaMenu)
+        })
+
+        this.submenuBacks.forEach((submenuBack) => {
+            submenuBack.addEventListener("click", this.closeMegaSubMenu)
+            submenuBack.addEventListener("keypress", this.closeMegaSubMenu)
+        })
+
+        // Обработчик нажатия клавиши "Escape"
+        this.addEventListener("keyup", this.onKeyUp)
+    }
+
+    // Инициализация
+    init() {
+        this.resizeFunction()
+    }
+
+    // Обработчик изменения размера окна
+    resizeFunction() {
+        const mobile = window.matchMedia("(max-width: 991px)").matches
+
+        this.megaMenuWrappers.forEach((wrapper) => {
+            const currentTarget = Array.from(
+                wrapper.querySelectorAll(".js-mega-parent-next-button")
+            )
+
+            if (mobile) {
+                currentTarget.forEach((details) => {
+                    details.addEventListener("click", this.showMegaMenu)
+                    details.addEventListener("keypress", this.showMegaMenu)
+                })
+            } else {
+                wrapper.addEventListener("click", (evt) => {
+                    if (evt.target.closest(".header__menu-item-summary")) {
+                        this.showDesktopMegaMenu(evt)
+                    }
+                })
+
+                this.addEventListener("keyup", (event) => {
+                    if (event.key === "Escape") {
+                        this.closeMegaMenu(event)
+                    }
+                })
             }
         })
     }
 
-    resizeFunction() {
-        let mobile = window.matchMedia("(max-width: 991px)").matches
-
-        ;["click", "enter"].forEach((event) =>
-            this.megaMenuWrappers.forEach((wrapper) => {
-                if (mobile) {
-                    let currentTarget = wrapper.querySelectorAll(
-                        ".js-mega-parent-next-button"
-                    )
-                    currentTarget.forEach((details) => {
-                        details.addEventListener(
-                            event,
-                            this.showMegaMenu.bind(this)
-                        )
-                    })
-                } else {
-                    wrapper.addEventListener(event, (evt) => {
-                        if (evt.target.closest(".header__menu-item-summary")) {
-                            this.showDesktopMegaMenu(evt)
-                        }
-                    })
-
-                    this.addEventListener("keydown", (event) => {
-                        if (event.key === "Escape") {
-                            this.closeMegaMenu(event)
-                        }
-                    })
-                }
-            })
-        )
-    }
-
+    // Показать мобильное меню
     showMobileMenu(event) {
         event.preventDefault()
 
@@ -104,6 +106,7 @@ class SectionHeader extends HTMLElement {
         document.body.classList.toggle("overflow-hidden")
     }
 
+    // Закрыть мобильное меню
     closeMobileMenu() {
         this.mobileMenu.classList.remove("menu-opening")
         this.mobileMenuOverlay.classList.remove("menu-opening")
@@ -111,6 +114,7 @@ class SectionHeader extends HTMLElement {
         document.body.classList.remove("overflow-hidden")
     }
 
+    // Обработчик клика вне элемента
     onBodyClick(event) {
         const targetElement = event.target.closest(".js-mega-menu-wrapper")
 
@@ -119,9 +123,10 @@ class SectionHeader extends HTMLElement {
         }
     }
 
+    // Показать мега-меню на десктопе
     showDesktopMegaMenu(event) {
         event.preventDefault()
-        let megaMenuCurrent = event.currentTarget
+        const megaMenuCurrent = event.currentTarget
             .closest(".js-mega-menu-wrapper")
             .querySelector(".js-mega-menu")
 
@@ -130,33 +135,36 @@ class SectionHeader extends HTMLElement {
                 megaMenu.classList.remove("mega-menu--open")
             }
         })
+
         megaMenuCurrent.classList.toggle("mega-menu--open")
         document.body.addEventListener("click", this.onBodyClick.bind(this))
     }
 
+    // Показать мега-меню
     showMegaMenu(event) {
         event.preventDefault()
 
-        let details = event.target
+        const details = event.target
 
         if (!details.classList.contains("js-mega-parent-next-button")) {
-            let megaSubmenu = event.target
+            const megaSubmenu = event.target
                 .closest(".js-mega-submenu-wrapper")
                 .querySelector(".js-mega-submenu")
             megaSubmenu.classList.toggle("mega-menu--open")
         } else {
-            let megaMenu = event.target
+            const megaMenu = event.target
                 .closest(".js-mega-menu-wrapper")
                 .querySelector(".js-mega-menu")
             megaMenu.classList.toggle("mega-menu--open")
         }
     }
 
+    // Закрыть мега-меню
     closeMegaMenu(event) {
         event.target.blur()
         if (event.target.closest(".js-mega-menu-wrapper")) {
-            let openElement = event.target.closest(".js-mega-menu-wrapper")
-            let openElementActive = event.target
+            const openElement = event.target.closest(".js-mega-menu-wrapper")
+            const openElementActive = event.target
                 .closest(".header__menu-item-details")
                 .querySelector(".header__menu-item-link")
             trapFocus(openElement, openElementActive)
@@ -167,11 +175,12 @@ class SectionHeader extends HTMLElement {
         })
     }
 
+    // Закрыть подменю мега-меню
     closeMegaSubMenu(event) {
         console.log(event)
         if (event.target.closest(".js-mega-submenu-wrapper")) {
-            let openElement = event.target.closest(".js-mega-submenu-wrapper")
-            let openElementActive = event.target
+            const openElement = event.target.closest(".js-mega-submenu-wrapper")
+            const openElementActive = event.target
                 .closest(".js-mega-submenu-wrapper")
                 .querySelector(".js-mega-menu-title")
 
@@ -183,28 +192,32 @@ class SectionHeader extends HTMLElement {
         })
     }
 
+    // Обработчик нажатия клавиши
     onKeyUp(event) {
+        const targetClassList = event.target.classList
+        const targetParentClassList = event.target.parentNode.classList
+
         if (
-            event.target.classList.contains("js-menu-toggle") ||
-            event.target.classList.contains("header__menu-item-link")
+            targetClassList.contains("js-menu-toggle") ||
+            targetParentClassList.contains("header__menu-item-link")
         ) {
             this.closeMobileMenu()
         }
 
         if (
-            event.target.classList.contains("js-mega-parent-next-button") ||
-            event.target.classList.contains("js-mega-menu-title") ||
-            event.target.classList.contains("js-submenu-back") ||
-            event.target.classList.contains("mega-menu__list-column-title")
+            targetClassList.contains("js-mega-parent-next-button") ||
+            targetClassList.contains("js-mega-menu-title") ||
+            targetClassList.contains("js-submenu-back") ||
+            targetParentClassList.contains("mega-menu__list-column-title")
         ) {
             this.closeMegaMenu(event)
         }
 
         if (
-            event.target.classList.contains("js-mega-submenu-next-button") ||
-            event.target.classList.contains("mega-menu__list") ||
-            event.target.classList.contains("js-mega-submenu-row") ||
-            event.target.classList.contains("mega-menu__list-item-link")
+            targetClassList.contains("js-mega-submenu-next-button") ||
+            targetParentClassList.contains("mega-menu__list") ||
+            targetParentClassList.contains("js-mega-submenu-row") ||
+            targetParentClassList.contains("mega-menu__list-item-link")
         ) {
             this.closeMegaSubMenu(event)
         }
@@ -240,6 +253,7 @@ class SectionHeader extends HTMLElement {
         this.createObserver()
     }
 
+    // Установить высоту шапки
     setHeaderHeight() {
         document.documentElement.style.setProperty(
             "--header-height",
@@ -260,7 +274,7 @@ class SectionHeader extends HTMLElement {
     }
 
     createObserver() {
-        let observer = new IntersectionObserver((entries, observer) => {
+        const observer = new IntersectionObserver((entries, observer) => {
             this.headerBounds = entries[0].intersectionRect
             observer.disconnect()
         })
@@ -268,6 +282,7 @@ class SectionHeader extends HTMLElement {
         observer.observe(this.header)
     }
 
+    // Обработчик прокрутки страницы
     onScroll() {
         const scrollTop =
             window.pageYOffset || document.documentElement.scrollTop

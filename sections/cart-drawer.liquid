@@ -238,7 +238,7 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                    <div class="ajax-cart-remove {% if property_discount %} hidden{% endif %}">
+                    <div class="ajax-cart-remove {% if property_discount %} js-combo-remove{% endif %}">
                         <a
                             href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
                             class="ajax-cart__remove-button"

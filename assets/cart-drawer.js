@@ -18,6 +18,11 @@ if ("liquidAjaxCart" in window) {
 
                         setCookie("cart_recommend", recommendProducts)
                         buildNotification(requestState)
+
+                        const requestBody = requestState.requestBody
+                        if (requestBody && requestBody.has("ComboLayout")) {
+                            console.log("Значение поля ComboLayout")
+                        }
                     }
                 })
             }
