@@ -16,102 +16,111 @@
     assign notify_me = settings.notify_me
     assign price_variant = settings.price_variant
 %}
-
-<div class="main-product-combo">
-    <h3 class="main-product-combo__title">{{ combo_title | escape }}</h3>
-    <div class="main-product-combo__text">{{ combo_text }}</div>
-    <ul class="main-product-combo__list list-view">
-        {% for item in bundle_products %}
-            {%- assign bundle_product = all_products[item.handle] -%}
-            <li class="main-product-combo__item">
-                {% render 'card-product',
-                    product: bundle_product,
-                    show_vendor: show_vendor,
-                    show_rating: show_rating,
-                    new_badge: new_badge,
-                    show_quantity: false,
-                    use_variant: price_variant,
-                    variant_type: variant_type,
-                    add_btn: add_btn,
-                    btn: btn,
-                    img_size: prod_img_size,
-                    secondary_image: secondary_image,
-                    notify_me: notify_me,
-                    image_custom: false,
-                    fill: false
-                %}
-                {% render 'icons-svg', icons: 'plus' %}
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-
-{% capture "form_id" %}product_form-{{ section.id }}-{{ product.id }}{%- endcapture %}
-{% form 'product', product, id: form_id, class: 'main-product__form' %}
-    <select
-        name="id"
-        id="ProductSelect-{{ product.id }}"
-        class="card-product__variants no-js"
-        data-product-select
-    >
-        {% for variant in product.variants %}
-            {% if variant.available %}
-                <option
-                    {% if variant == product.selected_or_first_available_variant %}
-                        selected="selected"
-                    {% endif %}
-                    data-sku="{{ variant.sku }}"
-                    value="{{ variant.id }}"
-                >
-                    {{ variant.title }} - {{ variant.price | money_with_currency }}
-                </option>
-
-            {% else %}
-                <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
-            {% endif %}
-        {% endfor %}
-    </select>
-    <input
-        hidden
-        class="hidden"
-        type="text"
-        name="ComboLayout"
-    >
-    <input
-        value="{{ combo_discount }}"
-        hidden
-        class="hidden"
-        id="ComboDiscount"
-        type="text"
-        name="properties[Combo Discount]"
-    >
-    <div class="main-product__action--box">
-        <div class="main-product__action--quantity hidden">
-            <input
-                class="js-quantity hidden"
-                type="number"
-                name="quantity"
-                min="1"
-                step="1"
-                value="1"
-                {% if product.variants[0].inventory_management == 'shopify'
-                    and product.variants[0].inventory_policy != 'continue'
-                %}
-                    max="{{ product.variants[0].inventory_quantity }}"
-                {% endif %}
-            >
-        </div>
-
-        <div class="main-product__action--btn">
-            <button
-                type="submit"
-                name="add"
-                id="AddToCart-{{ product.id }}"
-                class="button--secondary card-product__button-cart js-btn-cart"
-            >
-                <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
-            </button>
-        </div>
-        <div class="main-product__action--cart-messages" data-ajax-cart-messages="form"></div>
+<div class="main-product-action-combo js-combo-action">
+    <div class="main-product-combo">
+        <h3 class="main-product-combo__title">{{ combo_title | escape }}</h3>
+        <div class="main-product-combo__text">{{ combo_text }}</div>
+        <ul class="main-product-combo__list list-view">
+            {% for item in bundle_products %}
+                {%- assign bundle_product = all_products[item.handle] -%}
+                <li class="main-product-combo__item">
+                    {% render 'card-product',
+                        product: bundle_product,
+                        show_vendor: show_vendor,
+                        show_rating: show_rating,
+                        new_badge: new_badge,
+                        show_quantity: false,
+                        use_variant: price_variant,
+                        variant_type: variant_type,
+                        add_btn: add_btn,
+                        btn: btn,
+                        img_size: prod_img_size,
+                        secondary_image: secondary_image,
+                        notify_me: notify_me,
+                        image_custom: false,
+                        fill: false
+                    %}
+                    {% render 'icons-svg', icons: 'plus' %}
+                </li>
+            {% endfor %}
+        </ul>
     </div>
-{% endform %}
+
+    {% capture "form_id" %}product_form-{{ section.id }}-{{ product.id }}{%- endcapture %}
+    {% form 'product', product, id: form_id, class: 'main-product__form js-main-combo-action' %}
+        <select
+            name="id"
+            id="ProductSelect-{{ product.id }}"
+            class="card-product__variants no-js"
+            data-product-select
+        >
+            {% for variant in product.variants %}
+                {% if variant.available %}
+                    <option
+                        {% if variant == product.selected_or_first_available_variant %}
+                            selected="selected"
+                        {% endif %}
+                        data-sku="{{ variant.sku }}"
+                        value="{{ variant.id }}"
+                    >
+                        {{ variant.title }} - {{ variant.price | money_with_currency }}
+                    </option>
+
+                {% else %}
+                    <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <input
+            hidden
+            class="hidden"
+            type="text"
+            name="ComboLayout"
+        >
+        <input
+            value="{{ combo_discount }}"
+            hidden
+            class="hidden"
+            id="ComboDiscount"
+            type="text"
+            name="properties[Combo Discount]"
+        >
+        <div class="main-product__action--box">
+            <div class="main-product__action--quantity">
+                <quantity-input class="quantity">
+                    <button class="quantity__button quantity__button--minus" name="minus" type="button">
+                        {% render 'icons-svg', icons: 'minus' %}
+                    </button>
+
+                    <input
+                        class="quantity__input js-quantity"
+                        type="number"
+                        name="quantity"
+                        min="1"
+                        step="1"
+                        value="1"
+                        {% if product.variants[0].inventory_management == 'shopify'
+                            and product.variants[0].inventory_policy != 'continue'
+                        %}
+                            max="{{ product.variants[0].inventory_quantity }}"
+                        {% endif %}
+                    >
+
+                    <button class="quantity__button quantity__button--plus" name="plus" type="button">
+                        {% render 'icons-svg', icons: 'plus' %}
+                    </button>
+                </quantity-input>
+            </div>
+
+            <div class="main-product__action--btn">
+                <span
+                    id="AddToCart-{{ product.id }}"
+                    class="button button--secondary card-product__button-cart js-btn-cart-combo js-btn-cart"
+                >
+                    <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+                </span>
+            </div>
+            <div class="main-product__action--cart-messages" data-ajax-cart-messages="form"></div>
+        </div>
+    {% endform %}
+</div>

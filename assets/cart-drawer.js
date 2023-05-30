@@ -3,7 +3,75 @@ if ("liquidAjaxCart" in window) {
     var recommendProducts = {},
         recommendResults = false
 
+    let addToCartButton = document.querySelector(".js-btn-cart-combo")
+
+    if (addToCartButton) {
+        let stateCombo = true
+        addToCartButton.addEventListener("click", function (event) {
+            let mainProductForm = event.target.closest(".js-main-combo-action")
+            let mainProductCombo = event.target.closest(".js-combo-action")
+
+            mainProductForm.classList.add("js-ajax-cart-form-in-progress")
+
+            let formData = new FormData(mainProductForm)
+            console.log(formData)
+            let id = formData.get("id")
+            let quantity = formData.get("quantity")
+            let properties = formData.get("properties[Combo Discount]")
+
+            let formItem = {}
+
+            if (id && quantity && properties) {
+                formItem = {
+                    id: id,
+                    quantity: quantity,
+                    properties: { "Combo Discount": properties },
+                }
+            }
+
+            let otherForms = mainProductCombo.querySelectorAll(
+                ".card-product__form"
+            )
+            let otherItems = []
+
+            otherForms.forEach(function (form) {
+                let otherFormData = new FormData(form)
+                let id = otherFormData.get("id")
+                let quantity = formData.get("quantity")
+                let otherItem = {}
+
+                if (id && quantity) {
+                    otherItem = {
+                        id: id,
+                        quantity: quantity,
+                    }
+                    otherItems.push(otherItem)
+                }
+            })
+
+            let items = [formItem, ...otherItems]
+
+            let options = {
+                lastComplete: (requestState) => {
+                    let productForm = document.querySelector(
+                        ".js-main-combo-action"
+                    )
+                    productForm.classList.remove(
+                        "js-ajax-cart-form-in-progress"
+                    )
+                    console.log(productForm)
+                    if (requestState.requestType === "add") {
+                        buildNotification(requestState)
+                    }
+                },
+            }
+
+            liquidAjaxCart.cartRequestAdd({ items: items }, options)
+        })
+    }
+
     liquidAjaxCart.configureCart("updateOnWindowFocus", false)
+
     liquidAjaxCart.subscribeToCartAjaxRequests(
         (requestState, subscribeToResult) => {
             if (requestState.requestType === "add") {
@@ -14,14 +82,15 @@ if ("liquidAjaxCart" in window) {
                             requestState.responseData.body.product_id
                         )
 
-                        recommendProducts[product_key] = product_id
-
-                        setCookie("cart_recommend", recommendProducts)
-                        buildNotification(requestState)
-
-                        const requestBody = requestState.requestBody
-                        if (requestBody && requestBody.has("ComboLayout")) {
-                            console.log("Значение поля ComboLayout")
+                        if (
+                            requestState.requestBody &&
+                            requestState.requestBody.items
+                        ) {
+                            console.log(requestState)
+                        } else {
+                            recommendProducts[product_key] = product_id
+                            buildNotification(requestState)
+                            setCookie("cart_recommend", recommendProducts)
                         }
                     }
                 })
@@ -74,6 +143,7 @@ if ("liquidAjaxCart" in window) {
 
     liquidAjaxCart.subscribeToCartStateUpdate(async (state) => {
         const cartTotalHeader = document.querySelector(".cart-count-ajax-cart")
+
         if (state.status.cartStateSet && !state.status.requestInProgress) {
             cartTotalHeader.textContent = Shopify.formatMoney(
                 state.cart.total_price
@@ -146,21 +216,48 @@ function buildNotification(requestState) {
 }
 
 function getNotification(state) {
+    console.log(state)
     let imageSize = document
         .querySelector("#cart-recommend")
         .getAttribute("data-size")
     let modal = document.querySelector(".js-cart-notification")
     trapFocus(modal)
 
-    modal.querySelector(".js-cart-notification-title").textContent =
-        state.responseData.body.product_title
-    modal
-        .querySelector(".js-cart-notification-image")
-        .parentElement.classList.add("media__size--" + imageSize)
-    modal.querySelector(".js-cart-notification-image").src =
-        state.responseData.body.image
-    modal.querySelector(".js-cart-notification-image").alt =
-        state.responseData.body.product_title
+    if (state.responseData?.ok) {
+        if (state.requestBody instanceof FormData) {
+            modal.querySelector(".js-cart-notification-title").textContent =
+                state.responseData.body.product_title
+            modal
+                .querySelector(".js-cart-notification-image")
+                .parentElement.classList.add("media__size--" + imageSize)
+            modal.querySelector(".js-cart-notification-image").src =
+                state.responseData.body.image
+
+            modal.querySelector(".js-cart-notification-image").alt =
+                state.responseData.body.product_title
+        } else {
+            let item = state.responseData.body.items[0]
+            modal.querySelector(".js-cart-notification-title").textContent =
+                item.product_title
+            modal
+                .querySelector(".js-cart-notification-image")
+                .parentElement.classList.add("media__size--" + imageSize)
+            modal.querySelector(".js-cart-notification-image").src = item.image
+
+            modal.querySelector(".js-cart-notification-image").alt =
+                item.product_title
+        }
+    } else {
+        modal.querySelector(".js-cart-notification-title").textContent =
+            state.responseData.body.message +
+            " " +
+            state.responseData.body.status
+        modal
+            .querySelector(".js-cart-notification-image")
+            .parentElement.parentElement.remove()
+        modal.querySelector(".js-cart-msg").textContent =
+            state.responseData.body.description
+    }
 
     modal.classList.add("open")
     document.body.classList.add("overflow-hidden")
