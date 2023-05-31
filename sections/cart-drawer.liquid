@@ -145,7 +145,7 @@
                             {%- for property in item.properties -%}
                                 {%- assign property_first_char = property.first | slice: 0 -%}
                                 {%- if property.last != blank and property_first_char != '_' -%}
-                                    {% if property.first == 'Combo Discount' %}
+                                    {% if property.first == 'ComboDiscount' %}
                                         {%- assign property_discount = true -%}
                                     {% endif %}
 
@@ -157,7 +157,7 @@
                                                     {{ property.last | split: '/' | last }}
                                                 </a>
                                             {%- else -%}
-                                                {% if property.first == 'Combo Discount' %}
+                                                {% if property.first == 'ComboDiscount' %}
                                                     {% render 'icons-svg', icons: 'discount' %}
                                                     {{ property.last }}
                                                 {%- else -%}

@@ -6,68 +6,7 @@ if ("liquidAjaxCart" in window) {
     let addToCartButton = document.querySelector(".js-btn-cart-combo")
 
     if (addToCartButton) {
-        let stateCombo = true
-        addToCartButton.addEventListener("click", function (event) {
-            let mainProductForm = event.target.closest(".js-main-combo-action")
-            let mainProductCombo = event.target.closest(".js-combo-action")
-
-            mainProductForm.classList.add("js-ajax-cart-form-in-progress")
-
-            let formData = new FormData(mainProductForm)
-            console.log(formData)
-            let id = formData.get("id")
-            let quantity = formData.get("quantity")
-            let properties = formData.get("properties[Combo Discount]")
-
-            let formItem = {}
-
-            if (id && quantity && properties) {
-                formItem = {
-                    id: id,
-                    quantity: quantity,
-                    properties: { "Combo Discount": properties },
-                }
-            }
-
-            let otherForms = mainProductCombo.querySelectorAll(
-                ".card-product__form"
-            )
-            let otherItems = []
-
-            otherForms.forEach(function (form) {
-                let otherFormData = new FormData(form)
-                let id = otherFormData.get("id")
-                let quantity = formData.get("quantity")
-                let otherItem = {}
-
-                if (id && quantity) {
-                    otherItem = {
-                        id: id,
-                        quantity: quantity,
-                    }
-                    otherItems.push(otherItem)
-                }
-            })
-
-            let items = [formItem, ...otherItems]
-
-            let options = {
-                lastComplete: (requestState) => {
-                    let productForm = document.querySelector(
-                        ".js-main-combo-action"
-                    )
-                    productForm.classList.remove(
-                        "js-ajax-cart-form-in-progress"
-                    )
-                    console.log(productForm)
-                    if (requestState.requestType === "add") {
-                        buildNotification(requestState)
-                    }
-                },
-            }
-
-            liquidAjaxCart.cartRequestAdd({ items: items }, options)
-        })
+        addComboProducts(addToCartButton)
     }
 
     liquidAjaxCart.configureCart("updateOnWindowFocus", false)
@@ -193,6 +132,68 @@ if ("liquidAjaxCart" in window) {
                 refreshCookie(state)
             }
         }
+    })
+}
+
+function addComboProducts(addToCartButton) {
+    addToCartButton.addEventListener("click", function (event) {
+        let mainProductForm = event.target.closest(".js-main-combo-action")
+        let mainProductCombo = event.target.closest(".js-combo-action")
+
+        mainProductForm.classList.add("js-ajax-cart-form-in-progress")
+
+        let formData = new FormData(mainProductForm)
+        console.log(formData)
+        let id = formData.get("id")
+        let quantity = formData.get("quantity")
+        let properties = formData.get("properties[ComboDiscount]")
+
+        let formItem = {}
+
+        if (id && quantity && properties) {
+            formItem = {
+                id: id,
+                quantity: quantity,
+                properties: { ComboDiscount: properties },
+            }
+        }
+
+        let otherForms = mainProductCombo.querySelectorAll(
+            ".card-product__form"
+        )
+        let otherItems = []
+
+        otherForms.forEach(function (form) {
+            let otherFormData = new FormData(form)
+            let id = otherFormData.get("id")
+            //let quantity = formData.get("quantity")
+            let otherItem = {}
+
+            if (id && quantity) {
+                otherItem = {
+                    id: id,
+                    quantity: quantity,
+                }
+                otherItems.push(otherItem)
+            }
+        })
+
+        let items = [formItem, ...otherItems]
+
+        let options = {
+            lastComplete: (requestState) => {
+                let productForm = document.querySelector(
+                    ".js-main-combo-action"
+                )
+                productForm.classList.remove("js-ajax-cart-form-in-progress")
+                console.log(productForm)
+                if (requestState.requestType === "add") {
+                    buildNotification(requestState)
+                }
+            },
+        }
+
+        liquidAjaxCart.cartRequestAdd({ items: items }, options)
     })
 }
 

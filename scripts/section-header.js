@@ -23,81 +23,76 @@ class SectionHeader extends HTMLElement {
         this.mobileMenu = this.querySelector(".js-mobile-menu")
         this.mobileMenuOverlay = this.querySelector(".js-mobile-menu-overlay")
 
-        this.resizeFunction = this.resizeFunction.bind(this)
-        this.showMegaMenu = this.showMegaMenu.bind(this)
-        this.showMobileMenu = this.showMobileMenu.bind(this)
-        // Инициализация
-        this.init()
-
-        // Обработчик изменения размера окна
-        window.addEventListener("resize", this.resizeFunction)
-
-        // Обработчики событий клика и нажатия клавиши "Enter"
-        this.megaSubMenuWrappers.forEach((wrapper) => {
-            let currentTarget = Array.from(
-                wrapper.querySelectorAll(".js-mega-submenu-next-button")
-            )
-            currentTarget.forEach((details) => {
-                details.addEventListener("click", this.showMegaMenu)
-                details.addEventListener("keypress", this.showMegaMenu)
+        this.resizeFunction()
+        window.addEventListener("resize", this.resizeFunction.bind(this))
+        ;["click", "enter"].forEach((event) => {
+            this.megaSubMenuWrappers.forEach((wrapper) => {
+                let currentTarget = Array.from(
+                    wrapper.querySelectorAll(".js-mega-submenu-next-button")
+                )
+                currentTarget.forEach((details) => {
+                    details.addEventListener(
+                        event,
+                        this.showMegaMenu.bind(this)
+                    )
+                })
+            })
+            this.menuToggles.forEach((menuToggle) => {
+                menuToggle.addEventListener(
+                    event,
+                    this.showMobileMenu.bind(this)
+                )
+            })
+            this.menuBacks.forEach((menuBack) => {
+                menuBack.addEventListener(event, this.closeMegaMenu.bind(this))
+            })
+            this.submenuBacks.forEach((submenuBack) => {
+                submenuBack.addEventListener(
+                    event,
+                    this.closeMegaSubMenu.bind(this)
+                )
             })
         })
 
-        this.menuToggles.forEach((menuToggle) => {
-            menuToggle.addEventListener("click", this.showMobileMenu)
-            menuToggle.addEventListener("keypress", this.showMobileMenu)
-        })
-
-        this.menuBacks.forEach((menuBack) => {
-            menuBack.addEventListener("click", this.closeMegaMenu)
-            menuBack.addEventListener("keypress", this.closeMegaMenu)
-        })
-
-        this.submenuBacks.forEach((submenuBack) => {
-            submenuBack.addEventListener("click", this.closeMegaSubMenu)
-            submenuBack.addEventListener("keypress", this.closeMegaSubMenu)
-        })
-
-        // Обработчик нажатия клавиши "Escape"
-        this.addEventListener("keyup", this.onKeyUp)
-    }
-
-    // Инициализация
-    init() {
-        this.resizeFunction()
-    }
-
-    // Обработчик изменения размера окна
-    resizeFunction() {
-        const mobile = window.matchMedia("(max-width: 991px)").matches
-
-        this.megaMenuWrappers.forEach((wrapper) => {
-            const currentTarget = Array.from(
-                wrapper.querySelectorAll(".js-mega-parent-next-button")
-            )
-
-            if (mobile) {
-                currentTarget.forEach((details) => {
-                    details.addEventListener("click", this.showMegaMenu)
-                    details.addEventListener("keypress", this.showMegaMenu)
-                })
-            } else {
-                wrapper.addEventListener("click", (evt) => {
-                    if (evt.target.closest(".header__menu-item-summary")) {
-                        this.showDesktopMegaMenu(evt)
-                    }
-                })
-
-                this.addEventListener("keyup", (event) => {
-                    if (event.key === "Escape") {
-                        this.closeMegaMenu(event)
-                    }
-                })
+        this.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                this.onKeyUp(event)
             }
         })
     }
 
-    // Показать мобильное меню
+    resizeFunction() {
+        let mobile = window.matchMedia("(max-width: 991px)").matches
+
+        ;["click", "enter"].forEach((event) =>
+            this.megaMenuWrappers.forEach((wrapper) => {
+                if (mobile) {
+                    let currentTarget = Array.from(
+                        wrapper.querySelectorAll(".js-mega-parent-next-button")
+                    )
+                    currentTarget.forEach((details) => {
+                        details.addEventListener(
+                            event,
+                            this.showMegaMenu.bind(this)
+                        )
+                    })
+                } else {
+                    wrapper.addEventListener(event, (evt) => {
+                        if (evt.target.closest(".header__menu-item-summary")) {
+                            this.showDesktopMegaMenu(evt)
+                        }
+                    })
+
+                    this.addEventListener("keydown", (event) => {
+                        if (event.key === "Escape") {
+                            this.closeMegaMenu(event)
+                        }
+                    })
+                }
+            })
+        )
+    }
+
     showMobileMenu(event) {
         event.preventDefault()
 
@@ -106,7 +101,6 @@ class SectionHeader extends HTMLElement {
         document.body.classList.toggle("overflow-hidden")
     }
 
-    // Закрыть мобильное меню
     closeMobileMenu() {
         this.mobileMenu.classList.remove("menu-opening")
         this.mobileMenuOverlay.classList.remove("menu-opening")
@@ -114,7 +108,6 @@ class SectionHeader extends HTMLElement {
         document.body.classList.remove("overflow-hidden")
     }
 
-    // Обработчик клика вне элемента
     onBodyClick(event) {
         const targetElement = event.target.closest(".js-mega-menu-wrapper")
 
@@ -123,10 +116,9 @@ class SectionHeader extends HTMLElement {
         }
     }
 
-    // Показать мега-меню на десктопе
     showDesktopMegaMenu(event) {
         event.preventDefault()
-        const megaMenuCurrent = event.currentTarget
+        let megaMenuCurrent = event.currentTarget
             .closest(".js-mega-menu-wrapper")
             .querySelector(".js-mega-menu")
 
@@ -135,36 +127,33 @@ class SectionHeader extends HTMLElement {
                 megaMenu.classList.remove("mega-menu--open")
             }
         })
-
         megaMenuCurrent.classList.toggle("mega-menu--open")
         document.body.addEventListener("click", this.onBodyClick.bind(this))
     }
 
-    // Показать мега-меню
     showMegaMenu(event) {
         event.preventDefault()
 
-        const details = event.target
+        let details = event.target
 
         if (!details.classList.contains("js-mega-parent-next-button")) {
-            const megaSubmenu = event.target
+            let megaSubmenu = event.target
                 .closest(".js-mega-submenu-wrapper")
                 .querySelector(".js-mega-submenu")
             megaSubmenu.classList.toggle("mega-menu--open")
         } else {
-            const megaMenu = event.target
+            let megaMenu = event.target
                 .closest(".js-mega-menu-wrapper")
                 .querySelector(".js-mega-menu")
             megaMenu.classList.toggle("mega-menu--open")
         }
     }
 
-    // Закрыть мега-меню
     closeMegaMenu(event) {
         event.target.blur()
         if (event.target.closest(".js-mega-menu-wrapper")) {
-            const openElement = event.target.closest(".js-mega-menu-wrapper")
-            const openElementActive = event.target
+            let openElement = event.target.closest(".js-mega-menu-wrapper")
+            let openElementActive = event.target
                 .closest(".header__menu-item-details")
                 .querySelector(".header__menu-item-link")
             trapFocus(openElement, openElementActive)
@@ -175,12 +164,11 @@ class SectionHeader extends HTMLElement {
         })
     }
 
-    // Закрыть подменю мега-меню
     closeMegaSubMenu(event) {
-        console.log(event)
+        //console.log(event)
         if (event.target.closest(".js-mega-submenu-wrapper")) {
-            const openElement = event.target.closest(".js-mega-submenu-wrapper")
-            const openElementActive = event.target
+            let openElement = event.target.closest(".js-mega-submenu-wrapper")
+            let openElementActive = event.target
                 .closest(".js-mega-submenu-wrapper")
                 .querySelector(".js-mega-menu-title")
 
@@ -192,32 +180,28 @@ class SectionHeader extends HTMLElement {
         })
     }
 
-    // Обработчик нажатия клавиши
     onKeyUp(event) {
-        const targetClassList = event.target.classList
-        const targetParentClassList = event.target.parentNode.classList
-
         if (
-            targetClassList.contains("js-menu-toggle") ||
-            targetParentClassList.contains("header__menu-item-link")
+            event.target.classList.contains("js-menu-toggle") ||
+            event.target.classList.contains("header__menu-item-link")
         ) {
             this.closeMobileMenu()
         }
 
         if (
-            targetClassList.contains("js-mega-parent-next-button") ||
-            targetClassList.contains("js-mega-menu-title") ||
-            targetClassList.contains("js-submenu-back") ||
-            targetParentClassList.contains("mega-menu__list-column-title")
+            event.target.classList.contains("js-mega-parent-next-button") ||
+            event.target.classList.contains("js-mega-menu-title") ||
+            event.target.classList.contains("js-submenu-back") ||
+            event.target.classList.contains("mega-menu__list-column-title")
         ) {
             this.closeMegaMenu(event)
         }
 
         if (
-            targetClassList.contains("js-mega-submenu-next-button") ||
-            targetParentClassList.contains("mega-menu__list") ||
-            targetParentClassList.contains("js-mega-submenu-row") ||
-            targetParentClassList.contains("mega-menu__list-item-link")
+            event.target.classList.contains("js-mega-submenu-next-button") ||
+            event.target.classList.contains("mega-menu__list") ||
+            event.target.classList.contains("js-mega-submenu-row") ||
+            event.target.classList.contains("mega-menu__list-item-link")
         ) {
             this.closeMegaSubMenu(event)
         }
@@ -231,12 +215,6 @@ class SectionHeader extends HTMLElement {
             this.getAttribute("data-sticky-type") === "always"
         this.headerBounds = {}
 
-        this.setHeaderHeight()
-
-        window
-            .matchMedia("(min-width: 320px)")
-            .addEventListener("change", this.setHeaderHeight.bind(this))
-
         if (this.headerIsAlwaysSticky) {
             this.header.classList.add("shopify-section-header-sticky")
         }
@@ -245,44 +223,47 @@ class SectionHeader extends HTMLElement {
         this.preventReveal = false
 
         this.onScrollHandler = this.onScroll.bind(this)
-        this.hideHeaderOnScrollUp = () => (this.preventReveal = true)
 
-        this.addEventListener("preventHeaderReveal", this.hideHeaderOnScrollUp)
+        this.setHeaderHeight()
+        window
+            .matchMedia("(min-width: 320px)")
+            .addEventListener("change", this.setHeaderHeight.bind(this))
+
         window.addEventListener("scroll", this.onScrollHandler, false)
-
+        window.addEventListener("load", this.checkScroll.bind(this))
         this.createObserver()
     }
 
-    // Установить высоту шапки
-    setHeaderHeight() {
-        document.documentElement.style.setProperty(
-            "--header-height",
-            `${this.header.offsetHeight}px`
-        )
-        document.documentElement.style.setProperty(
-            "--announcement-bar-height",
-            `${this.announcement.offsetHeight}px`
-        )
-    }
-
-    disconnectedCallback() {
-        this.removeEventListener(
-            "preventHeaderReveal",
-            this.hideHeaderOnScrollUp
-        )
-        window.removeEventListener("scroll", this.onScrollHandler)
+    checkScroll() {
+        console.log(this.headerBounds.top)
+        const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop
+        console.log(scrollTop)
+        if (scrollTop > 0 && scrollTop > this.headerBounds.top) {
+            this.header.classList.add("scrolled-past-header")
+            this.stickyBlock.style.setProperty(
+                "height",
+                `${this.header.offsetHeight}px`
+            )
+        } else if (scrollTop <= this.headerBounds.top) {
+            this.header.classList.remove("scrolled-past-header")
+            this.stickyBlock.style.setProperty("height", "0")
+        }
     }
 
     createObserver() {
-        const observer = new IntersectionObserver((entries, observer) => {
-            this.headerBounds = entries[0].intersectionRect
+        let observer = new IntersectionObserver((entries, observer) => {
+            const headerRect = this.header.getBoundingClientRect()
+            this.headerBounds = {
+                top: headerRect.top + window.pageYOffset,
+                bottom: headerRect.bottom + window.pageYOffset,
+            }
             observer.disconnect()
         })
 
         observer.observe(this.header)
     }
 
-    // Обработчик прокрутки страницы
     onScroll() {
         const scrollTop =
             window.pageYOffset || document.documentElement.scrollTop
@@ -296,21 +277,23 @@ class SectionHeader extends HTMLElement {
                 "height",
                 `${this.header.offsetHeight}px`
             )
-        } else if (
-            scrollTop < this.currentScrollTop &&
-            scrollTop > this.headerBounds.bottom
-        ) {
-            this.header.classList.add("scrolled-past-header")
-            this.stickyBlock.style.setProperty(
-                "height",
-                `${this.header.offsetHeight}px`
-            )
         } else if (scrollTop <= this.headerBounds.top) {
             this.header.classList.remove("scrolled-past-header")
             this.stickyBlock.style.setProperty("height", "0")
         }
 
         this.currentScrollTop = scrollTop
+    }
+
+    setHeaderHeight() {
+        document.documentElement.style.setProperty(
+            "--header-height",
+            `${this.header.offsetHeight}px`
+        )
+        document.documentElement.style.setProperty(
+            "--announcement-bar-height",
+            `${this.announcement.offsetHeight}px`
+        )
     }
 }
 

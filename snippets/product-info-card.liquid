@@ -1,6 +1,7 @@
 {% liquid
     assign grouped_product = product.metafields.custom.grouped_images.value
     assign combo_products = product.metafields.custom.combo_products.value
+    assign buy_more_products = product.metafields.custom.buy_more.value
     assign short_description = product.metafields.custom.short_description
     assign variant_type = settings.variant
     assign date_timer = product.metafields.custom.countdown_timer
@@ -168,6 +169,7 @@
                     %}
                 {% endif %}
             </div>
+            {{ buy_more_products }}
             <div class="main-product__popup">
                 <details-open-notify>
                     <a
