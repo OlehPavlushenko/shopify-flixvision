@@ -169,7 +169,19 @@
                     %}
                 {% endif %}
             </div>
-            {{ buy_more_products }}
+            <div class="main-product__buy-more">
+                <h4 class="main-product__buy-more-title">{{- 'products.product.buy_more' | t }}</h4>
+                <div class="main-product__buy-more-box">
+                    {% for item in buy_more_products %}
+                        <div class="buy-more__items js-buy-more-items">
+                            <div class="buy-more__item js-buy-more-item">{{ item }}</div>
+                            <div class="buy-more__btn button button--outline js-buy-more-btn">
+                                {{- 'products.product.buy_more_btn' | t }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             <div class="main-product__popup">
                 <details-open-notify>
                     <a

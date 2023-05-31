@@ -739,3 +739,18 @@ details-open.open #userLinks {
         display: none;
     }
 }
+
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+  
+.scrolled-past-header {
+    animation: fadeIn 0.3s ease-in-out forwards;
+}

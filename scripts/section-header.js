@@ -235,10 +235,8 @@ class SectionHeader extends HTMLElement {
     }
 
     checkScroll() {
-        console.log(this.headerBounds.top)
         const scrollTop =
             window.pageYOffset || document.documentElement.scrollTop
-        console.log(scrollTop)
         if (scrollTop > 0 && scrollTop > this.headerBounds.top) {
             this.header.classList.add("scrolled-past-header")
             this.stickyBlock.style.setProperty(

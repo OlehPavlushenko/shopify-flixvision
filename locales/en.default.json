@@ -351,7 +351,9 @@
       "ask_name":"Your Name",
       "ask_phone":"Your Phone",
       "ask_comment":"Add your comment about the product of interest to you",
-      "ask_send":"Send Message"
+      "ask_send":"Send Message",
+      "buy_more":"Buy more save more!",
+      "buy_more_btn":"Add"
     },
     "product_count_html": {
       "one": "Showing {{ product_count }} of {{ count }} product",

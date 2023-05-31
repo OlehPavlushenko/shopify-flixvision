@@ -4,6 +4,55 @@ if ("liquidAjaxCart" in window) {
         recommendResults = false
 
     let addToCartButton = document.querySelector(".js-btn-cart-combo")
+    let addToCartButtonBuyMore = document.querySelectorAll(".js-buy-more-btn")
+
+    if (addToCartButtonBuyMore) {
+        addToCartButtonBuyMore.forEach((button) => {
+            button.addEventListener("click", function (event) {
+                let mainProductForm = event.target
+                    .closest(".main-product__content")
+                    .querySelector(".main-product__form")
+
+                console.log(mainProductForm)
+                let buyMoreItems = event.target.closest(".js-buy-more-items")
+
+                buyMoreItems.classList.add("js-ajax-cart-form-in-progress")
+
+                let formData = new FormData(mainProductForm)
+
+                let id = formData.get("id")
+                let quantity = +buyMoreItems.querySelector(
+                    ".js-buy-more-item span"
+                ).textContent
+
+                let formItem = {}
+
+                if (id && quantity) {
+                    formItem = {
+                        id: id,
+                        quantity: quantity,
+                    }
+                }
+
+                let items = [formItem]
+
+                let options = {
+                    lastComplete: (requestState) => {
+                        console.log(buyMoreItems)
+                        buyMoreItems.classList.remove(
+                            "js-ajax-cart-form-in-progress"
+                        )
+                        //console.log(productForm)
+                        if (requestState.requestType === "add") {
+                            buildNotification(requestState)
+                        }
+                    },
+                }
+
+                liquidAjaxCart.cartRequestAdd({ items: items }, options)
+            })
+        })
+    }
 
     if (addToCartButton) {
         addComboProducts(addToCartButton)
@@ -25,7 +74,7 @@ if ("liquidAjaxCart" in window) {
                             requestState.requestBody &&
                             requestState.requestBody.items
                         ) {
-                            console.log(requestState)
+                            //console.log(requestState)
                         } else {
                             recommendProducts[product_key] = product_id
                             buildNotification(requestState)
@@ -143,7 +192,7 @@ function addComboProducts(addToCartButton) {
         mainProductForm.classList.add("js-ajax-cart-form-in-progress")
 
         let formData = new FormData(mainProductForm)
-        console.log(formData)
+        //console.log(formData)
         let id = formData.get("id")
         let quantity = formData.get("quantity")
         let properties = formData.get("properties[ComboDiscount]")
@@ -166,7 +215,6 @@ function addComboProducts(addToCartButton) {
         otherForms.forEach(function (form) {
             let otherFormData = new FormData(form)
             let id = otherFormData.get("id")
-            //let quantity = formData.get("quantity")
             let otherItem = {}
 
             if (id && quantity) {
@@ -186,7 +234,7 @@ function addComboProducts(addToCartButton) {
                     ".js-main-combo-action"
                 )
                 productForm.classList.remove("js-ajax-cart-form-in-progress")
-                console.log(productForm)
+                //console.log(productForm)
                 if (requestState.requestType === "add") {
                     buildNotification(requestState)
                 }
@@ -217,7 +265,7 @@ function buildNotification(requestState) {
 }
 
 function getNotification(state) {
-    console.log(state)
+    //console.log(state)
     let imageSize = document
         .querySelector("#cart-recommend")
         .getAttribute("data-size")
