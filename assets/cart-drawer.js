@@ -196,6 +196,7 @@ function addComboProducts(addToCartButton) {
         let id = formData.get("id")
         let quantity = formData.get("quantity")
         let properties = formData.get("properties[ComboDiscount]")
+        let properties2 = formData.get("properties[_hiddenCombo]")
 
         let formItem = {}
 
@@ -203,7 +204,10 @@ function addComboProducts(addToCartButton) {
             formItem = {
                 id: id,
                 quantity: quantity,
-                properties: { ComboDiscount: properties },
+                properties: {
+                    ComboDiscount: properties,
+                    _hiddenCombo: properties2,
+                },
             }
         }
 
