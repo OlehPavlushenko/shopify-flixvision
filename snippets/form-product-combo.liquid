@@ -72,7 +72,7 @@
             {% endfor %}
         </select>
         <input
-            value=""
+            hidden
             id="Combo"
             type="text"
             name="properties[_hiddenCombo]"
@@ -117,7 +117,7 @@
                     id="AddToCart-{{ product.id }}"
                     class="button button--secondary card-product__button-cart js-btn-cart-combo js-btn-cart"
                 >
-                    <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+                    <span>{{ 'products.product.add_to_cart' | t }}</span>
                 </span>
             </div>
             <div class="main-product__action--cart-messages" data-ajax-cart-messages="form"></div>

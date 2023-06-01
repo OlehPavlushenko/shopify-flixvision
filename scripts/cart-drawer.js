@@ -7,51 +7,7 @@ if ("liquidAjaxCart" in window) {
     let addToCartButtonBuyMore = document.querySelectorAll(".js-buy-more-btn")
 
     if (addToCartButtonBuyMore) {
-        addToCartButtonBuyMore.forEach((button) => {
-            button.addEventListener("click", function (event) {
-                let mainProductForm = event.target
-                    .closest(".main-product__content")
-                    .querySelector(".main-product__form")
-
-                console.log(mainProductForm)
-                let buyMoreItems = event.target.closest(".js-buy-more-items")
-
-                buyMoreItems.classList.add("js-ajax-cart-form-in-progress")
-
-                let formData = new FormData(mainProductForm)
-
-                let id = formData.get("id")
-                let quantity = +buyMoreItems.querySelector(
-                    ".js-buy-more-item span"
-                ).textContent
-
-                let formItem = {}
-
-                if (id && quantity) {
-                    formItem = {
-                        id: id,
-                        quantity: quantity,
-                    }
-                }
-
-                let items = [formItem]
-
-                let options = {
-                    lastComplete: (requestState) => {
-                        console.log(buyMoreItems)
-                        buyMoreItems.classList.remove(
-                            "js-ajax-cart-form-in-progress"
-                        )
-                        //console.log(productForm)
-                        if (requestState.requestType === "add") {
-                            buildNotification(requestState)
-                        }
-                    },
-                }
-
-                liquidAjaxCart.cartRequestAdd({ items: items }, options)
-            })
-        })
+        addBuyMore(addToCartButtonBuyMore)
     }
 
     if (addToCartButton) {
@@ -129,7 +85,9 @@ if ("liquidAjaxCart" in window) {
 
     liquidAjaxCart.cartRequestUpdate()
 
-    liquidAjaxCart.subscribeToCartStateUpdate(async (state) => {
+    liquidAjaxCart.subscribeToCartStateUpdate(async (state, isCartUpdated) => {
+        console.log(state)
+
         const cartTotalHeader = document.querySelector(".cart-count-ajax-cart")
 
         if (state.status.cartStateSet && !state.status.requestInProgress) {
@@ -181,6 +139,55 @@ if ("liquidAjaxCart" in window) {
                 refreshCookie(state)
             }
         }
+        if (isCartUpdated) {
+            window.comboItemsWrapped = false
+            groupedComboProducts()
+        }
+    })
+}
+
+function addBuyMore(addToCartButtonBuyMore) {
+    addToCartButtonBuyMore.forEach((button) => {
+        button.addEventListener("click", function (event) {
+            let mainProductForm = event.target
+                .closest(".main-product__content")
+                .querySelector(".main-product__form")
+
+            let buyMoreItems = event.target.closest(".js-buy-more-items")
+
+            buyMoreItems.classList.add("js-ajax-cart-form-in-progress")
+
+            let formData = new FormData(mainProductForm)
+
+            let id = formData.get("id")
+            let quantity = +buyMoreItems.querySelector(".js-buy-more-item span")
+                .textContent
+
+            let formItem = {}
+
+            if (id && quantity) {
+                formItem = {
+                    id: id,
+                    quantity: quantity,
+                }
+            }
+
+            let items = [formItem]
+
+            let options = {
+                lastComplete: (requestState) => {
+                    console.log(buyMoreItems)
+                    buyMoreItems.classList.remove(
+                        "js-ajax-cart-form-in-progress"
+                    )
+                    if (requestState.requestType === "add") {
+                        buildNotification(requestState)
+                    }
+                },
+            }
+
+            liquidAjaxCart.cartRequestAdd({ items: items }, options)
+        })
     })
 }
 
@@ -192,29 +199,25 @@ function addComboProducts(addToCartButton) {
         mainProductForm.classList.add("js-ajax-cart-form-in-progress")
 
         let formData = new FormData(mainProductForm)
-        //console.log(formData)
+        let otherItems = []
+        let propertiesAll = []
         let id = formData.get("id")
         let quantity = formData.get("quantity")
         let properties = formData.get("properties[ComboDiscount]")
-        let properties2 = formData.get("properties[_hiddenCombo]")
-
-        let formItem = {}
-
-        if (id && quantity && properties) {
-            formItem = {
-                id: id,
-                quantity: quantity,
-                properties: {
-                    ComboDiscount: properties,
-                    _hiddenCombo: properties2,
-                },
-            }
-        }
 
         let otherForms = mainProductCombo.querySelectorAll(
             ".card-product__form"
         )
-        let otherItems = []
+        propertiesAll.push(id)
+
+        otherForms.forEach(function (form) {
+            let otherFormData = new FormData(form)
+            let id = otherFormData.get("id")
+
+            if (id) {
+                propertiesAll.push(id)
+            }
+        })
 
         otherForms.forEach(function (form) {
             let otherFormData = new FormData(form)
@@ -225,10 +228,30 @@ function addComboProducts(addToCartButton) {
                 otherItem = {
                     id: id,
                     quantity: quantity,
+                    properties: {
+                        _hiddenCombo: propertiesAll,
+                    },
                 }
                 otherItems.push(otherItem)
             }
         })
+
+        //console.log(formData)
+
+        let formItem = {}
+
+        if (id && quantity && properties) {
+            formItem = {
+                id: id,
+                quantity: quantity,
+                properties: {
+                    ComboDiscount: properties,
+                    _hiddenCombo: propertiesAll,
+                },
+            }
+        }
+
+        console.log(propertiesAll)
 
         let items = [formItem, ...otherItems]
 
@@ -247,6 +270,45 @@ function addComboProducts(addToCartButton) {
 
         liquidAjaxCart.cartRequestAdd({ items: items }, options)
     })
+}
+
+function groupedComboProducts() {
+    const comboItems = document.querySelectorAll(".js-combo-item")
+
+    if (!window.comboItemsWrapped) {
+        if (comboItems) {
+            const groupedItems = {}
+
+            comboItems.forEach((item) => {
+                const dataValue = item.getAttribute("data-value")
+
+                if (groupedItems.hasOwnProperty(dataValue)) {
+                    groupedItems[dataValue].push(item)
+                } else {
+                    groupedItems[dataValue] = [item]
+                }
+            })
+
+            for (const key in groupedItems) {
+                const items = groupedItems[key]
+
+                const wrapperDiv = document.createElement("div")
+                wrapperDiv.classList.add("ajax-cart__line-item-grouped")
+
+                items.forEach((item) => {
+                    wrapperDiv.appendChild(item.cloneNode(true)) // Clone the item before appending
+                })
+
+                items.forEach((item) => {
+                    const parent = item.parentNode
+                    parent.insertBefore(wrapperDiv, item) // Insert the wrapperDiv before the item
+                    parent.removeChild(item) // Remove the original item
+                })
+            }
+
+            window.comboItemsWrapped = true
+        }
+    }
 }
 
 function buildNotification(requestState) {
