@@ -98,6 +98,7 @@
                 <div
                     class="ajax-cart__line-item{% if property_discount %} main-combo-item{% endif %} js-combo-item"
                     data-value="value-combo-{{value_combo}}"
+                    data-id="{{ item.key }}"
                 >
                     <div class="ajax-cart-item__media">
                         {% if item.image %}
@@ -254,17 +255,30 @@
                                 {% endif %}
                             </div>
                         {% endif %}
-                        <div class="ajax-cart-remove {% if property_discount %} js-combo-remove{% else %} hidden{% endif %}">
+                        <div class="ajax-cart-remove hidden ">
                             <a
                                 href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
-                                class="ajax-cart__remove-button"
+                                class="ajax-cart__remove-button js-item-remove"
+                                data-item-id="{{ item.key }}"
                                 data-ajax-cart-request-button
                             >
                                 {% render 'icons-svg', icons: 'trash' %}
                                 <small>{{ 'sections.cart.remove' | t }}</small>
                             </a>
                         </div>
+                        {% if property_discount %}
+                            <div class="ajax-cart-remove ajax-cart-clear ">
+                                <a
+                                    href="#ComboRemove"
+                                    class="ajax-cart__remove-button js-combo-remove"
+                                >
+                                    {% render 'icons-svg', icons: 'trash' %}
+                                    <small>{{ 'sections.cart.remove' | t }}</small>
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
+                    {% render 'icons-svg', icons: 'plus' %}
                 </div>
             {% else %}
                 <div class="ajax-cart__line-item">

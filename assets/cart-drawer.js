@@ -261,7 +261,6 @@ function addComboProducts(addToCartButton) {
                     ".js-main-combo-action"
                 )
                 productForm.classList.remove("js-ajax-cart-form-in-progress")
-                //console.log(productForm)
                 if (requestState.requestType === "add") {
                     buildNotification(requestState)
                 }
@@ -307,6 +306,36 @@ function groupedComboProducts() {
             }
 
             window.comboItemsWrapped = true
+
+            const removeButtonCombo =
+                document.querySelectorAll(".js-combo-remove")
+
+            if (removeButtonCombo.length) {
+                removeButtonCombo.forEach((button) => {
+                    button.addEventListener("click", function (event) {
+                        event.preventDefault()
+                        let parentGroup = button.closest(
+                            ".ajax-cart__line-item-grouped"
+                        )
+                        parentGroup.classList.add(
+                            "js-ajax-cart-form-in-progress"
+                        )
+
+                        if (parentGroup) {
+                            const allButtonRemove =
+                                parentGroup.querySelectorAll(".js-item-remove")
+                            const updates = {}
+                            allButtonRemove.forEach((element) => {
+                                const itemId = element.dataset.itemId
+                                updates[itemId] = 0
+                            })
+                            liquidAjaxCart.cartRequestUpdate({
+                                updates: updates,
+                            })
+                        }
+                    })
+                })
+            }
         }
     }
 }
