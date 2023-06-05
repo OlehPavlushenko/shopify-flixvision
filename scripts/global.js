@@ -970,6 +970,7 @@ class VariantProduct extends VariantPills {
         this.updatePrice()
         this.updateImage()
         this.updateURL()
+        this.updatePickupAvailability()
         if (this.layout !== null) {
             this.updateSlider()
         }
@@ -978,6 +979,19 @@ class VariantProduct extends VariantPills {
 
         if (this.layoutGrouped !== null) {
             this.updateSliderGrouped(event)
+        }
+    }
+
+    updatePickupAvailability() {
+        const currentVariant = this.availableVariant[0]
+        const pickUpAvailability = document.querySelector("pickup-availability")
+        if (!pickUpAvailability) return
+
+        if (currentVariant && currentVariant.available) {
+            pickUpAvailability.fetchAvailability(currentVariant.id)
+        } else {
+            pickUpAvailability.removeAttribute("available")
+            pickUpAvailability.innerHTML = ""
         }
     }
 
