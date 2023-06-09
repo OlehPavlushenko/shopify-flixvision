@@ -303,14 +303,25 @@
         "label": "Variant picker type",
         "options": [
           {
+            "value": "select",
+            "label": "Select"
+          },
+          {
               "value": "pills",
               "label": "Pills"
           },
           {
-              "value": "pills_color_images",
-              "label": "Pills color images"
+              "value": "pills_images",
+              "label": "Pills images"
           }
         ]
+      },
+      {
+        "type": "text",
+        "id": "downcased_option",
+        "default": "color;farbe;couleur",
+        "label": "Variant option color",
+        "info": "If you use the Color option, then the option should be written here, for example, in English you use Color, then you write the color, if you use a multilingual site and use, for example, Color for English and Farbe for German, then write color;farbe"
       },
       {
         "type": "select",

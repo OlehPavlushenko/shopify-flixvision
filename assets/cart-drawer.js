@@ -251,7 +251,7 @@ function addComboProducts(addToCartButton) {
             }
         }
 
-        console.log(propertiesAll)
+        //console.log(propertiesAll)
 
         let items = [formItem, ...otherItems]
 

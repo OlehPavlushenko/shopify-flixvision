@@ -6,7 +6,9 @@
                 class="swatch-wrap"
                 data-section="{{ section.id }}-{{ product.id }}"
             >
-                {% render 'swatch' for product.options as swatch, product: product, variant_type: variant_type %}
+                <div class="js-swatch-container">
+                    {% render 'swatch' for product.options as swatch, product: product, variant_type: variant_type %}
+                </div>
                 <script type="application/json">
                     {{ product.variants | json }}
                 </script>
