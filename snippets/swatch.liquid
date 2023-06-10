@@ -109,16 +109,13 @@
                         data-swatch="{{ value }}"
                         data-option="{{ value }}"
                         data-swatch-index="{{ option_index }}"
-                        class="swatch-element js-swatch-level-{{ option_index }} {% if option_index == 0 and grouped_product %} js-element-tab{% endif %}{% if is_color %} swatch-element-color {% endif %}{% if is_image %} swatch-element-image{% endif %} {{ value | handle }} js-swatch-element {% if current_variant.options[option_index] == value %} active{% endif %}"
+                        class="swatch-element js-swatch-level-{{ option_index }} {% if option_index == 0 and grouped_product %} js-element-tab{% endif %}{% if is_color %} swatch-element-color {% endif %}{% if is_image %} swatch-element-image{% endif %} {{ value | handle }} js-swatch-element"
                     >
                         <input
                             id="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}"
                             type="radio"
                             name="option-{{ option_index }}-{{ section.id }}-{{ product.id }}"
                             value="{{ value | escape }}"
-                            {% if current_variant.options[option_index] == value %}
-                                checked
-                            {% endif %}
                             data-swatch-option="{{ option_index }}"
                         >
                         {% if is_color %}

@@ -434,15 +434,26 @@ class VariantPills extends HTMLElement {
         // Event handler for product option buttons
         const handleClick = (event) => {
             if (event.target.tagName === "INPUT") {
-                const selectedValues = Array.from(this.swatchElements).map(
-                    (element) => {
+                if (event.target.closest(".js-swatch")) {
+                    const elements = event.target
+                        .closest(".js-swatch")
+                        .querySelectorAll(".js-swatch-element")
+                    elements.forEach((element) => {
+                        element.classList.remove("active")
+                    })
+                }
+                const swatch =
+                    event.target.parentElement.classList.add("active")
+                const selectedValues = Array.from(this.swatchElements)
+                    .map((element) => {
                         const input = element.querySelector("input:checked")
-                        return input ? input.value : undefined
-                    }
-                )
-                console.log(event)
-                this.updateSwatchLevels(selectedValues)
-                this.getAvailableVariant(event)
+
+                        return input ? input.value : null
+                    })
+                    .filter((value) => value !== null)
+
+                console.log(selectedValues)
+                //this.updateSwatchLevels(selectedValues)
             }
         }
 
@@ -453,6 +464,7 @@ class VariantPills extends HTMLElement {
             element.addEventListener("click", this.debounce(handleClick, delay))
         })
 
+        this.getAvailableVariant()
         // Check the availability of swatch levels
         this.checkSwatchLevels()
     }
@@ -482,16 +494,44 @@ class VariantPills extends HTMLElement {
     }
 
     getActiveSwatchValues() {
-        const selectedValues = Array.from(this.swatchElements)
-            .map((element) => {
-                return element.classList.contains("active")
-                    ? element.dataset.swatch
-                    : null
-            })
-            .filter((value) => value !== null)
+        this.swatchElements.forEach((element) => {
+            const option = element.getAttribute("data-swatch")
+            if (this.activeVariant.includes(option)) {
+                element.classList.add("active")
+                element.firstElementChild.checked = true
+            } else {
+                element.classList.remove("active")
+            }
+        })
+        console.log("Selected values:", this.activeVariant)
+        return this.activeVariant
+    }
 
-        console.log("Selected values:", selectedValues)
-        return selectedValues
+    getAvailableVariant() {
+        const groupedVariants = {}
+        this.variantData.forEach((variant) => {
+            const color = variant.options[0]
+
+            if (!groupedVariants[color]) {
+                groupedVariants[color] = []
+            }
+
+            groupedVariants[color].push(variant)
+        })
+        const uniqueColors = Object.keys(groupedVariants)
+        const sortedVariants = []
+        uniqueColors.forEach((color) => {
+            sortedVariants.push(...groupedVariants[color])
+        })
+
+        console.log(sortedVariants)
+
+        const activeVariant = sortedVariants.find(
+            (variant) => variant.available
+        )
+
+        this.activeVariant = activeVariant.options
+        console.log(activeVariant)
     }
 
     updateSwatchLevels(selectedValues) {
@@ -572,7 +612,7 @@ class VariantPills extends HTMLElement {
 
             if (availableOptions.length > 0) {
                 const swatchElement = this.swatchElements[levelIndex]
-                console.log(availableOptions)
+                console.log("availableOptions" + availableOptions)
                 if (swatchElement) {
                     this.updateSwatchOptions(levelIndex, availableOptions)
                 }
@@ -598,6 +638,7 @@ class VariantPills extends HTMLElement {
 
         const selectedOptions = this.getActiveSwatchValues()
         // Initialize the swatch elements in this.swatchElements
+        console.log("checkSwatchLevels" + selectedOptions)
 
         recursiveCheck(this.getVariantList, 0, selectedOptions)
     }
@@ -609,29 +650,6 @@ class VariantPills extends HTMLElement {
                 this.querySelector('[type="application/json"]').textContent
             )
         return this.variantData
-    }
-
-    getAvailableVariant(event) {
-        const selectedValues = this.getActiveSwatchValues()
-        let currentLevel = this.getVariantList
-
-        for (let i = 0; i < selectedValues.length; i++) {
-            const value = selectedValues[i]
-            const isLastLevel = i === selectedValues.length - 1
-
-            if (value !== undefined) {
-                currentLevel = currentLevel[value]
-
-                if (currentLevel && isLastLevel) {
-                    const available = currentLevel.available
-                    console.log("Available:", available)
-                    // Perform any action based on the available variant
-                    // For example, update price, image, etc.
-                }
-            } else {
-                break
-            }
-        }
     }
 
     debounce(func, delay) {
