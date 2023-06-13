@@ -329,6 +329,9 @@ quantity-input {
             &.hidden {
                 display: none;
             }
+            &.hidden.available {
+                display: block !important;
+            }
             &.unavailable {
                 pointer-events: none;
                 position: relative;

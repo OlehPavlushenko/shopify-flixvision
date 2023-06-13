@@ -420,6 +420,7 @@ class VariantPills extends HTMLElement {
         this.swatchElements = this.querySelectorAll(".js-swatch-element")
         this.swatchLevels = []
         this.getVariantList = {}
+        this.activeVariant = null
 
         this.initSwatch()
     }
@@ -453,7 +454,9 @@ class VariantPills extends HTMLElement {
                     .filter((value) => value !== null)
 
                 console.log(selectedValues)
-                //this.updateSwatchLevels(selectedValues)
+                //this.updateAvailableVariant(selectedValues)
+                this.findSimilarCombination(selectedValues)
+                this.checkSwatchLevels()
             }
         }
 
@@ -493,6 +496,272 @@ class VariantPills extends HTMLElement {
         }
     }
 
+    updateAvailableVariant(combination) {
+        const availableOptions = []
+        if (this.getVariantList) {
+            let currentCombination = this.getVariantList
+            for (const option of combination) {
+                if (currentCombination[option]) {
+                    currentCombination = currentCombination[option]
+                } else {
+                    for (const key in currentCombination) {
+                        if (currentCombination[key].available) {
+                            availableOptions.push(key)
+                        }
+                    }
+                    break
+                }
+            }
+        }
+        //console.log(availableOptions)
+        return availableOptions
+    }
+
+    findSimilarCombination(combination) {
+        if (this.getVariantList) {
+            const currentCombination = this.getVariantList
+            const matchingCombination = this.findMatchingCombination(
+                currentCombination,
+                combination
+            )
+
+            if (matchingCombination) {
+                console.log("Combination:", combination)
+                if (this.isCombinationAvailable(combination)) {
+                    this.activeVariant = combination
+                } else {
+                    console.log("Combination is not available:", combination)
+                    const availableOptions = this.findAvailableOptions(
+                        currentCombination,
+                        combination
+                    )
+                    console.log("Available Options:", availableOptions)
+                    this.activeVariant = availableOptions
+                }
+            } else {
+                const availableOptions = this.findAvailableOptions(
+                    currentCombination,
+                    combination
+                )
+                console.log("Available Options:", availableOptions)
+                this.activeVariant = availableOptions
+            }
+        }
+    }
+
+    isCombinationAvailable(combination) {
+        const variant = this.getVariantList
+        return this.isOptionAvailable(variant, combination)
+    }
+
+    checkAvailability(combination) {
+        const variant = this.getVariantList
+        return this.isOptionAvailable(variant, combination)
+    }
+
+    findMatchingCombination(variant, combination) {
+        if (combination.length === 0) {
+            return true
+        }
+        const option = combination[0]
+        if (variant[option]) {
+            return this.findMatchingCombination(
+                variant[option],
+                combination.slice(1)
+            )
+        }
+        return false
+    }
+
+    findAvailableOptions(variant, combination) {
+        console.log("Available Options:", variant, combination)
+
+        const availableOptions = []
+        const queue = [[variant, combination]]
+
+        while (queue.length > 0) {
+            const [currentVariant, currentCombination] = queue.shift()
+            const option = currentCombination[0]
+
+            if (currentVariant.hasOwnProperty(option)) {
+                availableOptions.push(option)
+
+                const nextVariant = currentVariant[option]
+                const nextCombination = currentCombination.slice(1)
+
+                if (nextCombination.length > 0) {
+                    queue.push([nextVariant, nextCombination])
+                } else {
+                    if (nextVariant && nextVariant.available) {
+                        console.log("Available:", availableOptions)
+                        return availableOptions
+                    } else {
+                        // Если текущая комбинация не доступна, удаляем последний добавленный вариант
+                        availableOptions.pop()
+                        const alternativeOption = this.findAlternativeOption(
+                            currentVariant,
+                            currentCombination
+                        )
+                        if (alternativeOption) {
+                            console.log("Next option:", alternativeOption)
+                            availableOptions.push(alternativeOption)
+                            const nextVariant =
+                                currentVariant[alternativeOption]
+                            if (!nextVariant) {
+                                console.log(
+                                    "No available options. Available:",
+                                    availableOptions
+                                )
+                                return availableOptions
+                            }
+                            const nextCombination = currentCombination.slice(1)
+                            queue.push([nextVariant, nextCombination])
+                        } else {
+                            console.log(
+                                "No available options. Available:",
+                                availableOptions
+                            )
+                            return availableOptions
+                        }
+                    }
+                }
+            } else {
+                console.log("Combination mismatch. Option:", option)
+                const alternativeOption = this.findAlternativeOption(
+                    currentVariant,
+                    currentCombination
+                )
+                if (alternativeOption) {
+                    console.log("Next option:", alternativeOption)
+                    availableOptions.push(alternativeOption)
+                    const nextVariant = currentVariant[alternativeOption]
+                    if (!nextVariant) {
+                        console.log(
+                            "No available options. Available:",
+                            availableOptions
+                        )
+                        return availableOptions
+                    }
+                    const nextCombination = currentCombination.slice(1)
+                    queue.push([nextVariant, nextCombination])
+                } else {
+                    console.log(
+                        "No available options. Available:",
+                        availableOptions
+                    )
+                    return availableOptions
+                }
+            }
+        }
+
+        return availableOptions
+    }
+
+    findAlternativeOption(variant, currentCombination) {
+        const currentOption = currentCombination[0]
+        let alternativeOption = null
+
+        for (const key in variant) {
+            if (
+                Object.hasOwnProperty.call(variant, key) &&
+                key !== "available" &&
+                key !== currentOption
+            ) {
+                const nextVariant = variant[key]
+                const nextCombination = currentCombination.slice(1)
+
+                if (this.isOptionAvailable(nextVariant, nextCombination)) {
+                    alternativeOption = key
+                    break
+                }
+            }
+        }
+
+        if (!alternativeOption) {
+            const previousCombination = currentCombination.slice(0, -1)
+            if (
+                previousCombination.length > 0 &&
+                previousCombination[previousCombination.length - 1] !==
+                    currentOption
+            ) {
+                console.log(
+                    "Checking previous combination:",
+                    previousCombination
+                )
+                const nextVariant = variant[previousCombination[0]]
+                const nextCombination = previousCombination.slice(1)
+                alternativeOption = this.findAlternativeOption(
+                    nextVariant,
+                    nextCombination
+                )
+            } else {
+                console.log(
+                    "No available options:",
+                    this.getAllOptions(variant)
+                )
+
+                const firstLevelOptions = Object.keys(variant).filter(
+                    (key) => key !== "available"
+                )
+                for (const option of firstLevelOptions) {
+                    const firstLevelVariant = variant[option]
+                    const firstLevelCombination = currentCombination.slice(1)
+                    const firstLevelAlternativeOption =
+                        this.findAlternativeOption(
+                            firstLevelVariant,
+                            firstLevelCombination
+                        )
+                    if (firstLevelAlternativeOption) {
+                        alternativeOption = option
+                        break
+                    }
+                }
+            }
+        }
+
+        return alternativeOption
+    }
+
+    isOptionAvailable(variant, combination) {
+        if (combination.length === 0) {
+            return variant.available
+        }
+
+        const option = combination[0]
+        const nextVariant = variant[option]
+
+        if (!nextVariant) {
+            return false
+        }
+
+        const nextCombination = combination.slice(1)
+        return this.isOptionAvailable(nextVariant, nextCombination)
+    }
+
+    getAllOptions(variant) {
+        const options = []
+
+        for (const key in variant) {
+            if (
+                Object.hasOwnProperty.call(variant, key) &&
+                key !== "available" &&
+                variant[key].available
+            ) {
+                options.push(key)
+            }
+        }
+
+        return options
+    }
+
+    getAvailableVariant() {
+        const sortedVariants = this.groupedVariants()
+        const activeVariant = sortedVariants.find(
+            (variant) => variant.available
+        )
+        this.activeVariant = activeVariant.options
+    }
+
     getActiveSwatchValues() {
         this.swatchElements.forEach((element) => {
             const option = element.getAttribute("data-swatch")
@@ -503,11 +772,10 @@ class VariantPills extends HTMLElement {
                 element.classList.remove("active")
             }
         })
-        console.log("Selected values:", this.activeVariant)
         return this.activeVariant
     }
 
-    getAvailableVariant() {
+    groupedVariants() {
         const groupedVariants = {}
         this.variantData.forEach((variant) => {
             const color = variant.options[0]
@@ -524,39 +792,7 @@ class VariantPills extends HTMLElement {
             sortedVariants.push(...groupedVariants[color])
         })
 
-        console.log(sortedVariants)
-
-        const activeVariant = sortedVariants.find(
-            (variant) => variant.available
-        )
-
-        this.activeVariant = activeVariant.options
-        console.log(activeVariant)
-    }
-
-    updateSwatchLevels(selectedValues) {
-        const selectedOptions = selectedValues.filter(
-            (value) => value !== undefined
-        )
-        const numLevels = Math.min(
-            this.swatchElements.length,
-            selectedOptions.length
-        )
-
-        for (let i = 0; i < numLevels; i++) {
-            const level = this.swatchLevels[i]
-            const value = selectedOptions[i]
-            const options = Object.keys(level)
-
-            if (value !== undefined) {
-                const nextLevel = level[value]
-                if (nextLevel) {
-                    this.updateSwatchOptions(i + 1, Object.keys(nextLevel))
-                }
-            } else {
-                this.updateSwatchOptions(i + 1, options)
-            }
-        }
+        return sortedVariants
     }
 
     updateSwatchOptions(levelIndex, options) {
@@ -577,7 +813,7 @@ class VariantPills extends HTMLElement {
 
         const recursiveCheck = (level, levelIndex, selectedOptions) => {
             const options = Object.keys(level)
-            console.log(level)
+            //console.log(level)
             if (levelIndex > 0) {
                 let previousLevel = this.getVariantList
                 for (let i = 0; i < levelIndex; i++) {
@@ -594,7 +830,9 @@ class VariantPills extends HTMLElement {
                     swatchElements.forEach((element) => {
                         const option = element.getAttribute("data-option")
                         if (!unavailableOptions.includes(option)) {
-                            element.classList.add("hidden")
+                            //element.classList.add("hidden")
+                        } else {
+                            //element.classList.remove("hidden")
                         }
                     })
                 }
@@ -612,7 +850,7 @@ class VariantPills extends HTMLElement {
 
             if (availableOptions.length > 0) {
                 const swatchElement = this.swatchElements[levelIndex]
-                console.log("availableOptions" + availableOptions)
+                //console.log("availableOptions" + availableOptions)
                 if (swatchElement) {
                     this.updateSwatchOptions(levelIndex, availableOptions)
                 }
@@ -625,7 +863,7 @@ class VariantPills extends HTMLElement {
 
                     const nextLevel = level[nextLevelOption]
                     if (typeof nextLevel === "object" && nextLevel !== null) {
-                        console.log(`Moving to next level: ${nextLevelOption}`)
+                        //console.log(`Moving to next level: ${nextLevelOption}`)
                         recursiveCheck(
                             nextLevel,
                             nextLevelIndex,
@@ -638,7 +876,7 @@ class VariantPills extends HTMLElement {
 
         const selectedOptions = this.getActiveSwatchValues()
         // Initialize the swatch elements in this.swatchElements
-        console.log("checkSwatchLevels" + selectedOptions)
+        // console.log("checkSwatchLevels" + selectedOptions)
 
         recursiveCheck(this.getVariantList, 0, selectedOptions)
     }
