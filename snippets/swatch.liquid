@@ -2,7 +2,6 @@
     Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
 {% endcomment %}
 
-{% assign admin_option = settings.downcased_option %}
 {% assign file_extension = 'png' %}
 
 {% if swatch == blank %}
@@ -29,21 +28,34 @@
             {% assign found_option = true %}
             {% assign option_index = forloop.index0 %}
             {% assign downcased_option = swatch | downcase %}
-            {% if admin_option contains downcased_option %}
+
+            {% if downcased_option contains 'color'
+                or downcased_option contains 'farbe'
+                or downcased_option contains 'couleur'
+            %}
                 {% assign is_color = true %}
+                {% assign is_first = true %}
                 {% if variant_type == 'pills_color_images' %}
                     {% assign is_image = true %}
                 {% endif %}
             {% endif %}
 
-            {% case option_index %}
-                {% when 0 %}
-                    {% assign is_first = true %}
-                {% when 1 %}
-                    {% assign is_second = true %}
-                {% when 2 %}
-                    {% assign is_third = true %}
-            {% endcase %}
+            {% if downcased_option contains 'size'
+                or downcased_option contains 'größe'
+                or downcased_option contains 'taille'
+            %}
+                {% assign is_second = true %}
+            {% endif %}
+
+            {% if downcased_option contains 'fill'
+                or downcased_option contains 'pattern'
+                or downcased_option contains 'material'
+                or downcased_option contains 'matériel'
+                or downcased_option contains 'muster'
+                or downcased_option contains 'modèle'
+            %}
+                {% assign is_third = true %}
+            {% endif %}
         {% endif %}
     {% endfor %}
 
@@ -74,7 +86,7 @@
             {% assign class = 'swatch-third' %}
         {% endif %}
         <div
-            class="swatch swatch--product {% if is_color %}swatch-item-color {% endif %} swatch-item-{{ swatch }} js-swatch js-{{ class }}"
+            class="swatch swatch--product {% if is_color %}swatch-item-color {% endif %} swatch-item-{{ swatch }} js-{{ class }}"
             data-option-index="{{ option_index }}"
             data-swatch="{{ swatch }}"
         >
@@ -106,10 +118,8 @@
                         {% if option_index == 0 and grouped_product %}
                             aria-controls="{{ value }}-panel"
                         {% endif %}
-                        data-swatch="{{ value }}"
-                        data-option="{{ value }}"
-                        data-swatch-index="{{ option_index }}"
-                        class="swatch-element js-swatch-level-{{ option_index }} {% if option_index == 0 and grouped_product %} js-element-tab{% endif %}{% if is_color %} swatch-element-color {% endif %}{% if is_image %} swatch-element-image{% endif %} {{ value | handle }} js-swatch-element"
+                        data-value="{{ value }}"
+                        class="swatch-element {% if option_index == 0 and grouped_product %} js-element-tab{% endif %}{% if is_color %} swatch-element-color {% endif %}{% if is_image %} swatch-element-image{% endif %} {{ value | handle }} js-swatch-element"
                     >
                         <input
                             id="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}"
