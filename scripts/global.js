@@ -413,7 +413,7 @@ class QuantityInput extends HTMLElement {
 
 customElements.define("quantity-input", QuantityInput)
 
-class VariantPills extends HTMLElement {
+class VariantPillss extends HTMLElement {
     constructor() {
         super()
 
@@ -460,6 +460,8 @@ class VariantPills extends HTMLElement {
     initSwatch() {
         this.getVariantData()
         this.createNewListVariant(this.variantData)
+        console.log(this.variantData)
+        console.log(this.getVariantList)
 
         // Event handler for product option buttons
         const handleClick = (event) => {
@@ -935,9 +937,9 @@ class VariantPills extends HTMLElement {
     }
 }
 
-customElements.define("variant-pills", VariantPills)
+customElements.define("variant-pillss", VariantPillss)
 
-class VariantProduct extends VariantPills {
+class VariantProduct extends VariantPillss {
     constructor() {
         super()
         this.layout = document.querySelector(".js-layout-slider")
@@ -1117,6 +1119,303 @@ class VariantProduct extends VariantPills {
 }
 
 customElements.define("variant-product", VariantProduct)
+
+class VariantPills extends HTMLElement {
+    constructor() {
+        super()
+
+        this.swatchElements = this.querySelectorAll(".js-swatch-element")
+        this.swatchLevels = []
+        this.getVariantList = {}
+        this.activeVariant = null
+
+        this.initSwatch()
+    }
+
+    initSwatch() {
+        this.getVariantData()
+        console.log(this.variantData)
+        this.createNewListVariant(this.variantData)
+
+        console.log(this.getVariantList)
+
+        // Event handler for product option buttons
+        const handleClick = (event) => {
+            if (event.target.tagName === "INPUT") {
+                if (event.target.closest(".js-swatch")) {
+                    const elements = event.target
+                        .closest(".js-swatch")
+                        .querySelectorAll(".js-swatch-element")
+                    elements.forEach((element) => {
+                        element.classList.remove("active")
+                    })
+                }
+                const swatch =
+                    event.target.parentElement.classList.add("active")
+                const selectedValues = Array.from(this.swatchElements)
+                    .map((element) => {
+                        const input = element.querySelector("input:checked")
+
+                        return input ? input.value : null
+                    })
+                    .filter((value) => value !== null)
+
+                console.log(selectedValues)
+                //this.updateAvailableVariant(selectedValues)
+                this.isOptionAvailable(this.variantData, selectedValues)
+            }
+        }
+
+        const delay = 300
+
+        // Installing event handlers on product option buttons
+        this.swatchElements.forEach((element) => {
+            element.addEventListener("click", this.debounce(handleClick, delay))
+        })
+
+        this.getAvailableVariant()
+        // Check the availability of swatch levels
+        this.checkSwatchLevels()
+    }
+
+    createNewListVariant(variantData) {
+        for (let i = 0; i < variantData.length; i++) {
+            const options = variantData[i].options
+            const available = variantData[i].available
+
+            let currentLevel = this.getVariantList
+
+            for (let j = 0; j < options.length; j++) {
+                const option = options[j]
+                const isLastLevel = j === options.length - 1
+
+                if (!currentLevel.hasOwnProperty(option)) {
+                    currentLevel[option] = {}
+                }
+
+                if (isLastLevel) {
+                    currentLevel[option].available = available
+                }
+
+                currentLevel = currentLevel[option]
+            }
+        }
+    }
+
+    getAvailableVariant() {
+        const sortedVariants = this.groupedVariants()
+        const activeVariant = sortedVariants.find(
+            (variant) => variant.available
+        )
+        this.activeVariant = activeVariant.options
+    }
+
+    getActiveSwatchValues() {
+        this.swatchElements.forEach((element) => {
+            const option = element.getAttribute("data-value")
+            if (this.activeVariant.includes(option)) {
+                element.classList.add("active")
+                element.firstElementChild.checked = true
+            } else {
+                element.classList.remove("active")
+            }
+        })
+        return this.activeVariant
+    }
+
+    groupedVariants() {
+        const groupedVariants = {}
+        this.variantData.forEach((variant) => {
+            const color = variant.options[0]
+
+            if (!groupedVariants[color]) {
+                groupedVariants[color] = []
+            }
+
+            groupedVariants[color].push(variant)
+        })
+        const uniqueColors = Object.keys(groupedVariants)
+        const sortedVariants = []
+        uniqueColors.forEach((color) => {
+            sortedVariants.push(...groupedVariants[color])
+        })
+
+        return sortedVariants
+    }
+
+    updateSwatchOptions(levelIndex, options) {
+        const swatchElements = this.querySelectorAll(
+            `.js-swatch-level-${levelIndex}`
+        )
+        swatchElements.forEach((element) => {
+            const swatch = element.getAttribute("data-value")
+            const available = options.includes(swatch)
+
+            element.classList.toggle("available", available)
+            element.classList.toggle("unavailable", !available)
+        })
+    }
+
+    checkSwatchLevels() {
+        this.swatchLevels = []
+
+        const selectedOptions = this.getActiveSwatchValues()
+        const combinationsArray = Object.values(this.variantData)
+        const filterAvailability = this.filterAvailability(
+            combinationsArray,
+            selectedOptions
+        )
+
+        console.log("combinationsArray", combinationsArray)
+        console.log("filterAvailabilityCombinations", filterAvailability)
+        // this.updateSwatchOptions(index, availableOptions)
+
+        for (let index = 0; index < selectedOptions.length - 1; index++) {
+            const option = selectedOptions[index]
+            console.log("element", option)
+
+            let availableOptions = []
+
+            for (let j = 0; j < filterAvailability.length; j++) {
+                const combination = filterAvailability[j]
+                if (combination.options.includes(option)) {
+                    const secondOptions = combination.options
+                    console.log("elements", secondOptions[index + 1])
+                    availableOptions.push(secondOptions[index + 1])
+                }
+            }
+
+            // Удаляем дубликаты из списка доступных опций
+            availableOptions = [...new Set(availableOptions)]
+
+            console.log("availableOptions", availableOptions)
+            this.updateSwatchOptions(index + 1, availableOptions)
+        }
+
+        //recursiveCheck(this.getVariantList, 0, selectedOptions)
+    }
+
+    isOptionAvailable(combinations, availableOptions) {
+        const combinationsArray = Object.values(combinations)
+        const startOptions =
+            availableOptions.length > 1
+                ? availableOptions.slice(0, -1)
+                : availableOptions
+
+        const filterCombinations = this.filterCombinations(
+            combinationsArray,
+            startOptions
+        )
+
+        const optionAvailability = this.getCombinationAvailability(
+            filterCombinations,
+            availableOptions
+        )
+
+        if (optionAvailability !== undefined) {
+            console.log("optionAvailability", optionAvailability)
+            this.activeVariant = optionAvailability.options
+        } else {
+            this.activeVariant = filterCombinations[0].options
+        }
+        this.checkSwatchLevels()
+    }
+
+    getCombinationAvailability(combinations, availableOptions) {
+        return combinations.find((combination) => {
+            return combination.options.every((option) =>
+                availableOptions.includes(option)
+            )
+        })
+    }
+
+    filterAvailability(combinations, startingOptions) {
+        const filterAvailability = []
+        console.log("filterAvailability", startingOptions)
+        const partialOptions = startingOptions.slice(0, 1)
+        console.log("filterAvailability", partialOptions)
+        for (let i = startingOptions.length; i > 0; i--) {
+            const partialFilteredOptions = combinations.filter(
+                (combination) => {
+                    if (
+                        combination.options.length < partialOptions.length ||
+                        !combination.available
+                    ) {
+                        return false
+                    }
+
+                    for (let j = 0; j < partialOptions.length; j++) {
+                        if (combination.options[j] !== partialOptions[j]) {
+                            return false
+                        }
+                    }
+
+                    return true
+                }
+            )
+
+            filterAvailability.push(...partialFilteredOptions)
+
+            if (partialFilteredOptions.length > 0) {
+                break
+            }
+        }
+
+        return filterAvailability
+    }
+
+    filterCombinations(combinations, startingOptions) {
+        const filterCombinations = []
+        for (let i = startingOptions.length; i > 0; i--) {
+            const partialOptions = startingOptions.slice(0, i)
+            const partialFilteredOptions = combinations.filter(
+                (combination) => {
+                    if (
+                        combination.options.length < partialOptions.length ||
+                        !combination.available
+                    ) {
+                        return false
+                    }
+
+                    for (let j = 0; j < partialOptions.length; j++) {
+                        if (combination.options[j] !== partialOptions[j]) {
+                            return false
+                        }
+                    }
+
+                    return true
+                }
+            )
+
+            filterCombinations.push(...partialFilteredOptions)
+
+            if (partialFilteredOptions.length > 0) {
+                break
+            }
+        }
+        console.log("filterCombinations", filterCombinations)
+        return filterCombinations
+    }
+
+    getVariantData() {
+        this.variantData =
+            this.variantData ||
+            JSON.parse(
+                this.querySelector('[type="application/json"]').textContent
+            )
+        return this.variantData
+    }
+
+    debounce(func, delay) {
+        let timeoutId
+        return function () {
+            clearTimeout(timeoutId)
+            timeoutId = setTimeout(func, delay, ...arguments)
+        }
+    }
+}
+
+customElements.define("variant-pills", VariantPills)
 
 class LocalizationForm extends HTMLElement {
     constructor() {
