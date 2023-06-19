@@ -413,14 +413,15 @@ class QuantityInput extends HTMLElement {
 
 customElements.define("quantity-input", QuantityInput)
 
-class VariantPillss extends HTMLElement {
+class VariantPills extends HTMLElement {
     constructor() {
         super()
 
-        this.swatchFirst = this.querySelector(".js-swatch-first")
-        this.swatchSecond = this.querySelector(".js-swatch-second")
-        this.swatchThird = this.querySelector(".js-swatch-third")
-        this.swatchElement = this.querySelectorAll(".js-swatch-element")
+        this.swatchElements = this.querySelectorAll(".js-swatch-element")
+        this.swatchLevels = []
+        this.getVariantList = {}
+        this.activeVariant = null
+        this.availableVariant = null
 
         this.price = this.closest(".js-card-product-wrapper").querySelector(
             ".js-card-product-price"
@@ -448,696 +449,12 @@ class VariantPillss extends HTMLElement {
             ".js-card-product-wrapper"
         ).querySelector(".js-btn-sold-out")
 
-        this.swatchLvlFirst = false
-        this.swatchLvlSecond = false
-        this.swatchLvlThird = false
-
-        this.getVariantList = {}
-
         this.initSwatch()
     }
 
     initSwatch() {
         this.getVariantData()
         this.createNewListVariant(this.variantData)
-        console.log(this.variantData)
-        console.log(this.getVariantList)
-
-        // Event handler for product option buttons
-        const handleClick = (event) => {
-            if (event.target.tagName === "INPUT") {
-                const firstElement = event.target.closest(".js-swatch-first")
-                const secondElement = event.target.closest(".js-swatch-second")
-                const thirdElement = event.target.closest(".js-swatch-third")
-
-                let firstValue, secondValue, thirdValue
-
-                if (firstElement) {
-                    firstValue = event.target.value
-                    secondValue = undefined
-                    thirdValue = undefined
-                }
-
-                if (secondElement) {
-                    firstValue = this.getActiveSwatchValue(this.swatchFirst)
-                    secondValue = event.target.value
-                    thirdValue = undefined
-                }
-
-                if (thirdElement) {
-                    firstValue = this.getActiveSwatchValue(this.swatchFirst)
-                    secondValue = this.getActiveSwatchValue(this.swatchSecond)
-                    thirdValue = event.target.value
-                }
-
-                if (this.swatchLvlFirst && !this.swatchLvlSecond) {
-                    this.updateSwatchLvlFirst(firstValue)
-                    this.getAvailableVariant(event)
-                }
-
-                if (
-                    this.swatchLvlFirst &&
-                    this.swatchLvlSecond &&
-                    !this.swatchLvlThird
-                ) {
-                    this.updateSwatchLvlSecond(firstValue, secondValue)
-                    this.getAvailableVariant(event)
-                }
-
-                if (
-                    this.swatchLvlFirst &&
-                    this.swatchLvlSecond &&
-                    this.swatchLvlThird
-                ) {
-                    this.updateSwatchLvlThird(
-                        firstValue,
-                        secondValue,
-                        thirdValue
-                    )
-                    this.getAvailableVariant(event)
-                }
-            }
-        }
-
-        const delay = 300
-
-        // Installing event handlers on product option buttons
-        this.swatchElement.forEach((element) => {
-            element.addEventListener("click", debounce(handleClick, delay))
-        })
-
-        //Check the level First of available buttons
-        if (this.swatchLvlFirst && !this.swatchLvlSecond) {
-            this.updateSwatchLvlFirst()
-        }
-
-        //Check the level Second of available buttons
-        if (
-            this.swatchLvlFirst &&
-            this.swatchLvlSecond &&
-            !this.swatchLvlThird
-        ) {
-            this.updateSwatchLvlSecond()
-        }
-
-        //Check the level Third of available buttons
-        if (
-            this.swatchLvlFirst &&
-            this.swatchLvlSecond &&
-            this.swatchLvlThird
-        ) {
-            this.updateSwatchLvlThird()
-        }
-    }
-
-    getActiveSwatchValue(swatch) {
-        const activeElement = swatch.querySelector(".js-swatch-element.active")
-        return activeElement ? activeElement.firstElementChild.value : undefined
-    }
-
-    updateSwatchLvlFirst(firstValue) {
-        const availableFirst = Object.keys(this.getVariantList).filter(
-            (item) => this.getVariantList[item].available
-        )
-        const firstSelected =
-            firstValue !== undefined ? firstValue : availableFirst[0]
-
-        this.availableSwatchFirst(availableFirst, firstSelected)
-    }
-
-    updateSwatchLvlSecond(firstValue, secondValue) {
-        const availableFirst = Object.keys(this.getVariantList).filter(
-            (first) => {
-                const second = this.getVariantList[first]
-                return Object.keys(second).some(
-                    (item) => second[item].available
-                )
-            }
-        )
-        const firstSelected =
-            firstValue !== undefined ? firstValue : availableFirst[0]
-
-        this.availableSwatchFirst(availableFirst, firstSelected)
-        this.hiddenButtonSwatchSecond(firstSelected)
-
-        const availableSecond = Object.keys(
-            this.getVariantList[firstSelected]
-        ).filter((item) => {
-            return this.getVariantList[firstSelected][item].available
-        })
-        const secondSelected =
-            secondValue !== undefined ? secondValue : availableSecond[0]
-
-        this.availableSwatchSecond(availableSecond, secondSelected)
-    }
-
-    updateSwatchLvlThird(firstValue, secondValue, thirdValue) {
-        const availableFirst = Object.keys(this.getVariantList).filter(
-            (first) => {
-                return Object.values(this.getVariantList[first]).some(
-                    (second) => {
-                        return Object.values(second).some(
-                            (third) => third.available
-                        )
-                    }
-                )
-            }
-        )
-        const firstSelected =
-            firstValue !== undefined ? firstValue : availableFirst[0]
-
-        this.availableSwatchFirst(availableFirst, firstSelected)
-        this.hiddenButtonSwatchSecond(firstSelected)
-
-        const availableSecond = Object.keys(
-            this.getVariantList[firstSelected]
-        ).filter((item) => {
-            const third = this.getVariantList[firstSelected][item]
-            return Object.keys(third).some((item) => third[item].available)
-        })
-        const secondSelected =
-            secondValue !== undefined ? secondValue : availableSecond[0]
-
-        this.availableSwatchSecond(availableSecond, secondSelected)
-        this.hiddenButtonSwatchThird(firstSelected, secondSelected)
-
-        const availableThird = Object.keys(
-            this.getVariantList[firstSelected][secondSelected]
-        ).filter((item) => {
-            return this.getVariantList[firstSelected][secondSelected][item]
-                .available
-        })
-        const thirdSelected =
-            thirdValue !== undefined ? thirdValue : availableThird[0]
-
-        this.availableSwatchThird(availableThird, thirdSelected)
-    }
-
-    availableSwatchFirst(availableFirst, firstSelected) {
-        this.swatchFirst
-            .querySelectorAll("[data-lvl-first]")
-            .forEach((element) => {
-                const item = element.dataset.lvlFirst
-                element.classList.toggle(
-                    "available",
-                    availableFirst.includes(item)
-                )
-                element.classList.toggle(
-                    "unavailable",
-                    !availableFirst.includes(item)
-                )
-            })
-
-        availableFirst.forEach((item) => {
-            const button = this.swatchFirst.querySelector(
-                `[data-lvl-first="${item}"]`
-            )
-            const details = this.swatchFirst.querySelector(
-                ".js-swatch-header em"
-            )
-
-            button.classList.remove("active")
-
-            if (item === firstSelected) {
-                button.classList.add("active")
-                button.firstElementChild.checked = true
-                details.textContent = item
-            }
-        })
-    }
-
-    availableSwatchSecond(availableSecond, secondSelected) {
-        this.swatchSecond
-            .querySelectorAll("[data-lvl-second]")
-            .forEach((element) => {
-                const item = element.dataset.lvlSecond
-                element.classList.toggle(
-                    "available",
-                    availableSecond.includes(item)
-                )
-                element.classList.toggle(
-                    "unavailable",
-                    !availableSecond.includes(item)
-                )
-            })
-
-        availableSecond.forEach((item) => {
-            const button = this.swatchSecond.querySelector(
-                `[data-lvl-second="${item}"]`
-            )
-            const details = this.swatchSecond.querySelector(
-                ".js-swatch-header em"
-            )
-
-            if (item === secondSelected) {
-                button.classList.add("active")
-                button.firstElementChild.checked = true
-                details.textContent = item
-            }
-        })
-    }
-
-    availableSwatchThird(availableThird, thirdSelected) {
-        this.swatchThird
-            .querySelectorAll("[data-lvl-third]")
-            .forEach((element) => {
-                const item = element.dataset.lvlThird
-                element.classList.toggle(
-                    "available",
-                    availableThird.includes(item)
-                )
-                element.classList.toggle(
-                    "unavailable",
-                    !availableThird.includes(item)
-                )
-            })
-
-        availableThird.forEach((item) => {
-            const button = this.swatchThird.querySelector(
-                `[data-lvl-third="${item}"]`
-            )
-            const details = this.swatchThird.querySelector(
-                ".js-swatch-header em"
-            )
-
-            button.classList.add("active")
-            if (item === thirdSelected) {
-                button.classList.add("active")
-                button.firstElementChild.checked = true
-                details.textContent = item
-            }
-        })
-    }
-
-    hiddenButtonSwatchSecond(firstSelected) {
-        this.swatchSecond
-            .querySelectorAll(".js-swatch-element")
-            .forEach((element) => {
-                let value = element.getAttribute("data-value")
-                element.classList.remove("hidden")
-                element.classList.remove("active")
-                if (!this.getVariantList[firstSelected].hasOwnProperty(value)) {
-                    element.classList.add("hidden")
-                }
-            })
-    }
-
-    hiddenButtonSwatchThird(firstSelected, secondSelected) {
-        this.swatchThird
-            .querySelectorAll(".js-swatch-element")
-            .forEach((element) => {
-                let value = element.getAttribute("data-value")
-                element.classList.remove("hidden")
-                element.classList.remove("active")
-
-                if (
-                    !this.getVariantList[firstSelected][
-                        secondSelected
-                    ].hasOwnProperty(value)
-                ) {
-                    element.classList.add("hidden")
-                }
-            })
-    }
-
-    createNewListVariant(variantData) {
-        for (let i = 0; i < variantData.length; i++) {
-            let option1 = variantData[i].option1
-            let option2 = variantData[i].option2
-            let option3 = variantData[i].option3
-            let available = variantData[i].available
-
-            if (option1) {
-                this.swatchLvlFirst = true
-            }
-            if (option2) {
-                this.swatchLvlSecond = true
-            }
-            if (option3) {
-                this.swatchLvlThird = true
-            }
-
-            const lvlFirst = this.getVariantList[option1] || {}
-            const lvlSecond = lvlFirst[option2] || {}
-            const lvlThird = lvlSecond[option3] || {}
-
-            if (option3) {
-                //check availability level 3
-                lvlSecond[option3] = {
-                    ...lvlThird,
-                    available: available,
-                }
-                lvlFirst[option2] = lvlSecond
-                this.getVariantList[option1] = lvlFirst
-            } else if (option2) {
-                //check availability level 2
-                lvlFirst[option2] = {
-                    ...lvlSecond,
-                    available: available,
-                }
-                this.getVariantList[option1] = lvlFirst
-            } else {
-                //check availability level 1
-                this.getVariantList[option1] = {
-                    ...lvlFirst,
-                    available: available,
-                }
-            }
-        }
-    }
-
-    getAvailableVariant(event) {
-        const selectedOptions = []
-        const products = this.variantData
-        this.swatchElement.forEach((element) => {
-            let radio = element.firstElementChild
-            if (radio.checked) {
-                selectedOptions.push(radio.value)
-            }
-        })
-
-        // Filtering the data array by the selected options
-        this.availableVariant = products.filter((product) => {
-            return selectedOptions.every((option, index) => {
-                return product.options[index] === option
-            })
-        })
-
-        this.updateOptions(event)
-        this.updatePrice()
-        this.updateImage()
-        this.updateURL()
-
-        console.log(this.availableVariant[0])
-    }
-
-    updateOptions(event) {
-        const availableVariant = this.availableVariant[0]
-        const availableVariantId = String(availableVariant.id)
-        const selectElement = this.querySelector("select")
-        const option = selectElement.querySelector(
-            `option[value='${availableVariantId}']`
-        )
-        const inventoryManagement = availableVariant.inventory_management
-        const inventoryPolicy = option ? option.dataset.inventoryPolicy : null
-        const inventoryQty = option ? option.dataset.qty : null
-        //const qtyParentElement = this.qty.parentElement
-
-        if (option) {
-            option.selected = true
-        }
-
-        if (inventoryManagement === "shopify" && inventoryPolicy === "deny") {
-            this.qty.setAttribute("max", inventoryQty)
-        } else {
-            this.qty.removeAttribute("max")
-        }
-
-        if (inventoryQty < 10) {
-            this.stock.classList.remove("card-product__stock--normalstock")
-            this.stock.classList.add("card-product__stock--lowstock")
-        } else {
-            this.stock.classList.remove("card-product__stock--lowstock")
-            this.stock.classList.add("card-product__stock--normalstock")
-        }
-
-        const isAvailable = availableVariant.available
-
-        //qtyParentElement.classList.toggle('hidden', !isAvailable);
-        //this.btnCart.classList.toggle('hidden', !isAvailable);
-        //this.btnSoldOut.classList.toggle('hidden', isAvailable);
-
-        if (!isAvailable) {
-            const headerSwatch = event.target
-                .closest(".swatch--product")
-                .querySelector(".js-swatch-header em")
-            headerSwatch.textContent = event.target.value
-        }
-    }
-
-    updatePrice() {
-        const { compare_at_price: comparePrice, price: salePrice } =
-            this.availableVariant[0]
-        const elementSalePrice = this.price.querySelector(".price__item--sale")
-        const elementComparePrice = this.price.querySelector(
-            ".price__item--regular"
-        )
-        const hasComparePrice = comparePrice !== null
-
-        this.percentageBadge
-
-        this.price.classList.toggle("price--on-sale", hasComparePrice)
-        this.saleBadge.classList.toggle("hidden", !hasComparePrice)
-        elementSalePrice.textContent = Shopify.formatMoney(salePrice)
-        elementComparePrice.textContent = hasComparePrice
-            ? Shopify.formatMoney(comparePrice)
-            : ""
-        if (hasComparePrice) {
-            const getPercentage =
-                ((comparePrice - salePrice) / comparePrice) * 100
-            this.percentageBadge.textContent = Math.round(getPercentage) + "%"
-        }
-    }
-
-    updateImage() {
-        const image = this.availableVariant[0].featured_image
-
-        if (image !== null) {
-            this.image.firstElementChild.srcset = image.src
-        }
-    }
-
-    updateURL() {
-        const cardProductWrapper = this.closest(".js-card-product-wrapper")
-        if (!this.availableVariant || !cardProductWrapper) return
-
-        const url = cardProductWrapper.querySelector(
-            ".js-card-product-title > a"
-        )
-        if (url) {
-            url.search = `?variant=${this.availableVariant[0].id}`
-        }
-    }
-
-    getVariantData() {
-        this.variantData =
-            this.variantData ||
-            JSON.parse(
-                this.querySelector('[type="application/json"]').textContent
-            )
-        return this.variantData
-    }
-
-    debounce = (fn, wait) => {
-        let t
-        return (...args) => {
-            clearTimeout(t)
-            t = setTimeout(() => fn.apply(this, args), wait)
-        }
-    }
-}
-
-customElements.define("variant-pillss", VariantPillss)
-
-class VariantProduct extends VariantPillss {
-    constructor() {
-        super()
-        this.layout = document.querySelector(".js-layout-slider")
-        this.layoutGrouped = document.querySelector(".js-layout-grouped")
-        this.cardProductCount = document.querySelectorAll(
-            ".js-card-product-count"
-        )
-        this.variantSku = document.querySelector(".js-variant-sku")
-        this.variantBarcode = document.querySelector(".js-variant-barcode")
-    }
-
-    getAvailableVariant(event) {
-        const selectedOptions = []
-        const products = this.variantData
-        this.swatchElement.forEach((element) => {
-            let radio = element.firstElementChild
-            if (radio.checked) {
-                selectedOptions.push(radio.value)
-            }
-        })
-
-        // Filtering the data array by the selected options
-        this.availableVariant = products.filter((product) => {
-            return selectedOptions.every((option, index) => {
-                return product.options[index] === option
-            })
-        })
-
-        this.updateOptions(event)
-        this.updatePrice()
-        this.updateImage()
-        this.updateURL()
-        this.updatePickupAvailability()
-        if (this.layout !== null) {
-            this.updateSlider()
-        }
-
-        console.log(this.availableVariant[0])
-
-        if (this.layoutGrouped !== null) {
-            this.updateSliderGrouped(event)
-        }
-    }
-
-    updatePickupAvailability() {
-        const currentVariant = this.availableVariant[0]
-        const pickUpAvailability = document.querySelector("pickup-availability")
-        if (!pickUpAvailability) return
-
-        if (currentVariant && currentVariant.available) {
-            pickUpAvailability.fetchAvailability(currentVariant.id)
-        } else {
-            pickUpAvailability.removeAttribute("available")
-            pickUpAvailability.innerHTML = ""
-        }
-    }
-
-    updateOptions(event) {
-        const availableVariant = this.availableVariant[0]
-        const availableVariantId = availableVariant.id.toString()
-        const selectElement = this.querySelector("select")
-        const option = selectElement.querySelector(
-            `option[value='${availableVariantId}']`
-        )
-        const inventoryManagement = availableVariant.inventory_management
-        const inventoryPolicy = option ? option.dataset.inventoryPolicy : null
-        const inventoryQty = option ? option.dataset.qty : null
-        //const qtyParentElement = this.qty.parentElement
-
-        if (option) {
-            option.selected = true
-        }
-
-        if (inventoryManagement === "shopify" && inventoryPolicy === "deny") {
-            this.qty.setAttribute("max", inventoryQty)
-        } else {
-            this.qty.removeAttribute("max")
-        }
-
-        if (this.cardProductCount !== null) {
-            this.cardProductCount.forEach((element) => {
-                element.textContent = inventoryQty
-            })
-        }
-
-        if (this.variantSku !== null) {
-            this.variantSku.textContent = availableVariant.sku
-        }
-
-        if (this.variantBarcode !== null) {
-            this.variantBarcode.textContent = availableVariant.barcode
-        }
-
-        if (inventoryQty < 10) {
-            this.stock.classList.remove("card-product__stock--normalstock")
-            this.stock.classList.add("card-product__stock--lowstock")
-        } else {
-            this.stock.classList.remove("card-product__stock--lowstock")
-            this.stock.classList.add("card-product__stock--normalstock")
-        }
-
-        const isAvailable = availableVariant.available
-
-        if (!isAvailable) {
-            const headerSwatch = event.target
-                .closest(".swatch--product")
-                .querySelector(".js-swatch-header em")
-            headerSwatch.textContent = event.target.value
-        }
-    }
-
-    updateSliderGrouped(event) {
-        const selectedVariantId = this.availableVariant[0].id.toString()
-        const selectedButton = event.target.closest(".js-element-tab")
-
-        if (selectedButton) {
-            const ariaControls = selectedButton.getAttribute("aria-controls")
-            const headTabs = document.querySelectorAll(".js-tab")
-
-            headTabs.forEach((tab) => {
-                if (tab.getAttribute("aria-controls") === ariaControls) {
-                    tab.click()
-                }
-            })
-        }
-        const swiperContainer = document.querySelector(
-            "#" + this.availableVariant[0].option1 + "-panel .js-gallery"
-        )
-
-        if (swiperContainer) {
-            const slides = swiperContainer.querySelectorAll(".swiper-slide")
-
-            let slideIndex = -1
-            const swiperInstance = swiperContainer.swiper
-
-            if (swiperInstance) {
-                slides.forEach((slide, index) => {
-                    const variantId = slide.getAttribute("data-variant-id")
-                    if (variantId === selectedVariantId) {
-                        slideIndex = index
-                        return
-                    }
-                })
-
-                if (slideIndex !== -1) {
-                    swiperInstance.slideTo(slideIndex)
-                }
-            }
-        }
-    }
-
-    updateSlider() {
-        const selectedVariantId = this.availableVariant[0].id.toString()
-        const swiperContainer = document.querySelector(".js-gallery")
-
-        if (swiperContainer) {
-            const slides = swiperContainer.querySelectorAll(".swiper-slide")
-
-            let slideIndex = -1
-            const swiperInstance = swiperContainer.swiper
-
-            if (swiperInstance) {
-                slides.forEach((slide, index) => {
-                    const variantId = slide.getAttribute("data-variant-id")
-                    if (variantId === selectedVariantId) {
-                        slideIndex = index
-                        return
-                    }
-                })
-
-                if (slideIndex !== -1) {
-                    swiperInstance.slideTo(slideIndex)
-                }
-            }
-        }
-    }
-}
-
-customElements.define("variant-product", VariantProduct)
-
-class VariantPills extends HTMLElement {
-    constructor() {
-        super()
-
-        this.swatchElements = this.querySelectorAll(".js-swatch-element")
-        this.swatchLevels = []
-        this.getVariantList = {}
-        this.activeVariant = null
-
-        this.initSwatch()
-    }
-
-    initSwatch() {
-        this.getVariantData()
-        console.log(this.variantData)
-        this.createNewListVariant(this.variantData)
-
-        console.log(this.getVariantList)
 
         // Event handler for product option buttons
         const handleClick = (event) => {
@@ -1150,8 +467,7 @@ class VariantPills extends HTMLElement {
                         element.classList.remove("active")
                     })
                 }
-                const swatch =
-                    event.target.parentElement.classList.add("active")
+
                 const selectedValues = Array.from(this.swatchElements)
                     .map((element) => {
                         const input = element.querySelector("input:checked")
@@ -1160,9 +476,8 @@ class VariantPills extends HTMLElement {
                     })
                     .filter((value) => value !== null)
 
-                console.log(selectedValues)
                 //this.updateAvailableVariant(selectedValues)
-                this.isOptionAvailable(this.variantData, selectedValues)
+                this.isOptionAvailable(event, this.variantData, selectedValues)
             }
         }
 
@@ -1175,7 +490,6 @@ class VariantPills extends HTMLElement {
 
         this.getAvailableVariant()
         // Check the availability of swatch levels
-        this.checkSwatchLevels()
     }
 
     createNewListVariant(variantData) {
@@ -1208,6 +522,8 @@ class VariantPills extends HTMLElement {
             (variant) => variant.available
         )
         this.activeVariant = activeVariant.options
+
+        this.checkSwatchLevels()
     }
 
     getActiveSwatchValues() {
@@ -1216,6 +532,10 @@ class VariantPills extends HTMLElement {
             if (this.activeVariant.includes(option)) {
                 element.classList.add("active")
                 element.firstElementChild.checked = true
+                const headerSwatch = element
+                    .closest(".swatch--product")
+                    .querySelector(".js-swatch-header em")
+                headerSwatch.textContent = element.getAttribute("data-value")
             } else {
                 element.classList.remove("active")
             }
@@ -1265,37 +585,32 @@ class VariantPills extends HTMLElement {
             combinationsArray,
             selectedOptions
         )
-
-        console.log("combinationsArray", combinationsArray)
-        console.log("filterAvailabilityCombinations", filterAvailability)
-        // this.updateSwatchOptions(index, availableOptions)
-
-        for (let index = 0; index < selectedOptions.length - 1; index++) {
-            const option = selectedOptions[index]
-            console.log("element", option)
-
-            let availableOptions = []
-
-            for (let j = 0; j < filterAvailability.length; j++) {
-                const combination = filterAvailability[j]
-                if (combination.options.includes(option)) {
-                    const secondOptions = combination.options
-                    console.log("elements", secondOptions[index + 1])
-                    availableOptions.push(secondOptions[index + 1])
+        if (filterAvailability) {
+            for (let index = 0; index < selectedOptions.length - 1; index++) {
+                const option = selectedOptions[index]
+                let availableOptions = []
+                for (let j = 0; j < filterAvailability.length; j++) {
+                    const combination = filterAvailability[j]
+                    if (combination.options.includes(option)) {
+                        const secondOptions = combination.options
+                        availableOptions.push(secondOptions[index + 1])
+                    }
                 }
+                availableOptions = [...new Set(availableOptions)]
+
+                this.updateSwatchOptions(index + 1, availableOptions)
             }
-
-            // Удаляем дубликаты из списка доступных опций
-            availableOptions = [...new Set(availableOptions)]
-
-            console.log("availableOptions", availableOptions)
-            this.updateSwatchOptions(index + 1, availableOptions)
+            if (selectedOptions.length <= 2) {
+                const availableOptions = combinationsArray
+                    .filter((combination) => combination.available)
+                    .map((combination) => combination.options)
+                const mergedOptions = [].concat(...availableOptions)
+                this.updateSwatchOptions(0, mergedOptions)
+            }
         }
-
-        //recursiveCheck(this.getVariantList, 0, selectedOptions)
     }
 
-    isOptionAvailable(combinations, availableOptions) {
+    isOptionAvailable(event, combinations, availableOptions) {
         const combinationsArray = Object.values(combinations)
         const startOptions =
             availableOptions.length > 1
@@ -1313,12 +628,20 @@ class VariantPills extends HTMLElement {
         )
 
         if (optionAvailability !== undefined) {
-            console.log("optionAvailability", optionAvailability)
             this.activeVariant = optionAvailability.options
+            this.availableVariant = optionAvailability
         } else {
             this.activeVariant = filterCombinations[0].options
+            this.availableVariant = filterCombinations[0]
         }
         this.checkSwatchLevels()
+
+        console.log(this.availableVariant)
+
+        this.updateOptions()
+        this.updatePrice()
+        this.updateImage()
+        this.updateURL()
     }
 
     getCombinationAvailability(combinations, availableOptions) {
@@ -1331,9 +654,7 @@ class VariantPills extends HTMLElement {
 
     filterAvailability(combinations, startingOptions) {
         const filterAvailability = []
-        console.log("filterAvailability", startingOptions)
         const partialOptions = startingOptions.slice(0, 1)
-        console.log("filterAvailability", partialOptions)
         for (let i = startingOptions.length; i > 0; i--) {
             const partialFilteredOptions = combinations.filter(
                 (combination) => {
@@ -1393,8 +714,88 @@ class VariantPills extends HTMLElement {
                 break
             }
         }
-        console.log("filterCombinations", filterCombinations)
         return filterCombinations
+    }
+
+    updateOptions() {
+        const availableVariant = this.availableVariant
+        console.log("availableVariant", availableVariant)
+        const availableVariantId = String(availableVariant.id)
+        const selectElement = this.querySelector("select")
+        const option = selectElement.querySelector(
+            `option[value='${availableVariantId}']`
+        )
+        const inventoryManagement = availableVariant.inventory_management
+        const inventoryPolicy = option ? option.dataset.inventoryPolicy : null
+        const inventoryQty = option ? option.dataset.qty : null
+        //const qtyParentElement = this.qty.parentElement
+
+        if (option) {
+            option.selected = true
+        }
+
+        if (inventoryManagement === "shopify" && inventoryPolicy === "deny") {
+            this.qty.setAttribute("max", inventoryQty)
+        } else {
+            this.qty.removeAttribute("max")
+        }
+
+        if (inventoryQty < 10) {
+            this.stock.classList.remove("card-product__stock--normalstock")
+            this.stock.classList.add("card-product__stock--lowstock")
+        } else {
+            this.stock.classList.remove("card-product__stock--lowstock")
+            this.stock.classList.add("card-product__stock--normalstock")
+        }
+
+        //const isAvailable = availableVariant.available
+        //qtyParentElement.classList.toggle('hidden', !isAvailable);
+        //this.btnCart.classList.toggle('hidden', !isAvailable);
+        //this.btnSoldOut.classList.toggle('hidden', isAvailable);
+    }
+
+    updatePrice() {
+        const { compare_at_price: comparePrice, price: salePrice } =
+            this.availableVariant
+        const elementSalePrice = this.price.querySelector(".price__item--sale")
+        const elementComparePrice = this.price.querySelector(
+            ".price__item--regular"
+        )
+        const hasComparePrice = comparePrice !== null
+
+        this.percentageBadge
+
+        this.price.classList.toggle("price--on-sale", hasComparePrice)
+        this.saleBadge.classList.toggle("hidden", !hasComparePrice)
+        elementSalePrice.textContent = Shopify.formatMoney(salePrice)
+        elementComparePrice.textContent = hasComparePrice
+            ? Shopify.formatMoney(comparePrice)
+            : ""
+        if (hasComparePrice) {
+            const getPercentage =
+                ((comparePrice - salePrice) / comparePrice) * 100
+            this.percentageBadge.textContent = Math.round(getPercentage) + "%"
+        }
+    }
+
+    updateImage() {
+        const image = this.availableVariant.featured_image
+
+        if (image !== null) {
+            this.image.firstElementChild.srcset = image.src
+        }
+    }
+
+    updateURL() {
+        const cardProductWrapper = this.closest(".js-card-product-wrapper")
+        if (!this.availableVariant || !cardProductWrapper) return
+
+        const url = cardProductWrapper.querySelector(
+            ".js-card-product-title > a"
+        )
+        if (url) {
+            url.search = `?variant=${this.availableVariant.id}`
+        }
     }
 
     getVariantData() {
@@ -1416,6 +817,196 @@ class VariantPills extends HTMLElement {
 }
 
 customElements.define("variant-pills", VariantPills)
+
+class VariantProduct extends VariantPills {
+    constructor() {
+        super()
+        this.layout = document.querySelector(".js-layout-slider")
+        this.layoutGrouped = document.querySelector(".js-layout-grouped")
+        this.cardProductCount = document.querySelectorAll(
+            ".js-card-product-count"
+        )
+        this.variantSku = document.querySelector(".js-variant-sku")
+        this.variantBarcode = document.querySelector(".js-variant-barcode")
+    }
+
+    isOptionAvailable(event, combinations, availableOptions) {
+        const combinationsArray = Object.values(combinations)
+        const startOptions =
+            availableOptions.length > 1
+                ? availableOptions.slice(0, -1)
+                : availableOptions
+
+        const filterCombinations = this.filterCombinations(
+            combinationsArray,
+            startOptions
+        )
+
+        const optionAvailability = this.getCombinationAvailability(
+            filterCombinations,
+            availableOptions
+        )
+
+        if (optionAvailability !== undefined) {
+            this.activeVariant = optionAvailability.options
+            this.availableVariant = optionAvailability
+        } else {
+            this.activeVariant = filterCombinations[0].options
+            this.availableVariant = filterCombinations[0]
+        }
+        this.checkSwatchLevels()
+
+        console.log(this.availableVariant)
+
+        this.updateOptions()
+        this.updatePrice()
+        this.updateImage()
+        this.updateURL()
+        this.updatePickupAvailability()
+        if (this.layout !== null) {
+            this.updateSlider()
+        }
+
+        if (this.layoutGrouped !== null) {
+            this.updateSliderGrouped(event)
+        }
+    }
+
+    updatePickupAvailability() {
+        const currentVariant = this.availableVariant[0]
+        const pickUpAvailability = document.querySelector("pickup-availability")
+        if (!pickUpAvailability) return
+
+        if (currentVariant && currentVariant.available) {
+            pickUpAvailability.fetchAvailability(currentVariant.id)
+        } else {
+            pickUpAvailability.removeAttribute("available")
+            pickUpAvailability.innerHTML = ""
+        }
+    }
+
+    updateOptions(event) {
+        const availableVariant = this.availableVariant
+        const availableVariantId = availableVariant.id.toString()
+        const selectElement = this.querySelector("select")
+        const option = selectElement.querySelector(
+            `option[value='${availableVariantId}']`
+        )
+        const inventoryManagement = availableVariant.inventory_management
+        const inventoryPolicy = option ? option.dataset.inventoryPolicy : null
+        const inventoryQty = option ? option.dataset.qty : null
+        //const qtyParentElement = this.qty.parentElement
+
+        if (option) {
+            option.selected = true
+        }
+
+        if (inventoryManagement === "shopify" && inventoryPolicy === "deny") {
+            this.qty.setAttribute("max", inventoryQty)
+        } else {
+            this.qty.removeAttribute("max")
+        }
+
+        if (this.cardProductCount !== null) {
+            this.cardProductCount.forEach((element) => {
+                element.textContent = inventoryQty
+            })
+        }
+
+        if (this.variantSku !== null) {
+            this.variantSku.textContent = availableVariant.sku
+        }
+
+        if (this.variantBarcode !== null) {
+            this.variantBarcode.textContent = availableVariant.barcode
+        }
+
+        if (inventoryQty < 10) {
+            this.stock.classList.remove("card-product__stock--normalstock")
+            this.stock.classList.add("card-product__stock--lowstock")
+        } else {
+            this.stock.classList.remove("card-product__stock--lowstock")
+            this.stock.classList.add("card-product__stock--normalstock")
+        }
+
+        const isAvailable = availableVariant.available
+
+        if (!isAvailable) {
+            const headerSwatch = event.target
+                .closest(".swatch--product")
+                .querySelector(".js-swatch-header em")
+            headerSwatch.textContent = event.target.value
+        }
+    }
+
+    updateSliderGrouped(event) {
+        const selectedVariantId = this.availableVariant.id.toString()
+        const selectedButton = event.target.closest(".js-element-tab")
+
+        if (selectedButton) {
+            const ariaControls = selectedButton.getAttribute("aria-controls")
+            const headTabs = document.querySelectorAll(".js-tab")
+
+            headTabs.forEach((tab) => {
+                if (tab.getAttribute("aria-controls") === ariaControls) {
+                    tab.click()
+                }
+            })
+        }
+        const swiperContainer = document.querySelector(
+            "#" + this.availableVariant.option1 + "-panel .js-gallery"
+        )
+
+        if (swiperContainer) {
+            const slides = swiperContainer.querySelectorAll(".swiper-slide")
+
+            let slideIndex = -1
+            const swiperInstance = swiperContainer.swiper
+
+            if (swiperInstance) {
+                slides.forEach((slide, index) => {
+                    const variantId = slide.getAttribute("data-variant-id")
+                    if (variantId === selectedVariantId) {
+                        slideIndex = index
+                        return
+                    }
+                })
+
+                if (slideIndex !== -1) {
+                    swiperInstance.slideTo(slideIndex)
+                }
+            }
+        }
+    }
+
+    updateSlider() {
+        const selectedVariantId = this.availableVariant.id.toString()
+        const swiperContainer = document.querySelector(".js-gallery")
+
+        if (swiperContainer) {
+            const slides = swiperContainer.querySelectorAll(".swiper-slide")
+
+            let slideIndex = -1
+            const swiperInstance = swiperContainer.swiper
+
+            if (swiperInstance) {
+                slides.forEach((slide, index) => {
+                    const variantId = slide.getAttribute("data-variant-id")
+                    if (variantId === selectedVariantId) {
+                        slideIndex = index
+                        return
+                    }
+                })
+
+                if (slideIndex !== -1) {
+                    swiperInstance.slideTo(slideIndex)
+                }
+            }
+        }
+    }
+}
+
+customElements.define("variant-product", VariantProduct)
 
 class LocalizationForm extends HTMLElement {
     constructor() {
