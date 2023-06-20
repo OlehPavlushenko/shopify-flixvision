@@ -821,16 +821,60 @@ customElements.define("variant-pills", VariantPills)
 class VariantProduct extends VariantPills {
     constructor() {
         super()
-        this.layout = document.querySelector(".js-layout-slider")
-        this.layoutGrouped = document.querySelector(".js-layout-grouped")
-        this.cardProductCount = document.querySelectorAll(
-            ".js-card-product-count"
+    }
+
+    getAvailableVariant() {
+        const sortedVariants = this.groupedVariants()
+        const url = window.location.href
+        const activeVariant = sortedVariants.find(
+            (variant) => variant.available
         )
-        this.variantSku = document.querySelector(".js-variant-sku")
-        this.variantBarcode = document.querySelector(".js-variant-barcode")
+
+        if (url.includes("variant=")) {
+            var regex = /variant=(\d+)/
+            var match = url.match(regex)
+
+            if (match) {
+                let variantValue = match[1]
+                let activeVariantValue = sortedVariants.find((variant) => {
+                    if (variant.id.toString() === variantValue) {
+                        return variant
+                    }
+                })
+
+                const clickEvent = new Event("click")
+                //this.checkSwatchLevels()
+
+                const swatchElements =
+                    this.querySelectorAll(`.js-swatch-level-0`)
+                swatchElements.forEach((element) => {
+                    const swatch = element.getAttribute("data-value")
+                    const available =
+                        activeVariantValue.options.includes(swatch)
+                    if (available) {
+                        element.addEventListener(
+                            "click",
+                            function (event) {
+                                this.isOptionAvailable(
+                                    event,
+                                    this.variantData,
+                                    activeVariantValue.options
+                                )
+                            }.bind(this)
+                        )
+                        element.dispatchEvent(clickEvent)
+                    }
+                })
+            }
+        } else {
+            this.activeVariant = activeVariant.options
+            this.checkSwatchLevels()
+        }
     }
 
     isOptionAvailable(event, combinations, availableOptions) {
+        this.layout = document.querySelector(".js-layout-slider")
+        this.layoutGrouped = document.querySelector(".js-layout-grouped")
         const combinationsArray = Object.values(combinations)
         const startOptions =
             availableOptions.length > 1
@@ -855,9 +899,6 @@ class VariantProduct extends VariantPills {
             this.availableVariant = filterCombinations[0]
         }
         this.checkSwatchLevels()
-
-        console.log(this.availableVariant)
-
         this.updateOptions()
         this.updatePrice()
         this.updateImage()
@@ -873,7 +914,7 @@ class VariantProduct extends VariantPills {
     }
 
     updatePickupAvailability() {
-        const currentVariant = this.availableVariant[0]
+        const currentVariant = this.availableVariant
         const pickUpAvailability = document.querySelector("pickup-availability")
         if (!pickUpAvailability) return
 
@@ -885,7 +926,13 @@ class VariantProduct extends VariantPills {
         }
     }
 
-    updateOptions(event) {
+    updateOptions() {
+        this.cardProductCount = document.querySelectorAll(
+            ".js-card-product-count"
+        )
+        this.variantSku = document.querySelector(".js-variant-sku")
+        this.variantBarcode = document.querySelector(".js-variant-barcode")
+
         const availableVariant = this.availableVariant
         const availableVariantId = availableVariant.id.toString()
         const selectElement = this.querySelector("select")
@@ -929,14 +976,7 @@ class VariantProduct extends VariantPills {
             this.stock.classList.add("card-product__stock--normalstock")
         }
 
-        const isAvailable = availableVariant.available
-
-        if (!isAvailable) {
-            const headerSwatch = event.target
-                .closest(".swatch--product")
-                .querySelector(".js-swatch-header em")
-            headerSwatch.textContent = event.target.value
-        }
+        //const isAvailable = availableVariant.available
     }
 
     updateSliderGrouped(event) {
@@ -1003,6 +1043,14 @@ class VariantProduct extends VariantPills {
                 }
             }
         }
+    }
+    updateURL() {
+        if (!this.availableVariant) return
+        window.history.replaceState(
+            {},
+            "",
+            `${this.dataset.url}?variant=${this.availableVariant.id}`
+        )
     }
 }
 

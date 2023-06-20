@@ -247,6 +247,9 @@
   },
   "products": {
     "product": {
+      "back_to_collection": "Back to collection",
+      "previous_post": "Previous post",
+      "next_post": "Next post",
       "recently": "Recently products",
       "add_to_cart": "Add to cart",
       "add_to_compare": "Add to compare",

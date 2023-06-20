@@ -5,6 +5,7 @@
             <variant-pills
                 class="swatch-wrap"
                 data-section="{{ section.id }}-{{ product.id }}"
+                data-url="{{ product.url }}"
             >
                 <div class="js-swatch-container">
                     {% render 'swatch' for product.options as swatch, product: product, variant_type: variant_type %}

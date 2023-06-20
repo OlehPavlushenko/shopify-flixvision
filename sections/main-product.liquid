@@ -56,13 +56,12 @@
                                     class="main-product__social-sharing"
                                     {{ block.shopify_attributes }}
                                 >
-                                    {% assign share_url = request.origin | append: product.url %}
                                     <ul class="list-social">
                                         <li>{{ 'blogs.article.share' | t }}:</li>
                                         {% render 'social-sharing',
                                             share_title: product.title,
                                             share_permalink: product.url,
-                                            share_image: image_box
+                                            share_image: product.featured_image
                                         %}
                                     </ul>
                                 </div>
@@ -182,6 +181,42 @@
             {%- for block in reviews_viewed -%}
                 {% render block %}
             {%- endfor -%}
+
+            {% if collection %}
+                <div class="main-product__back">
+                    <div class="return-btn">
+                        <a
+                            href="{{ collection.url }}"
+                            class="main-product__return-btn button button--secondary button--outline"
+                        >
+                            {% render 'icons-svg', icons: 'arrow-left' %}
+                            {{- 'products.product.back_to_collection' | t: collection: collection.title -}}
+                        </a>
+                    </div>
+                    {% if collection.previous_product or collection.next_product %}
+                        <div class="main-product__pagination">
+                            {% if collection.previous_product %}
+                                <a
+                                    href="{{ collection.previous_product }}"
+                                    class="button main-product_pagination__prev button--secondary button--outline"
+                                >
+                                    {% render 'icons-svg', icons: 'prev' %}
+                                    {{ 'products.product.previous_post' | t }}
+                                </a>
+                            {% endif %}
+                            {% if collection.next_product %}
+                                <a
+                                    href="{{ collection.next_product }}"
+                                    class="button main-product_pagination__next button--secondary button--outline"
+                                >
+                                    {{ 'products.product.next_post' | t }}
+                                    {% render 'icons-svg', icons: 'next' %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
     </div>
 </section>

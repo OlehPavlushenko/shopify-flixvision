@@ -125,14 +125,18 @@ swiper-section .product-recommendations__list {
 
 .columns__desktop--4 > li {
     width: calc(25% - 1.5rem);
+    max-width: 25%;
 }
 
 .columns__desktop--3 > li {
     width: calc(33.33% - 1.4rem);
+    max-width: 33.33%;
 }
 
 .columns__desktop--2 > li {
     width: calc(50% - 1rem);
+    max-width: 50%;
+    
 }
 
 @media (min-width: 750px) and (max-width: 991px) {

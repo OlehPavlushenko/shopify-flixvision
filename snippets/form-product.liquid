@@ -4,6 +4,7 @@
         <variant-product
             class="swatch-wrap"
             data-section="{{ section.id }}-{{ product.id }}"
+            data-url="{{ product.url | within: collection  }}"
         >
             {% render 'swatch'
                 for product.options as swatch,
