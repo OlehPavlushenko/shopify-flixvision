@@ -235,8 +235,7 @@ class SectionHeader extends HTMLElement {
     }
 
     checkScroll() {
-        const scrollTop =
-            window.pageYOffset || document.documentElement.scrollTop
+        const scrollTop = window.scrollY || document.documentElement.scrollTop
         if (scrollTop > 0 && scrollTop > this.headerBounds.top) {
             this.header.classList.add("scrolled-past-header")
             this.stickyBlock.style.setProperty(
@@ -253,8 +252,8 @@ class SectionHeader extends HTMLElement {
         let observer = new IntersectionObserver((entries, observer) => {
             const headerRect = this.header.getBoundingClientRect()
             this.headerBounds = {
-                top: headerRect.top + window.pageYOffset,
-                bottom: headerRect.bottom + window.pageYOffset,
+                top: headerRect.top + window.scrollY,
+                bottom: headerRect.bottom + window.scrollY,
             }
             observer.disconnect()
         })
@@ -263,8 +262,7 @@ class SectionHeader extends HTMLElement {
     }
 
     onScroll() {
-        const scrollTop =
-            window.pageYOffset || document.documentElement.scrollTop
+        const scrollTop = window.scrollY || document.documentElement.scrollTop
 
         if (
             scrollTop > this.currentScrollTop &&

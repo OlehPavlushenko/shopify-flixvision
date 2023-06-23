@@ -122,7 +122,7 @@
                         class="swatch-element {% if option_index == 0 and grouped_product %} js-element-tab{% endif %}{% if is_color %} swatch-element-color {% endif %}{% if is_image %} swatch-element-image{% endif %} {{ value | handle }} js-swatch-element js-swatch-level-{{ option_index }}"
                     >
                         <input
-                            id="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}"
+                            id="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}{{form_id}}"
                             type="radio"
                             name="option-{{ option_index }}-{{ section.id }}-{{ product.id }}"
                             value="{{ value | escape }}"
@@ -132,7 +132,7 @@
                             {% assign sku_array = variant.sku | split: ' ' %}
                             {% assign url_handle = value | handle %}
                             <label
-                                for="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}"
+                                for="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}{{form_id}}"
                                 {% if is_image and variant.featured_image != blank %}
                                     style="
                                         background-image: url({{ variant.featured_image | image_url: width: 150, crop: 'center' }});background-position: center;
@@ -144,7 +144,7 @@
                             >
                             </label>
                         {% else %}
-                            <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}">
+                            <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ section.id }}-{{ product.id }}{{form_id}}">
                                 {{ value }}
                             </label>
                         {% endif %}

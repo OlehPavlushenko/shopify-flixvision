@@ -158,14 +158,16 @@
                         product: product,
                         variant_type: false,
                         show_quantity: false,
-                        grouped_product: false
+                        grouped_product: false,
+                        form_sticky: '-combo-product-sticky'
                     %}
                 {% else %}
                     {% render 'form-product',
                         product: product,
                         variant_type: variant_type,
                         show_quantity: true,
-                        grouped_product: grouped_product
+                        grouped_product: grouped_product,
+                        form_sticky: '-main-product-sticky'
                     %}
                 {% endif %}
             </div>

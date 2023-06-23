@@ -131,8 +131,8 @@ swiper-section .product-complementary__list {
 @media screen and (max-width: 749px) {
     .product-complementary__list {
         flex-wrap: nowrap;
-        overflow-x: scroll;
-        scroll-snap-type: x mandatory;
+        //overflow-x: scroll;
+        //scroll-snap-type: x mandatory;
     }
 }
 

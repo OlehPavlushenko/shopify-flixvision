@@ -171,7 +171,7 @@ quantity-input {
     display: inline-block;
     position: relative;
     margin-bottom: 1rem;
-    padding-right: 3rem;
+    padding-right: 0;
     /* Chrome, Safari, Edge, Opera */
     .quantity__input::-webkit-outer-spin-button,
     .quantity__input::-webkit-inner-spin-button {
@@ -202,14 +202,16 @@ quantity-input {
         padding: 0;
         &.quantity__button--plus {
             position: absolute;
-            right: 0;
-            top: -0.4rem;
+            right: 2px;
+            top: 50%;
+            margin-top: -13px;
         }
     
         &.quantity__button--minus {
             position: absolute;
-            right: 0;
-            bottom: -0.4rem;
+            left: 2px;
+            top: 50%;
+            margin-top: -13px;
         }
     }
 

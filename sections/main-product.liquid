@@ -1,6 +1,7 @@
 {% liquid
     assign full_width = true
     assign blocks = section.blocks
+    assign isComboProducts = product.metafields.custom.combo_products.value
 %}
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
 {{ 'component-breadcrumbs.css' | asset_url | stylesheet_tag }}
@@ -14,7 +15,7 @@
             <div class="main-product__breadcrumbs">
                 {% render 'breadcrumbs' %}
             </div>
-            <div class="main-product__wrapper main-product-media--left main-product-media--no-fill js-card-product-wrapper">
+            <div class="main-product__wrapper main-product-media--left main-product-media--no-fill js-card-product-wrapper js-main-product-block">
                 <div class="main-product__media-wrapper">
                     {% render 'product-media-card', product: product %}
                 </div>
@@ -219,6 +220,21 @@
             {% endif %}
         </div>
     </div>
+    {% unless isComboProducts %}
+        <sticky-add-to-cart>
+            {% render 'sticky-card-product',
+                product: product,
+                show_vendor: settings.show_vendor,
+                show_rating: settings.show_rating,
+                new_badge: settings.new_badge,
+                show_quantity: true,
+                use_variant: settings.price_variant,
+                variant_type: settings.variant,
+                img_size: settings.prod_img_size,
+                notify_me: false
+            %}
+        </sticky-add-to-cart>
+    {% endunless %}
 </section>
 
 {% schema %}

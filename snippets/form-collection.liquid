@@ -1,13 +1,14 @@
 {% if product.available %}
     {% capture "form_id" %}product_form-{{ section.id }}-{{ product.id }}{%- endcapture %}
-    {% form 'product', product, id: form_id, class: 'card-product__form' %}
+    {% capture "form_class" %}card-product__form{%- endcapture %}
+    {% form 'product', product, id: form_id, class: form_class %}
         {% if product.available and product.variants.size > 1 %}
             <variant-pills
                 class="swatch-wrap"
                 data-section="{{ section.id }}-{{ product.id }}"
                 data-url="{{ product.url }}"
             >
-                <div class="js-swatch-container">
+                <div class="swatch-container js-swatch">
                     {% render 'swatch' for product.options as swatch, product: product, variant_type: variant_type %}
                 </div>
                 <script type="application/json">

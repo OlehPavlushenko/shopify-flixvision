@@ -458,6 +458,7 @@ class VariantPills extends HTMLElement {
 
         // Event handler for product option buttons
         const handleClick = (event) => {
+            //console.log("event", event)
             if (event.target.tagName === "INPUT") {
                 if (event.target.closest(".js-swatch")) {
                     const elements = event.target
@@ -636,8 +637,6 @@ class VariantPills extends HTMLElement {
         }
         this.checkSwatchLevels()
 
-        console.log(this.availableVariant)
-
         this.updateOptions()
         this.updatePrice()
         this.updateImage()
@@ -719,7 +718,6 @@ class VariantPills extends HTMLElement {
 
     updateOptions() {
         const availableVariant = this.availableVariant
-        console.log("availableVariant", availableVariant)
         const availableVariantId = String(availableVariant.id)
         const selectElement = this.querySelector("select")
         const option = selectElement.querySelector(
@@ -766,7 +764,9 @@ class VariantPills extends HTMLElement {
         this.percentageBadge
 
         this.price.classList.toggle("price--on-sale", hasComparePrice)
-        this.saleBadge.classList.toggle("hidden", !hasComparePrice)
+        if (this.saleBadge) {
+            this.saleBadge.classList.toggle("hidden", !hasComparePrice)
+        }
         elementSalePrice.textContent = Shopify.formatMoney(salePrice)
         elementComparePrice.textContent = hasComparePrice
             ? Shopify.formatMoney(comparePrice)
@@ -821,6 +821,65 @@ customElements.define("variant-pills", VariantPills)
 class VariantProduct extends VariantPills {
     constructor() {
         super()
+    }
+
+    initSwatch() {
+        this.getVariantData()
+        this.createNewListVariant(this.variantData)
+
+        const handleClick = (event) => {
+            if (event.target.tagName === "INPUT") {
+                if (event.target.closest(".js-swatch")) {
+                    const elements = event.target
+                        .closest(".js-swatch")
+                        .querySelectorAll(".js-swatch-element")
+                    elements.forEach((element) => {
+                        element.classList.remove("active")
+                    })
+                }
+
+                const selectedValues = Array.from(this.swatchElements)
+                    .map((element) => {
+                        const input = element.querySelector("input:checked")
+
+                        return input ? input.value : null
+                    })
+                    .filter((value) => value !== null)
+
+                //this.updateAvailableVariant(selectedValues)
+                this.isOptionAvailable(event, this.variantData, selectedValues)
+
+                if (event.target.closest(".js-main-product-sticky")) {
+                    const block2 = document.querySelector(".js-product-sticky")
+                    block2.variantData = this.variantData
+                    block2.isOptionAvailable(
+                        event,
+                        this.variantData,
+                        selectedValues
+                    )
+                } else if (event.target.closest(".js-product-sticky")) {
+                    const block1 = document.querySelector(
+                        ".js-main-product-sticky"
+                    )
+                    block1.variantData = this.variantData
+                    block1.isOptionAvailable(
+                        event,
+                        this.variantData,
+                        selectedValues
+                    )
+                }
+            }
+        }
+
+        const delay = 300
+
+        // Installing event handlers on product option buttons
+        this.swatchElements.forEach((element) => {
+            element.addEventListener("click", (event) => {
+                this.debounce(handleClick, delay)(event)
+            })
+        })
+        this.getAvailableVariant()
     }
 
     getAvailableVariant() {
@@ -898,6 +957,7 @@ class VariantProduct extends VariantPills {
             this.activeVariant = filterCombinations[0].options
             this.availableVariant = filterCombinations[0]
         }
+
         this.checkSwatchLevels()
         this.updateOptions()
         this.updatePrice()
@@ -1055,6 +1115,53 @@ class VariantProduct extends VariantPills {
 }
 
 customElements.define("variant-product", VariantProduct)
+
+class StickyAddToCart extends HTMLElement {
+    constructor() {
+        super()
+        const mainBlock = document.querySelector(".js-main-product-block")
+        const footer = document.querySelector(".copyright__row")
+        const stickyBlock = this
+        console.log(mainBlock, stickyBlock)
+        let scrolledMainBlock = false
+
+        window.addEventListener("scroll", function () {
+            const mainBlockHeight = mainBlock.offsetHeight
+            const footerOffset = footer.offsetTop
+            const scrollPosition = window.scrollY
+
+            if (
+                !scrolledMainBlock &&
+                scrollPosition >= mainBlock.offsetTop + mainBlockHeight
+            ) {
+                // Прокрутка mainBlock выполнена
+                scrolledMainBlock = true
+            }
+
+            if (scrolledMainBlock) {
+                if (
+                    scrollPosition < mainBlock.offsetTop ||
+                    scrollPosition >= footerOffset - window.innerHeight ||
+                    scrollPosition <=
+                        mainBlock.offsetTop +
+                            mainBlockHeight -
+                            window.innerHeight
+                ) {
+                    // Скрыть sticky блок при прокрутке перед mainBlock, после футера или после достижения верхней границы mainBlock
+                    stickyBlock.classList.remove("show")
+                } else {
+                    // Показать sticky блок после прокрутки mainBlock и до футера
+                    stickyBlock.classList.add("show")
+                }
+            } else {
+                // Скрыть sticky блок до прокрутки mainBlock
+                stickyBlock.classList.remove("show")
+            }
+        })
+    }
+}
+
+customElements.define("sticky-add-to-cart", StickyAddToCart)
 
 class LocalizationForm extends HTMLElement {
     constructor() {
@@ -1330,6 +1437,7 @@ class SwiperSection extends HTMLElement {
         this.swiperBullets = this.querySelector(".js-pagination")
         this.countDesktop =
             parseInt(this.swiperSlider.dataset.countDesktop) || 3
+        this.countTablet = parseInt(this.swiperSlider.dataset.countTablet) || 2
         this.countMobile = parseInt(this.swiperSlider.dataset.countMobile) || 2
         this.swiper = null
         this.init()
@@ -1356,7 +1464,7 @@ class SwiperSection extends HTMLElement {
                     spaceBetween: 20,
                 },
                 991: {
-                    slidesPerView: 2,
+                    slidesPerView: this.countTablet,
                     spaceBetween: 30,
                 },
                 1200: {

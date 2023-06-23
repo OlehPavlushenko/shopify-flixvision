@@ -124,9 +124,6 @@ swiper-section .product-complementary__list {
   .product-complementary__list {
     -ms-flex-wrap: nowrap;
         flex-wrap: nowrap;
-    overflow-x: scroll;
-    -ms-scroll-snap-type: x mandatory;
-        scroll-snap-type: x mandatory;
   }
 }
 .columns__desktop--4 > li {

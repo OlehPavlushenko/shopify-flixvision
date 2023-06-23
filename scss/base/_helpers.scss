@@ -217,16 +217,11 @@ html.no-js .no-js-hidden {
 }
 
 .grid__item {
-    padding-left: 0.5rem;
-    padding-bottom: 0.5rem;
-    width: calc(25% - 0.5rem * 3 / 4);
-    max-width: 50%;
     flex-grow: 1;
     flex-shrink: 0;
 }
 
 .grid--1-col .grid__item {
-    max-width: 100%;
     width: 100%;
 }
 
