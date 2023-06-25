@@ -18,7 +18,7 @@
             assign image_box = product.featured_image
         endif
     -%}
-    <div class="card-product__wrapper js-card-product-wrapper">
+    <div class="card-product__wrapper js-card-product-wrapper js-sticky-product-content sticky-product-content">
         <div class="card-product__media-wrapper">
             <a class="card-product__link" href="{{ product.url | within: collection }}"
                 ><span class="hidden">{{ product.title }}</span></a

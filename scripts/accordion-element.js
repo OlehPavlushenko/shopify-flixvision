@@ -19,8 +19,7 @@ class Accordion extends HTMLElement {
         this.toggle.classList.add("open")
         this.content.classList.add("open")
 
-        // Отображение элемента с помощью стиля "display: block"
-        this.content.style.height = `auto`
+        this.content.style.height = "auto"
 
         this.content.style.display = "block"
     }
@@ -28,9 +27,11 @@ class Accordion extends HTMLElement {
         this.toggle.classList.remove("open")
         this.content.classList.remove("open")
         this.content.style.height = "0"
+        this.content.style.display = "none"
     }
 
     onKeyUp(event) {
+        console.log(event)
         if (event.code.toUpperCase() !== "ESCAPE") return
         if (
             event.target.classList.contains("js-accordion-toggle") &&

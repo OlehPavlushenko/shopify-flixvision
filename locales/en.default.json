@@ -248,6 +248,7 @@
   "products": {
     "product": {
       "back_to_collection": "Back to collection",
+      "sticky_select_options": "Select options",
       "previous_post": "Previous post",
       "next_post": "Next post",
       "recently": "Recently products",

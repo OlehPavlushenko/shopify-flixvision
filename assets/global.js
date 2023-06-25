@@ -1119,45 +1119,76 @@ customElements.define("variant-product", VariantProduct)
 class StickyAddToCart extends HTMLElement {
     constructor() {
         super()
-        const mainBlock = document.querySelector(".js-main-product-block")
-        const footer = document.querySelector(".copyright__row")
-        const stickyBlock = this
-        console.log(mainBlock, stickyBlock)
-        let scrolledMainBlock = false
+        this.mainBlock = document.querySelector(".js-main-product-block")
+        this.footer = document.querySelector(".copyright__row")
+        this.stickyBlock = this
+        this.stickySelect = this.querySelector(".js-sticky-select")
+        this.stickyContent = this.querySelector(".js-sticky-product-content")
+        this.scrolledMainBlock = false
 
-        window.addEventListener("scroll", function () {
-            const mainBlockHeight = mainBlock.offsetHeight
-            const footerOffset = footer.offsetTop
-            const scrollPosition = window.scrollY
+        window.addEventListener("scroll", this.scrollContentDisplay.bind(this))
+        this.stickySelect.addEventListener("click", this.onClick.bind(this))
+        this.addEventListener("keyup", this.onKeyUp.bind(this))
+    }
 
+    scrollContentDisplay() {
+        const mainBlockHeight = this.mainBlock.offsetHeight
+        const footerOffset = this.footer.offsetTop
+        const scrollPosition = window.scrollY
+
+        if (
+            !this.scrolledMainBlock &&
+            scrollPosition >= this.mainBlock.offsetTop + mainBlockHeight
+        ) {
+            this.scrolledMainBlock = true
+        }
+
+        if (this.scrolledMainBlock) {
             if (
-                !scrolledMainBlock &&
-                scrollPosition >= mainBlock.offsetTop + mainBlockHeight
+                scrollPosition < this.mainBlock.offsetTop ||
+                scrollPosition >= footerOffset - window.innerHeight ||
+                scrollPosition <=
+                    this.mainBlock.offsetTop +
+                        mainBlockHeight -
+                        window.innerHeight
             ) {
-                // Прокрутка mainBlock выполнена
-                scrolledMainBlock = true
-            }
-
-            if (scrolledMainBlock) {
-                if (
-                    scrollPosition < mainBlock.offsetTop ||
-                    scrollPosition >= footerOffset - window.innerHeight ||
-                    scrollPosition <=
-                        mainBlock.offsetTop +
-                            mainBlockHeight -
-                            window.innerHeight
-                ) {
-                    // Скрыть sticky блок при прокрутке перед mainBlock, после футера или после достижения верхней границы mainBlock
-                    stickyBlock.classList.remove("show")
-                } else {
-                    // Показать sticky блок после прокрутки mainBlock и до футера
-                    stickyBlock.classList.add("show")
-                }
+                this.stickyBlock.classList.remove("show")
+                this.close()
             } else {
-                // Скрыть sticky блок до прокрутки mainBlock
-                stickyBlock.classList.remove("show")
+                this.stickyBlock.classList.add("show")
             }
-        })
+        } else {
+            this.stickyBlock.classList.remove("show")
+            this.close()
+        }
+    }
+
+    onClick(event) {
+        event.preventDefault()
+        event.target.classList.contains("open") ? this.close() : this.open()
+    }
+
+    open() {
+        this.stickySelect.classList.add("open")
+        this.stickyContent.classList.add("open")
+        //this.stickyContent.style.height = "auto"
+        this.stickyContent.style.display = "flex"
+    }
+    close() {
+        this.stickySelect.classList.remove("open")
+        this.stickyContent.classList.remove("open")
+        //this.stickyContent.style.height = "0"
+        this.stickyContent.style.display = "none"
+    }
+
+    onKeyUp(event) {
+        if (event.code.toUpperCase() !== "ESCAPE") return
+        if (
+            event.target.classList.contains("js-sticky-select") &&
+            event.target.classList.contains("open")
+        ) {
+            this.close()
+        }
     }
 }
 

@@ -909,7 +909,7 @@ sticky-add-to-cart {
     background: #fff;
     z-index: 100;
     padding: 10px 0;
-    box-shadow: 0 0 1px rgba(0,0,0, .1);
+    box-shadow: 0 0 2px rgba(0,0,0, .1);
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
     opacity: 0;
     transform: translateY(100%);
@@ -1036,9 +1036,26 @@ sticky-add-to-cart {
     .card-product__title {
         margin-bottom: .5rem;
     }
+    .button-sticky-select {
+        display: none;
+    }
+    @media (min-width: 768px) { 
+        .sticky-product-content {
+            display: flex!important;
+        }
+    }
+    @media all and (max-width: 767px) { 
+        .sticky-product-content {
+            display: none;
+        }
+    
+        .button-sticky-select {
+            margin: 10px auto;
+            display: flex;
+            line-height: 20px;
+        }
+    }
+    
 }
 
-.scrolled-sticky-add-to-cart {
-    animation: fadeIn 0.3s ease-in-out forwards;
-}
 
