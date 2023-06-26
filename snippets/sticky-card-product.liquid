@@ -5,8 +5,7 @@
         assign target = product
     endif
 
-    assign compare_at_price = target.compare_at_price
-    assign price = target.price
+    assign grouped_product = product.metafields.custom.grouped_images.value
 %}
 
 {% if product and product != empty %}
@@ -69,6 +68,7 @@
                     variant_type: variant_type,
                     show_quantity: show_quantity,
                     notify_me: notify_me,
+                    grouped_product: grouped_product,
                     form_sticky: '-product-sticky',
                     isSticky: true
                 %}

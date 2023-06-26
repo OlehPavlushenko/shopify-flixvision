@@ -852,6 +852,7 @@ class VariantProduct extends VariantPills {
                 if (event.target.closest(".js-main-product-sticky")) {
                     const block2 = document.querySelector(".js-product-sticky")
                     block2.variantData = this.variantData
+                    this.layoutGrouped = true
                     block2.isOptionAvailable(
                         event,
                         this.variantData,
@@ -1040,6 +1041,7 @@ class VariantProduct extends VariantPills {
     }
 
     updateSliderGrouped(event) {
+        console.log("updateSliderGrouped", event.target)
         const selectedVariantId = this.availableVariant.id.toString()
         const selectedButton = event.target.closest(".js-element-tab")
 
