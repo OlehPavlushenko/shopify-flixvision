@@ -125,10 +125,23 @@ if ("liquidAjaxCart" in window) {
                             cartIds.push(id)
                         }
                     }
+                    console.log("cartIds", cartIds, state.cart.items)
+                    const items = state.cart.items
+                    let handles
+                    if (cartIds.length < items.length) {
+                        handles = getRecommendProducts(cartIds)
+                    } else {
+                        handles = Promise.resolve(
+                            JSON.parse(
+                                localStorage.getItem("recommendProducts")
+                            )
+                        )
+                    }
 
-                    let handles = getRecommendProducts(cartIds)
+                    console.log("handles", handles)
 
                     handles.then((result) => {
+                        console.log("result", result)
                         if (result.length > 0) {
                             let strHandles = result.join("=")
                             sentRecommendIds(strHandles)
@@ -438,22 +451,22 @@ function closeNotification(modal) {
 async function getRecommendProducts(ids) {
     const productItems = []
 
-    const promises = ids.map((id) => {
-        return fetch(
+    const promises = ids.map(async (id) => {
+        const response = await fetch(
             `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
         )
-            .then((response) => response.json())
-            .then(({ products }) => {
-                for (const product of products) {
-                    const handle = String(product.handle)
-                    if (!productItems.includes(handle)) {
-                        productItems.push(handle)
-                    }
-                }
-            })
+        const { products } = await response.json()
+        for (const product of products) {
+            const handle = String(product.handle)
+            if (!productItems.includes(handle)) {
+                productItems.push(handle)
+            }
+        }
     })
-
+    console.log("productItems", productItems)
     await Promise.all(promises)
+
+    localStorage.setItem("recommendProducts", JSON.stringify(productItems))
 
     return productItems
 }

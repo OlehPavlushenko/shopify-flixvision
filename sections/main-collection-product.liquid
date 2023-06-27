@@ -319,13 +319,14 @@
                         </div>
                     {%- endif -%}
                 </div>
-
-                {% render 'recently-viewed',
-                    product: product,
-                    prod_img_size: settings.prod_img_size,
-                    use_variant: price_variant,
-                    settings: section.settings.filter_type
-                %}
+                <div class="recently__products">
+                    {% render 'recently-viewed',
+                        product: product,
+                        prod_img_size: settings.prod_img_size,
+                        use_variant: price_variant,
+                        settings: section.settings.filter_type
+                    %}
+                </div>
             </div>
         </div>
     {%- endpaginate -%}
