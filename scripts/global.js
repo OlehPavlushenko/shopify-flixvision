@@ -1041,7 +1041,7 @@ class VariantProduct extends VariantPills {
     }
 
     updateSliderGrouped(event) {
-        console.log("updateSliderGrouped", event.target)
+        //console.log("updateSliderGrouped", event.target)
         const selectedVariantId = this.availableVariant.id.toString()
         const selectedButton = event.target.closest(".js-element-tab")
 

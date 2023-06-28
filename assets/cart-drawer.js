@@ -28,13 +28,12 @@ if ("liquidAjaxCart" in window) {
 
                         if (
                             requestState.requestBody &&
-                            requestState.requestBody.items
+                            !requestState.requestBody.items
                         ) {
-                            //console.log(requestState)
-                        } else {
                             recommendProducts[product_key] = product_id
                             buildNotification(requestState)
                             setCookie("cart_recommend", recommendProducts)
+                            updateRecommendProducts(product_id)
                         }
                     }
                 })
@@ -45,7 +44,6 @@ if ("liquidAjaxCart" in window) {
                     if (requestState.responseData?.ok) {
                         let items = requestState.responseData.body.items
                         let cartItems = []
-
                         if (items.length === 0) {
                             for (const key in recommendProducts) {
                                 if (
@@ -54,9 +52,13 @@ if ("liquidAjaxCart" in window) {
                                         key
                                     )
                                 ) {
+                                    deleteRecommendProducts(
+                                        recommendProducts[key]
+                                    )
                                     delete recommendProducts[key]
                                 }
                             }
+                            localStorage.removeItem("recommendProducts")
                             deleteCookie("cart_recommend")
                         } else {
                             items.forEach((element) => {
@@ -83,11 +85,7 @@ if ("liquidAjaxCart" in window) {
         }
     )
 
-    liquidAjaxCart.cartRequestUpdate()
-
     liquidAjaxCart.subscribeToCartStateUpdate(async (state, isCartUpdated) => {
-        console.log(state)
-
         const cartTotalHeader = document.querySelector(".cart-count-ajax-cart")
 
         if (state.status.cartStateSet && !state.status.requestInProgress) {
@@ -125,31 +123,39 @@ if ("liquidAjaxCart" in window) {
                             cartIds.push(id)
                         }
                     }
-                    console.log("cartIds", cartIds, state.cart.items)
-                    const items = state.cart.items
-                    let handles
-                    if (cartIds.length < items.length) {
-                        handles = getRecommendProducts(cartIds)
-                    } else {
-                        handles = Promise.resolve(
-                            JSON.parse(
-                                localStorage.getItem("recommendProducts")
-                            )
-                        )
+
+                    const existingItems = await getLocalStorageItems()
+
+                    if (existingItems.length > 0) {
+                        let strHandles = existingItems.join("=")
+                        sentRecommendIds(strHandles)
                     }
-
-                    console.log("handles", handles)
-
-                    handles.then((result) => {
-                        console.log("result", result)
-                        if (result.length > 0) {
-                            let strHandles = result.join("=")
-                            sentRecommendIds(strHandles)
-                        }
-                    })
                 }
             } else {
                 refreshCookie(state)
+            }
+
+            if (!isCartUpdated) {
+                const itemsCart = state.cart.items
+                const itemsPreviousCart = state.previousCart.items
+
+                if (itemsCart.length < itemsPreviousCart.length) {
+                    const cartProductIds = itemsCart.map(
+                        (item) => item.product_id
+                    )
+                    const filteredItems = itemsPreviousCart.filter(
+                        (item) => !cartProductIds.includes(item.product_id)
+                    )
+                    console.log(
+                        "filteredItems",
+                        filteredItems,
+                        itemsCart,
+                        itemsPreviousCart
+                    )
+                    if (filteredItems.length > 0) {
+                        deleteRecommendProducts(filteredItems[0].product_id)
+                    }
+                }
             }
         }
         if (isCartUpdated) {
@@ -157,6 +163,8 @@ if ("liquidAjaxCart" in window) {
             groupedComboProducts()
         }
     })
+
+    liquidAjaxCart.cartRequestUpdate()
 }
 
 function addBuyMore(addToCartButtonBuyMore) {
@@ -189,7 +197,6 @@ function addBuyMore(addToCartButtonBuyMore) {
 
             let options = {
                 lastComplete: (requestState) => {
-                    console.log(buyMoreItems)
                     buyMoreItems.classList.remove(
                         "js-ajax-cart-form-in-progress"
                     )
@@ -249,8 +256,6 @@ function addComboProducts(addToCartButton) {
             }
         })
 
-        //console.log(formData)
-
         let formItem = {}
 
         if (id && quantity && properties) {
@@ -263,8 +268,6 @@ function addComboProducts(addToCartButton) {
                 },
             }
         }
-
-        //console.log(propertiesAll)
 
         let items = [formItem, ...otherItems]
 
@@ -373,7 +376,6 @@ function buildNotification(requestState) {
 }
 
 function getNotification(state) {
-    //console.log(state)
     let imageSize = document
         .querySelector("#cart-recommend")
         .getAttribute("data-size")
@@ -448,27 +450,68 @@ function closeNotification(modal) {
     removeTrapFocus(modal)
 }
 
-async function getRecommendProducts(ids) {
-    const productItems = []
-
-    const promises = ids.map(async (id) => {
-        const response = await fetch(
-            `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
-        )
-        const { products } = await response.json()
-        for (const product of products) {
-            const handle = String(product.handle)
-            if (!productItems.includes(handle)) {
-                productItems.push(handle)
-            }
-        }
+function getLocalStorageItems() {
+    return new Promise((resolve) => {
+        const existingItems =
+            JSON.parse(localStorage.getItem("recommendProducts")) || []
+        resolve(existingItems)
     })
-    console.log("productItems", productItems)
-    await Promise.all(promises)
+}
 
-    localStorage.setItem("recommendProducts", JSON.stringify(productItems))
+function updateLocalStorage(updatedItems) {
+    return new Promise((resolve) => {
+        localStorage.setItem("recommendProducts", JSON.stringify(updatedItems))
+        resolve()
+    })
+}
 
-    return productItems
+async function updateRecommendProducts(id) {
+    const response = await fetch(
+        `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
+    )
+    const { products } = await response.json()
+
+    const existingItems = await getLocalStorageItems()
+    const handlesToAdd = products.map((product) => String(product.handle))
+    const handlesToRemove = products.map((product) => String(product.handle))
+
+    const updatedItems = existingItems.filter(
+        (item) => !handlesToRemove.includes(item)
+    )
+    updatedItems.unshift(...handlesToAdd) // Добавляем новые элементы в начало массива
+
+    const uniqueItems = [...new Set(updatedItems)]
+
+    await updateLocalStorage(uniqueItems)
+
+    if (uniqueItems.length > 0) {
+        let strHandles = uniqueItems.join("=")
+        sentRecommendIds(strHandles)
+    }
+
+    return true
+}
+
+async function deleteRecommendProducts(id) {
+    const response = await fetch(
+        `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
+    )
+    const { products } = await response.json()
+
+    const existingItems = await getLocalStorageItems()
+    const handlesToRemove = products.map((product) => String(product.handle))
+    const updatedItems = existingItems.filter(
+        (item) => !handlesToRemove.includes(item)
+    )
+
+    await updateLocalStorage(updatedItems)
+
+    if (updatedItems.length > 0) {
+        let strHandles = updatedItems.join("=")
+        await sentRecommendIds(strHandles)
+    }
+
+    return true
 }
 
 function sentRecommendIds(ids) {
@@ -556,7 +599,6 @@ function setCookie(name, json) {
     expire.toString()
     cookieValue += "expires=" + expire + ";"
 
-    //console.log('set-'+cookieValue)
     //Set cookie
     document.cookie = cookieValue
 }
