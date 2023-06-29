@@ -33,7 +33,10 @@ if ("liquidAjaxCart" in window) {
                             recommendProducts[product_key] = product_id
                             buildNotification(requestState)
                             setCookie("cart_recommend", recommendProducts)
-                            updateRecommendProducts(product_id)
+                            updateRecommendProducts(
+                                product_id,
+                                requestState.responseData.body.handle
+                            )
                         }
                     }
                 })
@@ -146,14 +149,11 @@ if ("liquidAjaxCart" in window) {
                     const filteredItems = itemsPreviousCart.filter(
                         (item) => !cartProductIds.includes(item.product_id)
                     )
-                    console.log(
-                        "filteredItems",
-                        filteredItems,
-                        itemsCart,
-                        itemsPreviousCart
-                    )
                     if (filteredItems.length > 0) {
-                        deleteRecommendProducts(filteredItems[0].product_id)
+                        deleteRecommendProducts(
+                            filteredItems[0].product_id,
+                            filteredItems[0].handle
+                        )
                     }
                 }
             }
@@ -465,10 +465,11 @@ function updateLocalStorage(updatedItems) {
     })
 }
 
-async function updateRecommendProducts(id) {
+async function updateRecommendProducts(id, handle) {
     const response = await fetch(
         `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
     )
+
     const { products } = await response.json()
 
     const existingItems = await getLocalStorageItems()
@@ -478,9 +479,12 @@ async function updateRecommendProducts(id) {
     const updatedItems = existingItems.filter(
         (item) => !handlesToRemove.includes(item)
     )
-    updatedItems.unshift(...handlesToAdd) // Добавляем новые элементы в начало массива
 
-    const uniqueItems = [...new Set(updatedItems)]
+    const filteredItems = updatedItems.filter((item) => item !== handle)
+
+    filteredItems.unshift(...handlesToAdd)
+
+    const uniqueItems = [...new Set(filteredItems)]
 
     await updateLocalStorage(uniqueItems)
 
@@ -492,7 +496,7 @@ async function updateRecommendProducts(id) {
     return true
 }
 
-async function deleteRecommendProducts(id) {
+async function deleteRecommendProducts(id, handle) {
     const response = await fetch(
         `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
     )
@@ -504,11 +508,13 @@ async function deleteRecommendProducts(id) {
         (item) => !handlesToRemove.includes(item)
     )
 
+    updatedItems.unshift(handle)
+
     await updateLocalStorage(updatedItems)
 
     if (updatedItems.length > 0) {
         let strHandles = updatedItems.join("=")
-        await sentRecommendIds(strHandles)
+        sentRecommendIds(strHandles)
     }
 
     return true
