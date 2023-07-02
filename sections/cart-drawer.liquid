@@ -18,7 +18,9 @@
     assign divider_color = section.settings.divider_color
     assign cart_note = section.settings.show_cart_note
     assign cart_attributes = section.settings.show_cart_attributes
+    assign recommend_list = section.settings.recommend_list
 %}
+{% capture recommend_db %}[{% for product in recommend_list %}"{{ product.handle }}"{% if forloop.last %}{% else %},{% endif %}{% endfor %}]{% endcapture %}
 
 {% capture styles %}
     --cart-drawer-background-color: {{ bg_color }};
@@ -588,6 +590,13 @@
 <script type="application/json" data-ajax-cart-initial-state>
     {{ cart | json }}
 </script>
+<script>
+    const localStorageValue = JSON.parse(localStorage.getItem("recommendSection")) || []
+    console.log(localStorageValue)
+    if (localStorageValue.length === 0) {
+        localStorage.setItem("recommendSection", JSON.stringify({{ recommend_db }}))
+    }
+</script>
 
 <script type="module">
     import { subscribeToCartAjaxRequests, cartRequestAdd, cartRequestChange, cartRequestUpdate, subscribeToCartStateUpdate } from '{{ 'ajax-cart.js' | asset_url }}';
@@ -600,10 +609,18 @@
     "name": "Cart Drawer",
     "settings": [
         {
+            "type": "product_list",
+            "id": "recommend_list",
+            "label": "Recommend List",
+            "limit": 4,
+            "info": "This is the default list of products that will be displayed if there are no complementary products configured for the product in the Search & Discovery admin panel"
+        },
+        {
             "type": "number",
             "id": "shipping_total",
             "label": "Shipping Total",
-            "default": 1000
+            "default": 1000,
+            "info": "This is an option to display the delivery, which is preconfigured in the shipping method. All recalculations will be on checkout."
         },
         {
             "type": "checkbox",
