@@ -3,30 +3,32 @@ class SectionHeader extends HTMLElement {
         super()
 
         this.headerMain = document.querySelector(".js-header-main")
-        this.megaMenuWrappers = [
-            ...this.querySelectorAll(".js-mega-menu-wrapper"),
-        ]
-        this.megaSubMenuWrappers = [
-            ...this.querySelectorAll(".js-mega-submenu-wrapper"),
-        ]
+        this.megaMenuWrappers = Array.from(
+            this.querySelectorAll(".js-mega-menu-wrapper")
+        )
+        this.megaSubMenuWrappers = Array.from(
+            this.querySelectorAll(".js-mega-submenu-wrapper")
+        )
 
-        this.megaMenus = [...this.querySelectorAll(".js-mega-menu")]
-        this.megaSubmenus = [...this.querySelectorAll(".js-mega-submenu")]
-        this.menuToggles = [...this.querySelectorAll(".js-menu-toggle")]
-        this.menuBacks = [...this.querySelectorAll(".js-menu-back")]
-        this.submenuBacks = [...this.querySelectorAll(".js-submenu-back")]
+        this.megaMenus = Array.from(this.querySelectorAll(".js-mega-menu"))
+        this.megaSubmenus = Array.from(
+            this.querySelectorAll(".js-mega-submenu")
+        )
+        this.menuToggles = Array.from(this.querySelectorAll(".js-menu-toggle"))
+        this.menuBacks = Array.from(this.querySelectorAll(".js-menu-back"))
+        this.submenuBacks = Array.from(
+            this.querySelectorAll(".js-submenu-back")
+        )
 
         this.mobileMenu = this.querySelector(".js-mobile-menu")
         this.mobileMenuOverlay = this.querySelector(".js-mobile-menu-overlay")
-
-        //this.init()
 
         this.resizeFunction()
         window.addEventListener("resize", this.resizeFunction.bind(this))
         ;["click", "enter"].forEach((event) => {
             this.megaSubMenuWrappers.forEach((wrapper) => {
-                let currentTarget = wrapper.querySelectorAll(
-                    ".js-mega-submenu-next-button"
+                let currentTarget = Array.from(
+                    wrapper.querySelectorAll(".js-mega-submenu-next-button")
                 )
                 currentTarget.forEach((details) => {
                     details.addEventListener(
@@ -34,28 +36,23 @@ class SectionHeader extends HTMLElement {
                         this.showMegaMenu.bind(this)
                     )
                 })
-            }),
-                this.menuToggles.forEach((menuToggle) => {
-                    menuToggle.addEventListener(
-                        event,
-                        this.showMobileMenu.bind(this)
-                    )
-                }),
-                this.menuBacks.forEach((menuBack) => {
-                    menuBack.addEventListener(
-                        event,
-                        this.closeMegaMenu.bind(this)
-                    )
-                }),
-                this.submenuBacks.forEach((submenuBack) => {
-                    submenuBack.addEventListener(
-                        event,
-                        this.closeMegaSubMenu.bind(this)
-                    )
-                })
+            })
+            this.menuToggles.forEach((menuToggle) => {
+                menuToggle.addEventListener(
+                    event,
+                    this.showMobileMenu.bind(this)
+                )
+            })
+            this.menuBacks.forEach((menuBack) => {
+                menuBack.addEventListener(event, this.closeMegaMenu.bind(this))
+            })
+            this.submenuBacks.forEach((submenuBack) => {
+                submenuBack.addEventListener(
+                    event,
+                    this.closeMegaSubMenu.bind(this)
+                )
+            })
         })
-
-        //document.body.addEventListener('click', this.onBodyClick.bind(this))
 
         this.addEventListener("keydown", (event) => {
             if (event.key === "Escape") {
@@ -70,8 +67,8 @@ class SectionHeader extends HTMLElement {
         ;["click", "enter"].forEach((event) =>
             this.megaMenuWrappers.forEach((wrapper) => {
                 if (mobile) {
-                    let currentTarget = wrapper.querySelectorAll(
-                        ".js-mega-parent-next-button"
+                    let currentTarget = Array.from(
+                        wrapper.querySelectorAll(".js-mega-parent-next-button")
                     )
                     currentTarget.forEach((details) => {
                         details.addEventListener(
@@ -168,7 +165,7 @@ class SectionHeader extends HTMLElement {
     }
 
     closeMegaSubMenu(event) {
-        console.log(event)
+        //console.log(event)
         if (event.target.closest(".js-mega-submenu-wrapper")) {
             let openElement = event.target.closest(".js-mega-submenu-wrapper")
             let openElementActive = event.target
@@ -218,12 +215,6 @@ class SectionHeader extends HTMLElement {
             this.getAttribute("data-sticky-type") === "always"
         this.headerBounds = {}
 
-        this.setHeaderHeight()
-
-        window
-            .matchMedia("(min-width: 320px)")
-            .addEventListener("change", this.setHeaderHeight.bind(this))
-
         if (this.headerIsAlwaysSticky) {
             this.header.classList.add("shopify-section-header-sticky")
         }
@@ -232,36 +223,38 @@ class SectionHeader extends HTMLElement {
         this.preventReveal = false
 
         this.onScrollHandler = this.onScroll.bind(this)
-        this.hideHeaderOnScrollUp = () => (this.preventReveal = true)
 
-        this.addEventListener("preventHeaderReveal", this.hideHeaderOnScrollUp)
+        this.setHeaderHeight()
+        window
+            .matchMedia("(min-width: 320px)")
+            .addEventListener("change", this.setHeaderHeight.bind(this))
+
         window.addEventListener("scroll", this.onScrollHandler, false)
-
+        window.addEventListener("load", this.checkScroll.bind(this))
         this.createObserver()
     }
 
-    setHeaderHeight() {
-        document.documentElement.style.setProperty(
-            "--header-height",
-            `${this.header.offsetHeight}px`
-        )
-        document.documentElement.style.setProperty(
-            "--announcement-bar-height",
-            `${this.announcement.offsetHeight}px`
-        )
-    }
-
-    disconnectedCallback() {
-        this.removeEventListener(
-            "preventHeaderReveal",
-            this.hideHeaderOnScrollUp
-        )
-        window.removeEventListener("scroll", this.onScrollHandler)
+    checkScroll() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop
+        if (scrollTop > 0 && scrollTop > this.headerBounds.top) {
+            this.header.classList.add("scrolled-past-header")
+            this.stickyBlock.style.setProperty(
+                "height",
+                `${this.header.offsetHeight}px`
+            )
+        } else if (scrollTop <= this.headerBounds.top) {
+            this.header.classList.remove("scrolled-past-header")
+            this.stickyBlock.style.setProperty("height", "0")
+        }
     }
 
     createObserver() {
         let observer = new IntersectionObserver((entries, observer) => {
-            this.headerBounds = entries[0].intersectionRect
+            const headerRect = this.header.getBoundingClientRect()
+            this.headerBounds = {
+                top: headerRect.top + window.scrollY,
+                bottom: headerRect.bottom + window.scrollY,
+            }
             observer.disconnect()
         })
 
@@ -269,20 +262,10 @@ class SectionHeader extends HTMLElement {
     }
 
     onScroll() {
-        const scrollTop =
-            window.pageYOffset || document.documentElement.scrollTop
+        const scrollTop = window.scrollY || document.documentElement.scrollTop
 
         if (
             scrollTop > this.currentScrollTop &&
-            scrollTop > this.headerBounds.bottom
-        ) {
-            this.header.classList.add("scrolled-past-header")
-            this.stickyBlock.style.setProperty(
-                "height",
-                `${this.header.offsetHeight}px`
-            )
-        } else if (
-            scrollTop < this.currentScrollTop &&
             scrollTop > this.headerBounds.bottom
         ) {
             this.header.classList.add("scrolled-past-header")
@@ -296,6 +279,17 @@ class SectionHeader extends HTMLElement {
         }
 
         this.currentScrollTop = scrollTop
+    }
+
+    setHeaderHeight() {
+        document.documentElement.style.setProperty(
+            "--header-height",
+            `${this.header.offsetHeight}px`
+        )
+        document.documentElement.style.setProperty(
+            "--announcement-bar-height",
+            `${this.announcement.offsetHeight}px`
+        )
     }
 }
 

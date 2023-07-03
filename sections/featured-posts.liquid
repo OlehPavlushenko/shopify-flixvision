@@ -36,7 +36,7 @@
     --width-featured-posts: {{ width }}px;
     --pad-top-featured-posts: {{ pad_top }}px;
     --pad-bot-featured-posts: {{ pad_bot }}px;
-  {% endcapture %}
+{% endcapture %}
 
 {%- assign styles = styles | strip_newlines -%}
 
@@ -76,6 +76,7 @@
                 <div
                     class="swiper-container js-swiper"
                     data-count-desktop="{{ columns_desktop }}"
+                    data-count-tablet="3"
                     data-count-mobile="{{ columns_mobile }}"
                 >
                     <ul class="featured-posts__list columns__desktop--{{ columns_desktop }} columns__mobile--{{ columns_mobile }} swiper-wrapper">
@@ -96,9 +97,9 @@
                             </li>
                         {% endfor %}
                     </ul>
-                    <div class="swiper-button-prev">{% render 'icons-svg', icons: 'prev' %}</div>
-                    <div class="swiper-button-next">{% render 'icons-svg', icons: 'next' %}</div>
-                    <div class="swiper-pagination featured-posts__pagination"></div>
+                    <div class="swiper-button-prev js-button-prev">{% render 'icons-svg', icons: 'prev' %}</div>
+                    <div class="swiper-button-next js-button-next">{% render 'icons-svg', icons: 'next' %}</div>
+                    <div class="swiper-pagination featured-posts__pagination js-pagination"></div>
                 </div>
             </swiper-section>
         </div>

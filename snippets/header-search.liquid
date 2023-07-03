@@ -68,7 +68,7 @@
                                             assign text = link.settings.suggested_text
                                         %}
                                         <a href="{{ url }}" class="search-modal__item">
-                                            <div class="search-modal__media">
+                                            <div class="search-modal__media media__size--{{ settings.prod_img_size }} media">
                                                 {% if link.settings.suggested_link_image != blank %}
                                                     {% render 'image',
                                                         image_box: image,
@@ -77,7 +77,7 @@
                                                 {% endif %}
                                             </div>
                                             {% if text != blank %}
-                                                <span class="h4">
+                                                <span class="h5">
                                                     {{ text }}
                                                 </span>
                                             {% endif %}

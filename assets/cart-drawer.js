@@ -1,9 +1,20 @@
-//{ subscribeToCartAjaxRequests, cartRequestAdd, cartRequestChange, cartRequestUpdate, subscribeToCartStateUpdate }
 if ("liquidAjaxCart" in window) {
     var recommendProducts = {},
         recommendResults = false
 
+    let addToCartButton = document.querySelector(".js-btn-cart-combo")
+    let addToCartButtonBuyMore = document.querySelectorAll(".js-buy-more-btn")
+
+    if (addToCartButtonBuyMore) {
+        addBuyMore(addToCartButtonBuyMore)
+    }
+
+    if (addToCartButton) {
+        addComboProducts(addToCartButton)
+    }
+
     liquidAjaxCart.configureCart("updateOnWindowFocus", false)
+
     liquidAjaxCart.subscribeToCartAjaxRequests(
         (requestState, subscribeToResult) => {
             if (requestState.requestType === "add") {
@@ -13,11 +24,27 @@ if ("liquidAjaxCart" in window) {
                         let product_id = String(
                             requestState.responseData.body.product_id
                         )
+                        let product_handle =
+                            requestState.responseData.body.handle
 
-                        recommendProducts[product_key] = product_id
+                        if (
+                            requestState.requestBody &&
+                            requestState.requestBody.items
+                        ) {
+                            console.log("requestState", requestState)
+                        } else {
+                            recommendProducts[product_key] = product_id
+                            buildNotification(requestState)
+                            setCookie("cart_recommend", recommendProducts)
+                            updateRecommendSection(product_id, product_handle)
+                        }
+                        const expiration = localStorage.getItem(
+                            "expirationTimeRecommendSection"
+                        )
 
-                        setCookie("cart_recommend", recommendProducts)
-                        buildNotification(requestState)
+                        if (!expiration) {
+                            setLocalStorageExpiration(1)
+                        }
                     }
                 })
             }
@@ -27,7 +54,6 @@ if ("liquidAjaxCart" in window) {
                     if (requestState.responseData?.ok) {
                         let items = requestState.responseData.body.items
                         let cartItems = []
-
                         if (items.length === 0) {
                             for (const key in recommendProducts) {
                                 if (
@@ -59,16 +85,26 @@ if ("liquidAjaxCart" in window) {
                             }
                         }
                         setCookie("cart_recommend", recommendProducts)
+
+                        const value =
+                            JSON.parse(
+                                localStorage.getItem("removeValueCombo")
+                            ) || []
+                        if (value) {
+                            let countItems = document.querySelectorAll(
+                                `[data-value="${value}"]`
+                            )
+                            removeComboProducts(countItems.length)
+                        }
                     }
                 })
             }
         }
     )
 
-    liquidAjaxCart.cartRequestUpdate()
-
-    liquidAjaxCart.subscribeToCartStateUpdate(async (state) => {
+    liquidAjaxCart.subscribeToCartStateUpdate(async (state, isCartUpdated) => {
         const cartTotalHeader = document.querySelector(".cart-count-ajax-cart")
+
         if (state.status.cartStateSet && !state.status.requestInProgress) {
             cartTotalHeader.textContent = Shopify.formatMoney(
                 state.cart.total_price
@@ -104,21 +140,259 @@ if ("liquidAjaxCart" in window) {
                             cartIds.push(id)
                         }
                     }
-
-                    let handles = getRecommendProducts(cartIds)
-
-                    handles.then((result) => {
-                        if (result.length > 0) {
-                            let strHandles = result.join("=")
-                            sentRecommendIds(strHandles)
-                        }
-                    })
+                    const existingItems = await getLocalStorageItems()
+                    if (existingItems.length > 0) {
+                        let strHandles = existingItems.join("=")
+                        sentRecommendIds(strHandles)
+                    }
                 }
             } else {
                 refreshCookie(state)
             }
+
+            if (!isCartUpdated) {
+                const itemsCart = state.cart.items
+                const itemsPreviousCart = state.previousCart.items
+
+                if (itemsCart.length < itemsPreviousCart.length) {
+                    const cartProductIds = itemsCart.map(
+                        (item) => item.product_id
+                    )
+                    const filteredItems = itemsPreviousCart.filter(
+                        (item) => !cartProductIds.includes(item.product_id)
+                    )
+                    if (filteredItems.length > 0) {
+                        deleteRecommendSection(
+                            filteredItems[0].product_id,
+                            filteredItems[0].handle
+                        )
+                    }
+                }
+            }
+            const removeButtonCombo =
+                document.querySelectorAll(".js-combo-remove")
+
+            if (removeButtonCombo) {
+                removeButtonCombo.forEach((button) => {
+                    button.addEventListener("click", function (event) {
+                        event.preventDefault()
+                        let parentGroup = button.closest(".main-combo-item")
+                        let parentGroupValue =
+                            parentGroup.getAttribute("data-value")
+
+                        let countItems = document.querySelectorAll(
+                            `[data-value="${parentGroupValue}"]`
+                        )
+                        localStorage.setItem(
+                            "removeValueCombo",
+                            JSON.stringify(parentGroupValue)
+                        )
+                        removeComboProducts(countItems.length)
+                    })
+                })
+            }
+        }
+        if (isCartUpdated) {
+            window.comboItemsWrapped = false
+            groupedComboProducts()
+            checkLocalStorageExpiration()
         }
     })
+
+    liquidAjaxCart.cartRequestUpdate()
+}
+
+function removeComboProducts(count) {
+    if (count === 0) {
+        localStorage.removeItem("removeValueCombo")
+        //localStorage.removeItem("recommendSection")
+        return
+    }
+
+    const value = JSON.parse(localStorage.getItem("removeValueCombo")) || []
+    const items = document.querySelectorAll(`[data-value="${value}"]`)
+
+    items.forEach((element) => {
+        const removeElement = element.querySelector(".js-item-remove")
+        setTimeout(() => {
+            removeElement.click()
+        }, 100)
+        const parentElement = element.parentNode
+        parentElement.classList.add("js-ajax-cart-form-in-progress")
+    })
+}
+
+function addBuyMore(addToCartButtonBuyMore) {
+    addToCartButtonBuyMore.forEach((button) => {
+        button.addEventListener("click", function (event) {
+            let mainProductForm = event.target
+                .closest(".main-product__content")
+                .querySelector(".main-product__form")
+
+            let buyMoreItems = event.target.closest(".js-buy-more-items")
+
+            buyMoreItems.classList.add("js-ajax-cart-form-in-progress")
+
+            let formData = new FormData(mainProductForm)
+
+            let id = formData.get("id")
+            let quantity = +buyMoreItems.querySelector(".js-buy-more-item span")
+                .textContent
+
+            let formItem = {}
+
+            if (id && quantity) {
+                formItem = {
+                    id: id,
+                    quantity: quantity,
+                }
+            }
+
+            let items = [formItem]
+
+            let options = {
+                lastComplete: (requestState) => {
+                    buyMoreItems.classList.remove(
+                        "js-ajax-cart-form-in-progress"
+                    )
+                    if (requestState.requestType === "add") {
+                        //console.log("requestType", requestState)
+
+                        buildNotification(requestState)
+                        if (requestState.responseData.ok) {
+                            let product_id = String(
+                                requestState.responseData.body.items[0]
+                                    .product_id
+                            )
+                            let product_handle =
+                                requestState.responseData.body.items[0].handle
+                            updateRecommendSection(product_id, product_handle)
+                        }
+                    }
+                },
+            }
+
+            liquidAjaxCart.cartRequestAdd({ items: items }, options)
+        })
+    })
+}
+
+function addComboProducts(addToCartButton) {
+    addToCartButton.addEventListener("click", function (event) {
+        let mainProductForm = event.target.closest(".js-main-combo-action")
+        let mainProductCombo = event.target.closest(".js-combo-action")
+
+        mainProductForm.classList.add("js-ajax-cart-form-in-progress")
+
+        let formData = new FormData(mainProductForm)
+        let otherItems = []
+        let propertiesAll = []
+        let propertiesNumber = ""
+        let id = formData.get("id")
+        let quantity = formData.get("quantity")
+        let properties = formData.get("properties[ComboDiscount]")
+
+        let otherForms = mainProductCombo.querySelectorAll(
+            ".card-product__form"
+        )
+        propertiesAll.push(id)
+
+        otherForms.forEach(function (form) {
+            let otherFormData = new FormData(form)
+            let id = otherFormData.get("id")
+
+            if (id) {
+                propertiesAll.push(id)
+                propertiesNumber += id
+            }
+        })
+
+        otherForms.forEach(function (form) {
+            let otherFormData = new FormData(form)
+            let id = otherFormData.get("id")
+            let otherItem = {}
+
+            if (id && quantity) {
+                otherItem = {
+                    id: id,
+                    quantity: quantity,
+                    properties: {
+                        _hiddenCombo: propertiesAll,
+                        _hiddenNumber: propertiesNumber,
+                    },
+                }
+                otherItems.push(otherItem)
+            }
+        })
+
+        let formItem = {}
+
+        if (id && quantity && properties) {
+            formItem = {
+                id: id,
+                quantity: quantity,
+                properties: {
+                    ComboDiscount: properties,
+                    _hiddenCombo: propertiesAll,
+                },
+            }
+        }
+
+        let items = [formItem, ...otherItems]
+
+        let options = {
+            lastComplete: (requestState) => {
+                let productForm = document.querySelector(
+                    ".js-main-combo-action"
+                )
+                productForm.classList.remove("js-ajax-cart-form-in-progress")
+                if (requestState.requestType === "add") {
+                    buildNotification(requestState)
+                }
+            },
+        }
+
+        liquidAjaxCart.cartRequestAdd({ items: items }, options)
+    })
+}
+
+function groupedComboProducts() {
+    const comboItems = document.querySelectorAll(".js-combo-item")
+
+    if (!window.comboItemsWrapped) {
+        if (comboItems) {
+            const groupedItems = {}
+
+            comboItems.forEach((item) => {
+                const dataValue = item.getAttribute("data-value")
+
+                if (groupedItems.hasOwnProperty(dataValue)) {
+                    groupedItems[dataValue].push(item)
+                } else {
+                    groupedItems[dataValue] = [item]
+                }
+            })
+
+            for (const key in groupedItems) {
+                const items = groupedItems[key]
+
+                const wrapperDiv = document.createElement("div")
+                wrapperDiv.classList.add("ajax-cart__line-item-grouped")
+
+                items.forEach((item) => {
+                    wrapperDiv.appendChild(item.cloneNode(true)) // Clone the item before appending
+                })
+
+                items.forEach((item) => {
+                    const parent = item.parentNode
+                    parent.insertBefore(wrapperDiv, item) // Insert the wrapperDiv before the item
+                    parent.removeChild(item) // Remove the original item
+                })
+            }
+
+            window.comboItemsWrapped = true
+        }
+    }
 }
 
 function buildNotification(requestState) {
@@ -147,15 +421,41 @@ function getNotification(state) {
     let modal = document.querySelector(".js-cart-notification")
     trapFocus(modal)
 
-    modal.querySelector(".js-cart-notification-title").textContent =
-        state.responseData.body.product_title
-    modal
-        .querySelector(".js-cart-notification-image")
-        .parentElement.classList.add("media__size--" + imageSize)
-    modal.querySelector(".js-cart-notification-image").src =
-        state.responseData.body.image
-    modal.querySelector(".js-cart-notification-image").alt =
-        state.responseData.body.product_title
+    if (state.responseData?.ok) {
+        if (state.requestBody instanceof FormData) {
+            modal.querySelector(".js-cart-notification-title").textContent =
+                state.responseData.body.product_title
+            modal
+                .querySelector(".js-cart-notification-image")
+                .parentElement.classList.add("media__size--" + imageSize)
+            modal.querySelector(".js-cart-notification-image").src =
+                state.responseData.body.image
+
+            modal.querySelector(".js-cart-notification-image").alt =
+                state.responseData.body.product_title
+        } else {
+            let item = state.responseData.body.items[0]
+            modal.querySelector(".js-cart-notification-title").textContent =
+                item.product_title
+            modal
+                .querySelector(".js-cart-notification-image")
+                .parentElement.classList.add("media__size--" + imageSize)
+            modal.querySelector(".js-cart-notification-image").src = item.image
+
+            modal.querySelector(".js-cart-notification-image").alt =
+                item.product_title
+        }
+    } else {
+        modal.querySelector(".js-cart-notification-title").textContent =
+            state.responseData.body.message +
+            " " +
+            state.responseData.body.status
+        modal
+            .querySelector(".js-cart-notification-image")
+            .parentElement.parentElement.remove()
+        modal.querySelector(".js-cart-msg").textContent =
+            state.responseData.body.description
+    }
 
     modal.classList.add("open")
     document.body.classList.add("overflow-hidden")
@@ -189,27 +489,132 @@ function closeNotification(modal) {
     removeTrapFocus(modal)
 }
 
-async function getRecommendProducts(ids) {
-    const productItems = []
+function getLocalStorageItems() {
+    return new Promise((resolve) => {
+        const existingItems =
+            JSON.parse(localStorage.getItem("recommendSection")) || []
+        const defaultItems =
+            JSON.parse(localStorage.getItem("defaultRecommendSection")) || []
+        const deleteItems =
+            JSON.parse(localStorage.getItem("deleteRecommendSection")) || []
 
-    const promises = ids.map((id) => {
-        return fetch(
-            `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
+        const updatedItems = existingItems.filter(
+            (item) => !defaultItems.includes(item)
         )
-            .then((response) => response.json())
-            .then(({ products }) => {
-                for (const product of products) {
-                    const handle = String(product.handle)
-                    if (!productItems.includes(handle)) {
-                        productItems.push(handle)
-                    }
-                }
-            })
+
+        const allItems = updatedItems.concat(defaultItems)
+
+        const updatedAllItems = allItems.filter(
+            (item) => !deleteItems.includes(item)
+        )
+
+        const finalItems = updatedAllItems.concat(deleteItems)
+
+        resolve(finalItems)
     })
+}
 
-    await Promise.all(promises)
+function updateLocalStorage(updatedItems) {
+    return new Promise((resolve) => {
+        localStorage.setItem("recommendSection", JSON.stringify(updatedItems))
+        resolve()
+    })
+}
 
-    return productItems
+function updateDeleteLocalStorage(defaultItems) {
+    return new Promise((resolve) => {
+        localStorage.setItem(
+            "deleteRecommendSection",
+            JSON.stringify(defaultItems)
+        )
+        resolve()
+    })
+}
+
+async function updateRecommendSection(id, handle) {
+    const response = await fetch(
+        `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
+    )
+
+    const { products } = await response.json()
+
+    const existingItems = await getLocalStorageItems()
+    const defaultItems =
+        JSON.parse(localStorage.getItem("defaultRecommendSection")) || []
+
+    const handlesToAdd = products
+        .map((product) => String(product.handle))
+        .filter((handle) => !defaultItems.includes(handle))
+
+    const handlesToRemove = products.map((product) => String(product.handle))
+
+    const updatedItems = existingItems.filter(
+        (item) => !handlesToRemove.includes(item)
+    )
+
+    updatedItems.unshift(...handlesToAdd)
+
+    const filteredItems = updatedItems.filter(
+        (item) => item !== handle && item !== null
+    )
+
+    const uniqueItems = [...new Set(filteredItems)]
+
+    await updateLocalStorage(uniqueItems)
+
+    if (uniqueItems.length > 0) {
+        let strHandles = uniqueItems.join("=")
+        sentRecommendIds(strHandles)
+    }
+}
+
+async function deleteRecommendSection(id, handle) {
+    const response = await fetch(
+        `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
+    )
+
+    const { products } = await response.json()
+
+    const existingItems = await getLocalStorageItems()
+
+    const defaultItems =
+        JSON.parse(localStorage.getItem("defaultRecommendSection")) || []
+
+    const deleteItems =
+        JSON.parse(localStorage.getItem("deleteRecommendSection")) || []
+
+    const handlesToRemove = products.map((product) => String(product.handle))
+
+    const updatedItems = existingItems.filter(
+        (item) => !handlesToRemove.includes(item)
+    )
+
+    const filteredItems = updatedItems.filter(
+        (item) => !defaultItems.includes(item)
+    )
+
+    const finalItems = [...filteredItems, ...defaultItems]
+
+    const uniqueItems = finalItems.filter(
+        (item, index) => finalItems.indexOf(item) === index
+    )
+
+    const finalFilteredItems = uniqueItems.filter(
+        (item) => item !== handle && item !== null
+    )
+
+    if (handle !== null && !deleteItems.includes(handle)) {
+        deleteItems.push(handle)
+        await updateDeleteLocalStorage(deleteItems)
+    }
+
+    await updateLocalStorage(finalFilteredItems)
+
+    if (finalFilteredItems.length > 0) {
+        const getAllItems = await getLocalStorageItems()
+        let strHandles = getAllItems.join("=")
+        sentRecommendIds(strHandles)
+    }
 }
 
 function sentRecommendIds(ids) {
@@ -246,7 +651,7 @@ function sentRecommendIds(ids) {
                 const swiper = new Swiper(".js-recommend-swiper", {
                     // Optional parameters
                     loop: false,
-                    slidesPerView: 1,
+                    slidesPerView: 2,
                     spaceBetween: 10,
                     // Navigation arrows
                     navigation: {
@@ -256,7 +661,7 @@ function sentRecommendIds(ids) {
                     breakpoints: {
                         551: {
                             slidesPerView: 2,
-                            spaceBetween: 20,
+                            spaceBetween: 15,
                         },
                     },
                 })
@@ -297,7 +702,6 @@ function setCookie(name, json) {
     expire.toString()
     cookieValue += "expires=" + expire + ";"
 
-    //console.log('set-'+cookieValue)
     //Set cookie
     document.cookie = cookieValue
 }
@@ -362,4 +766,21 @@ function calculateProgress(currentVal, targetVal) {
             el.textContent = Shopify.formatMoney(newProgressNum * 100)
         })
     }
+}
+
+function checkLocalStorageExpiration() {
+    const storedTime = localStorage.getItem("expirationTimeRecommendSection")
+    if (storedTime) {
+        const currentTime = new Date().getTime()
+        if (currentTime > storedTime) {
+            localStorage.removeItem("recommendSection")
+            localStorage.removeItem("deleteRecommendSection")
+            localStorage.removeItem("expirationTimeRecommendSection")
+        }
+    }
+}
+
+function setLocalStorageExpiration(days) {
+    const expirationTime = new Date().getTime() + days * 24 * 60 * 60 * 1000
+    localStorage.setItem("expirationTimeRecommendSection", expirationTime)
 }

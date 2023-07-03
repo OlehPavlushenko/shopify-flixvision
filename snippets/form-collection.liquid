@@ -1,12 +1,16 @@
-{% capture "form_id" %}product_form-{{ section.id }}-{{ product.id }}{%- endcapture %}
 {% if product.available %}
-    {% form 'product', product, id: form_id, class: 'card-product__form' %}
+    {% capture "form_id" %}product_form-{{ section.id }}-{{ product.id }}{%- endcapture %}
+    {% capture "form_class" %}card-product__form{%- endcapture %}
+    {% form 'product', product, id: form_id, class: form_class %}
         {% if product.available and product.variants.size > 1 %}
             <variant-pills
                 class="swatch-wrap"
                 data-section="{{ section.id }}-{{ product.id }}"
+                data-url="{{ product.url }}"
             >
-                {% render 'swatch' for product.options as swatch, product: product, variant_type: variant_type %}
+                <div class="swatch-container js-swatch">
+                    {% render 'swatch' for product.options as swatch, product: product, variant_type: variant_type %}
+                </div>
                 <script type="application/json">
                     {{ product.variants | json }}
                 </script>
@@ -92,7 +96,7 @@
                         id="AddToCart-{{ product.id }}"
                         class="button--secondary js-btn-cart card-product__button-cart"
                     >
-                        <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+                        <span>{{ 'products.product.add_to_cart' | t }}</span>
                     </button>
                     {% render 'compare-wishlist-btns', product: product %}
                 </div>
@@ -127,7 +131,7 @@
                 <div>
                     <quantity-input class="quantity">
                         <button class="quantity__button quantity__button--minus" name="minus" type="button">
-                            {% render 'icon-minus' %}
+                            {% render 'icons-svg', icons: 'minus' %}
                         </button>
 
                         <input
@@ -145,7 +149,7 @@
                         >
 
                         <button class="quantity__button quantity__button--plus" name="plus" type="button">
-                            {% render 'icon-plus' %}
+                            {% render 'icons-svg', icons: 'plus' %}
                         </button>
                     </quantity-input>
                 </div>
@@ -171,7 +175,7 @@
                     id="AddToCart-{{ product.id }}"
                     class="button--secondary card-product__button-cart js-btn-cart"
                 >
-                    <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+                    <span>{{ 'products.product.add_to_cart' | t }}</span>
                 </button>
                 {% render 'compare-wishlist-btns', product: product %}
             </div>

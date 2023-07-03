@@ -1,5 +1,10 @@
-/* component-badge */
 
+.overflow-hidden-notify #MainContent {
+    position: relative;
+    z-index: 11;
+}
+
+/* component-badge */
 .badge {
     background-color: var(--color-reverse);
     border: .1rem solid var(--color-black);
@@ -24,7 +29,7 @@
     .price__box {
         display: flex;
         align-items: center;
-        min-height: 21px;
+        min-height: 41px;
     }
     .price__item {
         display: inline-block;
@@ -166,7 +171,7 @@ quantity-input {
     display: inline-block;
     position: relative;
     margin-bottom: 1rem;
-    padding-right: 3rem;
+    padding-right: 0;
     /* Chrome, Safari, Edge, Opera */
     .quantity__input::-webkit-outer-spin-button,
     .quantity__input::-webkit-inner-spin-button {
@@ -197,14 +202,16 @@ quantity-input {
         padding: 0;
         &.quantity__button--plus {
             position: absolute;
-            right: 0;
-            top: -0.4rem;
+            right: 2px;
+            top: 50%;
+            margin-top: -13px;
         }
     
         &.quantity__button--minus {
             position: absolute;
-            right: 0;
-            bottom: -0.4rem;
+            left: 2px;
+            top: 50%;
+            margin-top: -13px;
         }
     }
 
@@ -294,7 +301,7 @@ quantity-input {
             width: 100%;
             min-width: 100%;
             margin-bottom: 1rem;
-            display: none;
+            //display: none;
         }
         .swatch-element {
             margin-right: 6px;
@@ -323,6 +330,9 @@ quantity-input {
             }
             &.hidden {
                 display: none;
+            }
+            &.hidden.available {
+                display: block !important;
             }
             &.unavailable {
                 pointer-events: none;
@@ -504,9 +514,11 @@ quantity-input {
 
 .card-product__price.price--on-sale .badge.sale {
     margin-left: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
     @media (min-width: 320px) and (max-width: 767px) {
         margin-left: 0;
-        margin-top: 10px;
+        
      }
 }
 
@@ -655,5 +667,26 @@ details-open-notify.open {
             display: none;
         }
         
+    }
+}
+
+.list-view {
+    .card-product__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+    .card-product__media-wrapper {
+        width: 150px;
+        margin-bottom: 0;
+    }
+    .card-product__content {
+        flex: auto;
+        padding-top: 10px;
+        padding-left: 30px;
+        width: min-content;
+        @media (min-width: 320px) and (max-width: 990px) {
+            padding-left: 15px;
+        }
     }
 }

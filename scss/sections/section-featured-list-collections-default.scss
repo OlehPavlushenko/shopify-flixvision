@@ -96,10 +96,16 @@
 
         &.card-collection__content--right {
             text-align: right;
+            h3 a {
+                justify-content: flex-end;
+            }
         }
 
         &.card-collection__content--center {
             text-align: center;
+            h3 a {
+                justify-content: center;
+            }
         }
 
         h3 {

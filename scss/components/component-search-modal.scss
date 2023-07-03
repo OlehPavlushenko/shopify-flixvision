@@ -22,17 +22,16 @@ details-open {
     bottom: initial;
     position: fixed;
     top: 0;
-    z-index: 99;
     left: 0;
     right: 0;
-    max-height: inherit;
     height: auto;
     overflow: auto;
     max-height: 90%;
     -webkit-overflow-scrolling: touch;
-    transition: margin 0.3s ease, visibility 0.3s ease;
+    transition: all 0.3s ease;
     visibility: hidden;
-    margin-top: 2rem;
+    opacity: 0;
+    margin-top: -2rem;
 }
 
 details-open.open .header__search .search-modal {
@@ -40,6 +39,7 @@ details-open.open .header__search .search-modal {
     box-shadow:0 .4rem .5rem rgba(0,0,0,.1); 
     visibility: visible;
     z-index: 2;
+    opacity: 1;
     margin-top: 0;
 }
 
@@ -47,24 +47,25 @@ details-open.open .header__search .search-modal {
     padding-bottom: 2rem;
 }
 
-details-open .header__search .search-modal__overlay:after {
+details-open .header__search .search-modal__overlay {
     position: fixed;
-    content: "";
     background: rgba(0,0,0, .1);
     backdrop-filter: blur(0.4rem);
     top: 0;
     left: 0;
     right: 0;
-    height: 0;
-    transition: height 0.3s ease;
-    z-index: 98;
+    height: 100vh;
+    transform: translateY(100%);
+    transition: all 0.3s ease;
     opacity: 0;
+    visibility: hidden;
 }
 
-details-open.open .header__search .search-modal__overlay:after {
+details-open.open .header__search .search-modal__overlay {
     z-index: 1;
-    height: 100vh;
     opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .search-modal__content {
@@ -180,7 +181,7 @@ details-open.open .header__search .search-modal__overlay:after {
     padding: 0;
     margin: 0;
     list-style-type: none;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     button {
         font-size: 1.2rem;
         line-height: 2rem;
@@ -214,12 +215,12 @@ details-open.open .header__search .search-modal__overlay:after {
 
 .search-modal__item {
     display: block;
-    width: 100%;
     text-decoration: none;
     transition: color .3s ease;
+    width: 250px;
 }
 
-.search-modal__item:hover .h4 {
+.search-modal__item:hover .h5 {
     color: var(--color-link-hover-text);
 }
 
@@ -230,8 +231,8 @@ details-open.open .header__search .search-modal__overlay:after {
     max-width: 100%;
     width: 100%;
     overflow: hidden;
-    padding-top: 85%;
-    margin-bottom: 2rem;
+    //padding-top: 85%;
+    margin-bottom: 1rem;
 }
 
 .search-modal__image {

@@ -119,7 +119,6 @@
                     class="article-template__social-sharing container"
                     {{ block.shopify_attributes }}
                 >
-                    {% assign share_url = request.origin | append: article.url %}
                     <ul class="social-sharing list-social list-unstyled">
                         <li>{{ 'blogs.article.share' | t }}:</li>
                         {% render 'social-sharing',
@@ -140,7 +139,7 @@
             </a>
         </div>
         {% if blog.previous_article or blog.next_article %}
-            <div class="article_pagination previous-next">
+            <div class="article_pagination">
                 {% if blog.previous_article %}
                     <a
                         href="{{ blog.previous_article }}"

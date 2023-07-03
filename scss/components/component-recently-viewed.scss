@@ -12,8 +12,8 @@
     }
 }
 
-#recently__products.recently__products {
-    margin: 40px 0 0 0;
+#recently__products.recently__products, .product-grid-box {
+    margin: 10px 0 0 0;
     display: block;
     .recently__item {
         max-width: 100%;
@@ -32,6 +32,9 @@
     .card-product__media-wrapper {
         width: 150px;
         margin-bottom: 0;
+        @media (min-width: 370px) and (max-width: 767px) {
+            width: 90px;
+        }
     }
     .card-product__content {
         flex: auto;
