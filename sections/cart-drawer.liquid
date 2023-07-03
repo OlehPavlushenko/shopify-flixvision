@@ -591,11 +591,7 @@
     {{ cart | json }}
 </script>
 <script>
-    const localStorageValue = JSON.parse(localStorage.getItem("recommendSection")) || []
-    console.log(localStorageValue)
-    if (localStorageValue.length === 0) {
-        localStorage.setItem("recommendSection", JSON.stringify({{ recommend_db }}))
-    }
+    localStorage.setItem("defaultRecommendSection", JSON.stringify({{ recommend_db }}))
 </script>
 
 <script type="module">

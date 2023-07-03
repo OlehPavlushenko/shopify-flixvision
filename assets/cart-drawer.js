@@ -1,4 +1,3 @@
-//{ subscribeToCartAjaxRequests, cartRequestAdd, cartRequestChange, cartRequestUpdate, subscribeToCartStateUpdate }
 if ("liquidAjaxCart" in window) {
     var recommendProducts = {},
         recommendResults = false
@@ -38,6 +37,13 @@ if ("liquidAjaxCart" in window) {
                             buildNotification(requestState)
                             setCookie("cart_recommend", recommendProducts)
                             updateRecommendSection(product_id, product_handle)
+                        }
+                        const expiration = localStorage.getItem(
+                            "expirationTimeRecommendSection"
+                        )
+
+                        if (!expiration) {
+                            setLocalStorageExpiration(1)
                         }
                     }
                 })
@@ -134,9 +140,7 @@ if ("liquidAjaxCart" in window) {
                             cartIds.push(id)
                         }
                     }
-
                     const existingItems = await getLocalStorageItems()
-
                     if (existingItems.length > 0) {
                         let strHandles = existingItems.join("=")
                         sentRecommendIds(strHandles)
@@ -191,6 +195,7 @@ if ("liquidAjaxCart" in window) {
         if (isCartUpdated) {
             window.comboItemsWrapped = false
             groupedComboProducts()
+            checkLocalStorageExpiration()
         }
     })
 
@@ -488,13 +493,40 @@ function getLocalStorageItems() {
     return new Promise((resolve) => {
         const existingItems =
             JSON.parse(localStorage.getItem("recommendSection")) || []
-        resolve(existingItems)
+        const defaultItems =
+            JSON.parse(localStorage.getItem("defaultRecommendSection")) || []
+        const deleteItems =
+            JSON.parse(localStorage.getItem("deleteRecommendSection")) || []
+
+        const updatedItems = existingItems.filter(
+            (item) => !defaultItems.includes(item)
+        )
+
+        const allItems = updatedItems.concat(defaultItems)
+
+        const updatedAllItems = allItems.filter(
+            (item) => !deleteItems.includes(item)
+        )
+
+        const finalItems = updatedAllItems.concat(deleteItems)
+
+        resolve(finalItems)
     })
 }
 
 function updateLocalStorage(updatedItems) {
     return new Promise((resolve) => {
         localStorage.setItem("recommendSection", JSON.stringify(updatedItems))
+        resolve()
+    })
+}
+
+function updateDeleteLocalStorage(defaultItems) {
+    return new Promise((resolve) => {
+        localStorage.setItem(
+            "deleteRecommendSection",
+            JSON.stringify(defaultItems)
+        )
         resolve()
     })
 }
@@ -507,7 +539,13 @@ async function updateRecommendSection(id, handle) {
     const { products } = await response.json()
 
     const existingItems = await getLocalStorageItems()
-    const handlesToAdd = products.map((product) => String(product.handle))
+    const defaultItems =
+        JSON.parse(localStorage.getItem("defaultRecommendSection")) || []
+
+    const handlesToAdd = products
+        .map((product) => String(product.handle))
+        .filter((handle) => !defaultItems.includes(handle))
+
     const handlesToRemove = products.map((product) => String(product.handle))
 
     const updatedItems = existingItems.filter(
@@ -524,7 +562,7 @@ async function updateRecommendSection(id, handle) {
 
     await updateLocalStorage(uniqueItems)
 
-    if (uniqueItems && uniqueItems.length > 0) {
+    if (uniqueItems.length > 0) {
         let strHandles = uniqueItems.join("=")
         sentRecommendIds(strHandles)
     }
@@ -534,22 +572,47 @@ async function deleteRecommendSection(id, handle) {
     const response = await fetch(
         `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
     )
+
     const { products } = await response.json()
 
     const existingItems = await getLocalStorageItems()
+
+    const defaultItems =
+        JSON.parse(localStorage.getItem("defaultRecommendSection")) || []
+
+    const deleteItems =
+        JSON.parse(localStorage.getItem("deleteRecommendSection")) || []
+
     const handlesToRemove = products.map((product) => String(product.handle))
+
     const updatedItems = existingItems.filter(
         (item) => !handlesToRemove.includes(item)
     )
 
-    if (handle !== null) {
-        updatedItems.unshift(handle)
+    const filteredItems = updatedItems.filter(
+        (item) => !defaultItems.includes(item)
+    )
+
+    const finalItems = [...filteredItems, ...defaultItems]
+
+    const uniqueItems = finalItems.filter(
+        (item, index) => finalItems.indexOf(item) === index
+    )
+
+    const finalFilteredItems = uniqueItems.filter(
+        (item) => item !== handle && item !== null
+    )
+
+    if (handle !== null && !deleteItems.includes(handle)) {
+        deleteItems.push(handle)
+        await updateDeleteLocalStorage(deleteItems)
     }
 
-    await updateLocalStorage(updatedItems)
+    await updateLocalStorage(finalFilteredItems)
 
-    if (updatedItems.length > 0) {
-        let strHandles = updatedItems.join("=")
+    if (finalFilteredItems.length > 0) {
+        const getAllItems = await getLocalStorageItems()
+        let strHandles = getAllItems.join("=")
         sentRecommendIds(strHandles)
     }
 }
@@ -703,4 +766,21 @@ function calculateProgress(currentVal, targetVal) {
             el.textContent = Shopify.formatMoney(newProgressNum * 100)
         })
     }
+}
+
+function checkLocalStorageExpiration() {
+    const storedTime = localStorage.getItem("expirationTimeRecommendSection")
+    if (storedTime) {
+        const currentTime = new Date().getTime()
+        if (currentTime > storedTime) {
+            localStorage.removeItem("recommendSection")
+            localStorage.removeItem("deleteRecommendSection")
+            localStorage.removeItem("expirationTimeRecommendSection")
+        }
+    }
+}
+
+function setLocalStorageExpiration(days) {
+    const expirationTime = new Date().getTime() + days * 24 * 60 * 60 * 1000
+    localStorage.setItem("expirationTimeRecommendSection", expirationTime)
 }
