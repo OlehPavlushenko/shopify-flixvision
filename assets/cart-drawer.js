@@ -151,21 +151,23 @@ if ("liquidAjaxCart" in window) {
             }
 
             if (!isCartUpdated) {
-                const itemsCart = state.cart.items
-                const itemsPreviousCart = state.previousCart.items
+                if (state.previousCart && state.previousCart.items) {
+                    const itemsCart = state.cart.items
+                    const itemsPreviousCart = state.previousCart.items
 
-                if (itemsCart.length < itemsPreviousCart.length) {
-                    const cartProductIds = itemsCart.map(
-                        (item) => item.product_id
-                    )
-                    const filteredItems = itemsPreviousCart.filter(
-                        (item) => !cartProductIds.includes(item.product_id)
-                    )
-                    if (filteredItems.length > 0) {
-                        deleteRecommendSection(
-                            filteredItems[0].product_id,
-                            filteredItems[0].handle
+                    if (itemsCart.length < itemsPreviousCart.length) {
+                        const cartProductIds = itemsCart.map(
+                            (item) => item.product_id
                         )
+                        const filteredItems = itemsPreviousCart.filter(
+                            (item) => !cartProductIds.includes(item.product_id)
+                        )
+                        if (filteredItems.length > 0) {
+                            deleteRecommendSection(
+                                filteredItems[0].product_id,
+                                filteredItems[0].handle
+                            )
+                        }
                     }
                 }
             }
