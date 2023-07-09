@@ -447,7 +447,14 @@
                 </div>
             {% endif %}
         {% endfor %}
-        <div id="cart-recommend" data-ajax-cart-static-element data-size="{{ size }}">
+        <div
+            id="cart-recommend"
+            data-ajax-cart-static-element
+            data-size="{{ size }}"
+            data-count-desktop="2"
+            data-count-tablet="2"
+            data-count-mobile="2"
+        >
             <span class="visually-hidden">{{ 'sections.cart.recommend' | t }}</span>
         </div>
     </div>
@@ -482,7 +489,9 @@
                                     {%- assign input = block.settings.label | escape -%}
                                     {% if input != blank %}
                                         <div class="cart-drawer__property">
-                                            <span class="cart-drawer__property-label"> {{ input }}: </span>
+                                            {% if input != blank %}
+                                                <span class="cart-drawer__property-label"> {{ input }}: </span>
+                                            {% endif %}
                                             <input
                                                 type="text"
                                                 name="attributes[{{ input }}]"
@@ -497,7 +506,9 @@
                                     {%- assign select_value = block.settings.value -%}
                                     {% if select_value != blank %}
                                         <div class="cart-drawer__property">
-                                            <span class="cart-drawer__property-label"> {{ select_label }}: </span>
+                                            {% if select_value != blank %}
+                                                <span class="cart-drawer__property-label"> {{ select_label }}: </span>
+                                            {% endif %}
                                             <select name="attributes[select_label]" data-ajax-cart-property-input>
                                                 {% assign suggested_days = select_value | split: '|' %}
                                                 <option
@@ -527,7 +538,9 @@
                                     {%- assign radio_value = block.settings.value -%}
                                     {% if radio_value != blank %}
                                         <div class="cart-drawer__property">
-                                            <span class="cart-drawer__property-label">{{ radio_label }}:</span>
+                                            {% if radio_value != blank %}
+                                                <span class="cart-drawer__property-label">{{ radio_label }}:</span>
+                                            {% endif %}
                                             {% assign suggested_time = radio_value | split: '|' %}
                                             {% for time in suggested_time %}
                                                 <label>
@@ -550,7 +563,6 @@
                                     {%- assign checkbox = block.settings.label | escape -%}
                                     {% if checkbox != blank %}
                                         <div class="cart-drawer__property">
-                                            <span class="ajax-cart__property-label"></span>
                                             <label>
                                                 <input
                                                     type="hidden"

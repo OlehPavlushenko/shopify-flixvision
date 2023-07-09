@@ -39,18 +39,18 @@
       "settings": {
         "image": "shopify:\/\/shop_images\/demo1-banner1.jpg",
         "image_mobile": "shopify:\/\/shop_images\/demo1-banner1-m.jpg",
-        "video_type": "files",
+        "video_type": "youtube",
         "video": "",
         "block_position": "bottom-middle",
         "text_alignment": "center",
         "adapt_height_image": true,
         "full_bleed_color": "#5cc2ed",
-        "block_color": "#5cc2ed",
-        "opacity": 1,
+        "block_color": "#1abc9c",
+        "opacity": 2,
         "title_color": "#ffffff",
         "text_color": "#f5f5f5",
         "layout_options": "layout_full",
-        "text_block_width": 70,
+        "text_block_width": 60,
         "btn_bg_color": "#ec7163",
         "btn_link_color": "#ffffff",
         "btn_bg_color_hover": "#34495e",
@@ -65,7 +65,7 @@
           "settings": {
             "block_position": "bottom-left",
             "text_alignment": "left",
-            "style": "style-1",
+            "style": "style-2",
             "item_img": "shopify:\/\/shop_images\/7.jpg",
             "item_link": "shopify:\/\/collections\/bags",
             "item_subtitle": "New collection",
@@ -115,180 +115,49 @@
         "padding_bottom": 30
       }
     },
-    "1dec8ad6-0dcc-4a44-8a0a-ecde8beb282d": {
-      "type": "featured-large-text",
-      "settings": {
-        "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to.<\/p>",
-        "text_alignment": "center",
-        "width": 1440,
-        "bg_color": "#5cc2ed",
-        "link_color": "#f5f5f5",
-        "text_color": "#fafbfb",
-        "padding_top": 30,
-        "padding_bottom": 30
-      }
-    },
-    "12c4afbf-05d2-4388-9b4e-39cd77c55a05": {
-      "type": "featured-list-banners",
+    "077cef1f-cf98-4cd7-99db-7dc28489a823": {
+      "type": "featured-rich-text",
       "blocks": {
-        "template--15627200921700__12c4afbf-05d2-4388-9b4e-39cd77c55a05-167982736164f55683-1": {
-          "type": "big_50",
+        "template--15627200921700__077cef1f-cf98-4cd7-99db-7dc28489a823-16802710046c99e3b3-0": {
+          "type": "heading",
           "settings": {
-            "item_img": "shopify:\/\/shop_images\/10.jpg",
-            "item_subtitle": "Summer sale offers",
-            "item_title": "70% OFF",
-            "item_text": "<p>Be the most you<\/p>",
-            "item_link": "shopify:\/\/collections\/accessories",
-            "button_text": "Shop the collection",
-            "block_position": "middle-middle",
-            "text_alignment": "center",
-            "style": "style-2"
+            "heading": "Talk about your brand",
+            "heading_size": "medium"
           }
         },
-        "template--15627200921700__12c4afbf-05d2-4388-9b4e-39cd77c55a05-167982736164f55683-0": {
-          "type": "big_50",
+        "template--15627200921700__077cef1f-cf98-4cd7-99db-7dc28489a823-16802710046c99e3b3-1": {
+          "type": "text",
           "settings": {
-            "item_img": "shopify:\/\/shop_images\/4.jpg",
-            "item_subtitle": "New collection",
-            "item_title": "Street style",
-            "item_text": "",
-            "item_link": "shopify:\/\/collections",
-            "button_text": "Shop now",
-            "block_position": "middle-middle",
-            "text_alignment": "center",
-            "style": "style-1"
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>"
+          }
+        },
+        "template--15627200921700__077cef1f-cf98-4cd7-99db-7dc28489a823-16802710046c99e3b3-2": {
+          "type": "button",
+          "settings": {
+            "button_label": "Read More",
+            "button_link": "#",
+            "button_style_secondary": true
           }
         }
       },
       "block_order": [
-        "template--15627200921700__12c4afbf-05d2-4388-9b4e-39cd77c55a05-167982736164f55683-1",
-        "template--15627200921700__12c4afbf-05d2-4388-9b4e-39cd77c55a05-167982736164f55683-0"
+        "template--15627200921700__077cef1f-cf98-4cd7-99db-7dc28489a823-16802710046c99e3b3-0",
+        "template--15627200921700__077cef1f-cf98-4cd7-99db-7dc28489a823-16802710046c99e3b3-1",
+        "template--15627200921700__077cef1f-cf98-4cd7-99db-7dc28489a823-16802710046c99e3b3-2"
       ],
       "settings": {
-        "bg_color": "#ffffff",
-        "img_size": "landscape",
+        "text_alignment": "left",
         "full_width": false,
-        "width": 1440,
-        "bg_caption": "#ffffff",
-        "opacity": 9,
-        "title_color": "#2e3131",
-        "subtitle_color": "#34495e",
-        "text_color": "#696e6e",
-        "padding_top": 30,
-        "padding_bottom": 30
-      }
-    },
-    "a746f73e-cbce-4bfa-bd35-a1a222bafe73": {
-      "type": "featured-text-image",
-      "settings": {
-        "image": "shopify:\/\/shop_images\/demo1-banner2.jpg",
-        "image_mobile": "shopify:\/\/shop_images\/demo1-banner2-m.jpg",
-        "full_width": true,
-        "width": 1200,
-        "video_type": "files",
-        "control_video": false,
-        "control_audio": true,
-        "loop_video": true,
-        "video": "",
-        "video_title": "Final Reduction",
-        "layout": "text_first",
-        "heading": "This is multi-purpose software that can be used for any type of the store.",
-        "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-        "button_label": "Jumpsuits",
-        "button_link": "shopify:\/\/collections\/accessories",
+        "width": 1720,
         "bg_color": "#fafbfb",
-        "title_color": "#34495e",
-        "text_color": "#696e6e",
-        "btn_bg_color": "#ec7163",
-        "btn_link_color": "#f5f5f5",
-        "btn_bg_color_hover": "#34495e",
-        "btn_link_color_hover": "#f5f5f5",
-        "padding_top": 50,
-        "padding_bottom": 50
-      }
-    },
-    "85dd7d64-d0b5-469f-a040-717b699a4137": {
-      "type": "featured-products",
-      "blocks": {
-        "4d84bd88-f612-4b27-b604-3be71b55fbcf": {
-          "type": "product_",
-          "settings": {
-            "product": "attcl_2016_hot_retro_metal_frame_driving_polarized_sunglasses_for_men",
-            "fill_image": false
-          }
-        },
-        "7850dbee-3268-4e88-a919-6ed83766e38b": {
-          "type": "product_",
-          "settings": {
-            "product": "etro_allover_mini_paisley_regular_width_silk_tie",
-            "fill_image": false
-          }
-        },
-        "40eae1f0-3102-44f5-8941-7349f7927c53": {
-          "type": "product_",
-          "settings": {
-            "product": "liveli_scallop_hem_sports_bra",
-            "fill_image": false
-          }
-        },
-        "e66d906e-1ad1-493a-97fe-648da1c84c95": {
-          "type": "product_",
-          "settings": {
-            "product": "frye_trevor_utility_brief",
-            "fill_image": false
-          }
-        }
-      },
-      "block_order": [
-        "4d84bd88-f612-4b27-b604-3be71b55fbcf",
-        "7850dbee-3268-4e88-a919-6ed83766e38b",
-        "40eae1f0-3102-44f5-8941-7349f7927c53",
-        "e66d906e-1ad1-493a-97fe-648da1c84c95"
-      ],
-      "settings": {
-        "heading": "Featured Products",
-        "show_vendor": true,
-        "show_quantity": false,
-        "enable_add_btn": true,
-        "btn": "quick",
-        "variant": "pills",
-        "columns_desktop": 4,
-        "columns_mobile": "1",
-        "bg_color": "#ffffff",
-        "title_color": "#34495e",
-        "prod_img_size": "portrait",
-        "width": 1600,
-        "padding_top": 30,
-        "padding_bottom": 30
-      }
-    },
-    "cf99a083-dc34-4014-a148-1aca058ef53e": {
-      "type": "featured-text-image",
-      "settings": {
-        "image": "shopify:\/\/shop_images\/demo1-banner1.jpg",
-        "image_mobile": "shopify:\/\/shop_images\/demo1-banner1-m.jpg",
-        "full_width": true,
-        "width": 1440,
-        "video_type": "files",
-        "control_video": false,
-        "control_audio": true,
-        "loop_video": true,
-        "video": "https:\/\/cdn.plyr.io\/static\/demo\/View_From_A_Blue_Moon_Trailer-576p.mp4",
-        "video_title": "Final Reduction",
-        "layout": "image_first",
-        "heading": "Great variety of available options will make customization process very easy.",
-        "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-        "button_label": "Shop Now",
-        "button_link": "shopify:\/\/collections\/sportswear",
-        "bg_color": "#fafbfb",
-        "title_color": "#2e3131",
+        "title_color": "#ec7163",
         "text_color": "#696e6e",
         "btn_bg_color": "#34495e",
-        "btn_link_color": "#f5f5f5",
+        "btn_link_color": "#ffffff",
         "btn_bg_color_hover": "#ec7163",
-        "btn_link_color_hover": "#f5f5f5",
-        "padding_top": 50,
-        "padding_bottom": 50
+        "btn_link_color_hover": "#ffffff",
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
     "00952280-c149-4031-8c46-57d8ccee0f2d": {
@@ -348,9 +217,242 @@
         "text_color": "#696e6e",
         "badge_text_color": "#fafbfb",
         "count_products": true,
-        "full_width": false,
+        "full_width": true,
         "padding_top": 50,
         "padding_bottom": 50
+      }
+    },
+    "85dd7d64-d0b5-469f-a040-717b699a4137": {
+      "type": "featured-products",
+      "blocks": {
+        "4d84bd88-f612-4b27-b604-3be71b55fbcf": {
+          "type": "product_",
+          "settings": {
+            "product": "attcl_2016_hot_retro_metal_frame_driving_polarized_sunglasses_for_men",
+            "custom_image": "shopify:\/\/shop_images\/demo1-banner2-m_87e4a1ab-056a-43d7-8db1-81b66884266f.jpg",
+            "fill_image": false
+          }
+        },
+        "7850dbee-3268-4e88-a919-6ed83766e38b": {
+          "type": "product_",
+          "settings": {
+            "product": "etro_allover_mini_paisley_regular_width_silk_tie",
+            "fill_image": false
+          }
+        },
+        "40eae1f0-3102-44f5-8941-7349f7927c53": {
+          "type": "product_",
+          "settings": {
+            "product": "liveli_scallop_hem_sports_bra",
+            "fill_image": false
+          }
+        },
+        "e66d906e-1ad1-493a-97fe-648da1c84c95": {
+          "type": "product_",
+          "settings": {
+            "product": "frye_trevor_utility_brief",
+            "fill_image": false
+          }
+        }
+      },
+      "block_order": [
+        "4d84bd88-f612-4b27-b604-3be71b55fbcf",
+        "7850dbee-3268-4e88-a919-6ed83766e38b",
+        "40eae1f0-3102-44f5-8941-7349f7927c53",
+        "e66d906e-1ad1-493a-97fe-648da1c84c95"
+      ],
+      "settings": {
+        "heading": "Featured Products",
+        "columns_desktop": 4,
+        "columns_mobile": "1",
+        "bg_color": "#ffffff",
+        "title_color": "#2e3131",
+        "text_color": "#696e6e",
+        "link_color": "#ec7163",
+        "prod_img_size": "portrait",
+        "full_width": true,
+        "width": 1600,
+        "content_alignment": "left",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "a3f831ce-fa5e-4e6f-88f3-f87ae52a9d87": {
+      "type": "featured-list-images",
+      "blocks": {
+        "73ad9a8b-dfb3-491d-92d9-b8703a125917": {
+          "type": "custom",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/banner-7.png",
+            "image_position": "left",
+            "title": "Custom Title",
+            "text": "<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem reiciendis suscipit sint inventore quae! <\/p>",
+            "link": "shopify:\/\/collections"
+          }
+        },
+        "4d8f0c60-7aef-4453-a524-d36cfb300b6f": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/banner-8.png",
+            "collection_list": "top",
+            "image_position": "right",
+            "limited_caption": 90
+          }
+        },
+        "190a991b-5911-420b-b0df-b2e875d07aea": {
+          "type": "product",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/banner-9.png",
+            "product_list": "aksho_geo_print_shorts",
+            "image_position": "left",
+            "limited_caption": 90
+          }
+        },
+        "b9ee4cb9-e372-42a3-9168-7d5da3d26a81": {
+          "type": "collection",
+          "settings": {
+            "collection_list": "sale",
+            "image_position": "right",
+            "limited_caption": 90
+          }
+        },
+        "08c7acdd-e002-4ed6-a59b-cd7a310c6347": {
+          "type": "product",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/10.jpg",
+            "product_list": "aillaa_wool_wrap_over_cape",
+            "image_position": "left",
+            "limited_caption": 90
+          }
+        }
+      },
+      "block_order": [
+        "73ad9a8b-dfb3-491d-92d9-b8703a125917",
+        "4d8f0c60-7aef-4453-a524-d36cfb300b6f",
+        "190a991b-5911-420b-b0df-b2e875d07aea",
+        "b9ee4cb9-e372-42a3-9168-7d5da3d26a81",
+        "08c7acdd-e002-4ed6-a59b-cd7a310c6347"
+      ],
+      "settings": {
+        "title": "Veniam ipsam, commodi expedita",
+        "image": "shopify:\/\/shop_images\/img-2.png",
+        "img_size": "landscape",
+        "full_width": true,
+        "width": 1440,
+        "limited_list": 3,
+        "bg_color": "#ffffff",
+        "text_color": "#2e3131",
+        "caption_color": "#696e6e",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "cf99a083-dc34-4014-a148-1aca058ef53e": {
+      "type": "featured-text-image",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/demo1-banner1.jpg",
+        "image_mobile": "shopify:\/\/shop_images\/demo1-banner1-m.jpg",
+        "full_width": true,
+        "width": 1440,
+        "video_type": "files",
+        "control_video": false,
+        "control_audio": true,
+        "loop_video": true,
+        "video": "https:\/\/cdn.plyr.io\/static\/demo\/View_From_A_Blue_Moon_Trailer-576p.mp4",
+        "video_title": "Final Reduction",
+        "layout": "image_first",
+        "heading": "Great variety of available options will make customization process very easy.",
+        "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
+        "button_label": "Shop Now",
+        "button_link": "shopify:\/\/collections\/sportswear",
+        "bg_color": "#fafbfb",
+        "title_color": "#2e3131",
+        "text_color": "#696e6e",
+        "btn_bg_color": "#34495e",
+        "btn_link_color": "#f5f5f5",
+        "btn_bg_color_hover": "#ec7163",
+        "btn_link_color_hover": "#f5f5f5",
+        "padding_top": 50,
+        "padding_bottom": 50
+      }
+    },
+    "a746f73e-cbce-4bfa-bd35-a1a222bafe73": {
+      "type": "featured-text-image",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/demo1-banner2.jpg",
+        "image_mobile": "shopify:\/\/shop_images\/demo1-banner2-m.jpg",
+        "full_width": true,
+        "width": 1200,
+        "video_type": "files",
+        "control_video": false,
+        "control_audio": true,
+        "loop_video": true,
+        "video": "",
+        "video_title": "Final Reduction",
+        "layout": "text_first",
+        "heading": "This is multi-purpose software that can be used for any type of the store.",
+        "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
+        "button_label": "Jumpsuits",
+        "button_link": "shopify:\/\/collections\/accessories",
+        "bg_color": "#fafbfb",
+        "title_color": "#34495e",
+        "text_color": "#696e6e",
+        "btn_bg_color": "#ec7163",
+        "btn_link_color": "#f5f5f5",
+        "btn_bg_color_hover": "#34495e",
+        "btn_link_color_hover": "#f5f5f5",
+        "padding_top": 50,
+        "padding_bottom": 50
+      }
+    },
+    "12c4afbf-05d2-4388-9b4e-39cd77c55a05": {
+      "type": "featured-list-banners",
+      "blocks": {
+        "template--15627200921700__12c4afbf-05d2-4388-9b4e-39cd77c55a05-167982736164f55683-1": {
+          "type": "big_50",
+          "settings": {
+            "item_img": "shopify:\/\/shop_images\/10.jpg",
+            "item_subtitle": "Summer sale offers",
+            "item_title": "70% OFF",
+            "item_text": "<p>Be the most you<\/p>",
+            "item_link": "shopify:\/\/collections\/accessories",
+            "button_text": "Shop the collection",
+            "block_position": "middle-middle",
+            "text_alignment": "center",
+            "style": "style-2"
+          }
+        },
+        "template--15627200921700__12c4afbf-05d2-4388-9b4e-39cd77c55a05-167982736164f55683-0": {
+          "type": "big_50",
+          "settings": {
+            "item_img": "shopify:\/\/shop_images\/4.jpg",
+            "item_subtitle": "New collection",
+            "item_title": "Street style",
+            "item_text": "",
+            "item_link": "shopify:\/\/collections",
+            "button_text": "Shop now",
+            "block_position": "middle-middle",
+            "text_alignment": "center",
+            "style": "style-1"
+          }
+        }
+      },
+      "block_order": [
+        "template--15627200921700__12c4afbf-05d2-4388-9b4e-39cd77c55a05-167982736164f55683-1",
+        "template--15627200921700__12c4afbf-05d2-4388-9b4e-39cd77c55a05-167982736164f55683-0"
+      ],
+      "settings": {
+        "bg_color": "#ffffff",
+        "img_size": "landscape",
+        "full_width": true,
+        "width": 1440,
+        "bg_caption": "#ffffff",
+        "opacity": 9,
+        "title_color": "#2e3131",
+        "subtitle_color": "#34495e",
+        "text_color": "#696e6e",
+        "padding_top": 30,
+        "padding_bottom": 30
       }
     },
     "b02f5ef5-faa4-4599-a2b0-fea2ce0fb8a3": {
@@ -387,6 +489,7 @@
         },
         "4e5ccc71-6d55-4ac7-9b17-311dfcd98b83": {
           "type": "grid",
+          "disabled": true,
           "settings": {
             "collections_sub_heading": "See More",
             "collections_title": "List collections style grid",
@@ -451,7 +554,7 @@
             "link_hover_color": "#ffffff",
             "count_color": "#fafbfb",
             "count_products": true,
-            "full_width": false,
+            "full_width": true,
             "padding_top": 50,
             "padding_bottom": 50
           }
@@ -487,7 +590,7 @@
             "link_hover_color": "#f5f5f5",
             "count_color": "#fafbfb",
             "count_products": true,
-            "full_width": false,
+            "full_width": true,
             "padding_top": 50,
             "padding_bottom": 50
           }
@@ -500,6 +603,70 @@
         "76c38e73-c4d0-4f5c-b5aa-e2a98735caab"
       ],
       "settings": {}
+    },
+    "28772288-1355-46f6-82bb-e682e9e11da4": {
+      "type": "featured-posts",
+      "blocks": {
+        "db64ff95-c49a-467a-be0c-593280c6553b": {
+          "type": "post",
+          "settings": {
+            "post": "news\/what-you-are-buying-here-are-heritage-goods",
+            "fill_image": true,
+            "button": "Read More"
+          }
+        },
+        "f60348e0-369f-408a-9efb-b8607c6e1145": {
+          "type": "post",
+          "settings": {
+            "post": "news\/these-are-things-that-are-built-to-be-bought-onc",
+            "fill_image": true,
+            "button": "Read More"
+          }
+        },
+        "b7bb4c10-0f20-48d5-ae8e-6faca2da3718": {
+          "type": "post",
+          "settings": {
+            "post": "news\/with-us-by-emailing-contacting-our-live-chat-support-or-giving-us-a-call",
+            "fill_image": true,
+            "button": "Read More"
+          }
+        },
+        "95afaf3c-7ed6-4451-bed5-c69d08d618c1": {
+          "type": "post",
+          "settings": {
+            "post": "news\/attcl-2016-hot-retro-metal-frame-driving-polarized-sunglasses-for-men",
+            "fill_image": true,
+            "button": "Read More"
+          }
+        }
+      },
+      "block_order": [
+        "db64ff95-c49a-467a-be0c-593280c6553b",
+        "f60348e0-369f-408a-9efb-b8607c6e1145",
+        "b7bb4c10-0f20-48d5-ae8e-6faca2da3718",
+        "95afaf3c-7ed6-4451-bed5-c69d08d618c1"
+      ],
+      "settings": {
+        "sub_heading": "",
+        "title": "Featured Posts",
+        "text": "",
+        "head_alignment": "left",
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "content_alignment": "left",
+        "bg_color": "#ffffff",
+        "sub_title_color": "#2e3131",
+        "title_color": "#34495e",
+        "text_color": "#696e6e",
+        "img_size": "landscape",
+        "full_width": true,
+        "width": 1440,
+        "title_post_color": "#ec7163",
+        "text_post_color": "#696e6e",
+        "link_post_color": "#2e3131",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
     },
     "2cac9309-d6dd-4c3f-b618-d9ce301aea68": {
       "type": "featured-list-banners",
@@ -544,7 +711,7 @@
       "settings": {
         "bg_color": "#ffffff",
         "img_size": "square",
-        "full_width": false,
+        "full_width": true,
         "width": 1440,
         "bg_caption": "#ffffff",
         "opacity": 8,
@@ -555,28 +722,31 @@
         "padding_bottom": 30
       }
     },
-    "d44868d4-8692-4f3f-9f69-d26aa0940987": {
-      "type": "featured-multi-column",
+    "ff760c9f-8198-42de-8196-8f8a0abe2613": {
+      "type": "featured-services-listing",
       "blocks": {
-        "template--15627200921700__d44868d4-8692-4f3f-9f69-d26aa0940987-16801983121e29bb49-0": {
+        "template--15627200921700__ff760c9f-8198-42de-8196-8f8a0abe2613-1680198399aa89d58e-0": {
           "type": "column-first",
           "settings": {
+            "image": "shopify:\/\/shop_images\/phone.svg",
             "title": "Column",
             "text": "<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem reiciendis suscipit sint inventore quae! <\/p>",
             "link": ""
           }
         },
-        "template--15627200921700__d44868d4-8692-4f3f-9f69-d26aa0940987-16801983121e29bb49-1": {
+        "template--15627200921700__ff760c9f-8198-42de-8196-8f8a0abe2613-1680198399aa89d58e-1": {
           "type": "column-second",
           "settings": {
+            "image": "shopify:\/\/shop_images\/sync.svg",
             "title": "Column",
             "text": "<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem reiciendis suscipit sint inventore quae! <\/p>",
             "link": ""
           }
         },
-        "template--15627200921700__d44868d4-8692-4f3f-9f69-d26aa0940987-16801983121e29bb49-2": {
+        "template--15627200921700__ff760c9f-8198-42de-8196-8f8a0abe2613-1680198399aa89d58e-2": {
           "type": "column-third",
           "settings": {
+            "image": "shopify:\/\/shop_images\/car.svg",
             "title": "Column",
             "text": "<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem reiciendis suscipit sint inventore quae! <\/p>",
             "link": ""
@@ -584,14 +754,29 @@
         }
       },
       "block_order": [
-        "template--15627200921700__d44868d4-8692-4f3f-9f69-d26aa0940987-16801983121e29bb49-0",
-        "template--15627200921700__d44868d4-8692-4f3f-9f69-d26aa0940987-16801983121e29bb49-1",
-        "template--15627200921700__d44868d4-8692-4f3f-9f69-d26aa0940987-16801983121e29bb49-2"
+        "template--15627200921700__ff760c9f-8198-42de-8196-8f8a0abe2613-1680198399aa89d58e-0",
+        "template--15627200921700__ff760c9f-8198-42de-8196-8f8a0abe2613-1680198399aa89d58e-1",
+        "template--15627200921700__ff760c9f-8198-42de-8196-8f8a0abe2613-1680198399aa89d58e-2"
       ],
       "settings": {
-        "bg_color": "",
-        "title_color": "",
-        "text_color": "",
+        "bg_color": "#ffffff",
+        "title_color": "#2e3131",
+        "text_color": "#696e6e",
+        "full_width": false,
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "1dec8ad6-0dcc-4a44-8a0a-ecde8beb282d": {
+      "type": "featured-large-text",
+      "settings": {
+        "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to.<\/p>",
+        "text_alignment": "center",
+        "full_width": true,
+        "width": 1440,
+        "bg_color": "#5cc2ed",
+        "link_color": "#f5f5f5",
+        "text_color": "#fafbfb",
         "padding_top": 30,
         "padding_bottom": 30
       }
@@ -601,14 +786,17 @@
     "main",
     "9bc8286d-2d78-4ba6-ade0-92d37d001ba5",
     "4f924a98-b957-40a7-b0e1-63df8ce97503",
-    "1dec8ad6-0dcc-4a44-8a0a-ecde8beb282d",
-    "12c4afbf-05d2-4388-9b4e-39cd77c55a05",
-    "a746f73e-cbce-4bfa-bd35-a1a222bafe73",
-    "85dd7d64-d0b5-469f-a040-717b699a4137",
-    "cf99a083-dc34-4014-a148-1aca058ef53e",
+    "077cef1f-cf98-4cd7-99db-7dc28489a823",
     "00952280-c149-4031-8c46-57d8ccee0f2d",
+    "85dd7d64-d0b5-469f-a040-717b699a4137",
+    "a3f831ce-fa5e-4e6f-88f3-f87ae52a9d87",
+    "cf99a083-dc34-4014-a148-1aca058ef53e",
+    "a746f73e-cbce-4bfa-bd35-a1a222bafe73",
+    "12c4afbf-05d2-4388-9b4e-39cd77c55a05",
     "b02f5ef5-faa4-4599-a2b0-fea2ce0fb8a3",
+    "28772288-1355-46f6-82bb-e682e9e11da4",
     "2cac9309-d6dd-4c3f-b618-d9ce301aea68",
-    "d44868d4-8692-4f3f-9f69-d26aa0940987"
+    "ff760c9f-8198-42de-8196-8f8a0abe2613",
+    "1dec8ad6-0dcc-4a44-8a0a-ecde8beb282d"
   ]
 }
