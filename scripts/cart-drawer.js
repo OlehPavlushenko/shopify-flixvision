@@ -650,10 +650,16 @@ function sentRecommendIds(ids) {
                         "media__size--" + imageSize
                     )
                 })
+                const countDesktop =
+                    parseInt(cartRecommendREsults.dataset.countDesktop) || 3
+                const countTablet =
+                    parseInt(cartRecommendREsults.dataset.countTablet) || 2
+                const countMobile =
+                    parseInt(cartRecommendREsults.dataset.countMobile) || 2
                 const swiper = new Swiper(".js-recommend-swiper", {
                     // Optional parameters
                     loop: false,
-                    slidesPerView: 2,
+                    slidesPerView: countMobile,
                     spaceBetween: 10,
                     // Navigation arrows
                     navigation: {
@@ -661,9 +667,17 @@ function sentRecommendIds(ids) {
                         prevEl: ".swiper-button-prev",
                     },
                     breakpoints: {
-                        551: {
+                        550: {
                             slidesPerView: 2,
                             spaceBetween: 15,
+                        },
+                        991: {
+                            slidesPerView: countTablet,
+                            spaceBetween: 20,
+                        },
+                        1200: {
+                            slidesPerView: countDesktop,
+                            spaceBetween: 30,
                         },
                     },
                 })

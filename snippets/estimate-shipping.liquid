@@ -1,25 +1,40 @@
-<div id="estimate-shipping">
-    <h3>Estimate Shipping</h3>
+<div id="estimate-shipping" data-ajax-cart-static-element>
+    <h4
+        class="estimate-shipping-toggler"
+        onclick="javascript:document.body.classList.toggle('estimate-shipping-show')"
+    >
+        {% render 'icons-svg', icons: 'plus' %}
+        {% render 'icons-svg', icons: 'minus' %}
+        Estimate Shipping
+    </h4>
 
-    <form action="{{ routes.cart_url }}" method="post" id="estimate-shipping-form">
-        <label for="estimate-shipping-country">Country/region </label>
-        <select name="shipping_address[country]" id="estimate-shipping-country" required>
-            {{ all_country_option_tags }}
-        </select>
-
-        <div id="province-field" style="display: none;">
-            <label for="estimate-shipping-province">Province/State</label>
+    <form action="{{ routes.cart_url }}" method="post" id="estimate-shipping-form" class="estimate-shipping-content">
+        <div class="estimate-shipping-property">
+            <span>Country/region </span>
+            <select name="shipping_address[country]" id="estimate-shipping-country" aria-required="true" required>
+                {{ all_country_option_tags }}
+            </select>
+        </div>
+        <div id="province-field" class="estimate-shipping-property" style="display: none;">
+            <span>Province/State</span>
             <select name="shipping_address[province]" id="estimate-shipping-province" disabled>
                 <option value="">Select a province</option>
             </select>
         </div>
 
-        <div>
-            <label for="estimate-shipping-zip">ZIP/Postal Code</label>
-            <input type="text" name="shipping_address[zip]" id="estimate-shipping-zip" aria-required="true" required>
+        <div class="estimate-shipping-property">
+            <span>ZIP/Postal Code</span>
+            <input
+                type="text"
+                name="shipping_address[zip]"
+                id="estimate-shipping-zip"
+                placeholder="Postal Code"
+                aria-required="true"
+                required
+            >
         </div>
 
-        <button type="submit">Get Rates</button>
+        <button type="submit" class="button button--secondary">Get Rates</button>
     </form>
 
     <div id="shipping-rates"></div>
@@ -31,7 +46,9 @@
     let provinceField = document.getElementById('province-field')
     let zipInput = document.getElementById('estimate-shipping-zip')
 
-    console.log(countrySelect)
+    countrySelect.addEventListener('change', function () {
+        loadProvinces()
+    })
 
     // Loading provinces based on the saved country selection
     function loadProvinces() {
@@ -50,7 +67,7 @@
                     provinceSelect.appendChild(option)
                 })
 
-                provinceField.style.display = 'block'
+                provinceField.style.display = 'flex'
 
                 // Selecting the saved province
                 if (localStorage.getItem('selectedProvince')) {
@@ -66,11 +83,6 @@
             provinceField.style.display = 'none'
         }
     }
-
-    countrySelect.addEventListener('change', function () {
-        console.log(provinceSelect)
-        loadProvinces()
-    })
 
     // Saving selected Province/State to localStorage
     provinceSelect.addEventListener('change', function () {
@@ -121,10 +133,16 @@
             .catch((error) => {
                 if (error instanceof Response && error.status === 422) {
                     error.json().then((json) => {
-                        const errorMessage = json.zip[0]
-                        console.error('Error fetching shipping rates:', errorMessage)
-                        // Displaying the error in the ratesHtml block
-                        document.getElementById('shipping-rates').innerHTML = `<p>${errorMessage}</p>`
+                        let errorMessage = ''
+                        if (json.country && Array.isArray(json.country)) {
+                            errorMessage = json.country[0]
+                        } else if (json.zip && Array.isArray(json.zip)) {
+                            errorMessage = json.zip[0]
+                        }
+                        if (errorMessage !== '') {
+                            console.error('Error fetching shipping rates:', errorMessage)
+                            document.getElementById('shipping-rates').innerHTML = `<p>${errorMessage}</p>`
+                        }
                     })
                 } else {
                     console.error('Error fetching shipping rates:', error)

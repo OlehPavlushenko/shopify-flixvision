@@ -459,7 +459,7 @@ class VariantPills extends HTMLElement {
         // Event handler for product option buttons
         const handleClick = (event) => {
             //console.log("event", event)
-            if (event.target.tagName === "INPUT") {
+            if (event.target) {
                 if (event.target.closest(".js-swatch")) {
                     const elements = event.target
                         .closest(".js-swatch")
@@ -828,7 +828,7 @@ class VariantProduct extends VariantPills {
         this.createNewListVariant(this.variantData)
 
         const handleClick = (event) => {
-            if (event.target.tagName === "INPUT") {
+            if (event.target) {
                 if (event.target.closest(".js-swatch")) {
                     const elements = event.target
                         .closest(".js-swatch")

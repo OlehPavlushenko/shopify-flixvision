@@ -11,7 +11,7 @@
     width: 100%;
     box-shadow: none;
     transform: none;
-    z-index: 10;
+    z-index: 1;
     padding-top: calc(.7*var(--pad-top-main-cart));
     padding-bottom: calc(.7*var(--pad-bot-main-cart));
     @media screen and (min-width: 991px) {
@@ -40,7 +40,11 @@
         margin-right: 30px;
         @media (min-width: 768px) and (max-width: 1199px) { 
             margin-right: 20px;
-            width: calc(70% - 20px);
+            width: calc(60% - 20px);
+        }
+        @media (min-width: 320px) and (max-width: 767px) { 
+            width: 100%;
+            margin-right: 0;
         }
         .ajax-cart__line-item {
             padding: 30px;
@@ -65,14 +69,23 @@
                 align-items: center;
                 flex-wrap: wrap;
                 width: calc(100% - 110px);
+                
                 .ajax-cart-item__details--left {
-                    width: 60%;
+                    width: calc(60% - 30px);
+                    padding-right: 30px;
+                    @media (min-width: 320px) and (max-width: 990px) { 
+                        width: 100%;
+                        padding-right: 0;
+                    }
                 }
                 .ajax-cart-item__quantity {
-                    padding: 0 30px;
+                    padding: 0 30px 0 0;
                 }
                 .ajax-cart-total {
                     margin-left: auto;
+                    @media (min-width: 320px) and (max-width: 990px) { 
+                        margin-left: 0;
+                    }
                 }
                 .ajax-cart-remove {
                     margin-left: auto;
@@ -89,11 +102,20 @@
     }
     .cart-drawer-form {
         width: 30%;
+        @media (min-width: 768px) and (max-width: 1199px) { 
+            width: 40%;
+        }
+        @media (min-width: 320px) and (max-width: 767px) { 
+            width: 100%;
+        }
         .cart-drawer__footer-toggler {
             margin-bottom: 30px;
             margin-top: 30px;
             padding-left: 0;
             //padding-right: 0;
+            @media (min-width: 768px) and (max-width: 1199px) { 
+                margin: 20px 0;
+            }
             .icon {
                 right: 0;
             }
@@ -115,6 +137,23 @@
                 padding-right: 0;
             }
         }
+        .cart-drawer__property-label {
+            @media (min-width: 768px) and (max-width: 990px) { 
+                margin: 5px 0;
+            }
+            @media (min-width: 320px) and (max-width: 767px) { 
+                margin: 5px 0;
+                display: block;
+                width: 100%;
+            }
+        }
+        .cart-drawer__property label {
+            @media (min-width: 320px) and (max-width: 990px) { 
+                margin-top: 5px;
+                margin-bottom: 5px;
+                
+            }
+        }
         .cart-drawer__checkout-btn {
             border-radius: var(--button-border-radius);
             font-size: 20px;
@@ -130,9 +169,129 @@
     }
     #cart-recommend {
         width: 100%;
+        margin-top: 30px;
+        @media (min-width: 1200px) { 
+            margin-top: 50px;
+        }
     }
+    #estimate-shipping {
+        @media (min-width: 320px) and (max-width: 767px) { 
+            margin-bottom: -31px;
+        }
+    }
+    .estimate-shipping-toggler {
+        border-top: .1rem solid var(--cart-drawer-divider-color);
+        border-bottom: .1rem solid var(--cart-drawer-divider-color);
+        padding: 1.5rem 3rem;
+        cursor: pointer;
+        position: relative;
+        margin: 30px 0;
+        padding-left: 0;
+        //padding-right: 0;
+        @media (min-width: 768px) and (max-width: 1199px) { 
+            margin: 20px 0;
+        }
+        @media (min-width: 320px) and (max-width: 767px) { 
+            margin-bottom: 0;
+        }
+        .icon {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: auto;
+            margin: auto 0;
+            height: 2rem;
+            width: 2rem;
+            line-height: 2rem;
+        }
+        .icon-minus {
+            display: none;
+        }
+    }
+    .estimate-shipping-property {
+        margin-bottom: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        span {
+            min-width: 90px;
+            display: block;
+            padding-right: 10px;
+            @media (min-width: 768px) and (max-width: 1199px) { 
+                margin: 5px 0;
+            }
+            @media (min-width: 320px) and (max-width: 767px) { 
+                margin: 5px 0;
+                display: block;
+                width: 100%;
+            }
+        }
+        input, select {
+            width: 200px;
+            height: 40px;
+        }
+    }
+    @media (min-width: 768px) { 
+        .estimate-shipping-toggler {
+            pointer-events: none;
+            .icon-plus {
+                display: none;
+            }
+            .icon-minus {
+                display: block;
+            }
+        }
+        .estimate-shipping-content {
+            max-height: inherit;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    #shipping-rates {
+        margin-top: 30px;
+        background-color: var(--color-input-background);
+        border: 0.1rem solid var(--color-input-border);
+        padding: 10px;
+    }
+    
+}
+
+.estimate-shipping-show .estimate-shipping-toggler .icon-plus
+     {
+        display: none;
+    }
+
+.estimate-shipping-show .estimate-shipping-toggler .icon-minus {
+    display: block;
 }
 
 .js-ajax-cart-empty form {
     display: none;
+}
+
+.estimate-shipping-content {
+	padding: 0;
+	max-height: 0;
+	overflow: hidden;
+	transition: all .3s;
+}
+
+.estimate-shipping-show .estimate-shipping-content {
+	max-height: 38rem;
+	padding: 2rem 0;
+}
+
+.cart-drawer__footer-content {
+    @media (min-width: 320px) and (max-width: 767px) { 
+       padding: 0;
+    }
+}
+
+.cart-drawer-show-footer .cart-drawer__footer-content {
+    @media (min-width: 320px) and (max-width: 767px) { 
+       padding: 0;
+    }
 }

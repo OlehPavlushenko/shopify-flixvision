@@ -447,7 +447,14 @@
                 </div>
             {% endif %}
         {% endfor %}
-        <div id="cart-recommend" data-ajax-cart-static-element data-size="{{ size }}">
+        <div
+            id="cart-recommend"
+            data-ajax-cart-static-element
+            data-size="{{ size }}"
+            data-count-desktop="2"
+            data-count-tablet="2"
+            data-count-mobile="2"
+        >
             <span class="visually-hidden">{{ 'sections.cart.recommend' | t }}</span>
         </div>
     </div>
