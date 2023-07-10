@@ -4,6 +4,14 @@ if ("liquidAjaxCart" in window) {
 
     let addToCartButton = document.querySelector(".js-btn-cart-combo")
     let addToCartButtonBuyMore = document.querySelectorAll(".js-buy-more-btn")
+    var showRecommend = document.querySelector("#cart-recommend")
+
+    if (showRecommend === null) {
+        localStorage.removeItem("defaultRecommendSection")
+        localStorage.removeItem("recommendSection")
+        localStorage.removeItem("deleteRecommendSection")
+        localStorage.removeItem("expirationTimeRecommendSection")
+    }
 
     if (addToCartButtonBuyMore) {
         addBuyMore(addToCartButtonBuyMore)
@@ -36,14 +44,22 @@ if ("liquidAjaxCart" in window) {
                             recommendProducts[product_key] = product_id
                             buildNotification(requestState)
                             setCookie("cart_recommend", recommendProducts)
-                            updateRecommendSection(product_id, product_handle)
+                            if (showRecommend) {
+                                updateRecommendSection(
+                                    product_id,
+                                    product_handle
+                                )
+                            }
                         }
                         const expiration = localStorage.getItem(
                             "expirationTimeRecommendSection"
                         )
 
                         if (!expiration) {
-                            setLocalStorageExpiration(1)
+                            let days = document
+                                .querySelector("#cart-recommend")
+                                .getAttribute("data-days")
+                            setLocalStorageExpiration(days)
                         }
                     }
                 })
@@ -91,7 +107,7 @@ if ("liquidAjaxCart" in window) {
                                 localStorage.getItem("removeValueCombo")
                             ) || []
                         if (value) {
-                            let countItems = document.querySelectorAll(
+                            const countItems = document.querySelectorAll(
                                 `[data-value="${value}"]`
                             )
                             removeComboProducts(countItems.length)
@@ -143,7 +159,9 @@ if ("liquidAjaxCart" in window) {
                     const existingItems = await getLocalStorageItems()
                     if (existingItems.length > 0) {
                         let strHandles = existingItems.join("=")
-                        sentRecommendIds(strHandles)
+                        if (showRecommend) {
+                            sentRecommendIds(strHandles)
+                        }
                     }
                 }
             } else {
@@ -163,10 +181,12 @@ if ("liquidAjaxCart" in window) {
                             (item) => !cartProductIds.includes(item.product_id)
                         )
                         if (filteredItems.length > 0) {
-                            deleteRecommendSection(
-                                filteredItems[0].product_id,
-                                filteredItems[0].handle
-                            )
+                            if (showRecommend) {
+                                deleteRecommendSection(
+                                    filteredItems[0].product_id,
+                                    filteredItems[0].handle
+                                )
+                            }
                         }
                     }
                 }
@@ -268,7 +288,12 @@ function addBuyMore(addToCartButtonBuyMore) {
                             )
                             let product_handle =
                                 requestState.responseData.body.items[0].handle
-                            updateRecommendSection(product_id, product_handle)
+                            if (showRecommend) {
+                                updateRecommendSection(
+                                    product_id,
+                                    product_handle
+                                )
+                            }
                         }
                     }
                 },
@@ -534,8 +559,11 @@ function updateDeleteLocalStorage(defaultItems) {
 }
 
 async function updateRecommendSection(id, handle) {
+    const type = document
+        .querySelector("#cart-recommend")
+        .getAttribute("data-type")
     const response = await fetch(
-        `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
+        `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=${type}`
     )
 
     const { products } = await response.json()
@@ -566,13 +594,18 @@ async function updateRecommendSection(id, handle) {
 
     if (uniqueItems.length > 0) {
         let strHandles = uniqueItems.join("=")
-        sentRecommendIds(strHandles)
+        if (showRecommend) {
+            sentRecommendIds(strHandles)
+        }
     }
 }
 
 async function deleteRecommendSection(id, handle) {
+    const type = document
+        .querySelector("#cart-recommend")
+        .getAttribute("data-type")
     const response = await fetch(
-        `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=complementary`
+        `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=${type}`
     )
 
     const { products } = await response.json()
@@ -615,7 +648,9 @@ async function deleteRecommendSection(id, handle) {
     if (finalFilteredItems.length > 0) {
         const getAllItems = await getLocalStorageItems()
         let strHandles = getAllItems.join("=")
-        sentRecommendIds(strHandles)
+        if (showRecommend) {
+            sentRecommendIds(strHandles)
+        }
     }
 }
 

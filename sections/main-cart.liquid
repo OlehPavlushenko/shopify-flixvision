@@ -7,18 +7,21 @@
 {% endcomment %}
 
 {% liquid
-    assign shipping_total = section.settings.shipping_total | times: 100
-    assign show_shipping = section.settings.show_shipping_total
-    assign size = section.settings.img_size
+    assign shipping_total = settings.shipping_total | times: 100
+    assign show_shipping = settings.show_shipping_total
+    assign size = settings.img_size_cart
     assign bg_color = section.settings.background_color
     assign title_color = section.settings.title_color
     assign text_color = section.settings.text_color
     assign link_color = section.settings.link_color
     assign link_hover_color = section.settings.link_hover_color
     assign divider_color = section.settings.divider_color
-    assign cart_note = section.settings.show_cart_note
-    assign cart_attributes = section.settings.show_cart_attributes
+    assign cart_note = settings.show_cart_note
+    assign cart_attributes = settings.show_cart_attributes
     assign recommend_list = section.settings.recommend_list
+    assign recommend_type = settings.recommend_type
+    assign show_recommend = settings.show_recommend_prod
+    assign expiration_limit = settings.expiration_limit
 
     assign pad_top = section.settings.padding_top
     assign pad_bot = section.settings.padding_bottom
@@ -599,19 +602,31 @@
                 </button>
             </form>
         </div>
-        <div id="cart-recommend" data-ajax-cart-static-element data-size="{{ size }}" data-count-desktop="4" data-count-tablet="3" data-count-mobile="1">
-            <span class="visually-hidden">{{ 'sections.cart.recommend' | t }}</span>
-        </div>
+        {% if show_recommend %}
+            <div
+                id="cart-recommend"
+                data-ajax-cart-static-element
+                data-size="{{ size }}"
+                data-days="{{ expiration_limit }}"
+                data-type="{{ recommend_type }}"
+                data-count-desktop="4"
+                data-count-tablet="3"
+                data-count-mobile="1"
+            >
+                <span class="visually-hidden">{{ 'sections.cart.recommend' | t }}</span>
+            </div>
+        {% endif %}
     </div>
 </div>
 
 <script type="application/json" data-ajax-cart-initial-state>
     {{ cart | json }}
 </script>
-<script>
-    localStorage.setItem("defaultRecommendSection", JSON.stringify({{ recommend_db }}))
-</script>
-
+{% if show_recommend %}
+    <script>
+        localStorage.setItem("defaultRecommendSection", JSON.stringify({{ recommend_db }}))
+    </script>
+{% endif %}
 <script type="module">
     import { subscribeToCartAjaxRequests, cartRequestAdd, cartRequestChange, cartRequestUpdate, subscribeToCartStateUpdate } from '{{ 'ajax-cart.js' | asset_url }}';
 </script>
