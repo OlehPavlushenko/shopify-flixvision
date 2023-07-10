@@ -309,6 +309,9 @@
         }
       }
     },
+    "cart": {
+      "name": "Cart"
+    },
     "apps": {
       "name": "Apps",
       "settings": {
