@@ -1,6 +1,9 @@
 {% liquid
     assign blocks = section.blocks
     assign heading = section.settings.heading
+    assign sub_heading = section.settings.sub_heading
+    assign text = section.settings.text
+    assign head_alignment = section.settings.head_alignment
 
     assign new_badge = settings.new_badge
     assign show_vendor = settings.show_vendor
@@ -17,6 +20,10 @@
     assign columns_mobile = section.settings.columns_mobile
 
     assign bg_color = section.settings.bg_color | default: 'transparent'
+
+    assign head_text_color = section.settings.head_text_color | default: 'inherit'
+    assign head_color = section.settings.head_color | default: 'inherit'
+    assign sub_head_color = section.settings.sub_head_color | default: 'inherit'
 
     assign text_color = section.settings.text_color | default: 'inherit'
     assign title_color = section.settings.title_color | default: 'inherit'
@@ -36,8 +43,13 @@
     --text-post-color-featured-products: {{ text_color }};
     --link-post-color-featured-products: {{ link_color }};
 
+    --sub_title_color-featured-products: {{ sub_head_color }};
+    --title-color-featured-products: {{ head_color }};
+    --text-color-featured-products: {{ head_text_color }};
+
     --pad-top-featured-products: {{ pad_top }}px;
     --pad-bot-featured-products: {{ pad_bot }}px;
+    --width-featured-products: {{ width }}px;
   {% endcapture %}
 
 {%- assign styles = styles | strip_newlines -%}
@@ -47,39 +59,67 @@
 
 {% if blocks.size > 0 %}
     <div class="featured-products full_width--{{ full_width }} content--{{ content_alignment }}" style="{{ styles }}">
-        <div class="page-width">
-            {%- if heading != blank -%}
-                <h3 class="featured-products__heading h3">
-                    {{ heading | escape }}
-                </h3>
-            {%- endif -%}
-            <ul class="featured-products__list columns__desktop--{{ columns_desktop }} columns__mobile--{{ columns_mobile }}">
-                {%- for block in blocks -%}
-                    {% liquid
-                        assign product = block.settings.product
-                        assign image_custom = block.settings.custom_image
-                        assign fill_image = block.settings.fill_image
-                    %}
-                    <li class="featured-products__item">
-                        {% render 'card-product',
-                            product: product,
-                            show_vendor: show_vendor,
-                            show_rating: show_rating,
-                            new_badge: new_badge,
-                            show_quantity: false,
-                            use_variant: price_variant,
-                            variant_type: variant_type,
-                            add_btn: add_btn,
-                            btn: btn,
-                            img_size: prod_img_size,
-                            secondary_image: secondary_image,
-                            notify_me: notify_me,
-                            image_custom: image_custom,
-                            fill: fill_image
-                        %}
-                    </li>
-                {% endfor %}
-            </ul>
+        <div class="page-width container">
+            <swiper-section>
+                {% if sub_heading != blank or heading != blank or text != blank %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="featured-products__head head-alignment--{{ head_alignment }}">
+                                {% if sub_heading != blank %}
+                                    <h5 class="featured-products__sub_heading h5">
+                                        {{ sub_heading | escape }}
+                                    </h5>
+                                {% endif %}
+                                {% if heading != blank %}
+                                    <h2 class="featured-products__heading h2">
+                                        {{ heading | escape }}
+                                    </h2>
+                                {% endif %}
+                                {% if text != blank %}
+                                    <div class="featured-products__text rte">
+                                        {{ text }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div
+                    class="swiper-container js-swiper"
+                    data-count-desktop="{{ columns_desktop }}"
+                    data-count-tablet="3"
+                    data-count-mobile="{{ columns_mobile }}"
+                >
+                    <ul class="featured-products__list columns__desktop--{{ columns_desktop }} columns__mobile--{{ columns_mobile }} swiper-wrapper">
+                        {%- for block in blocks -%}
+                            {% liquid
+                                assign product = block.settings.product
+                                assign image_custom = block.settings.custom_image
+                                assign fill_image = block.settings.fill_image
+                            %}
+                            <li class="featured-products__item swiper-slide">
+                                {% render 'card-product',
+                                    product: product,
+                                    show_vendor: show_vendor,
+                                    show_rating: show_rating,
+                                    new_badge: new_badge,
+                                    show_quantity: false,
+                                    use_variant: price_variant,
+                                    variant_type: variant_type,
+                                    add_btn: add_btn,
+                                    btn: btn,
+                                    img_size: prod_img_size,
+                                    secondary_image: secondary_image,
+                                    notify_me: notify_me
+                                %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="swiper-button-prev js-button-prev">{% render 'icons-svg', icons: 'prev' %}</div>
+                    <div class="swiper-button-next js-button-next">{% render 'icons-svg', icons: 'next' %}</div>
+                    <div class="swiper-pagination featured-posts__pagination js-pagination"></div>
+                </div>
+            </swiper-section>
         </div>
     </div>
 {% endif %}
@@ -92,9 +132,40 @@
     "settings": [
         {
             "type": "text",
+            "id": "sub_heading",
+            "default": "Image banner",
+            "label": "Sub Heading"
+        },
+        {
+            "type": "text",
             "id": "heading",
             "default": "Featured Products",
             "label": "Title"
+        },
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "Heading"
+        },
+        {
+            "type": "select",
+            "id": "head_alignment",
+            "options": [
+                {
+                    "value": "left",
+                    "label": "Left"
+                },
+                {
+                    "value": "center",
+                    "label": "Center"
+                },
+                {
+                    "value": "right",
+                    "label": "Right"
+                }
+            ],
+            "default": "left",
+            "label": "Head Text alignment"
         },
         {
             "type": "range",
@@ -123,7 +194,7 @@
         },
         {
             "type": "paragraph",
-            "content": "Style option"
+            "content": "Style option Head"
         },
         {
             "type": "color",
@@ -132,46 +203,20 @@
         },
         {
             "type": "color",
-            "id": "title_color",
-            "label": "Title color"
+            "id": "sub_head_color",
+            "label": "Sub Head color"
         },
         {
             "type": "color",
-            "id": "text_color",
-            "label": "Text color"
+            "id": "head_color",
+            "label": "Head color"
         },
         {
             "type": "color",
-            "id": "link_color",
-            "label": "Link  color"
+            "id": "head_text_color",
+            "label": "head Text color"
         },
-        {
-            "type": "select",
-            "id": "prod_img_size",
-            "label": "Image size",
-            "options": [
-                {
-                    "value": "cropped",
-                    "label": "Cropped"
-                },
-                {
-                    "value": "landscape",
-                    "label": "Landscape"
-                },
-                {
-                    "value": "square",
-                    "label": "Square"
-                },
-                {
-                    "value": "portrait",
-                    "label": "Portrait"
-                },
-                {
-                    "value": "circle",
-                    "label": "Circle"
-                }
-            ]
-        },
+
         {
             "type": "checkbox",
             "id": "full_width",
@@ -209,6 +254,26 @@
             "label": "Text alignment"
         },
         {
+            "type": "paragraph",
+            "content": "Style option Post"
+        },
+
+        {
+            "type": "color",
+            "id": "title_color",
+            "label": "Title color"
+        },
+        {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color"
+        },
+        {
+            "type": "color",
+            "id": "link_color",
+            "label": "Link  color"
+        },
+        {
             "type": "range",
             "id": "padding_top",
             "min": 0,
@@ -238,18 +303,6 @@
                     "type": "product",
                     "id": "product",
                     "label": "Product"
-                },
-                {
-                    "type": "image_picker",
-                    "id": "custom_image",
-                    "label": "Image",
-                    "info": "Custom image for the product instead of its featured image"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "fill_image",
-                    "default": false,
-                    "label": "Fill Image"
                 }
             ]
         }
