@@ -32,6 +32,7 @@
 	opacity: 0;
 	transform: translateX(100%);
 	transition:  all  .3s ease;
+	cursor: move;
 }
 
 .js-ajax-cart-open .cart-drawer {
@@ -90,6 +91,8 @@
 }
 
 .js-ajax-cart-empty .cart-drawer-shipping__wrapper,
+.js-ajax-cart-empty #estimate-shipping,
+.js-ajax-cart-empty .cart-drawer-form,
 .js-ajax-cart-empty .cart-drawer__items {
 	display: none;
 }
@@ -191,7 +194,7 @@ input.cart-drawer__input--property {
 .cart-drawer__footer-toggler {
 	border-top: .1rem solid var(--cart-drawer-divider-color);
 	border-bottom: .1rem solid var(--cart-drawer-divider-color);
-	padding: 1.5rem 3rem;
+	padding: 1rem 2rem 1rem 1rem;
 	cursor: pointer;
 	position: relative;
 	margin: 0;
@@ -199,7 +202,7 @@ input.cart-drawer__input--property {
 
 @media screen and (max-width: 550px) { 
 	.cart-drawer__footer-toggler {
-		padding: 1.5rem 2rem;
+		padding: 1rem 2rem 1rem 1rem;
 	}
 }
 
@@ -207,7 +210,7 @@ input.cart-drawer__input--property {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	right: 30px;
+	right: 10px;
 	left: auto;
 	margin: auto 0;
 	height: 2rem;
@@ -231,7 +234,7 @@ input.cart-drawer__input--property {
 }
 
 .cart-drawer__footer-content {
-	padding: 0 3rem;
+	padding: 0 1rem;
 	max-height: 0;
 	overflow: hidden;
 	transition: all .3s;
@@ -239,25 +242,25 @@ input.cart-drawer__input--property {
 
 .cart-drawer-show-footer .cart-drawer__footer-content {
 	max-height: 38rem;
-	padding: 2rem 3rem;
+	padding: 2rem 1rem;
 }
 
 .cart-drawer__checkout-btn {
-	width: 100%;
-	padding-left: 3rem;
-	font-size: 1.125em;
-	min-height: 6rem;
-	letter-spacing: .1em;
-	text-transform: uppercase;
-	line-height: 1.8;
+	//width: 100%;
+	//padding-left: 3rem;
+	//font-size: 1.125em;
+	//min-height: 6rem;
+	//letter-spacing: .1em;
+	//text-transform: uppercase;
+	//line-height: 1.8;
 	text-decoration: none;
 	text-align: left;
 	white-space: nowrap;
 	cursor: pointer;
 	user-select: none;
 	display: block;
-	border: none;
-	border-radius: 0;
+	//border: none;
+	//border-radius: 0;
 }
 
 @media screen and (max-width: 550px) { 
@@ -365,7 +368,7 @@ input.cart-drawer__input--property {
 
 /* Header */
 #shopify-section-cart-drawer > .cart-drawer > div:first-child {
-	padding: 3rem;
+	padding: 2rem;
 	flex: 0 0 auto;
 	position: relative;
 }
@@ -462,7 +465,7 @@ input.cart-drawer__input--property {
 	min-height: 1px;
     overflow: auto;
     margin: 0 15px 0 0;
-    padding: 0 15px 0 30px;
+    padding: 0 15px 0 20px;
 }
 
 @media screen and (max-width: 550px) { 
@@ -496,7 +499,7 @@ input.cart-drawer__input--property {
 /* Line Item */
 .ajax-cart__line-item {
 	border-top: .1rem solid var(--cart-drawer-divider-color);
-	padding: 3rem 5rem 3rem 0;
+	padding: 2rem 5rem 2rem 0;
 	//margin-top: 3rem;
 	position: relative;
 	display: flex;
