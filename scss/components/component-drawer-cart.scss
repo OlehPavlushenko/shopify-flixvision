@@ -1,0 +1,25 @@
+.cart-drawer__footer-toggler {
+  margin-bottom: 0;
+}
+.cart-drawer__footer-content {
+  padding-bottom: 0!important;
+}
+.cart-drawer__btns {
+  padding: 10px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  border-top: .1rem solid var(--cart-drawer-divider-color);
+  align-items: center;
+  margin-top: -1px;
+  @media screen and (max-width: 550px) {
+    //padding: 20px 20px;
+  }
+  .cart-drawer__checkout-btn {
+    margin-right: 10px;
+  }
+  .cart-drawer__url-btn {
+    margin-left: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}

@@ -1,1 +1,296 @@
-!function(){function e(t){return e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e(t)}function t(t,n){for(var r=0;r<n.length;r++){var o=n[r];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,(s=o.key,i=void 0,i=function(t,n){if("object"!==e(t)||null===t)return t;var r=t[Symbol.toPrimitive];if(void 0!==r){var o=r.call(t,n||"default");if("object"!==e(o))return o;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===n?String:Number)(t)}(s,"string"),"symbol"===e(i)?i:String(i)),o)}var s,i}function n(t){var n=i();return function(){var o,s=c(t);if(n){var i=c(this).constructor;o=Reflect.construct(s,arguments,i)}else o=s.apply(this,arguments);return function(t,n){if(n&&("object"===e(n)||"function"==typeof n))return n;if(void 0!==n)throw new TypeError("Derived constructors may only return object or undefined");return r(t)}(this,o)}}function r(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function o(e){var t="function"==typeof Map?new Map:void 0;return o=function(e){if(null===e||(n=e,-1===Function.toString.call(n).indexOf("[native code]")))return e;var n;if("function"!=typeof e)throw new TypeError("Super expression must either be null or a function");if(void 0!==t){if(t.has(e))return t.get(e);t.set(e,r)}function r(){return s(e,arguments,c(this).constructor)}return r.prototype=Object.create(e.prototype,{constructor:{value:r,enumerable:!1,writable:!0,configurable:!0}}),a(r,e)},o(e)}function s(e,t,n){return s=i()?Reflect.construct.bind():function(e,t,n){var r=[null];r.push.apply(r,t);var o=new(Function.bind.apply(e,r));return n&&a(o,n.prototype),o},s.apply(null,arguments)}function i(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Boolean.prototype.valueOf.call(Reflect.construct(Boolean,[],(function(){}))),!0}catch(e){return!1}}function a(e,t){return a=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(e,t){return e.__proto__=t,e},a(e,t)}function c(e){return c=Object.setPrototypeOf?Object.getPrototypeOf.bind():function(e){return e.__proto__||Object.getPrototypeOf(e)},c(e)}var u=function(e){!function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),Object.defineProperty(e,"prototype",{writable:!1}),t&&a(e,t)}(u,e);var o,s,i,c=n(u);function u(){var e;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,u),(e=c.call(this)).headerMain=document.querySelector(".js-header-main"),e.megaMenuWrappers=Array.from(e.querySelectorAll(".js-mega-menu-wrapper")),e.megaSubMenuWrappers=Array.from(e.querySelectorAll(".js-mega-submenu-wrapper")),e.megaMenus=Array.from(e.querySelectorAll(".js-mega-menu")),e.megaSubmenus=Array.from(e.querySelectorAll(".js-mega-submenu")),e.menuToggles=Array.from(e.querySelectorAll(".js-menu-toggle")),e.menuBacks=Array.from(e.querySelectorAll(".js-menu-back")),e.submenuBacks=Array.from(e.querySelectorAll(".js-submenu-back")),e.mobileMenu=e.querySelector(".js-mobile-menu"),e.mobileMenuOverlay=e.querySelector(".js-mobile-menu-overlay"),e.resizeFunction(),window.addEventListener("resize",e.resizeFunction.bind(r(e))),["click","enter"].forEach((function(t){e.megaSubMenuWrappers.forEach((function(n){Array.from(n.querySelectorAll(".js-mega-submenu-next-button")).forEach((function(n){n.addEventListener(t,e.showMegaMenu.bind(r(e)))}))})),e.menuToggles.forEach((function(n){n.addEventListener(t,e.showMobileMenu.bind(r(e)))})),e.menuBacks.forEach((function(n){n.addEventListener(t,e.closeMegaMenu.bind(r(e)))})),e.submenuBacks.forEach((function(n){n.addEventListener(t,e.closeMegaSubMenu.bind(r(e)))}))})),e.addEventListener("keydown",(function(t){"Escape"===t.key&&e.onKeyUp(t)})),e}return o=u,(s=[{key:"resizeFunction",value:function(){var e=this,t=window.matchMedia("(max-width: 991px)").matches;["click","enter"].forEach((function(n){return e.megaMenuWrappers.forEach((function(r){t?Array.from(r.querySelectorAll(".js-mega-parent-next-button")).forEach((function(t){t.addEventListener(n,e.showMegaMenu.bind(e))})):(r.addEventListener(n,(function(t){t.target.closest(".header__menu-item-summary")&&e.showDesktopMegaMenu(t)})),e.addEventListener("keydown",(function(t){"Escape"===t.key&&e.closeMegaMenu(t)})))}))}))}},{key:"showMobileMenu",value:function(e){e.preventDefault(),this.mobileMenu.classList.toggle("menu-opening"),this.mobileMenuOverlay.classList.toggle("menu-opening"),document.body.classList.toggle("overflow-hidden")}},{key:"closeMobileMenu",value:function(){this.mobileMenu.classList.remove("menu-opening"),this.mobileMenuOverlay.classList.remove("menu-opening"),trapFocus(this),document.body.classList.remove("overflow-hidden")}},{key:"onBodyClick",value:function(e){e.target.closest(".js-mega-menu-wrapper")||this.closeMegaMenu(e)}},{key:"showDesktopMegaMenu",value:function(e){e.preventDefault();var t=e.currentTarget.closest(".js-mega-menu-wrapper").querySelector(".js-mega-menu");this.megaMenus.forEach((function(e){t.classList.contains("mega-menu--open")||e.classList.remove("mega-menu--open")})),t.classList.toggle("mega-menu--open"),document.body.addEventListener("click",this.onBodyClick.bind(this))}},{key:"showMegaMenu",value:function(e){e.preventDefault(),e.target.classList.contains("js-mega-parent-next-button")?e.target.closest(".js-mega-menu-wrapper").querySelector(".js-mega-menu").classList.toggle("mega-menu--open"):e.target.closest(".js-mega-submenu-wrapper").querySelector(".js-mega-submenu").classList.toggle("mega-menu--open")}},{key:"closeMegaMenu",value:function(e){if(e.target.blur(),e.target.closest(".js-mega-menu-wrapper")){var t=e.target.closest(".js-mega-menu-wrapper"),n=e.target.closest(".header__menu-item-details").querySelector(".header__menu-item-link");trapFocus(t,n)}this.megaMenus.forEach((function(e){e.classList.remove("mega-menu--open")}))}},{key:"closeMegaSubMenu",value:function(e){if(e.target.closest(".js-mega-submenu-wrapper")){var t=e.target.closest(".js-mega-submenu-wrapper"),n=e.target.closest(".js-mega-submenu-wrapper").querySelector(".js-mega-menu-title");trapFocus(t,n)}this.megaSubmenus.forEach((function(e){e.classList.remove("mega-menu--open")}))}},{key:"onKeyUp",value:function(e){(e.target.classList.contains("js-menu-toggle")||e.target.classList.contains("header__menu-item-link"))&&this.closeMobileMenu(),(e.target.classList.contains("js-mega-parent-next-button")||e.target.classList.contains("js-mega-menu-title")||e.target.classList.contains("js-submenu-back")||e.target.classList.contains("mega-menu__list-column-title"))&&this.closeMegaMenu(e),(e.target.classList.contains("js-mega-submenu-next-button")||e.target.classList.contains("mega-menu__list")||e.target.classList.contains("js-mega-submenu-row")||e.target.classList.contains("mega-menu__list-item-link"))&&this.closeMegaSubMenu(e)}},{key:"connectedCallback",value:function(){this.stickyBlock=document.querySelector(".js-sticky-block"),this.header=document.querySelector(".section-header"),this.announcement=document.querySelector(".index-announcement"),this.headerIsAlwaysSticky="always"===this.getAttribute("data-sticky-type"),this.headerBounds={},this.headerIsAlwaysSticky&&this.header.classList.add("shopify-section-header-sticky"),this.currentScrollTop=0,this.preventReveal=!1,this.onScrollHandler=this.onScroll.bind(this),this.setHeaderHeight(),window.matchMedia("(min-width: 320px)").addEventListener("change",this.setHeaderHeight.bind(this)),window.addEventListener("scroll",this.onScrollHandler,!1),window.addEventListener("load",this.checkScroll.bind(this)),this.createObserver()}},{key:"checkScroll",value:function(){var e=window.scrollY||document.documentElement.scrollTop;e>0&&e>this.headerBounds.top?(this.header.classList.add("scrolled-past-header"),this.stickyBlock.style.setProperty("height","".concat(this.header.offsetHeight,"px"))):e<=this.headerBounds.top&&(this.header.classList.remove("scrolled-past-header"),this.stickyBlock.style.setProperty("height","0"))}},{key:"createObserver",value:function(){var e=this;new IntersectionObserver((function(t,n){var r=e.header.getBoundingClientRect();e.headerBounds={top:r.top+window.scrollY,bottom:r.bottom+window.scrollY},n.disconnect()})).observe(this.header)}},{key:"onScroll",value:function(){var e=window.scrollY||document.documentElement.scrollTop;e>this.currentScrollTop&&e>this.headerBounds.bottom?(this.header.classList.add("scrolled-past-header"),this.stickyBlock.style.setProperty("height","".concat(this.header.offsetHeight,"px"))):e<=this.headerBounds.top&&(this.header.classList.remove("scrolled-past-header"),this.stickyBlock.style.setProperty("height","0")),this.currentScrollTop=e}},{key:"setHeaderHeight",value:function(){document.documentElement.style.setProperty("--header-height","".concat(this.header.offsetHeight,"px")),document.documentElement.style.setProperty("--announcement-bar-height","".concat(this.announcement.offsetHeight,"px"))}}])&&t(o.prototype,s),i&&t(o,i),Object.defineProperty(o,"prototype",{writable:!1}),u}(o(HTMLElement));customElements.define("sticky-header",u)}();
+class SectionHeader extends HTMLElement {
+    constructor() {
+        super()
+
+        this.headerMain = document.querySelector(".js-header-main")
+        this.megaMenuWrappers = Array.from(
+            this.querySelectorAll(".js-mega-menu-wrapper")
+        )
+        this.megaSubMenuWrappers = Array.from(
+            this.querySelectorAll(".js-mega-submenu-wrapper")
+        )
+
+        this.megaMenus = Array.from(this.querySelectorAll(".js-mega-menu"))
+        this.megaSubmenus = Array.from(
+            this.querySelectorAll(".js-mega-submenu")
+        )
+        this.menuToggles = Array.from(this.querySelectorAll(".js-menu-toggle"))
+        this.menuBacks = Array.from(this.querySelectorAll(".js-menu-back"))
+        this.submenuBacks = Array.from(
+            this.querySelectorAll(".js-submenu-back")
+        )
+
+        this.mobileMenu = this.querySelector(".js-mobile-menu")
+        this.mobileMenuOverlay = this.querySelector(".js-mobile-menu-overlay")
+
+        this.resizeFunction()
+        window.addEventListener("resize", this.resizeFunction.bind(this))
+        ;["click", "enter"].forEach((event) => {
+            this.megaSubMenuWrappers.forEach((wrapper) => {
+                let currentTarget = Array.from(
+                    wrapper.querySelectorAll(".js-mega-submenu-next-button")
+                )
+                currentTarget.forEach((details) => {
+                    details.addEventListener(
+                        event,
+                        this.showMegaMenu.bind(this)
+                    )
+                })
+            })
+            this.menuToggles.forEach((menuToggle) => {
+                menuToggle.addEventListener(
+                    event,
+                    this.showMobileMenu.bind(this)
+                )
+            })
+            this.menuBacks.forEach((menuBack) => {
+                menuBack.addEventListener(event, this.closeMegaMenu.bind(this))
+            })
+            this.submenuBacks.forEach((submenuBack) => {
+                submenuBack.addEventListener(
+                    event,
+                    this.closeMegaSubMenu.bind(this)
+                )
+            })
+        })
+
+        this.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                this.onKeyUp(event)
+            }
+        })
+    }
+
+    resizeFunction() {
+        let mobile = window.matchMedia("(max-width: 991px)").matches
+
+        ;["click", "enter"].forEach((event) =>
+            this.megaMenuWrappers.forEach((wrapper) => {
+                if (mobile) {
+                    let currentTarget = Array.from(
+                        wrapper.querySelectorAll(".js-mega-parent-next-button")
+                    )
+                    currentTarget.forEach((details) => {
+                        details.addEventListener(
+                            event,
+                            this.showMegaMenu.bind(this)
+                        )
+                    })
+                } else {
+                    wrapper.addEventListener(event, (evt) => {
+                        if (evt.target.closest(".header__menu-item-summary")) {
+                            this.showDesktopMegaMenu(evt)
+                        }
+                    })
+
+                    this.addEventListener("keydown", (event) => {
+                        if (event.key === "Escape") {
+                            this.closeMegaMenu(event)
+                        }
+                    })
+                }
+            })
+        )
+    }
+
+    showMobileMenu(event) {
+        event.preventDefault()
+
+        this.mobileMenu.classList.toggle("menu-opening")
+        this.mobileMenuOverlay.classList.toggle("menu-opening")
+        document.body.classList.toggle("overflow-hidden")
+    }
+
+    closeMobileMenu() {
+        this.mobileMenu.classList.remove("menu-opening")
+        this.mobileMenuOverlay.classList.remove("menu-opening")
+        trapFocus(this)
+        document.body.classList.remove("overflow-hidden")
+    }
+
+    onBodyClick(event) {
+        const targetElement = event.target.closest(".js-mega-menu-wrapper")
+
+        if (!targetElement) {
+            this.closeMegaMenu(event)
+        }
+    }
+
+    showDesktopMegaMenu(event) {
+        event.preventDefault()
+        let megaMenuCurrent = event.currentTarget
+            .closest(".js-mega-menu-wrapper")
+            .querySelector(".js-mega-menu")
+
+        this.megaMenus.forEach((megaMenu) => {
+            if (!megaMenuCurrent.classList.contains("mega-menu--open")) {
+                megaMenu.classList.remove("mega-menu--open")
+            }
+        })
+        megaMenuCurrent.classList.toggle("mega-menu--open")
+        document.body.addEventListener("click", this.onBodyClick.bind(this))
+    }
+
+    showMegaMenu(event) {
+        event.preventDefault()
+
+        let details = event.target
+
+        if (!details.classList.contains("js-mega-parent-next-button")) {
+            let megaSubmenu = event.target
+                .closest(".js-mega-submenu-wrapper")
+                .querySelector(".js-mega-submenu")
+            megaSubmenu.classList.toggle("mega-menu--open")
+        } else {
+            let megaMenu = event.target
+                .closest(".js-mega-menu-wrapper")
+                .querySelector(".js-mega-menu")
+            megaMenu.classList.toggle("mega-menu--open")
+        }
+    }
+
+    closeMegaMenu(event) {
+        event.target.blur()
+        if (event.target.closest(".js-mega-menu-wrapper")) {
+            let openElement = event.target.closest(".js-mega-menu-wrapper")
+            let openElementActive = event.target
+                .closest(".header__menu-item-details")
+                .querySelector(".header__menu-item-link")
+            trapFocus(openElement, openElementActive)
+        }
+
+        this.megaMenus.forEach((megaMenu) => {
+            megaMenu.classList.remove("mega-menu--open")
+        })
+    }
+
+    closeMegaSubMenu(event) {
+        //console.log(event)
+        if (event.target.closest(".js-mega-submenu-wrapper")) {
+            let openElement = event.target.closest(".js-mega-submenu-wrapper")
+            let openElementActive = event.target
+                .closest(".js-mega-submenu-wrapper")
+                .querySelector(".js-mega-menu-title")
+
+            trapFocus(openElement, openElementActive)
+        }
+
+        this.megaSubmenus.forEach((megaSubmenu) => {
+            megaSubmenu.classList.remove("mega-menu--open")
+        })
+    }
+
+    onKeyUp(event) {
+        if (
+            event.target.classList.contains("js-menu-toggle") ||
+            event.target.classList.contains("header__menu-item-link")
+        ) {
+            this.closeMobileMenu()
+        }
+
+        if (
+            event.target.classList.contains("js-mega-parent-next-button") ||
+            event.target.classList.contains("js-mega-menu-title") ||
+            event.target.classList.contains("js-submenu-back") ||
+            event.target.classList.contains("mega-menu__list-column-title")
+        ) {
+            this.closeMegaMenu(event)
+        }
+
+        if (
+            event.target.classList.contains("js-mega-submenu-next-button") ||
+            event.target.classList.contains("mega-menu__list") ||
+            event.target.classList.contains("js-mega-submenu-row") ||
+            event.target.classList.contains("mega-menu__list-item-link")
+        ) {
+            this.closeMegaSubMenu(event)
+        }
+    }
+
+    connectedCallback() {
+        this.stickyBlock = document.querySelector(".js-sticky-block")
+        this.header = document.querySelector(".section-header")
+        this.announcement = document.querySelector(".index-announcement")
+        this.headerIsAlwaysSticky =
+            this.getAttribute("data-sticky-type") === "always"
+        this.headerBounds = {}
+
+        if (this.headerIsAlwaysSticky) {
+            this.header.classList.add("shopify-section-header-sticky")
+        }
+
+        this.currentScrollTop = 0
+        this.preventReveal = false
+
+        this.onScrollHandler = this.onScroll.bind(this)
+
+        this.setHeaderHeight()
+        window
+            .matchMedia("(min-width: 320px)")
+            .addEventListener("change", this.setHeaderHeight.bind(this))
+
+        window.addEventListener("scroll", this.onScrollHandler, false)
+        window.addEventListener("load", this.checkScroll.bind(this))
+        this.createObserver()
+    }
+
+    checkScroll() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop
+        if (scrollTop > 0 && scrollTop > this.headerBounds.top) {
+            this.header.classList.add("scrolled-past-header")
+            this.stickyBlock.style.setProperty(
+                "height",
+                `${this.header.offsetHeight}px`
+            )
+        } else if (scrollTop <= this.headerBounds.top) {
+            this.header.classList.remove("scrolled-past-header")
+            this.stickyBlock.style.setProperty("height", "0")
+        }
+    }
+
+    createObserver() {
+        let observer = new IntersectionObserver((entries, observer) => {
+            const headerRect = this.header.getBoundingClientRect()
+            this.headerBounds = {
+                top: headerRect.top + window.scrollY,
+                bottom: headerRect.bottom + window.scrollY,
+            }
+            observer.disconnect()
+        })
+
+        observer.observe(this.header)
+    }
+
+    onScroll() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop
+
+        if (
+            scrollTop > this.currentScrollTop &&
+            scrollTop > this.headerBounds.bottom
+        ) {
+            this.header.classList.add("scrolled-past-header")
+            this.stickyBlock.style.setProperty(
+                "height",
+                `${this.header.offsetHeight}px`
+            )
+        } else if (scrollTop <= this.headerBounds.top) {
+            this.header.classList.remove("scrolled-past-header")
+            this.stickyBlock.style.setProperty("height", "0")
+        }
+
+        this.currentScrollTop = scrollTop
+    }
+
+    setHeaderHeight() {
+        document.documentElement.style.setProperty(
+            "--header-height",
+            `${this.header.offsetHeight}px`
+        )
+        document.documentElement.style.setProperty(
+            "--announcement-bar-height",
+            `${this.announcement.offsetHeight}px`
+        )
+    }
+}
+
+customElements.define("sticky-header", SectionHeader)
