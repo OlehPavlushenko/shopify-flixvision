@@ -1,1 +1,753 @@
-!function(){function e(t){return e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e(t)}function t(e){return function(e){if(Array.isArray(e))return r(e)}(e)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}(e)||function(e,t){if(!e)return;if("string"==typeof e)return r(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);"Object"===n&&e.constructor&&(n=e.constructor.name);if("Map"===n||"Set"===n)return Array.from(e);if("Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))return r(e,t)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function r(e,t){(null==t||t>e.length)&&(t=e.length);for(var r=0,n=new Array(t);r<t;r++)n[r]=e[r];return n}function n(){"use strict";n=function(){return t};var t={},r=Object.prototype,o=r.hasOwnProperty,a=Object.defineProperty||function(e,t,r){e[t]=r.value},i="function"==typeof Symbol?Symbol:{},c=i.iterator||"@@iterator",u=i.asyncIterator||"@@asyncIterator",s=i.toStringTag||"@@toStringTag";function l(e,t,r){return Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}),e[t]}try{l({},"")}catch(e){l=function(e,t,r){return e[t]=r}}function d(e,t,r,n){var o=t&&t.prototype instanceof p?t:p,i=Object.create(o.prototype),c=new L(n||[]);return a(i,"_invoke",{value:j(e,r,c)}),i}function f(e,t,r){try{return{type:"normal",arg:e.call(t,r)}}catch(e){return{type:"throw",arg:e}}}t.wrap=d;var m={};function p(){}function h(){}function y(){}var v={};l(v,c,(function(){return this}));var g=Object.getPrototypeOf,S=g&&g(g(O([])));S&&S!==r&&o.call(S,c)&&(v=S);var b=y.prototype=p.prototype=Object.create(v);function w(e){["next","throw","return"].forEach((function(t){l(e,t,(function(e){return this._invoke(t,e)}))}))}function x(t,r){function n(a,i,c,u){var s=f(t[a],t,i);if("throw"!==s.type){var l=s.arg,d=l.value;return d&&"object"==e(d)&&o.call(d,"__await")?r.resolve(d.__await).then((function(e){n("next",e,c,u)}),(function(e){n("throw",e,c,u)})):r.resolve(d).then((function(e){l.value=e,c(l)}),(function(e){return n("throw",e,c,u)}))}u(s.arg)}var i;a(this,"_invoke",{value:function(e,t){function o(){return new r((function(r,o){n(e,t,r,o)}))}return i=i?i.then(o,o):o()}})}function j(e,t,r){var n="suspendedStart";return function(o,a){if("executing"===n)throw new Error("Generator is already running");if("completed"===n){if("throw"===o)throw a;return A()}for(r.method=o,r.arg=a;;){var i=r.delegate;if(i){var c=q(i,r);if(c){if(c===m)continue;return c}}if("next"===r.method)r.sent=r._sent=r.arg;else if("throw"===r.method){if("suspendedStart"===n)throw n="completed",r.arg;r.dispatchException(r.arg)}else"return"===r.method&&r.abrupt("return",r.arg);n="executing";var u=f(e,t,r);if("normal"===u.type){if(n=r.done?"completed":"suspendedYield",u.arg===m)continue;return{value:u.arg,done:r.done}}"throw"===u.type&&(n="completed",r.method="throw",r.arg=u.arg)}}}function q(e,t){var r=t.method,n=e.iterator[r];if(void 0===n)return t.delegate=null,"throw"===r&&e.iterator.return&&(t.method="return",t.arg=void 0,q(e,t),"throw"===t.method)||"return"!==r&&(t.method="throw",t.arg=new TypeError("The iterator does not provide a '"+r+"' method")),m;var o=f(n,e.iterator,t.arg);if("throw"===o.type)return t.method="throw",t.arg=o.arg,t.delegate=null,m;var a=o.arg;return a?a.done?(t[e.resultName]=a.value,t.next=e.nextLoc,"return"!==t.method&&(t.method="next",t.arg=void 0),t.delegate=null,m):a:(t.method="throw",t.arg=new TypeError("iterator result is not an object"),t.delegate=null,m)}function _(e){var t={tryLoc:e[0]};1 in e&&(t.catchLoc=e[1]),2 in e&&(t.finallyLoc=e[2],t.afterLoc=e[3]),this.tryEntries.push(t)}function E(e){var t=e.completion||{};t.type="normal",delete t.arg,e.completion=t}function L(e){this.tryEntries=[{tryLoc:"root"}],e.forEach(_,this),this.reset(!0)}function O(e){if(e){var t=e[c];if(t)return t.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var r=-1,n=function t(){for(;++r<e.length;)if(o.call(e,r))return t.value=e[r],t.done=!1,t;return t.value=void 0,t.done=!0,t};return n.next=n}}return{next:A}}function A(){return{value:void 0,done:!0}}return h.prototype=y,a(b,"constructor",{value:y,configurable:!0}),a(y,"constructor",{value:h,configurable:!0}),h.displayName=l(y,s,"GeneratorFunction"),t.isGeneratorFunction=function(e){var t="function"==typeof e&&e.constructor;return!!t&&(t===h||"GeneratorFunction"===(t.displayName||t.name))},t.mark=function(e){return Object.setPrototypeOf?Object.setPrototypeOf(e,y):(e.__proto__=y,l(e,s,"GeneratorFunction")),e.prototype=Object.create(b),e},t.awrap=function(e){return{__await:e}},w(x.prototype),l(x.prototype,u,(function(){return this})),t.AsyncIterator=x,t.async=function(e,r,n,o,a){void 0===a&&(a=Promise);var i=new x(d(e,r,n,o),a);return t.isGeneratorFunction(r)?i:i.next().then((function(e){return e.done?e.value:i.next()}))},w(b),l(b,s,"Generator"),l(b,c,(function(){return this})),l(b,"toString",(function(){return"[object Generator]"})),t.keys=function(e){var t=Object(e),r=[];for(var n in t)r.push(n);return r.reverse(),function e(){for(;r.length;){var n=r.pop();if(n in t)return e.value=n,e.done=!1,e}return e.done=!0,e}},t.values=O,L.prototype={constructor:L,reset:function(e){if(this.prev=0,this.next=0,this.sent=this._sent=void 0,this.done=!1,this.delegate=null,this.method="next",this.arg=void 0,this.tryEntries.forEach(E),!e)for(var t in this)"t"===t.charAt(0)&&o.call(this,t)&&!isNaN(+t.slice(1))&&(this[t]=void 0)},stop:function(){this.done=!0;var e=this.tryEntries[0].completion;if("throw"===e.type)throw e.arg;return this.rval},dispatchException:function(e){if(this.done)throw e;var t=this;function r(r,n){return i.type="throw",i.arg=e,t.next=r,n&&(t.method="next",t.arg=void 0),!!n}for(var n=this.tryEntries.length-1;n>=0;--n){var a=this.tryEntries[n],i=a.completion;if("root"===a.tryLoc)return r("end");if(a.tryLoc<=this.prev){var c=o.call(a,"catchLoc"),u=o.call(a,"finallyLoc");if(c&&u){if(this.prev<a.catchLoc)return r(a.catchLoc,!0);if(this.prev<a.finallyLoc)return r(a.finallyLoc)}else if(c){if(this.prev<a.catchLoc)return r(a.catchLoc,!0)}else{if(!u)throw new Error("try statement without catch or finally");if(this.prev<a.finallyLoc)return r(a.finallyLoc)}}}},abrupt:function(e,t){for(var r=this.tryEntries.length-1;r>=0;--r){var n=this.tryEntries[r];if(n.tryLoc<=this.prev&&o.call(n,"finallyLoc")&&this.prev<n.finallyLoc){var a=n;break}}a&&("break"===e||"continue"===e)&&a.tryLoc<=t&&t<=a.finallyLoc&&(a=null);var i=a?a.completion:{};return i.type=e,i.arg=t,a?(this.method="next",this.next=a.finallyLoc,m):this.complete(i)},complete:function(e,t){if("throw"===e.type)throw e.arg;return"break"===e.type||"continue"===e.type?this.next=e.arg:"return"===e.type?(this.rval=this.arg=e.arg,this.method="return",this.next="end"):"normal"===e.type&&t&&(this.next=t),m},finish:function(e){for(var t=this.tryEntries.length-1;t>=0;--t){var r=this.tryEntries[t];if(r.finallyLoc===e)return this.complete(r.completion,r.afterLoc),E(r),m}},catch:function(e){for(var t=this.tryEntries.length-1;t>=0;--t){var r=this.tryEntries[t];if(r.tryLoc===e){var n=r.completion;if("throw"===n.type){var o=n.arg;E(r)}return o}}throw new Error("illegal catch attempt")},delegateYield:function(e,t,r){return this.delegate={iterator:O(e),resultName:t,nextLoc:r},"next"===this.method&&(this.arg=void 0),m}},t}function o(e,t,r,n,o,a,i){try{var c=e[a](i),u=c.value}catch(e){return void r(e)}c.done?t(u):Promise.resolve(u).then(n,o)}function a(e){return function(){var t=this,r=arguments;return new Promise((function(n,a){var i=e.apply(t,r);function c(e){o(i,n,a,c,u,"next",e)}function u(e){o(i,n,a,c,u,"throw",e)}c(void 0)}))}}if("liquidAjaxCart"in window){var i={},c=document.querySelector(".js-btn-cart-combo"),u=document.querySelectorAll(".js-buy-more-btn"),s=document.querySelector("#cart-recommend");null===s&&(localStorage.removeItem("defaultRecommendSection"),localStorage.removeItem("recommendSection"),localStorage.removeItem("deleteRecommendSection"),localStorage.removeItem("expirationTimeRecommendSection")),u&&function(e){e.forEach((function(e){e.addEventListener("click",(function(e){var t=e.target.closest(".main-product__content").querySelector(".main-product__form"),r=e.target.closest(".js-buy-more-items");r.classList.add("js-ajax-cart-form-in-progress");var n=new FormData(t).get("id"),o=+r.querySelector(".js-buy-more-item span").textContent,a={};n&&o&&(a={id:n,quantity:o});var i=[a],c={lastComplete:function(e){if(r.classList.remove("js-ajax-cart-form-in-progress"),"add"===e.requestType&&(f(e),e.responseData.ok)){var t=String(e.responseData.body.items[0].product_id),n=e.responseData.body.items[0].handle;s&&v(t,n)}}};liquidAjaxCart.cartRequestAdd({items:i},c)}))}))}(u),c&&function(e){e.addEventListener("click",(function(e){var t=e.target.closest(".js-main-combo-action"),r=e.target.closest(".js-combo-action");t.classList.add("js-ajax-cart-form-in-progress");var n=new FormData(t),o=[],a=[],i="",c=n.get("id"),u=n.get("quantity"),s=n.get("properties[ComboDiscount]"),l=r.querySelectorAll(".card-product__form");a.push(c),l.forEach((function(e){var t=new FormData(e).get("id");t&&(a.push(t),i+=t)})),l.forEach((function(e){var t=new FormData(e).get("id"),r={};t&&u&&(r={id:t,quantity:u,properties:{_hiddenCombo:a,_hiddenNumber:i}},o.push(r))}));var d={};c&&u&&s&&(d={id:c,quantity:u,properties:{ComboDiscount:s,_hiddenCombo:a}});var m=[d].concat(o),p={lastComplete:function(e){document.querySelector(".js-main-combo-action").classList.remove("js-ajax-cart-form-in-progress"),"add"===e.requestType&&f(e)}};liquidAjaxCart.cartRequestAdd({items:m},p)}))}(c),liquidAjaxCart.configureCart("updateOnWindowFocus",!1),liquidAjaxCart.subscribeToCartAjaxRequests((function(e,t){"add"===e.requestType&&t((function(e){if(e.responseData.ok){var t=e.responseData.body.id,r=String(e.responseData.body.product_id),n=e.responseData.body.handle;if(e.requestBody&&e.requestBody.items?console.log("requestState",e):(i[t]=r,f(e),j("cart_recommend",i),s&&v(r,n)),!localStorage.getItem("expirationTimeRecommendSection"))!function(e){var t=(new Date).getTime()+24*e*60*60*1e3;localStorage.setItem("expirationTimeRecommendSection",t)}(document.querySelector("#cart-recommend").getAttribute("data-days"))}})),"change"===e.requestType&&t((function(e){var t,r;if(null!==(t=e.responseData)&&void 0!==t&&t.ok){var n=e.responseData.body.items,o=[];if(0===n.length){for(var a in i)Object.hasOwnProperty.call(i,a)&&delete i[a];r="cart_recommend",document.cookie=r+"=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;"}else for(var c in n.forEach((function(e){o.push(e.id)})),i)Object.hasOwnProperty.call(i,c)&&(o.includes(+c)||delete i[c]);j("cart_recommend",i);var u=JSON.parse(localStorage.getItem("removeValueCombo"))||[];if(u)l(document.querySelectorAll('[data-value="'.concat(u,'"]')).length)}}))})),liquidAjaxCart.subscribeToCartStateUpdate(function(){var e=a(n().mark((function e(t,r){var o,a,i,c,u,f,m,h,y,v,g,b,j,L,O;return n().wrap((function(e){for(;;)switch(e.prev=e.next){case 0:if(o=document.querySelector(".cart-count-ajax-cart"),!t.status.cartStateSet||t.status.requestInProgress){e.next=21;break}if(o.textContent=Shopify.formatMoney(t.cart.total_price),(a=document.querySelector(".js-cart-drawer-shipping"))&&a.isConnected&&(i=t.cart.total_price,c=document.querySelector(".js-cart-drawer-shipping").getAttribute("data-total"),_(i,c)),void 0===(u=q("cart_recommend"))){e.next=17;break}if(Object.keys(u).length<t.cart.items.length&&x(t),0===Object.keys(u).length||u.constructor!==Object){e.next=15;break}for(m in f=[],u)Object.hasOwnProperty.call(u,m)&&(h=u[m],f.push(h));return e.next=13,p();case 13:(y=e.sent).length>0&&(v=y.join("="),s&&w(v));case 15:e.next=18;break;case 17:x(t);case 18:r||t.previousCart&&t.previousCart.items&&(g=t.cart.items,b=t.previousCart.items,g.length<b.length&&(j=g.map((function(e){return e.product_id})),(L=b.filter((function(e){return!j.includes(e.product_id)}))).length>0&&s&&S(L[0].product_id,L[0].handle))),(O=document.querySelectorAll(".js-combo-remove"))&&O.forEach((function(e){e.addEventListener("click",(function(t){t.preventDefault();var r=e.closest(".main-combo-item").getAttribute("data-value"),n=document.querySelectorAll('[data-value="'.concat(r,'"]'));localStorage.setItem("removeValueCombo",JSON.stringify(r)),l(n.length)}))}));case 21:r&&(window.comboItemsWrapped=!1,d(),E());case 22:case"end":return e.stop()}}),e)})));return function(t,r){return e.apply(this,arguments)}}()),liquidAjaxCart.cartRequestUpdate()}function l(e){if(0!==e){var t=JSON.parse(localStorage.getItem("removeValueCombo"))||[];document.querySelectorAll('[data-value="'.concat(t,'"]')).forEach((function(e){var t=e.querySelector(".js-item-remove");setTimeout((function(){t.click()}),100),e.parentNode.classList.add("js-ajax-cart-form-in-progress")}))}else localStorage.removeItem("removeValueCombo")}function d(){var e=document.querySelectorAll(".js-combo-item");if(!window.comboItemsWrapped&&e){var t={};e.forEach((function(e){var r=e.getAttribute("data-value");t.hasOwnProperty(r)?t[r].push(e):t[r]=[e]}));var r=function(){var e=t[n],r=document.createElement("div");r.classList.add("ajax-cart__line-item-grouped"),e.forEach((function(e){r.appendChild(e.cloneNode(!0))})),e.forEach((function(e){var t=e.parentNode;t.insertBefore(r,e),t.removeChild(e)}))};for(var n in t)r();window.comboItemsWrapped=!0}}function f(e){fetch(window.Shopify.routes.root+"?section_id=cart-notification").then((function(e){return e.text()})).then((function(t){if(t){var r=document.createElement("div");r.innerHTML=t;var n=r.querySelector(".js-cart-notification");document.body.appendChild(n),document.querySelector(".js-cart-notification").classList.add("open"),document.body.classList.add("overflow-hidden"),function(e){var t,r=document.querySelector("#cart-recommend").getAttribute("data-size"),n=document.querySelector(".js-cart-notification");if(trapFocus(n),null!==(t=e.responseData)&&void 0!==t&&t.ok)if(e.requestBody instanceof FormData)n.querySelector(".js-cart-notification-title").textContent=e.responseData.body.product_title,n.querySelector(".js-cart-notification-image").parentElement.classList.add("media__size--"+r),n.querySelector(".js-cart-notification-image").src=e.responseData.body.image,n.querySelector(".js-cart-notification-image").alt=e.responseData.body.product_title;else{var o=e.responseData.body.items[0];n.querySelector(".js-cart-notification-title").textContent=o.product_title,n.querySelector(".js-cart-notification-image").parentElement.classList.add("media__size--"+r),n.querySelector(".js-cart-notification-image").src=o.image,n.querySelector(".js-cart-notification-image").alt=o.product_title}else n.querySelector(".js-cart-notification-title").textContent=e.responseData.body.message+" "+e.responseData.body.status,n.querySelector(".js-cart-notification-image").parentElement.parentElement.remove(),n.querySelector(".js-cart-msg").textContent=e.responseData.body.description;n.classList.add("open"),document.body.classList.add("overflow-hidden"),document.querySelectorAll(".js-modal-close").forEach((function(e){e.addEventListener("click",(function(e){e.preventDefault(),m(n)}))})),n.addEventListener("click",(function(e){e.target==n&&m(n)})),n.addEventListener("keyup",(function(e){"ESCAPE"===e.code.toUpperCase()&&m(n)}))}(e)}}))}function m(e){e.classList.remove("open"),document.body.classList.remove("overflow-hidden"),e.remove(),removeTrapFocus(e)}function p(){return new Promise((function(e){var t=JSON.parse(localStorage.getItem("recommendSection"))||[],r=JSON.parse(localStorage.getItem("defaultRecommendSection"))||[],n=JSON.parse(localStorage.getItem("deleteRecommendSection"))||[];e(t.filter((function(e){return!r.includes(e)})).concat(r).filter((function(e){return!n.includes(e)})).concat(n))}))}function h(e){return new Promise((function(t){localStorage.setItem("recommendSection",JSON.stringify(e)),t()}))}function y(e){return new Promise((function(t){localStorage.setItem("deleteRecommendSection",JSON.stringify(e)),t()}))}function v(e,t){return g.apply(this,arguments)}function g(){return(g=a(n().mark((function e(r,o){var a,i,c,u,l,d,f,m,y,v,g,S;return n().wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return a=document.querySelector("#cart-recommend").getAttribute("data-type"),e.next=3,fetch("".concat(window.Shopify.routes.root,"recommendations/products.json?product_id=").concat(r,"&limit=4&intent=").concat(a));case 3:return i=e.sent,e.next=6,i.json();case 6:return c=e.sent,u=c.products,e.next=10,p();case 10:return l=e.sent,d=JSON.parse(localStorage.getItem("defaultRecommendSection"))||[],f=u.map((function(e){return String(e.handle)})).filter((function(e){return!d.includes(e)})),m=u.map((function(e){return String(e.handle)})),(y=l.filter((function(e){return!m.includes(e)}))).unshift.apply(y,t(f)),v=y.filter((function(e){return e!==o&&null!==e})),g=t(new Set(v)),e.next=20,h(g);case 20:g.length>0&&(S=g.join("="),s&&w(S));case 21:case"end":return e.stop()}}),e)})))).apply(this,arguments)}function S(e,t){return b.apply(this,arguments)}function b(){return(b=a(n().mark((function e(r,o){var a,i,c,u,l,d,f,m,v,g,S,b,x,j,q;return n().wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return a=document.querySelector("#cart-recommend").getAttribute("data-type"),e.next=3,fetch("".concat(window.Shopify.routes.root,"recommendations/products.json?product_id=").concat(r,"&limit=4&intent=").concat(a));case 3:return i=e.sent,e.next=6,i.json();case 6:return c=e.sent,u=c.products,e.next=10,p();case 10:if(l=e.sent,d=JSON.parse(localStorage.getItem("defaultRecommendSection"))||[],f=JSON.parse(localStorage.getItem("deleteRecommendSection"))||[],m=u.map((function(e){return String(e.handle)})),v=l.filter((function(e){return!m.includes(e)})),g=v.filter((function(e){return!d.includes(e)})),S=[].concat(t(g),t(d)),b=S.filter((function(e,t){return S.indexOf(e)===t})),x=b.filter((function(e){return e!==o&&null!==e})),null===o||f.includes(o)){e.next=23;break}return f.push(o),e.next=23,y(f);case 23:return e.next=25,h(x);case 25:if(!(x.length>0)){e.next=31;break}return e.next=28,p();case 28:j=e.sent,q=j.join("="),s&&w(q);case 31:case"end":return e.stop()}}),e)})))).apply(this,arguments)}function w(e){var t=document.querySelector("#cart-recommend"),r=document.querySelector("#cart-recommend").getAttribute("data-size");fetch(window.Shopify.routes.root+"collections/all?section_id=cart-recommend&id="+encodeURIComponent(e)).then((function(e){return e.text()})).then((function(e){var n=document.createElement("div");n.innerHTML=e;var o=n.querySelector(".js-cart-recommend-block");if(o&&o.innerHTML.trim().length){!0,t.innerHTML=o.innerHTML,t.querySelectorAll(".js-cart-recommend-item").forEach((function(e){e.querySelector(".card-product__media").classList.add("media__size--"+r)}));var a=parseInt(t.dataset.countDesktop)||3,i=parseInt(t.dataset.countTablet)||2,c=parseInt(t.dataset.countMobile)||2;new Swiper(".js-recommend-swiper",{loop:!1,slidesPerView:c,spaceBetween:10,navigation:{nextEl:".swiper-button-next",prevEl:".swiper-button-prev"},breakpoints:{550:{slidesPerView:2,spaceBetween:15},991:{slidesPerView:i,spaceBetween:20},1200:{slidesPerView:a,spaceBetween:30}}})}}))}function x(e){0!==Object.keys(e.cart).length&&e.cart.constructor===Object&&e.cart.items.forEach((function(e){var t=e.id,r=String(e.product_id);i[t]=r,j("cart_recommend",i)}))}function j(e,t){var r="",n="";r=e+"="+JSON.stringify(t)+";",r+="path=/ ;",(n=new Date).setTime(n.getTime()+2592e6),n.toString(),r+="expires="+n+";",document.cookie=r}function q(e){var t="",r=new Array;if(t=document.cookie)for(var n in r=t.split(";"))if(r[n].includes(e)){var o=r[n].split("=");return JSON.parse(o[1])}}function _(e,t){var r=document.querySelectorAll(".cart-drawer-shippingThreshold__progress"),n=document.querySelectorAll(".cart-drawer-shipping__num"),o=document.querySelectorAll(".cart-drawer-shipping__numOuter"),a=document.querySelectorAll(".cart-drawer-shipping__success"),i=Math.round(100*e/t);r.forEach((function(e){e.setAttribute("style","width: ".concat(i,"%"))}));var c=(t-e)/100;c<=0?(a.forEach((function(e){e.style.display="block"})),o.forEach((function(e){e.style.display="none"})),n.forEach((function(e){e.textContent=Shopify.formatMoney(100*c)}))):(a.forEach((function(e){e.style.display="none"})),o.forEach((function(e){e.style.display="block"})),n.forEach((function(e){e.textContent=Shopify.formatMoney(100*c)})))}function E(){var e=localStorage.getItem("expirationTimeRecommendSection");e&&((new Date).getTime()>e&&(localStorage.removeItem("recommendSection"),localStorage.removeItem("deleteRecommendSection"),localStorage.removeItem("expirationTimeRecommendSection")))}}();
+if ("liquidAjaxCart" in window) {
+    var recommendProducts = {},
+        recommendResults = false
+
+    let addToCartButton = document.querySelector(".js-btn-cart-combo")
+    let addToCartButtonBuyMore = document.querySelectorAll(".js-buy-more-btn")
+    var showRecommend = document.querySelector("#cart-recommend")
+
+    if (showRecommend === null) {
+        localStorage.removeItem("defaultRecommendSection")
+        localStorage.removeItem("recommendSection")
+        localStorage.removeItem("deleteRecommendSection")
+        localStorage.removeItem("expirationTimeRecommendSection")
+    }
+
+    if (addToCartButtonBuyMore) {
+        addBuyMore(addToCartButtonBuyMore)
+    }
+
+    if (addToCartButton) {
+        addComboProducts(addToCartButton)
+    }
+
+    liquidAjaxCart.configureCart("updateOnWindowFocus", false)
+
+    liquidAjaxCart.subscribeToCartAjaxRequests(
+        (requestState, subscribeToResult) => {
+            if (requestState.requestType === "add") {
+                subscribeToResult((requestState) => {
+                    if (requestState.responseData.ok) {
+                        let product_key = requestState.responseData.body.id
+                        let product_id = String(
+                            requestState.responseData.body.product_id
+                        )
+                        let product_handle =
+                            requestState.responseData.body.handle
+
+                        if (
+                            requestState.requestBody &&
+                            requestState.requestBody.items
+                        ) {
+                            console.log("requestState", requestState)
+                        } else {
+                            recommendProducts[product_key] = product_id
+                            buildNotification(requestState)
+                            setCookie("cart_recommend", recommendProducts)
+                            if (showRecommend) {
+                                updateRecommendSection(
+                                    product_id,
+                                    product_handle
+                                )
+                            }
+                        }
+                        const expiration = localStorage.getItem(
+                            "expirationTimeRecommendSection"
+                        )
+
+                        if (!expiration) {
+                            let days = document
+                                .querySelector("#cart-recommend")
+                                .getAttribute("data-days")
+                            setLocalStorageExpiration(days)
+                        }
+                    }
+                })
+            }
+
+            if (requestState.requestType === "change") {
+                subscribeToResult((requestState) => {
+                    if (requestState.responseData?.ok) {
+                        let items = requestState.responseData.body.items
+                        let cartItems = []
+                        if (items.length === 0) {
+                            for (const key in recommendProducts) {
+                                if (
+                                    Object.hasOwnProperty.call(
+                                        recommendProducts,
+                                        key
+                                    )
+                                ) {
+                                    delete recommendProducts[key]
+                                }
+                            }
+                            deleteCookie("cart_recommend")
+                        } else {
+                            items.forEach((element) => {
+                                cartItems.push(element.id)
+                            })
+
+                            for (const key in recommendProducts) {
+                                if (
+                                    Object.hasOwnProperty.call(
+                                        recommendProducts,
+                                        key
+                                    )
+                                ) {
+                                    if (!cartItems.includes(+key)) {
+                                        delete recommendProducts[key]
+                                    }
+                                }
+                            }
+                        }
+                        setCookie("cart_recommend", recommendProducts)
+                    }
+                })
+            }
+        }
+    )
+
+    liquidAjaxCart.subscribeToCartStateUpdate(async (state, isCartUpdated) => {
+        const cartTotalHeader = document.querySelector(".cart-count-ajax-cart")
+
+        if (state.status.cartStateSet && !state.status.requestInProgress) {
+            cartTotalHeader.textContent = Shopify.formatMoney(
+                state.cart.total_price
+            )
+            const cartDrawerShipping = document.querySelector(
+                ".js-cart-drawer-shipping"
+            )
+            if (cartDrawerShipping && cartDrawerShipping.isConnected) {
+                let currentTotal = state.cart.total_price
+                const shippingTotal = document
+                    .querySelector(".js-cart-drawer-shipping")
+                    .getAttribute("data-total")
+                calculateProgress(currentTotal, shippingTotal)
+            }
+
+            let getCookieValue = getCookie("cart_recommend")
+
+            if (typeof getCookieValue !== "undefined") {
+                if (
+                    Object.keys(getCookieValue).length < state.cart.items.length
+                ) {
+                    refreshCookie(state)
+                }
+                if (
+                    Object.keys(getCookieValue).length !== 0 &&
+                    getCookieValue.constructor === Object
+                ) {
+                    let cartIds = []
+
+                    for (const key in getCookieValue) {
+                        if (Object.hasOwnProperty.call(getCookieValue, key)) {
+                            const id = getCookieValue[key]
+                            cartIds.push(id)
+                        }
+                    }
+                    const existingItems = await getLocalStorageItems()
+                    if (existingItems.length > 0) {
+                        let strHandles = existingItems.join("=")
+                        if (showRecommend) {
+                            sentRecommendIds(strHandles)
+                        }
+                    }
+                }
+            } else {
+                refreshCookie(state)
+            }
+
+            if (!isCartUpdated) {
+                if (state.previousCart && state.previousCart.items) {
+                    const itemsCart = state.cart.items
+                    const itemsPreviousCart = state.previousCart.items
+
+                    if (itemsCart.length < itemsPreviousCart.length) {
+                        const cartProductIds = itemsCart.map(
+                            (item) => item.product_id
+                        )
+                        const filteredItems = itemsPreviousCart.filter(
+                            (item) => !cartProductIds.includes(item.product_id)
+                        )
+                        if (filteredItems.length > 0) {
+                            if (showRecommend) {
+                                deleteRecommendSection(
+                                    filteredItems[0].product_id,
+                                    filteredItems[0].handle
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            const removeButtonCombo =
+                document.querySelectorAll(".js-combo-remove")
+
+            if (removeButtonCombo) {
+                removeButtonCombo.forEach((button) => {
+                    button.addEventListener("click", function (event) {
+                        event.preventDefault()
+                        let parentGroup = button.closest(".main-combo-item")
+                        let parentGroupValue =
+                            parentGroup.getAttribute("data-value")
+
+                        let countItems = document.querySelectorAll(
+                            `[data-value="${parentGroupValue}"]`
+                        )
+                        localStorage.setItem(
+                            "removeValueCombo",
+                            JSON.stringify(parentGroupValue)
+                        )
+                    })
+                })
+            }
+        }
+        if (isCartUpdated) {
+            window.comboItemsWrapped = false
+            checkLocalStorageExpiration()
+        }
+    })
+
+    liquidAjaxCart.cartRequestUpdate()
+}
+
+function addBuyMore(addToCartButtonBuyMore) {
+    addToCartButtonBuyMore.forEach((button) => {
+        button.addEventListener("click", function (event) {
+            let mainProductForm = event.target
+                .closest(".main-product__content")
+                .querySelector(".main-product__form")
+
+            let buyMoreItems = event.target.closest(".js-buy-more-items")
+
+            buyMoreItems.classList.add("js-ajax-cart-form-in-progress")
+
+            let formData = new FormData(mainProductForm)
+
+            let id = formData.get("id")
+            let quantity = +buyMoreItems.querySelector(".js-buy-more-item span")
+                .textContent
+
+            let formItem = {}
+
+            if (id && quantity) {
+                formItem = {
+                    id: id,
+                    quantity: quantity,
+                }
+            }
+
+            let items = [formItem]
+
+            let options = {
+                lastComplete: (requestState) => {
+                    buyMoreItems.classList.remove(
+                        "js-ajax-cart-form-in-progress"
+                    )
+                    if (requestState.requestType === "add") {
+                        //console.log("requestType", requestState)
+
+                        buildNotification(requestState)
+                        if (requestState.responseData.ok) {
+                            let product_id = String(
+                                requestState.responseData.body.items[0]
+                                    .product_id
+                            )
+                            let product_handle =
+                                requestState.responseData.body.items[0].handle
+                            if (showRecommend) {
+                                updateRecommendSection(
+                                    product_id,
+                                    product_handle
+                                )
+                            }
+                        }
+                    }
+                },
+            }
+
+            liquidAjaxCart.cartRequestAdd({ items: items }, options)
+        })
+    })
+}
+
+function addComboProducts(addToCartButton) {
+    addToCartButton.addEventListener("click", function (event) {
+        let mainProductForm = event.target.closest(".js-main-combo-action")
+        let mainProductCombo = event.target.closest(".js-combo-action")
+
+        mainProductForm.classList.add("js-ajax-cart-form-in-progress")
+
+        let formData = new FormData(mainProductForm)
+        let otherItems = []
+        let propertiesAll = []
+        let id = formData.get("id")
+        let quantity = formData.get("quantity")
+
+        let otherForms = mainProductCombo.querySelectorAll(
+            ".card-product__form"
+        )
+        propertiesAll.push(id)
+
+        otherForms.forEach(function (form) {
+            let otherFormData = new FormData(form)
+            let id = otherFormData.get("id")
+
+            if (id) {
+                propertiesAll.push(id)
+            }
+        })
+
+        otherForms.forEach(function (form) {
+            let otherFormData = new FormData(form)
+            let id = otherFormData.get("id")
+            let otherItem = {}
+
+            if (id && quantity) {
+                otherItem = {
+                    id: id,
+                    quantity: quantity,
+                    properties: {
+                        _hiddenCombo: propertiesAll,
+                    },
+                }
+                otherItems.push(otherItem)
+            }
+        })
+
+        let items = [...otherItems]
+
+        let options = {
+            lastComplete: (requestState) => {
+                let productForm = document.querySelector(
+                    ".js-main-combo-action"
+                )
+                productForm.classList.remove("js-ajax-cart-form-in-progress")
+                if (requestState.requestType === "add") {
+                    buildNotification(requestState)
+                }
+            },
+        }
+
+        liquidAjaxCart.cartRequestAdd({ items: items }, options)
+    })
+}
+
+function buildNotification(requestState) {
+    fetch(window.Shopify.routes.root + "?section_id=cart-notification")
+        .then((response) => response.text())
+        .then((text) => {
+            if (text) {
+                let html = document.createElement("div")
+                html.innerHTML = text
+                let cartNotification = html.querySelector(
+                    ".js-cart-notification"
+                )
+                document.body.appendChild(cartNotification)
+                let modal = document.querySelector(".js-cart-notification")
+                modal.classList.add("open")
+                document.body.classList.add("overflow-hidden")
+                getNotification(requestState)
+            }
+        })
+}
+
+function getNotification(state) {
+    let imageSize = document
+        .querySelector("#cart-recommend")
+        .getAttribute("data-size")
+    let modal = document.querySelector(".js-cart-notification")
+    trapFocus(modal)
+
+    if (state.responseData?.ok) {
+        if (state.requestBody instanceof FormData) {
+            modal.querySelector(".js-cart-notification-title").textContent =
+                state.responseData.body.product_title
+            modal
+                .querySelector(".js-cart-notification-image")
+                .parentElement.classList.add("media__size--" + imageSize)
+            modal.querySelector(".js-cart-notification-image").src =
+                state.responseData.body.image
+
+            modal.querySelector(".js-cart-notification-image").alt =
+                state.responseData.body.product_title
+        } else {
+            let item = state.responseData.body.items[0]
+            const title = document.querySelector(".main-product__title")
+            const image = document.querySelector(
+                ".js-main-product-block .js-card-product-media img"
+            )
+            console.log(image.src)
+            modal.querySelector(".js-cart-notification-title").textContent =
+                title.textContent
+            modal
+                .querySelector(".js-cart-notification-image")
+                .parentElement.classList.add("media__size--" + imageSize)
+            modal.querySelector(".js-cart-notification-image").src = image.src
+
+            modal.querySelector(".js-cart-notification-image").alt =
+                title.textContent
+        }
+    } else {
+        modal.querySelector(".js-cart-notification-title").textContent =
+            state.responseData.body.message +
+            " " +
+            state.responseData.body.status
+        modal
+            .querySelector(".js-cart-notification-image")
+            .parentElement.parentElement.remove()
+        modal.querySelector(".js-cart-msg").textContent =
+            state.responseData.body.description
+    }
+
+    modal.classList.add("open")
+    document.body.classList.add("overflow-hidden")
+
+    let close = document.querySelectorAll(".js-modal-close")
+
+    close.forEach((element) => {
+        element.addEventListener("click", (event) => {
+            event.preventDefault()
+            closeNotification(modal)
+        })
+    })
+
+    modal.addEventListener("click", (event) => {
+        if (event.target == modal) {
+            closeNotification(modal)
+        }
+    })
+
+    modal.addEventListener("keyup", (event) => {
+        if (event.code.toUpperCase() === "ESCAPE") {
+            closeNotification(modal)
+        }
+    })
+}
+
+function closeNotification(modal) {
+    modal.classList.remove("open")
+    document.body.classList.remove("overflow-hidden")
+    modal.remove()
+    removeTrapFocus(modal)
+}
+
+function getLocalStorageItems() {
+    return new Promise((resolve) => {
+        const existingItems =
+            JSON.parse(localStorage.getItem("recommendSection")) || []
+        const defaultItems =
+            JSON.parse(localStorage.getItem("defaultRecommendSection")) || []
+        const deleteItems =
+            JSON.parse(localStorage.getItem("deleteRecommendSection")) || []
+
+        const updatedItems = existingItems.filter(
+            (item) => !defaultItems.includes(item)
+        )
+
+        const allItems = updatedItems.concat(defaultItems)
+
+        const updatedAllItems = allItems.filter(
+            (item) => !deleteItems.includes(item)
+        )
+
+        const finalItems = updatedAllItems.concat(deleteItems)
+
+        resolve(finalItems)
+    })
+}
+
+function updateLocalStorage(updatedItems) {
+    return new Promise((resolve) => {
+        localStorage.setItem("recommendSection", JSON.stringify(updatedItems))
+        resolve()
+    })
+}
+
+function updateDeleteLocalStorage(defaultItems) {
+    return new Promise((resolve) => {
+        localStorage.setItem(
+            "deleteRecommendSection",
+            JSON.stringify(defaultItems)
+        )
+        resolve()
+    })
+}
+
+async function updateRecommendSection(id, handle) {
+    const type = document
+        .querySelector("#cart-recommend")
+        .getAttribute("data-type")
+    const response = await fetch(
+        `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=${type}`
+    )
+
+    const { products } = await response.json()
+
+    const existingItems = await getLocalStorageItems()
+    const defaultItems =
+        JSON.parse(localStorage.getItem("defaultRecommendSection")) || []
+
+    const handlesToAdd = products
+        .map((product) => String(product.handle))
+        .filter((handle) => !defaultItems.includes(handle))
+
+    const handlesToRemove = products.map((product) => String(product.handle))
+
+    const updatedItems = existingItems.filter(
+        (item) => !handlesToRemove.includes(item)
+    )
+
+    updatedItems.unshift(...handlesToAdd)
+
+    const filteredItems = updatedItems.filter(
+        (item) => item !== handle && item !== null
+    )
+
+    const uniqueItems = [...new Set(filteredItems)]
+
+    await updateLocalStorage(uniqueItems)
+
+    if (uniqueItems.length > 0) {
+        let strHandles = uniqueItems.join("=")
+        if (showRecommend) {
+            sentRecommendIds(strHandles)
+        }
+    }
+}
+
+async function deleteRecommendSection(id, handle) {
+    const type = document
+        .querySelector("#cart-recommend")
+        .getAttribute("data-type")
+    const response = await fetch(
+        `${window.Shopify.routes.root}recommendations/products.json?product_id=${id}&limit=4&intent=${type}`
+    )
+
+    const { products } = await response.json()
+
+    const existingItems = await getLocalStorageItems()
+
+    const defaultItems =
+        JSON.parse(localStorage.getItem("defaultRecommendSection")) || []
+
+    const deleteItems =
+        JSON.parse(localStorage.getItem("deleteRecommendSection")) || []
+
+    const handlesToRemove = products.map((product) => String(product.handle))
+
+    const updatedItems = existingItems.filter(
+        (item) => !handlesToRemove.includes(item)
+    )
+
+    const filteredItems = updatedItems.filter(
+        (item) => !defaultItems.includes(item)
+    )
+
+    const finalItems = [...filteredItems, ...defaultItems]
+
+    const uniqueItems = finalItems.filter(
+        (item, index) => finalItems.indexOf(item) === index
+    )
+
+    const finalFilteredItems = uniqueItems.filter(
+        (item) => item !== handle && item !== null
+    )
+
+    if (handle !== null && !deleteItems.includes(handle)) {
+        deleteItems.push(handle)
+        await updateDeleteLocalStorage(deleteItems)
+    }
+
+    await updateLocalStorage(finalFilteredItems)
+
+    if (finalFilteredItems.length > 0) {
+        const getAllItems = await getLocalStorageItems()
+        let strHandles = getAllItems.join("=")
+        if (showRecommend) {
+            sentRecommendIds(strHandles)
+        }
+    }
+}
+
+function sentRecommendIds(ids) {
+    const cartRecommendREsults = document.querySelector("#cart-recommend")
+    const imageSize = document
+        .querySelector("#cart-recommend")
+        .getAttribute("data-size")
+
+    fetch(
+        window.Shopify.routes.root +
+            "collections/all?section_id=cart-recommend&id=" +
+            encodeURIComponent(ids)
+    )
+        .then((response) => response.text())
+        .then((text) => {
+            const html = document.createElement("div")
+            html.innerHTML = text
+            const cartRecommend = html.querySelector(".js-cart-recommend-block")
+
+            if (cartRecommend && cartRecommend.innerHTML.trim().length) {
+                recommendResults = true
+                cartRecommendREsults.innerHTML = cartRecommend.innerHTML
+
+                let cartRecommendREsultsItem =
+                    cartRecommendREsults.querySelectorAll(
+                        ".js-cart-recommend-item"
+                    )
+
+                cartRecommendREsultsItem.forEach((item) => {
+                    item.querySelector(".card-product__media").classList.add(
+                        "media__size--" + imageSize
+                    )
+                })
+                const countDesktop =
+                    parseInt(cartRecommendREsults.dataset.countDesktop) || 3
+                const countTablet =
+                    parseInt(cartRecommendREsults.dataset.countTablet) || 2
+                const countMobile =
+                    parseInt(cartRecommendREsults.dataset.countMobile) || 2
+                const swiper = new Swiper(".js-recommend-swiper", {
+                    // Optional parameters
+                    loop: false,
+                    slidesPerView: countMobile,
+                    spaceBetween: 10,
+                    // Navigation arrows
+                    navigation: {
+                        nextEl: ".swiper-button-next",
+                        prevEl: ".swiper-button-prev",
+                    },
+                    breakpoints: {
+                        550: {
+                            slidesPerView: 2,
+                            spaceBetween: 15,
+                        },
+                        991: {
+                            slidesPerView: countTablet,
+                            spaceBetween: 20,
+                        },
+                        1200: {
+                            slidesPerView: countDesktop,
+                            spaceBetween: 30,
+                        },
+                    },
+                })
+            }
+        })
+}
+
+function refreshCookie(state) {
+    if (
+        Object.keys(state.cart).length !== 0 &&
+        state.cart.constructor === Object
+    ) {
+        state.cart.items.forEach((element) => {
+            let product_key = element.id
+            let product_id = String(element.product_id)
+
+            recommendProducts[product_key] = product_id
+            setCookie("cart_recommend", recommendProducts)
+        })
+    }
+}
+
+function setCookie(name, json) {
+    let cookieValue = ""
+    let expire = ""
+    let period = ""
+
+    //Specify the cookie name and value
+    cookieValue = name + "=" + JSON.stringify(json) + ";"
+
+    //Specify the path to set the cookie
+    cookieValue += "path=/ ;"
+
+    //Specify how long you want to keep cookie
+    period = 30 //days to store
+    expire = new Date()
+    expire.setTime(expire.getTime() + 1000 * 3600 * 24 * period)
+    expire.toString()
+    cookieValue += "expires=" + expire + ";"
+
+    //Set cookie
+    document.cookie = cookieValue
+}
+
+function deleteCookie(name) {
+    document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+}
+
+function getCookie(name) {
+    let cookieValue = ""
+    let cookieArray = new Array()
+
+    //Get cookie
+    cookieValue = document.cookie
+
+    //Divide the cookie into an array and convert them to JSON
+    if (cookieValue) {
+        cookieArray = cookieValue.split(";")
+        for (const iterator in cookieArray) {
+            if (cookieArray[iterator].includes(name)) {
+                let data = cookieArray[iterator].split("=")
+                return JSON.parse(data[1])
+            }
+        }
+    }
+}
+
+function calculateProgress(currentVal, targetVal) {
+    let progressBar = document.querySelectorAll(
+        ".cart-drawer-shippingThreshold__progress"
+    )
+    let progressNum = document.querySelectorAll(".cart-drawer-shipping__num")
+    let progressOuter = document.querySelectorAll(
+        ".cart-drawer-shipping__numOuter"
+    )
+    let successMsg = document.querySelectorAll(".cart-drawer-shipping__success")
+    // calculate how far progress is from the total as a percentage
+    let result = Math.round((100 * currentVal) / targetVal)
+    progressBar.forEach(function (el) {
+        el.setAttribute("style", "width: ".concat(result, "%"))
+    })
+    // Update the progess text. If threshold is met, show success message
+    let newProgressNum = (targetVal - currentVal) / 100
+    if (newProgressNum <= 0) {
+        successMsg.forEach(function (el) {
+            el.style.display = "block"
+        })
+        progressOuter.forEach(function (el) {
+            el.style.display = "none"
+        })
+        progressNum.forEach(function (el) {
+            el.textContent = Shopify.formatMoney(newProgressNum * 100)
+        })
+    } else {
+        successMsg.forEach(function (el) {
+            el.style.display = "none"
+        })
+        progressOuter.forEach(function (el) {
+            el.style.display = "block"
+        })
+        progressNum.forEach(function (el) {
+            el.textContent = Shopify.formatMoney(newProgressNum * 100)
+        })
+    }
+}
+
+function checkLocalStorageExpiration() {
+    const storedTime = localStorage.getItem("expirationTimeRecommendSection")
+    if (storedTime) {
+        const currentTime = new Date().getTime()
+        if (currentTime > storedTime) {
+            localStorage.removeItem("recommendSection")
+            localStorage.removeItem("deleteRecommendSection")
+            localStorage.removeItem("expirationTimeRecommendSection")
+        }
+    }
+}
+
+function setLocalStorageExpiration(days) {
+    const expirationTime = new Date().getTime() + days * 24 * 60 * 60 * 1000
+    localStorage.setItem("expirationTimeRecommendSection", expirationTime)
+}

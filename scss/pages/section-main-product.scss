@@ -788,8 +788,9 @@ details {
             height: 20px;
             margin: auto;
             position: absolute;
-            bottom: -10px;
+            top: 100%;
             left: 0;
+            margin-top: -10px;
         }
         &:last-child {
             > .icon-plus {

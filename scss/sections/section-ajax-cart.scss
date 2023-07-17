@@ -279,6 +279,9 @@ input.cart-drawer__input--property {
 		top: 50%;
 		margin-top: -13px;
 		text-align: center;
+		.icon-minus {
+			display: block!important;
+		}
 	}
 
 	.ajax-cart__quantity-button--plus {
@@ -287,6 +290,9 @@ input.cart-drawer__input--property {
 		top: 50%;
 		margin-top: -13px;
 		text-align: center;
+		.icon-plus {
+			display: block!important;
+		}
 	}
 }
 

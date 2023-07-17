@@ -84,26 +84,13 @@
                         {% endif %}
                     {%- endfor -%}
                 {%- endif -%}
-
-                {% if property_combo %}
-                    {% render 'cart-item-combo',
-                        item: item,
-                        size: size,
-                        forloop: forloop,
-                        property_discount: property_discount,
-                        property_discount: property_discount,
-                        value_combo: value_combo,
-                        template_cart: true
-                    %}
-                {% else %}
-                    {% render 'cart-item',
-                        item: item,
-                        size: size,
-                        forloop: forloop,
-                        property_discount: property_discount,
-                        template_cart: true
-                    %}
-                {% endif %}
+                {% render 'cart-item',
+                    item: item,
+                    size: size,
+                    forloop: forloop,
+                    property_discount: property_discount,
+                    template_cart: true
+                %}
             {% endfor %}
         </div>
 
